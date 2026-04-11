@@ -1,245 +1,332 @@
 /*!
- * Lost Objects — Cursor Chromatic Aberration Effect
- * Drop one line into every page before </body>:
- * <script src="cursor-fx.js"></script>
+ * Lost Objects — Cursor Magnetic Distortion
+ * WebGL-based pixel displacement — tube TV magnet / liquid warp effect
+ * Include once per page: <script src="cursor-fx.js"></script>
  */
 (function () {
   'use strict';
 
+  /* Touch-only devices — skip entirely */
+  if (window.matchMedia('(hover: none)').matches) return;
+
   /* ── CONFIG ─────────────────────────────────────── */
   const CFG = {
-    radius:      120,    /* px — size of the effect zone              */
-    strength:    3.2,    /* px — max channel split at edge of zone    */
-    innerFade:   0.35,   /* 0-1 — how much of radius before fade-in   */
-    speed:       0.1,    /* lerp factor — how quickly cursor follows  */
-    moveBoost:   2.2,    /* multiplier when moving fast               */
-    boostDecay:  0.08,   /* how quickly boost fades                   */
-    dotSize:     5,      /* px — cursor dot radius                    */
-    ringSize:    22,     /* px — outer ring radius                    */
-    color:       '255,102,102', /* RGB of cursor accent (--pink)      */
+    radius:      140,    /* px — warp zone radius                     */
+    strength:    0.018,  /* displacement intensity (0.01–0.04 range)  */
+    chroma:      0.006,  /* chromatic aberration split amount          */
+    lerpSpeed:   0.12,   /* cursor follow smoothing                   */
+    boostMult:   2.8,    /* how much faster movement amps the effect  */
+    boostDecay:  0.06,   /* how quickly the boost fades               */
+    dotRadius:   4,      /* px — cursor dot size                      */
   };
 
   /* ── STATE ──────────────────────────────────────── */
-  let mx = -999, my = -999;        /* raw mouse position               */
-  let cx = -999, cy = -999;        /* lerped cursor position           */
-  let px = -999, py = -999;        /* previous lerped position         */
-  let boost = 0;                   /* current speed boost              */
-  let raf;
+  let mx = -9999, my = -9999;
+  let cx = -9999, cy = -9999;
+  let px = 0,     py = 0;
+  let boost = 0;
+  let W = 0,      H = 0;
+  let visible = false;
 
-  /* ── CANVAS SETUP ───────────────────────────────── */
+  /* ── CANVAS ─────────────────────────────────────── */
   const canvas = document.createElement('canvas');
-  canvas.id = 'lo-cursor-fx';
   Object.assign(canvas.style, {
     position:      'fixed',
-    top:           '0',
-    left:          '0',
+    inset:         '0',
     width:         '100%',
     height:        '100%',
     pointerEvents: 'none',
-    zIndex:        '99997',
-    mixBlendMode:  'screen',
-    opacity:       '1',
+    zIndex:        '99990',
+    display:       'block',
   });
   document.body.appendChild(canvas);
 
-  const ctx = canvas.getContext('2d');
-
-  /* ── CUSTOM CURSOR DOT ──────────────────────────── */
-  const dot = document.createElement('div');
-  dot.id = 'lo-cursor-dot';
-  Object.assign(dot.style, {
-    position:        'fixed',
-    width:           CFG.dotSize * 2 + 'px',
-    height:          CFG.dotSize * 2 + 'px',
-    borderRadius:    '50%',
-    background:      `rgba(${CFG.color}, 0.85)`,
-    pointerEvents:   'none',
-    zIndex:          '99999',
-    transform:       'translate(-50%, -50%)',
-    transition:      'width 0.2s, height 0.2s, opacity 0.3s',
-    mixBlendMode:    'screen',
-    top:             '0',
-    left:            '0',
+  /* ── WEBGL CONTEXT ──────────────────────────────── */
+  const gl = canvas.getContext('webgl', {
+    premultipliedAlpha: false,
+    alpha: true,
+    antialias: false,
   });
-  document.body.appendChild(dot);
 
-  const ring = document.createElement('div');
-  ring.id = 'lo-cursor-ring';
-  Object.assign(ring.style, {
-    position:        'fixed',
-    width:           CFG.ringSize * 2 + 'px',
-    height:          CFG.ringSize * 2 + 'px',
-    borderRadius:    '50%',
-    border:          `1px solid rgba(${CFG.color}, 0.25)`,
-    pointerEvents:   'none',
-    zIndex:          '99998',
-    transform:       'translate(-50%, -50%)',
-    transition:      'width 0.35s ease, height 0.35s ease, border-color 0.35s, opacity 0.3s',
-    top:             '0',
-    left:            '0',
-    opacity:         '0',
+  if (!gl) { canvas.remove(); return; }
+
+  /* ── SHADERS ─────────────────────────────────────── */
+  const VS = `
+    attribute vec2 a_pos;
+    void main() {
+      gl_Position = vec4(a_pos, 0.0, 1.0);
+    }
+  `;
+
+  /* Fragment shader — reads the page texture and displaces pixels
+     based on distance from cursor, creating magnetic warp + chromatic split */
+  const FS = `
+    precision mediump float;
+
+    uniform sampler2D u_tex;   /* screenshot of the page             */
+    uniform vec2  u_res;       /* canvas resolution in px            */
+    uniform vec2  u_cursor;    /* cursor position in px (y flipped)  */
+    uniform float u_radius;    /* warp zone radius in px             */
+    uniform float u_strength;  /* displacement multiplier            */
+    uniform float u_chroma;    /* chromatic aberration               */
+
+    void main() {
+      vec2 uv = gl_FragCoord.xy / u_res;
+
+      /* Cursor position in UV space */
+      vec2 cursorUV = u_cursor / u_res;
+
+      /* Vector from cursor to current fragment */
+      vec2 diff = uv - cursorUV;
+
+      /* Correct for aspect ratio so the zone is circular */
+      float aspect = u_res.x / u_res.y;
+      vec2 diffCorrected = diff * vec2(aspect, 1.0);
+      float dist = length(diffCorrected);
+
+      /* Normalised radius */
+      float normRadius = u_radius / u_res.y;
+
+      /* Smooth falloff — strongest at cursor, fades to edge of zone */
+      float falloff = 1.0 - smoothstep(0.0, normRadius, dist);
+      falloff = falloff * falloff;   /* square for sharper centre warp */
+
+      /* Magnetic displacement — pulls pixels toward cursor */
+      vec2 displacement = -diff * falloff * u_strength;
+
+      /* Chromatic aberration — red and blue split away from center */
+      float chrSplit = u_chroma * falloff;
+      vec2 chromaOff = normalize(diff + vec2(0.0001)) * chrSplit;
+
+      /* Sample displaced UVs */
+      vec2 uvBase  = uv + displacement;
+      vec2 uvRed   = uv + displacement + chromaOff;
+      vec2 uvBlue  = uv + displacement - chromaOff;
+
+      /* Clamp to [0,1] */
+      uvBase  = clamp(uvBase,  vec2(0.0), vec2(1.0));
+      uvRed   = clamp(uvRed,   vec2(0.0), vec2(1.0));
+      uvBlue  = clamp(uvBlue,  vec2(0.0), vec2(1.0));
+
+      /* Sample each channel from displaced position */
+      float r = texture2D(u_tex, uvRed).r;
+      float g = texture2D(u_tex, uvBase).g;
+      float b = texture2D(u_tex, uvBlue).b;
+      float a = texture2D(u_tex, uvBase).a;
+
+      /* Only output pixels within the warp zone */
+      float mask = smoothstep(0.0, normRadius * 0.08, falloff);
+
+      gl_FragColor = vec4(r, g, b, a * mask);
+    }
+  `;
+
+  function compileShader(type, src) {
+    const s = gl.createShader(type);
+    gl.shaderSource(s, src);
+    gl.compileShader(s);
+    return s;
+  }
+
+  const prog = gl.createProgram();
+  gl.attachShader(prog, compileShader(gl.VERTEX_SHADER, VS));
+  gl.attachShader(prog, compileShader(gl.FRAGMENT_SHADER, FS));
+  gl.linkProgram(prog);
+  gl.useProgram(prog);
+
+  /* Full-screen quad */
+  const buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
+    -1, -1,  1, -1,  -1, 1,
+    -1,  1,  1, -1,   1, 1,
+  ]), gl.STATIC_DRAW);
+
+  const aPos = gl.getAttribLocation(prog, 'a_pos');
+  gl.enableVertexAttribArray(aPos);
+  gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
+
+  /* Uniform locations */
+  const uTex      = gl.getUniformLocation(prog, 'u_tex');
+  const uRes      = gl.getUniformLocation(prog, 'u_res');
+  const uCursor   = gl.getUniformLocation(prog, 'u_cursor');
+  const uRadius   = gl.getUniformLocation(prog, 'u_radius');
+  const uStrength = gl.getUniformLocation(prog, 'u_strength');
+  const uChrома   = gl.getUniformLocation(prog, 'u_chroma');
+
+  /* Texture that holds the page screenshot */
+  const tex = gl.createTexture();
+  gl.bindTexture(gl.TEXTURE_2D, tex);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+
+  gl.enable(gl.BLEND);
+  gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+  /* ── PAGE CAPTURE ───────────────────────────────── */
+  /* We use html2canvas to grab the live page content.
+     This runs periodically so scrolling / animation stays responsive. */
+  let capturing = false;
+  let captureReady = false;
+  let lastCapture = 0;
+  const CAPTURE_INTERVAL = 80; /* ms between recaptures               */
+
+  function captureToTexture() {
+    if (capturing) return;
+    const now = performance.now();
+    if (now - lastCapture < CAPTURE_INTERVAL) return;
+    capturing = true;
+    lastCapture = now;
+
+    /* Temporarily hide our canvas and cursor elements so they
+       don't appear in the screenshot */
+    canvas.style.display = 'none';
+    if (dotEl) dotEl.style.display = 'none';
+
+    window.html2canvas(document.body, {
+      x: window.scrollX,
+      y: window.scrollY,
+      width:  window.innerWidth,
+      height: window.innerHeight,
+      useCORS: true,
+      allowTaint: true,
+      scale: 0.75,          /* lower res = much faster capture        */
+      logging: false,
+      backgroundColor: null,
+      imageTimeout: 0,
+    }).then(captured => {
+      gl.bindTexture(gl.TEXTURE_2D, tex);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, captured);
+      captureReady = true;
+      capturing = false;
+      canvas.style.display = 'block';
+      if (dotEl) dotEl.style.display = 'block';
+    }).catch(() => {
+      capturing = false;
+      canvas.style.display = 'block';
+      if (dotEl) dotEl.style.display = 'block';
+    });
+  }
+
+  /* ── CURSOR DOT ─────────────────────────────────── */
+  const dotEl = document.createElement('div');
+  Object.assign(dotEl.style, {
+    position:      'fixed',
+    width:         CFG.dotRadius * 2 + 'px',
+    height:        CFG.dotRadius * 2 + 'px',
+    borderRadius:  '50%',
+    background:    'rgba(255,102,102,0.9)',
+    pointerEvents: 'none',
+    zIndex:        '99999',
+    transform:     'translate(-50%,-50%)',
+    mixBlendMode:  'screen',
+    top:           '0',
+    left:          '0',
+    opacity:       '0',
+    transition:    'opacity 0.3s',
+    boxShadow:     '0 0 6px rgba(255,102,102,0.5)',
   });
-  document.body.appendChild(ring);
+  document.body.appendChild(dotEl);
 
   /* ── RESIZE ─────────────────────────────────────── */
   function resize() {
-    canvas.width  = window.innerWidth;
-    canvas.height = window.innerHeight;
+    W = window.innerWidth;
+    H = window.innerHeight;
+    canvas.width  = W;
+    canvas.height = H;
+    gl.viewport(0, 0, W, H);
   }
   resize();
-  window.addEventListener('resize', resize, { passive: true });
+  window.addEventListener('resize', () => { resize(); captureToTexture(); }, { passive: true });
+  window.addEventListener('scroll', () => { captureToTexture(); }, { passive: true });
 
-  /* ── MOUSE TRACKING ─────────────────────────────── */
+  /* ── INPUT ──────────────────────────────────────── */
   document.addEventListener('mousemove', e => {
     mx = e.clientX;
     my = e.clientY;
-    ring.style.opacity = '1';
+    if (!visible) { visible = true; dotEl.style.opacity = '1'; }
   }, { passive: true });
 
   document.addEventListener('mouseleave', () => {
-    ring.style.opacity = '0';
-    dot.style.opacity  = '0';
+    visible = false;
+    dotEl.style.opacity = '0';
   });
 
-  document.addEventListener('mouseenter', () => {
-    dot.style.opacity  = '1';
-    ring.style.opacity = '1';
-  });
-
-  /* Grow cursor on interactive elements */
+  /* Restore text cursor on inputs */
   document.addEventListener('mouseover', e => {
     const tag = e.target.tagName;
-    const isLink = tag === 'A' || tag === 'BUTTON' || e.target.style.cursor === 'pointer'
-      || window.getComputedStyle(e.target).cursor === 'pointer';
-    if (isLink) {
-      dot.style.width  = CFG.dotSize * 3 + 'px';
-      dot.style.height = CFG.dotSize * 3 + 'px';
-      ring.style.width  = CFG.ringSize * 2.5 + 'px';
-      ring.style.height = CFG.ringSize * 2.5 + 'px';
-      ring.style.borderColor = `rgba(${CFG.color}, 0.5)`;
-    } else {
-      dot.style.width  = CFG.dotSize * 2 + 'px';
-      dot.style.height = CFG.dotSize * 2 + 'px';
-      ring.style.width  = CFG.ringSize * 2 + 'px';
-      ring.style.height = CFG.ringSize * 2 + 'px';
-      ring.style.borderColor = `rgba(${CFG.color}, 0.25)`;
-    }
+    const isText = tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT';
+    document.documentElement.style.cursor = isText ? '' : 'none';
+    dotEl.style.opacity = visible ? (isText ? '0.3' : '1') : '0';
   }, { passive: true });
 
-  /* ── LERP HELPER ────────────────────────────────── */
+  /* ── MAIN LOOP ───────────────────────────────────── */
   const lerp = (a, b, t) => a + (b - a) * t;
 
-  /* ── DRAW CHROMATIC ABERRATION ───────────────────── */
-  function drawAberration(x, y, str) {
-    if (str < 0.1) return;
+  function frame() {
+    requestAnimationFrame(frame);
 
-    const r = CFG.radius;
+    /* Lerp cursor */
+    if (cx === -9999) { cx = mx; cy = my; }
+    cx = lerp(cx, mx, CFG.lerpSpeed);
+    cy = lerp(cy, my, CFG.lerpSpeed);
 
-    /* We sample a region of the page behind the cursor using
-       ctx.drawImage(canvas) — but since we're drawing ON the canvas,
-       we capture the underlying page using a clip-based RGB shift.
-
-       Technique: draw three overlapping radial transparent rects
-       with globalCompositeOperation tricks — but the cleanest pure-canvas
-       approach is a feathered RGB displacement using radial gradient masks. */
-
-    ctx.save();
-
-    /* Create circular clip zone */
-    ctx.beginPath();
-    ctx.arc(x, y, r, 0, Math.PI * 2);
-    ctx.clip();
-
-    /* RED channel — shift left */
-    ctx.globalCompositeOperation = 'screen';
-    const rg = ctx.createRadialGradient(x, y, r * CFG.innerFade, x, y, r);
-    rg.addColorStop(0, `rgba(255,0,0,${0.028 * str})`);
-    rg.addColorStop(0.5, `rgba(255,0,0,${0.018 * str})`);
-    rg.addColorStop(1, 'rgba(255,0,0,0)');
-    ctx.fillStyle = rg;
-    ctx.fillRect(x - r - str, y - r, r * 2 + str * 2, r * 2);
-
-    /* BLUE channel — shift right */
-    const bg = ctx.createRadialGradient(x, y, r * CFG.innerFade, x, y, r);
-    bg.addColorStop(0, `rgba(0,0,255,${0.028 * str})`);
-    bg.addColorStop(0.5, `rgba(0,0,255,${0.018 * str})`);
-    bg.addColorStop(1, 'rgba(0,0,255,0)');
-    ctx.fillStyle = bg;
-    ctx.fillRect(x - r + str, y - r, r * 2 + str * 2, r * 2);
-
-    /* GREEN channel — subtle vertical shift */
-    const gg = ctx.createRadialGradient(x, y, r * CFG.innerFade * 1.2, x, y, r);
-    gg.addColorStop(0, `rgba(0,255,0,${0.012 * str})`);
-    gg.addColorStop(1, 'rgba(0,255,0,0)');
-    ctx.fillStyle = gg;
-    ctx.fillRect(x - r, y - r - str * 0.4, r * 2, r * 2 + str * 0.8);
-
-    /* Subtle lens flare ring at edge */
-    const lg = ctx.createRadialGradient(x, y, r * 0.7, x, y, r);
-    lg.addColorStop(0, 'rgba(255,102,102,0)');
-    lg.addColorStop(0.85, `rgba(255,102,102,${0.04 * str})`);
-    lg.addColorStop(1, 'rgba(255,102,102,0)');
-    ctx.globalCompositeOperation = 'screen';
-    ctx.fillStyle = lg;
-    ctx.fillRect(x - r, y - r, r * 2, r * 2);
-
-    ctx.restore();
-  }
-
-  /* ── MAIN LOOP ───────────────────────────────────── */
-  function loop() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    /* Lerp cursor position */
-    cx = lerp(cx === -999 ? mx : cx, mx, CFG.speed);
-    cy = lerp(cy === -999 ? my : cy, my, CFG.speed);
-
-    /* Measure speed */
-    const dx = cx - px;
-    const dy = cy - py;
-    const speed = Math.sqrt(dx * dx + dy * dy);
+    /* Speed boost */
+    const dx = cx - px, dy = cy - py;
     px = cx; py = cy;
+    const speed = Math.sqrt(dx * dx + dy * dy);
+    boost = lerp(boost, Math.min(speed * 0.15, 1.0), CFG.boostDecay + 0.05);
 
-    /* Boost calculation */
-    const targetBoost = Math.min(speed * 0.18, 1);
-    boost = lerp(boost, targetBoost, CFG.boostDecay + 0.04);
+    const str = CFG.strength * (1 + boost * (CFG.boostMult - 1));
 
-    /* Draw chromatic effect */
-    const str = (1 + boost * (CFG.moveBoost - 1));
-    drawAberration(cx, cy, str);
+    /* Move dot */
+    dotEl.style.left = cx + 'px';
+    dotEl.style.top  = cy + 'px';
 
-    /* Move DOM cursor elements */
-    dot.style.left = cx + 'px';
-    dot.style.top  = cy + 'px';
-    ring.style.left = cx + 'px';
-    ring.style.top  = cy + 'px';
+    /* Trigger recapture */
+    if (visible) captureToTexture();
 
-    raf = requestAnimationFrame(loop);
+    /* Render */
+    if (!captureReady) { gl.clear(gl.COLOR_BUFFER_BIT); return; }
+
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.uniform2f(uRes,      W, H);
+    /* Flip Y — WebGL origin is bottom-left, DOM is top-left */
+    gl.uniform2f(uCursor,   cx, H - cy);
+    gl.uniform1f(uRadius,   CFG.radius);
+    gl.uniform1f(uStrength, str);
+    gl.uniform1f(uChrома,   CFG.chroma * (1 + boost));
+    gl.uniform1i(uTex,      0);
+    gl.drawArrays(gl.TRIANGLES, 0, 6);
   }
 
-  /* ── HIDE DEFAULT CURSOR ON DESKTOP ─────────────── */
-  const isTouchOnly = window.matchMedia('(hover: none)').matches;
-  if (!isTouchOnly) {
+  /* ── HIDE DEFAULT CURSOR ─────────────────────────── */
+  document.documentElement.style.cursor = 'none';
+
+  /* Load html2canvas from CDN then start */
+  const s = document.createElement('script');
+  s.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+  s.onload = () => {
+    /* Initial capture once page is fully painted */
+    setTimeout(() => {
+      captureToTexture();
+      requestAnimationFrame(frame);
+    }, 400);
+  };
+  s.onerror = () => {
+    /* Fallback — no distortion, just show the dot cursor */
+    canvas.remove();
     document.documentElement.style.cursor = 'none';
+    requestAnimationFrame(function dotOnly() {
+      dotEl.style.left = cx + 'px';
+      dotEl.style.top  = cy + 'px';
+      cx = lerp(cx === -9999 ? mx : cx, mx, CFG.lerpSpeed);
+      cy = lerp(cy === -9999 ? my : cy, my, CFG.lerpSpeed);
+      requestAnimationFrame(dotOnly);
+    });
+  };
+  document.head.appendChild(s);
 
-    /* Restore on inputs so you can still see the text cursor */
-    document.addEventListener('mouseover', e => {
-      const tag = e.target.tagName;
-      if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') {
-        document.documentElement.style.cursor = 'text';
-        dot.style.opacity = '0.3';
-      } else {
-        document.documentElement.style.cursor = 'none';
-        dot.style.opacity = '1';
-      }
-    }, { passive: true });
-  } else {
-    /* Touch device — hide all the cursor chrome */
-    canvas.style.display = 'none';
-    dot.style.display    = 'none';
-    ring.style.display   = 'none';
-    return;
-  }
-
-  loop();
 })();
