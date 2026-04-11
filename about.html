@@ -3,15 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Lost Objects — Social Strategy for the Film Industry</title>
-  <meta name="description" content="Kyra and Brendan Sweeney. Social media strategy and full management for filmmakers, creative brands, and film tech companies." />
+  <title>About — Lost Objects</title>
+  <meta name="description" content="Kyra and Brendan Sweeney. We met when we felt lost. Together, we found something worth building." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
     html { scroll-behavior: smooth; }
-    img { display: block; max-width: 100%; }
     a { text-decoration: none; color: inherit; }
 
     :root {
@@ -19,6 +18,7 @@
       --cream: #F0E8DC;
       --bg:    #0f0e0d;
       --bg2:   #161514;
+      --bg3:   #1c1a19;
       --fg:    #e8e2d9;
       --fg2:   rgba(232,226,217,0.52);
       --fg3:   rgba(232,226,217,0.22);
@@ -41,373 +41,366 @@
 
     /* GRAIN */
     .grain {
-      position: fixed;
-      inset: -100px;
-      width: calc(100% + 200px);
-      height: calc(100% + 200px);
+      position: fixed; inset: -100px;
+      width: calc(100% + 200px); height: calc(100% + 200px);
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.78' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)'/%3E%3C/svg%3E");
-      opacity: 0.048;
-      pointer-events: none;
-      z-index: 9999;
+      opacity: 0.048; pointer-events: none; z-index: 9999;
       animation: grain 0.6s steps(1) infinite;
     }
     @keyframes grain {
-      0%   { transform: translate(0,0); }
-      10%  { transform: translate(-3%,-4%); }
-      20%  { transform: translate(4%,2%); }
-      30%  { transform: translate(-1%,5%); }
-      40%  { transform: translate(3%,-3%); }
-      50%  { transform: translate(-4%,1%); }
-      60%  { transform: translate(2%,4%); }
-      70%  { transform: translate(-3%,-1%); }
-      80%  { transform: translate(1%,3%); }
-      90%  { transform: translate(-2%,-4%); }
-      100% { transform: translate(3%,0); }
-    }
-
-    .vignette {
-      position: fixed;
-      inset: 0;
-      background: radial-gradient(ellipse at 50% 0%, transparent 45%, rgba(10,9,8,0.6) 100%);
-      pointer-events: none;
-      z-index: 9998;
+      0%{transform:translate(0,0)}10%{transform:translate(-3%,-4%)}20%{transform:translate(4%,2%)}
+      30%{transform:translate(-1%,5%)}40%{transform:translate(3%,-3%)}50%{transform:translate(-4%,1%)}
+      60%{transform:translate(2%,4%)}70%{transform:translate(-3%,-1%)}80%{transform:translate(1%,3%)}
+      90%{transform:translate(-2%,-4%)}100%{transform:translate(3%,0)}
     }
 
     /* NAV */
     nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 200;
-      height: var(--nav-h);
-      background: transparent;
-      border-bottom: 1px solid transparent;
-      transition: background 0.4s, border-color 0.4s, backdrop-filter 0.4s;
-    }
-    nav.scrolled {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 200; height: var(--nav-h);
       background: rgba(15,14,13,0.9);
-      border-bottom-color: var(--fg4);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-    }
-    .nav-inner {
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 0 var(--pad);
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .nav-logo {
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.28em;
-      text-transform: uppercase;
-      color: var(--pink);
-    }
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: clamp(20px, 3vw, 40px);
-    }
-    .nav-links a {
-      font-size: 10px;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: rgba(232,226,217,0.55);
-      transition: color 0.2s;
-    }
-    .nav-links a:hover { color: var(--fg); }
-    .lo-icon {
-      cursor: pointer;
-      opacity: 0.45;
-      transition: opacity 0.2s, transform 0.3s;
-      display: flex;
-      align-items: center;
-      margin-left: 2px;
-    }
-    .lo-icon:hover { opacity: 1; transform: rotate(15deg) scale(1.1); }
-    .nav-cta {
-      font-size: 10px;
-      font-weight: 500;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--pink);
-      border: 1px solid rgba(255,102,102,0.35);
-      padding: 8px 20px;
-      transition: background 0.2s, color 0.2s;
-    }
-    .nav-cta:hover { background: var(--pink); color: var(--bg); }
-    .hamburger {
-      display: none;
-      flex-direction: column;
-      gap: 5px;
-      cursor: pointer;
-    }
-    .hamburger span { display: block; width: 22px; height: 1px; background: rgba(232,226,217,0.6); }
-    .mobile-menu {
-      display: none;
-      position: fixed;
-      top: var(--nav-h);
-      left: 0; right: 0;
-      background: rgba(15,14,13,0.97);
-      z-index: 199;
-      padding: 28px var(--pad) 36px;
+      backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
       border-bottom: 1px solid var(--fg4);
-      flex-direction: column;
-      gap: 24px;
     }
+    .nav-inner { max-width: var(--max); margin: 0 auto; padding: 0 var(--pad); height: 100%; display: flex; align-items: center; justify-content: space-between; }
+    .nav-logo { font-size: 11px; font-weight: 600; letter-spacing: 0.28em; text-transform: uppercase; color: var(--pink); }
+    .nav-links { display: flex; align-items: center; gap: clamp(20px,3vw,40px); }
+    .nav-links a { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--fg3); transition: color 0.2s; }
+    .nav-links a:hover { color: var(--fg); }
+    .nav-links a.active { color: var(--fg2); }
+    .nav-cta { font-size: 10px; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--pink); border: 1px solid rgba(255,102,102,0.35); padding: 8px 20px; transition: background 0.2s, color 0.2s; }
+    .nav-cta:hover { background: var(--pink); color: var(--bg); }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+    .hamburger span { display: block; width: 22px; height: 1px; background: rgba(232,226,217,0.6); }
+    .mobile-menu { display: none; position: fixed; top: var(--nav-h); left: 0; right: 0; background: rgba(15,14,13,0.97); z-index: 199; padding: 28px var(--pad) 36px; border-bottom: 1px solid var(--fg4); flex-direction: column; gap: 24px; }
     .mobile-menu.open { display: flex; }
     .mobile-menu a { font-size: 13px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--fg2); }
 
-    /* HERO */
-    .hero {
-      position: relative;
-      width: 100%;
-      height: 100svh;
-      min-height: 600px;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    /* ── SCENE MARKER ──────────────────────────────── */
+    .scene-marker {
+      max-width: var(--max); margin: 0 auto;
+      padding: 0 var(--pad);
+      display: flex; align-items: center; gap: 20px;
+      margin-bottom: clamp(40px,6vh,64px);
     }
-    .hero-video-wrap {
-      position: absolute;
-      inset: 0;
-      z-index: 1;
-      background: var(--bg);
+    .scene-num {
+      font-size: 8px; letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--pink); opacity: 0.5; white-space: nowrap;
     }
-    .hero-video-wrap iframe {
-      position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      width: 177.78vh;
-      height: 133.33vw;
-      min-width: 100vw;
-      min-height: 100vh;
-      border: none;
-      pointer-events: none;
+    .scene-rule { flex: 1; height: 1px; background: var(--fg4); }
+    .scene-title {
+      font-size: 8px; letter-spacing: 0.26em; text-transform: uppercase;
+      color: var(--fg3); white-space: nowrap;
     }
-    .hero-overlay-base     { position: absolute; inset: 0; background: rgba(10,9,8,0.52); z-index: 2; }
-    .hero-overlay-gradient {
-      position: absolute; inset: 0; z-index: 3;
-      background: linear-gradient(to bottom, rgba(15,14,13,0.45) 0%, transparent 35%, transparent 65%, rgba(15,14,13,0.72) 100%);
-    }
-    .hero-overlay-vignette {
-      position: absolute; inset: 0; z-index: 4;
-      background: radial-gradient(ellipse at center, transparent 40%, rgba(10,9,8,0.55) 100%);
-    }
-    .hero-content {
-      position: relative;
-      z-index: 10;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+
+    /* ── OPENING TITLE CARD ───────────────────────── */
+    .title-card {
+      min-height: 100svh;
+      padding-top: var(--nav-h);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
       text-align: center;
-      padding: var(--nav-h) var(--pad) 0;
-      max-width: min(860px, 90vw);
-    }
-    .hero-eyebrow {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      margin-bottom: clamp(20px, 3.5vh, 36px);
-      opacity: 0;
-      animation: fadeUp 0.7s ease 0.15s forwards;
-    }
-    .eyebrow-line { width: 28px; height: 1px; background: var(--pink); opacity: 0.5; flex-shrink: 0; }
-    .eyebrow-text { font-size: 9px; letter-spacing: 0.28em; text-transform: uppercase; color: var(--pink); opacity: 0.7; }
-    .hero-hl {
-      font-family: var(--serif);
-      font-size: clamp(52px, 7.5vw, 108px);
-      font-weight: 400;
-      line-height: 0.95;
-      letter-spacing: -0.025em;
-      color: var(--fg);
-      margin-bottom: clamp(20px, 3.5vh, 36px);
-      opacity: 0;
-      animation: fadeUp 0.8s ease 0.3s forwards;
-      text-shadow: 0 2px 40px rgba(10,9,8,0.6);
-    }
-    .hero-hl em { font-style: italic; color: var(--pink); }
-    .hero-desc {
-      font-size: clamp(12px, 1.1vw, 15px);
-      font-weight: 300;
-      color: rgba(232,226,217,0.72);
-      line-height: 1.8;
-      max-width: 480px;
-      margin-bottom: clamp(28px, 4.5vh, 48px);
-      opacity: 0;
-      animation: fadeUp 0.7s ease 0.5s forwards;
-      text-shadow: 0 1px 12px rgba(10,9,8,0.8);
-    }
-    .hero-desc strong { color: var(--fg); font-weight: 400; }
-    .hero-actions {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-      flex-wrap: wrap;
-      justify-content: center;
-      opacity: 0;
-      animation: fadeUp 0.7s ease 0.65s forwards;
-    }
-    .hero-scroll {
-      position: absolute;
-      bottom: 28px; left: 50%;
-      transform: translateX(-50%);
-      z-index: 10;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
-      opacity: 0;
-      animation: fadeIn 1s ease 1.2s forwards;
-    }
-    .hero-scroll span { font-size: 8px; letter-spacing: 0.28em; text-transform: uppercase; color: rgba(232,226,217,0.3); }
-    .scroll-line {
-      width: 1px; height: 32px;
-      background: linear-gradient(to bottom, rgba(232,226,217,0.3), transparent);
-      animation: scrollPulse 2s ease-in-out infinite;
-    }
-    @keyframes scrollPulse {
-      0%,100% { opacity: 0.3; }
-      50%      { opacity: 0.8; }
-    }
-    .hero-meta-strip {
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      z-index: 10;
-      display: flex;
-      justify-content: space-between;
-      padding: 0 var(--pad) 28px;
-      pointer-events: none;
-    }
-    .hero-meta-lbl { font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(232,226,217,0.25); }
-    .hero-meta-right { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--cream); opacity: 0.45; }
-
-    /* BUTTONS */
-    .btn-p {
-      display: inline-block;
-      background: var(--pink);
-      color: var(--bg);
-      font-size: 10px; font-weight: 600;
-      letter-spacing: 0.2em; text-transform: uppercase;
-      padding: 13px 28px;
-      transition: opacity 0.2s;
-      white-space: nowrap;
-    }
-    .btn-p:hover { opacity: 0.82; }
-    .btn-g {
-      font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
-      color: rgba(232,226,217,0.6);
-      border-bottom: 1px solid rgba(232,226,217,0.22);
-      padding-bottom: 2px;
-      transition: color 0.2s, border-color 0.2s;
-      white-space: nowrap;
-    }
-    .btn-g:hover { color: var(--fg); border-color: rgba(232,226,217,0.5); }
-
-    /* SECTION SHELL */
-    .sec { border-top: 1px solid var(--fg4); }
-    .sec-head {
-      display: grid;
-      grid-template-columns: 66px 1fr;
+      padding-left: var(--pad); padding-right: var(--pad);
+      position: relative;
       border-bottom: 1px solid var(--fg4);
-      max-width: var(--max);
-      margin: 0 auto;
     }
-    .sec-gut {
-      border-right: 1px solid var(--fg4);
-      display: flex; align-items: center; justify-content: center;
-      padding: 16px;
-    }
-    .sec-gut span {
-      font-size: 8px; letter-spacing: 0.24em; text-transform: uppercase;
-      color: var(--fg3); writing-mode: vertical-rl; transform: rotate(180deg);
-    }
-    .sec-hc {
-      padding: 16px var(--pad);
-      display: flex; justify-content: space-between; align-items: center;
-    }
-    .sec-lbl { font-size: 9px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--fg3); }
 
-    /* TAGLINE */
-    .tagline { border-top: 1px solid var(--fg4); }
-    .tagline-inner {
-      max-width: var(--max); margin: 0 auto;
-      padding: clamp(40px, 7vh, 80px) var(--pad);
-      display: flex; gap: clamp(32px, 6vw, 100px); align-items: flex-start;
+    .tc-location {
+      font-size: 9px; letter-spacing: 0.28em; text-transform: uppercase;
+      color: var(--fg3); margin-bottom: 32px;
+      opacity: 0; animation: fadeUp 0.7s ease 0.2s forwards;
+      display: flex; align-items: center; gap: 10px;
     }
-    .tagline-idx { font-size: 9px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--fg3); padding-top: 5px; flex-shrink: 0; }
-    .tagline-txt { font-family: var(--serif); font-size: clamp(17px, 1.9vw, 28px); font-style: italic; color: var(--fg2); line-height: 1.45; letter-spacing: -0.01em; }
-    .tagline-txt em { font-style: normal; color: var(--fg); }
-
-    /* SERVICES */
-    .svc-grid { max-width: var(--max); margin: 0 auto; display: grid; grid-template-columns: 66px repeat(3,1fr); }
-    .svc-gut { border-right: 1px solid var(--fg4); }
-    .svc {
-      padding: clamp(28px, 4vw, 48px) clamp(20px, 2.5vw, 36px);
-      border-right: 1px solid var(--fg4);
-      position: relative; transition: background 0.3s;
+    .tc-location::before, .tc-location::after {
+      content: ''; display: block; width: 20px; height: 1px;
+      background: var(--fg3);
     }
-    .svc:last-child { border-right: none; }
-    .svc::before { content: ''; position: absolute; top: 0; left: 0; width: 2px; height: 0; background: var(--pink); transition: height 0.4s ease; }
-    .svc:hover { background: rgba(255,102,102,0.022); }
-    .svc:hover::before { height: 100%; }
-    .svc-num { font-size: 9px; letter-spacing: 0.22em; color: var(--pink); opacity: 0.36; margin-bottom: clamp(18px, 2.5vw, 28px); }
-    .svc-name { font-family: var(--serif); font-size: clamp(19px, 1.7vw, 26px); color: var(--fg); line-height: 1.15; margin-bottom: 16px; letter-spacing: -0.01em; }
-    .svc-rule { width: 22px; height: 1px; background: var(--pink); opacity: 0.28; margin-bottom: 16px; }
-    .svc-desc { font-size: clamp(11px, 0.85vw, 13px); font-weight: 300; color: var(--fg2); line-height: 1.85; }
-    .svc-lnk { display: inline-block; margin-top: 20px; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--pink); opacity: 0.4; border-bottom: 1px solid rgba(255,102,102,0.15); padding-bottom: 2px; transition: opacity 0.2s; }
-    .svc:hover .svc-lnk { opacity: 1; }
 
-    /* WORK */
-    .work-grid { max-width: var(--max); margin: 0 auto; display: grid; grid-template-columns: repeat(2,1fr); gap: 1px; background: var(--fg4); }
-    .wcard { background: var(--bg); padding: clamp(22px, 3vw, 44px); display: block; transition: background 0.3s; }
-    .wcard:hover { background: var(--bg2); }
-    .wimg { aspect-ratio: 16/9; background: var(--bg2); margin-bottom: clamp(18px, 2.5vw, 28px); overflow: hidden; }
-    .wimg img { width: 100%; height: 100%; object-fit: cover; opacity: 0.7; filter: grayscale(18%); transition: transform 0.6s, opacity 0.3s; }
-    .wcard:hover .wimg img { transform: scale(1.03); opacity: 0.86; }
-    .wimg-ph { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
-    .pp-lbl { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(232,226,217,0.14); }
-    .wtag { font-size: 8px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--pink); opacity: 0.48; margin-bottom: 9px; }
-    .wtitle { font-family: var(--serif); font-size: clamp(17px, 1.5vw, 22px); color: var(--fg); line-height: 1.2; margin-bottom: 11px; letter-spacing: -0.01em; }
-    .wdesc { font-size: clamp(11px, 0.82vw, 13px); font-weight: 300; color: var(--fg2); line-height: 1.8; }
-    .wresult { display: inline-block; margin-top: 16px; font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--cream); opacity: 0.55; }
+    .tc-hl {
+      font-family: var(--serif);
+      font-size: clamp(56px,8.5vw,128px);
+      font-weight: 400; line-height: 0.92; letter-spacing: -0.03em;
+      color: var(--fg);
+      opacity: 0; animation: fadeUp 0.8s ease 0.35s forwards;
+    }
+    .tc-hl em { font-style: italic; color: var(--pink); }
 
-    /* TESTIMONIAL */
-    .testi { border-top: 1px solid var(--fg4); }
-    .testi-inner {
-      max-width: var(--max); margin: 0 auto;
-      padding: clamp(52px, 9vh, 100px) var(--pad) clamp(52px, 9vh, 100px) clamp(60px, 11vw, 160px);
+    .tc-sub {
+      font-size: clamp(13px,1.1vw,16px); font-weight: 300;
+      color: var(--fg2); line-height: 1.85; max-width: 500px;
+      margin-top: clamp(24px,4vh,40px);
+      opacity: 0; animation: fadeUp 0.7s ease 0.55s forwards;
+    }
+
+    /* Film frame illustration — opening */
+    .tc-illustration {
+      margin-top: clamp(32px,5vh,56px);
+      opacity: 0; animation: fadeIn 1.2s ease 0.8s forwards;
+    }
+
+    .tc-scroll {
+      position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      opacity: 0; animation: fadeIn 1s ease 1.4s forwards;
+    }
+    .tc-scroll span { font-size: 8px; letter-spacing: 0.26em; text-transform: uppercase; color: var(--fg3); }
+    .scroll-line { width: 1px; height: 28px; background: linear-gradient(to bottom, rgba(232,226,217,0.25), transparent); animation: pulse 2s ease-in-out infinite; }
+    @keyframes pulse { 0%,100%{opacity:.3} 50%{opacity:.8} }
+
+    /* ── SCENE SECTIONS ────────────────────────────── */
+    .scene {
+      border-top: 1px solid var(--fg4);
+      padding: clamp(60px,10vh,100px) 0;
+    }
+
+    /* Scene 1: Two Strangers */
+    .scene-split {
+      max-width: var(--max); margin: 0 auto; padding: 0 var(--pad);
+      display: grid; grid-template-columns: 1fr 1fr; gap: clamp(40px,6vw,100px);
+      align-items: center;
+    }
+
+    .scene-text-block {}
+
+    .scene-hl {
+      font-family: var(--serif);
+      font-size: clamp(32px,4vw,58px);
+      font-weight: 400; line-height: 1.0; letter-spacing: -0.025em;
+      color: var(--fg); margin-bottom: clamp(20px,3vh,32px);
+    }
+    .scene-hl em { font-style: italic; color: var(--pink); }
+
+    .scene-body {
+      font-size: clamp(13px,1vw,15px); font-weight: 300;
+      color: var(--fg2); line-height: 1.9;
+    }
+    .scene-body p { margin-bottom: 18px; }
+    .scene-body p:last-child { margin-bottom: 0; }
+    .scene-body strong { color: var(--fg); font-weight: 400; }
+
+    /* Pull quote within scene */
+    .scene-pull {
+      margin: clamp(28px,4vh,44px) 0;
+      padding-left: 24px;
+      border-left: 2px solid rgba(255,102,102,0.35);
+    }
+    .scene-pull p {
+      font-family: var(--serif);
+      font-size: clamp(18px,1.8vw,24px);
+      font-style: italic; color: var(--fg2);
+      line-height: 1.45; letter-spacing: -0.01em;
+    }
+    .scene-pull p em { font-style: normal; color: var(--fg); }
+
+    /* Full-width prose scenes */
+    .scene-full {
+      max-width: var(--max); margin: 0 auto; padding: 0 var(--pad);
+    }
+
+    .scene-full-grid {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: clamp(40px,6vw,100px);
+      align-items: start;
+    }
+
+    .scene-full-label {
+      font-size: 9px; letter-spacing: 0.26em; text-transform: uppercase;
+      color: var(--pink); opacity: 0.55; padding-top: 6px;
+      position: sticky; top: calc(var(--nav-h) + 24px);
+    }
+
+    /* ── INDIVIDUAL PROFILES ───────────────────────── */
+    .profiles-section {
+      border-top: 1px solid var(--fg4);
+      padding: clamp(60px,10vh,100px) 0;
+    }
+
+    .profiles-grid {
+      max-width: var(--max); margin: 0 auto; padding: 0 var(--pad);
+      display: grid; grid-template-columns: 1fr 1fr; gap: 2px;
+      background: var(--fg4);
+    }
+
+    .profile-card {
+      background: var(--bg2);
+      padding: clamp(36px,5vw,64px) clamp(28px,3.5vw,52px);
       position: relative;
     }
-    .tq-mark { position: absolute; left: var(--pad); top: clamp(44px, 7vh, 80px); font-family: var(--serif); font-size: clamp(60px, 7.5vw, 108px); font-style: italic; color: var(--pink); opacity: 0.12; line-height: 1; user-select: none; }
-    .tq-txt { font-family: var(--serif); font-size: clamp(17px, 1.7vw, 25px); font-style: italic; color: var(--fg2); line-height: 1.5; max-width: 680px; }
-    .tq-txt em { font-style: normal; color: var(--fg); }
-    .tq-attr { margin-top: 22px; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--fg3); }
-    .tq-attr span { color: var(--cream); opacity: 0.6; }
-    .tq-dots { display: flex; gap: 10px; margin-top: 26px; }
-    .tdot { height: 1px; width: 18px; background: var(--fg3); cursor: pointer; transition: background 0.2s, width 0.2s; }
-    .tdot.active { background: var(--pink); width: 30px; }
 
-    /* CLIENTS */
-    .clients { border-top: 1px solid var(--fg4); border-bottom: 1px solid var(--fg4); display: flex; overflow: hidden; }
-    .clients-lbl-block { padding: 17px 22px; border-right: 1px solid var(--fg4); flex-shrink: 0; display: flex; align-items: center; }
-    .clients-lbl { font-size: 8px; letter-spacing: 0.26em; text-transform: uppercase; color: var(--fg3); white-space: nowrap; }
-    .clients-scroll { overflow: hidden; flex: 1; }
-    .clients-track { display: flex; animation: ticker 24s linear infinite; }
-    @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-    .chip { padding: 17px 30px; border-right: 1px solid var(--fg4); font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(232,226,217,0.19); font-weight: 500; white-space: nowrap; transition: color 0.2s; }
-    .chip:hover { color: var(--fg2); }
+    .profile-photo-frame {
+      width: 100%;
+      aspect-ratio: 3/4;
+      background: var(--bg3);
+      margin-bottom: clamp(28px,4vh,44px);
+      position: relative;
+      overflow: hidden;
+    }
 
-    /* CTA */
+    .profile-photo-frame img {
+      width: 100%; height: 100%; object-fit: cover;
+      opacity: 0.8; filter: grayscale(15%) contrast(1.05);
+    }
+
+    /* Corner brackets on photos */
+    .frame-corner {
+      position: absolute; width: 16px; height: 16px; z-index: 2;
+    }
+    .frame-corner.tl { top: 0; left: 0; border-top: 1px solid var(--pink); border-left: 1px solid var(--pink); }
+    .frame-corner.tr { top: 0; right: 0; border-top: 1px solid var(--pink); border-right: 1px solid var(--pink); }
+    .frame-corner.bl { bottom: 0; left: 0; border-bottom: 1px solid var(--pink); border-left: 1px solid var(--pink); }
+    .frame-corner.br { bottom: 0; right: 0; border-bottom: 1px solid var(--pink); border-right: 1px solid var(--pink); }
+
+    .profile-role {
+      font-size: 8px; letter-spacing: 0.26em; text-transform: uppercase;
+      color: var(--pink); opacity: 0.55; margin-bottom: 10px;
+    }
+    .profile-name {
+      font-family: var(--serif);
+      font-size: clamp(28px,3vw,44px);
+      font-weight: 400; letter-spacing: -0.02em; color: var(--fg);
+      margin-bottom: 8px; line-height: 1.05;
+    }
+    .profile-title {
+      font-size: 11px; font-weight: 300; color: var(--fg3);
+      letter-spacing: 0.08em; margin-bottom: clamp(22px,3vh,36px);
+    }
+    .profile-bio {
+      font-size: clamp(12px,0.9vw,14px); font-weight: 300;
+      color: var(--fg2); line-height: 1.9;
+    }
+    .profile-bio p { margin-bottom: 14px; }
+    .profile-bio p:last-child { margin-bottom: 0; }
+    .profile-bio strong { color: var(--fg); font-weight: 400; }
+
+    .profile-facts {
+      margin-top: clamp(24px,3.5vh,36px);
+      padding-top: clamp(20px,3vh,28px);
+      border-top: 1px solid var(--fg4);
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .profile-fact {
+      display: flex; gap: 12px; align-items: flex-start;
+      font-size: 11px; font-weight: 300; color: var(--fg2); line-height: 1.5;
+    }
+    .fact-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--pink); opacity: 0.5; flex-shrink: 0; margin-top: 5px; }
+
+    /* ── PHILOSOPHY SCENE ──────────────────────────── */
+    .philosophy-scene {
+      border-top: 1px solid var(--fg4);
+      background: var(--bg2);
+      padding: clamp(72px,12vh,120px) 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .philosophy-scene::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(to right, transparent, rgba(255,102,102,0.25), transparent);
+    }
+
+    .philosophy-inner {
+      max-width: var(--max); margin: 0 auto; padding: 0 var(--pad);
+      display: grid; grid-template-columns: 1fr 1fr; gap: clamp(60px,8vw,120px);
+      align-items: center;
+    }
+
+    .philosophy-hl {
+      font-family: var(--serif);
+      font-size: clamp(36px,4.5vw,66px);
+      font-weight: 400; line-height: 1.0; letter-spacing: -0.025em;
+      color: var(--fg); margin-bottom: clamp(24px,3.5vh,40px);
+    }
+    .philosophy-hl em { font-style: italic; color: var(--pink); }
+
+    .philosophy-body {
+      font-size: clamp(13px,1vw,15px); font-weight: 300;
+      color: var(--fg2); line-height: 1.9;
+    }
+    .philosophy-body p { margin-bottom: 18px; }
+    .philosophy-body p:last-child { margin-bottom: 0; }
+    .philosophy-body strong { color: var(--fg); font-weight: 400; }
+
+    /* ── CITY STAT BAR ─────────────────────────────── */
+    .city-bar {
+      border-top: 1px solid var(--fg4);
+      border-bottom: 1px solid var(--fg4);
+    }
+    .city-bar-inner {
+      max-width: var(--max); margin: 0 auto;
+      display: grid; grid-template-columns: repeat(4,1fr);
+      background: var(--fg4); gap: 1px;
+    }
+    .city-stat {
+      background: var(--bg);
+      padding: clamp(24px,3.5vw,44px) clamp(20px,2.5vw,36px);
+      position: relative;
+    }
+    .city-stat::before {
+      content: ''; position: absolute; top: 0; left: 0;
+      width: 2px; height: 0; background: var(--pink);
+      transition: height 0.4s ease;
+    }
+    .city-stat:hover::before { height: 100%; }
+    .cs-num {
+      font-family: var(--serif); font-size: clamp(28px,3.5vw,52px);
+      font-style: italic; color: var(--fg); line-height: 1; margin-bottom: 8px;
+    }
+    .cs-num em { color: var(--pink); font-style: normal; }
+    .cs-label { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--fg3); line-height: 1.5; }
+
+    /* ── FOUNDING MOMENT ────────────────────────────── */
+    .founding-scene {
+      border-top: 1px solid var(--fg4);
+      padding: clamp(72px,12vh,120px) 0;
+    }
+    .founding-inner {
+      max-width: var(--max); margin: 0 auto; padding: 0 var(--pad);
+    }
+
+    .founding-grid {
+      display: grid;
+      grid-template-columns: 1fr clamp(280px,35vw,480px);
+      gap: clamp(60px,8vw,120px);
+      align-items: start;
+    }
+
+    /* ── CLOSING STATEMENT ──────────────────────────── */
+    .closing-scene {
+      border-top: 1px solid var(--fg4);
+      min-height: 80svh;
+      display: flex; align-items: center; justify-content: center;
+      text-align: center;
+      padding: clamp(60px,10vh,100px) var(--pad);
+    }
+    .closing-inner { max-width: 800px; }
+    .closing-hl {
+      font-family: var(--serif);
+      font-size: clamp(40px,5.5vw,82px);
+      font-weight: 400; line-height: 1.0; letter-spacing: -0.025em;
+      color: var(--fg); margin-bottom: clamp(24px,4vh,44px);
+    }
+    .closing-hl em { font-style: italic; color: var(--pink); }
+    .closing-body {
+      font-size: clamp(14px,1.1vw,17px); font-weight: 300;
+      color: var(--fg2); line-height: 1.85; margin-bottom: clamp(36px,5vh,56px);
+    }
+    .closing-sig {
+      font-family: var(--serif); font-size: clamp(14px,1.2vw,18px);
+      font-style: italic; color: var(--fg3);
+    }
+
+    /* ── CTA ────────────────────────────────────────── */
     .cta-band { border-top: 1px solid var(--fg4); }
-    .cta-inner { max-width: var(--max); margin: 0 auto; padding: clamp(64px, 11vh, 120px) var(--pad); text-align: center; }
+    .cta-inner { max-width: var(--max); margin: 0 auto; padding: clamp(64px,10vh,100px) var(--pad); text-align: center; }
     .cta-eye { font-size: 9px; letter-spacing: 0.26em; text-transform: uppercase; color: var(--pink); opacity: 0.55; margin-bottom: 22px; }
-    .cta-hl { font-family: var(--serif); font-size: clamp(32px, 4.2vw, 64px); font-style: italic; color: var(--fg); line-height: 1.08; letter-spacing: -0.02em; margin-bottom: 28px; }
+    .cta-hl { font-family: var(--serif); font-size: clamp(30px,3.8vw,58px); font-style: italic; color: var(--fg); line-height: 1.08; letter-spacing: -0.02em; margin-bottom: 28px; }
     .cta-hl em { font-style: normal; color: var(--pink); }
-    .cta-sub { font-size: clamp(12px, 0.95vw, 14px); font-weight: 300; color: var(--fg2); line-height: 1.75; max-width: 460px; margin: 0 auto 36px; }
+    .cta-sub { font-size: clamp(12px,0.9vw,14px); font-weight: 300; color: var(--fg2); line-height: 1.75; max-width: 440px; margin: 0 auto 36px; }
+    .btn-p { display: inline-block; background: var(--pink); color: var(--bg); font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; padding: 13px 28px; transition: opacity 0.2s; }
+    .btn-p:hover { opacity: 0.82; }
 
     /* FOOTER */
     footer { border-top: 1px solid var(--fg4); }
@@ -418,265 +411,664 @@
     .foot-lnk:hover { color: var(--fg2); }
     .foot-copy { font-size: 9px; letter-spacing: 0.1em; color: var(--fg3); }
 
-    /* GAME MODAL */
-    .game-overlay { display: none; position: fixed; inset: 0; background: rgba(10,9,8,0.92); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(8px); }
-    .game-overlay.open { display: flex; }
-    .game-modal { position: relative; background: #111010; border: 1px solid rgba(255,102,102,0.2); display: flex; flex-direction: column; align-items: center; max-width: 95vw; }
-    .game-header { width: 100%; padding: 16px 20px; border-bottom: 1px solid rgba(255,102,102,0.1); display: flex; justify-content: space-between; align-items: center; }
-    .game-title { font-size: 9px; letter-spacing: 0.26em; text-transform: uppercase; color: rgba(232,226,217,0.3); }
-    .game-title span { color: var(--pink); opacity: 0.7; }
-    .game-score-display { font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(232,226,217,0.3); }
-    .game-score-display span { color: var(--pink); font-family: var(--serif); font-size: 13px; }
-    .game-close { position: absolute; top: 14px; right: 16px; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(232,226,217,0.25); cursor: pointer; background: none; border: none; transition: color 0.2s; }
-    .game-close:hover { color: var(--pink); }
-    #gameCanvas { display: block; background: #0c0b0a; }
-    .game-footer { width: 100%; padding: 12px 20px; border-top: 1px solid rgba(255,102,102,0.08); display: flex; justify-content: space-between; align-items: center; }
-    .game-instructions { font-size: 8px; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(232,226,217,0.18); }
-    .game-start-btn { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--pink); opacity: 0.6; border: 1px solid rgba(255,102,102,0.25); padding: 7px 16px; cursor: pointer; background: none; transition: opacity 0.2s, background 0.2s; }
-    .game-start-btn:hover { opacity: 1; background: rgba(255,102,102,0.08); }
-
     /* REVEAL */
-    .reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
     .reveal.visible { opacity: 1; transform: translateY(0); }
 
-    @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
-    @keyframes fadeIn  { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes fadeIn { from{opacity:0} to{opacity:1} }
 
     /* RESPONSIVE */
+    @media (max-width: 900px) {
+      .scene-split { grid-template-columns: 1fr; }
+      .philosophy-inner { grid-template-columns: 1fr; }
+      .founding-grid { grid-template-columns: 1fr; }
+      .scene-full-grid { grid-template-columns: 1fr; }
+      .scene-full-label { position: static; margin-bottom: 20px; }
+      .city-bar-inner { grid-template-columns: repeat(2,1fr); }
+      .profiles-grid { grid-template-columns: 1fr; }
+    }
     @media (max-width: 768px) {
       :root { --nav-h: 56px; }
       .nav-links { display: none; }
       .hamburger { display: flex; }
-      .hero-hl { font-size: clamp(44px, 10vw, 72px); }
-      .tagline-inner { flex-direction: column; gap: 14px; }
-      .sec-head { grid-template-columns: 1fr; }
-      .sec-gut { display: none; }
-      .sec-hc { padding: 14px var(--pad); }
-      .svc-grid { grid-template-columns: 1fr; }
-      .svc-gut { display: none; }
-      .svc { border-right: none; border-bottom: 1px solid var(--fg4); }
-      .work-grid { grid-template-columns: 1fr; }
-      .testi-inner { padding-left: var(--pad); }
-      .tq-mark { display: none; }
       .foot-inner { flex-direction: column; align-items: flex-start; }
+      .city-bar-inner { grid-template-columns: repeat(2,1fr); }
     }
     @media (max-width: 480px) {
-      .hero-actions { flex-direction: column; gap: 14px; }
-      .wcard { padding: 18px; }
-      .hero-meta-strip { display: none; }
+      .city-bar-inner { grid-template-columns: 1fr 1fr; }
+    }
+    /* ── SCENE PROGRESS BAR ─────────────────────────── */
+    .scene-progress {
+      position: fixed;
+      left: clamp(14px, 2vw, 28px);
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 150;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0;
+      width: 140px;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      pointer-events: none;
+    }
+
+    .scene-progress.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* Vertical spine line */
+    .sp-spine {
+      position: absolute;
+      top: 0; bottom: 0;
+      left: 3px;
+      width: 1px;
+      background: rgba(232,226,217,0.08);
+      z-index: 0;
+    }
+
+    /* Fill line that grows as you scroll */
+    .sp-fill {
+      position: absolute;
+      top: 0;
+      left: 3px;
+      width: 1px;
+      height: 0%;
+      background: var(--pink);
+      opacity: 0.5;
+      z-index: 1;
+      transition: height 0.2s ease;
+    }
+
+    .sp-item {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      padding: 10px 0;
+    }
+
+    .sp-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      border: 1px solid rgba(232,226,217,0.2);
+      background: transparent;
+      flex-shrink: 0;
+      transition: background 0.3s, border-color 0.3s, transform 0.3s;
+    }
+
+    .sp-item.active .sp-dot {
+      background: var(--pink);
+      border-color: var(--pink);
+      transform: scale(1.4);
+    }
+
+    .sp-item.past .sp-dot {
+      background: rgba(255,102,102,0.35);
+      border-color: rgba(255,102,102,0.35);
+    }
+
+    .sp-label {
+      font-size: 8px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--fg3);
+      white-space: nowrap;
+      opacity: 0;
+      transform: translateX(-6px);
+      transition: opacity 0.25s, transform 0.25s, color 0.25s;
+    }
+
+    .sp-item:hover .sp-label,
+    .sp-item.active .sp-label {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .sp-item.active .sp-label { color: var(--pink); }
+
+    .sp-num {
+      font-size: 7px;
+      letter-spacing: 0.18em;
+      color: rgba(232,226,217,0.18);
+      display: block;
+      margin-bottom: 1px;
+    }
+
+    /* Hide on mobile — not enough space */
+    @media (max-width: 768px) {
+      .scene-progress { display: none; }
     }
   </style>
 </head>
 <body>
 
 <div class="grain"></div>
-<div class="vignette"></div>
+
+<!-- SCENE PROGRESS BAR -->
+<div class="scene-progress" id="sceneProgress" aria-label="Scene navigation">
+  <div class="sp-spine"></div>
+  <div class="sp-fill" id="spFill"></div>
+
+  <div class="sp-item" data-target="scene-01" onclick="scrollToScene('scene-01')">
+    <div class="sp-dot"></div>
+    <div class="sp-label"><span class="sp-num">01</span>The Feeling</div>
+  </div>
+
+  <div class="sp-item" data-target="scene-02" onclick="scrollToScene('scene-02')">
+    <div class="sp-dot"></div>
+    <div class="sp-label"><span class="sp-num">02</span>How We Met</div>
+  </div>
+
+  <div class="sp-item" data-target="scene-03" onclick="scrollToScene('scene-03')">
+    <div class="sp-dot"></div>
+    <div class="sp-label"><span class="sp-num">03</span>The Characters</div>
+  </div>
+
+  <div class="sp-item" data-target="scene-04" onclick="scrollToScene('scene-04')">
+    <div class="sp-dot"></div>
+    <div class="sp-label"><span class="sp-num">04</span>What We Believe</div>
+  </div>
+
+  <div class="sp-item" data-target="scene-05" onclick="scrollToScene('scene-05')">
+    <div class="sp-dot"></div>
+    <div class="sp-label"><span class="sp-num">05</span>Why It Exists</div>
+  </div>
+</div>
 
 <!-- NAV -->
-<nav id="mainNav">
+<nav>
   <div class="nav-inner">
     <a href="index.html" class="nav-logo">Lost Objects</a>
     <div class="nav-links">
       <a href="work.html">Work</a>
       <a href="services.html">Services</a>
-      <a href="about.html">About</a>
-      <div class="lo-icon" onclick="openGame()" title="You found something...">
-        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M11 2C7 2 3.5 5 3 8.5C2.5 12 4 13.5 3.5 16C3 18.5 5 20 8 19.5C9.5 19.2 10 18 11 18C12 18 12.5 19.2 14 19.5C17 20 19 18.5 18.5 16C18 13.5 19.5 12 19 8.5C18.5 5 15 2 11 2Z" stroke="#FF6666" stroke-width="1" fill="none" opacity="0.5"/>
-          <path d="M11 6C9 6 7.5 7.5 7.5 9C7.5 10.5 8.5 11.5 8.5 13C8.5 14 9.5 15 11 15C12.5 15 13.5 14 13.5 13C13.5 11.5 14.5 10.5 14.5 9C14.5 7.5 13 6 11 6Z" stroke="#FF6666" stroke-width="0.75" fill="none" opacity="0.35"/>
-          <circle cx="11" cy="10" r="1.2" fill="#FF6666" opacity="0.6"/>
-        </svg>
-      </div>
+      <a href="about.html" class="active">About</a>
     </div>
     <div style="display:flex;align-items:center;gap:14px;">
-      <a href="contact.html" class="nav-cta">Feeling Lost?</a><a href="https://www.instagram.com/wearelostobjects/" target="_blank" rel="noopener" aria-label="Lost Objects on Instagram" style="display:flex;align-items:center;opacity:0.5;transition:opacity 0.2s;margin-left:4px;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="2" width="20" height="20" rx="5" stroke="#FF6666" stroke-width="1.5"/><circle cx="12" cy="12" r="5" stroke="#FF6666" stroke-width="1.5"/><circle cx="17.5" cy="6.5" r="1.2" fill="#FF6666"/></svg></a>
-      <div class="hamburger" onclick="toggleMenu()">
-        <span></span><span></span>
-      </div>
+      <a href="contact.html" class="nav-cta">Feeling Lost?</a>
+      <a href="https://www.instagram.com/wearelostobjects/" target="_blank" rel="noopener" aria-label="Instagram" style="display:flex;align-items:center;opacity:0.5;transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="2" width="20" height="20" rx="5" stroke="#FF6666" stroke-width="1.5"/>
+          <circle cx="12" cy="12" r="5" stroke="#FF6666" stroke-width="1.5"/>
+          <circle cx="17.5" cy="6.5" r="1.2" fill="#FF6666"/>
+        </svg>
+      </a>
+      <div class="hamburger" onclick="toggleMenu()"><span></span><span></span></div>
     </div>
   </div>
 </nav>
 
 <div class="mobile-menu" id="mobileMenu">
-  <a href="work.html"     onclick="toggleMenu()">Work</a>
+  <a href="work.html" onclick="toggleMenu()">Work</a>
   <a href="services.html" onclick="toggleMenu()">Services</a>
-  <a href="about.html"        onclick="toggleMenu()">About</a>
-  <a href="contact.html"  onclick="toggleMenu()">Feeling Lost?</a>
-  <a href="https://www.instagram.com/wearelostobjects/" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:10px;font-size:13px;letter-spacing:0.16em;text-transform:uppercase;color:rgba(232,226,217,0.5);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="#FF6666" stroke-width="1.5"/><circle cx="12" cy="12" r="5" stroke="#FF6666" stroke-width="1.5"/><circle cx="17.5" cy="6.5" r="1.2" fill="#FF6666"/></svg>Instagram</a>
-  <button onclick="toggleMenu();openLead();" style="display:flex;align-items:center;gap:10px;background:none;border:none;cursor:pointer;font-size:13px;letter-spacing:0.16em;text-transform:uppercase;color:rgba(255,102,102,0.65);font-family:'Inter',sans-serif;padding:0;"><svg width="12" height="12" viewBox="0 0 10 10" fill="none"><polygon points="1,0.5 9.5,5 1,9.5" fill="#FF6666" opacity="0.8"/></svg>Free Seminar</button>
-
+  <a href="about.html" onclick="toggleMenu()">About</a>
+  <a href="contact.html" onclick="toggleMenu()">Feeling Lost?</a>
+  <a href="https://www.instagram.com/wearelostobjects/" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:10px;">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="2" y="2" width="20" height="20" rx="5" stroke="#FF6666" stroke-width="1.5"/>
+      <circle cx="12" cy="12" r="5" stroke="#FF6666" stroke-width="1.5"/>
+      <circle cx="17.5" cy="6.5" r="1.2" fill="#FF6666"/>
+    </svg>
+    Instagram
+  </a>
+</div>
 
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-video-wrap">
-    <iframe
-      src="https://player.vimeo.com/video/1182148229?h=acf06f1fbe&badge=0&autopause=0&autoplay=1&muted=1&loop=1&background=1&quality=auto"
-      frameborder="0"
-      allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
-      referrerpolicy="strict-origin-when-cross-origin"
-      title="Lost Objects reel"
-    ></iframe>
+
+<!-- ══════════════════════════════════════════════════ -->
+<!-- TITLE CARD                                        -->
+<!-- ══════════════════════════════════════════════════ -->
+<section class="title-card">
+
+  <div class="tc-location">West Hollywood, Los Angeles</div>
+
+  <h1 class="tc-hl">
+    We were<br>lost<br><em>too.</em>
+  </h1>
+
+  <p class="tc-sub">
+    This is the story of two people who found each other, found their purpose, and started building something for everyone who knows exactly how that feeling of being lost actually feels.
+  </p>
+
+  <!-- Opening film frame illustration -->
+  <div class="tc-illustration">
+    <svg width="280" height="180" viewBox="0 0 280 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Film strip frame -->
+      <rect x="1" y="1" width="278" height="178" rx="2" stroke="rgba(232,226,217,0.08)" stroke-width="1"/>
+      <!-- Film perforations left -->
+      <rect x="8" y="12" width="10" height="14" rx="1" fill="rgba(232,226,217,0.04)" stroke="rgba(232,226,217,0.12)" stroke-width="0.5"/>
+      <rect x="8" y="34" width="10" height="14" rx="1" fill="rgba(232,226,217,0.04)" stroke="rgba(232,226,217,0.12)" stroke-width="0.5"/>
+      <rect x="8" y="56" width="10" height="14" rx="1" fill="rgba(232,226,217,0.04)" stroke="rgba(232,226,217,0.12)" stroke-width="0.5"/>
+      <rect x="8" y="78" width="10" height="14" rx="1" fill="rgba(232,226,217,0.04)" stroke="rgba(232,226,217,0.12)" stroke-width="0.5"/>
+      <rect x="8" y="100" width="10" height="14" rx="1" fill="rgba(232,226,217,0.04)" stroke="rgba(232,226,217,0.12)" stroke-width="0.5"/>
+      <rect x="8" y="122" width="10" height="14" rx="1" fill="rgba(232,226,217,0.04)" stroke="rgba(232,226,217,0.12)" stroke-width="0.5"/>
+      <rect x="8" y="144" width="10" height="14" rx="1" fill="rgba(232,226,217,0.04)" stroke="rgba(232,226,217,0.12)" stroke-width="0.5"/>
+      <!-- Film perforations right -->
+      <rect x="262" y="12" width="10" height="14" rx="1" fill="rgba(232,226,217,0.04)" stroke="rgba(232,226,217,0.12)" stroke-width="0.5"/>
+      <rect x="262" y="34" width="10" height="14" rx="1" fill="rgba(232,226,217,0.04)" stroke="rgba(232,226,217,0.12)" stroke-width="0.5"/>
+      <rect x="262" y="56" width="10" height="14" rx="1" fill="rgba(232,226,217,0.04)" stroke="rgba(232,226,217,0.12)" stroke-width="0.5"/>
+      <rect x="262" y="78" width="10" height="14" rx="1" fill="rgba(232,226,217,0.04)" stroke="rgba(232,226,217,0.12)" stroke-width="0.5"/>
+      <rect x="262" y="100" width="10" height="14" rx="1" fill="rgba(232,226,217,0.04)" stroke="rgba(232,226,217,0.12)" stroke-width="0.5"/>
+      <rect x="262" y="122" width="10" height="14" rx="1" fill="rgba(232,226,217,0.04)" stroke="rgba(232,226,217,0.12)" stroke-width="0.5"/>
+      <rect x="262" y="144" width="10" height="14" rx="1" fill="rgba(232,226,217,0.04)" stroke="rgba(232,226,217,0.12)" stroke-width="0.5"/>
+      <!-- Main frame area -->
+      <rect x="26" y="10" width="228" height="160" fill="rgba(232,226,217,0.02)" stroke="rgba(232,226,217,0.06)" stroke-width="0.5"/>
+      <!-- Two figures — abstract geometric -->
+      <!-- Figure 1 (Brendan) — left, slightly apart -->
+      <circle cx="100" cy="72" r="10" fill="none" stroke="rgba(232,226,217,0.2)" stroke-width="1"/>
+      <line x1="100" y1="82" x2="100" y2="120" stroke="rgba(232,226,217,0.15)" stroke-width="1"/>
+      <line x1="100" y1="95" x2="84" y2="110" stroke="rgba(232,226,217,0.12)" stroke-width="1"/>
+      <line x1="100" y1="95" x2="112" y2="108" stroke="rgba(232,226,217,0.12)" stroke-width="1"/>
+      <line x1="100" y1="120" x2="88" y2="142" stroke="rgba(232,226,217,0.12)" stroke-width="1"/>
+      <line x1="100" y1="120" x2="110" y2="142" stroke="rgba(232,226,217,0.12)" stroke-width="1"/>
+      <!-- Figure 2 (Kyra) — right, slightly apart -->
+      <circle cx="180" cy="72" r="10" fill="none" stroke="rgba(255,102,102,0.35)" stroke-width="1"/>
+      <line x1="180" y1="82" x2="180" y2="120" stroke="rgba(255,102,102,0.25)" stroke-width="1"/>
+      <line x1="180" y1="95" x2="164" y2="108" stroke="rgba(255,102,102,0.2)" stroke-width="1"/>
+      <line x1="180" y1="95" x2="194" y2="110" stroke="rgba(255,102,102,0.2)" stroke-width="1"/>
+      <line x1="180" y1="120" x2="170" y2="142" stroke="rgba(255,102,102,0.2)" stroke-width="1"/>
+      <line x1="180" y1="120" x2="188" y2="142" stroke="rgba(255,102,102,0.2)" stroke-width="1"/>
+      <!-- Space between — question mark path -->
+      <text x="140" y="115" text-anchor="middle" font-family="DM Serif Display, serif" font-size="28" font-style="italic" fill="rgba(255,102,102,0.15)">?</text>
+      <!-- Frame number -->
+      <text x="32" y="158" font-family="Inter, sans-serif" font-size="7" letter-spacing="2" fill="rgba(232,226,217,0.18)">SCENE 001</text>
+      <text x="200" y="158" font-family="Inter, sans-serif" font-size="7" letter-spacing="2" fill="rgba(232,226,217,0.18)">LOST OBJECTS</text>
+    </svg>
   </div>
-  <div class="hero-overlay-base"></div>
-  <div class="hero-overlay-gradient"></div>
-  <div class="hero-overlay-vignette"></div>
 
-  <div class="hero-content">
-    <div class="hero-eyebrow">
-      <div class="eyebrow-line"></div>
-      <span class="eyebrow-text">Kyra &amp; Brendan Sweeney</span>
-      <div class="eyebrow-line"></div>
-    </div>
-    <h1 class="hero-hl">We speak the<br>language of <em>cinema.</em></h1>
-    <p class="hero-desc">
-      <strong>We're in the film industry.</strong> That's not a selling point — it's the whole thing. We built Lost Objects because filmmakers and creative brands deserve social media that actually speaks their language.
-    </p>
-    <div class="hero-actions">
-      <a href="services.html" class="btn-p">Work with us</a>
-      <a href="work.html"     class="btn-g">See our work ↗</a>
-    </div>
-  </div>
-
-  <div class="hero-scroll">
+  <div class="tc-scroll">
     <div class="scroll-line"></div>
-    <span>Scroll</span>
+    <span>The story begins</span>
   </div>
-  <div class="hero-meta-strip">
-    <span class="hero-meta-lbl">Social strategy — Film industry</span>
-    <span class="hero-meta-right">Los Angeles, CA</span>
-  </div>
+
 </section>
 
-<!-- TAGLINE -->
-<div class="tagline reveal">
-  <div class="tagline-inner">
-    <span class="tagline-idx">— About</span>
-    <p class="tagline-txt">We started Lost Objects because we kept seeing the same thing: <em>filmmakers and brands with real stories to tell, showing up online like everyone else.</em> We're here to fix that.</p>
+<!-- ══════════════════════════════════════════════════ -->
+<!-- SCENE 01: THE FEELING                             -->
+<!-- ══════════════════════════════════════════════════ -->
+<section class="scene" id="scene-01">
+    <div class="scene-rule"></div>
+    <span class="scene-title">The Feeling</span>
   </div>
-</div>
 
-<!-- SERVICES -->
-<section class="sec" id="services">
-  <div class="sec-head">
-    <div class="sec-gut"><span>Services</span></div>
-    <div class="sec-hc">
-      <span class="sec-lbl">What we do</span>
-      <span class="sec-lbl">Three offerings. One industry.</span>
-    </div>
-  </div>
-  <div class="svc-grid">
-    <div class="svc-gut"></div>
-    <div class="svc reveal">
-      <div class="svc-num">01</div>
-      <div class="svc-name">Social Media<br>Audit</div>
-      <div class="svc-rule"></div>
-      <p class="svc-desc">A deep look at where you are and a clear map to where you need to be. Real feedback, real strategy, no filler. You walk away knowing exactly what to fix and why.</p>
-      <a href="services.html" class="svc-lnk">Learn more ↗</a>
-    </div>
-    <div class="svc reveal" style="transition-delay:.1s">
-      <div class="svc-num">02</div>
-      <div class="svc-name">Strategy<br>Session</div>
-      <div class="svc-rule"></div>
-      <p class="svc-desc">The tools, direction, and confidence to build or revamp your online presence. Built for filmmakers serious about showing up with intention and a real point of view.</p>
-      <a href="services.html" class="svc-lnk">Learn more ↗</a>
-    </div>
-    <div class="svc reveal" style="transition-delay:.2s">
-      <div class="svc-num">03</div>
-      <div class="svc-name">Full<br>Management</div>
-      <div class="svc-rule"></div>
-      <p class="svc-desc">We run your social so you can stay on set, on brand, and ahead of the curve. Content, scheduling, analytics, trend integration — completely handled.</p>
-      <a href="services.html" class="svc-lnk">Learn more ↗</a>
-    </div>
-  </div>
-</section>
-
-<!-- WORK -->
-<section class="sec" id="work">
-  <div class="sec-head">
-    <div class="sec-gut"><span>Work</span></div>
-    <div class="sec-hc">
-      <span class="sec-lbl">Selected projects</span>
-      <a href="work.html" class="sec-lbl" style="color:var(--pink);opacity:.55;cursor:pointer;">View all ↗</a>
-    </div>
-  </div>
-  <div class="work-grid">
-    <a href="work.html" class="wcard reveal">
-      <div class="wimg"><div class="wimg-ph"><span class="pp-lbl">Case study image</span></div></div>
-      <div class="wtag">Full Management — Grip &amp; Lighting</div>
-      <div class="wtitle">Legacy Grip — From obscurity to 15,000 followers</div>
-      <p class="wdesc">A Local 80 Key Grip with a great reputation and zero social presence. We built the strategy, voice, and community from scratch.</p>
-      <span class="wresult">↑ 400 → 15,000 followers in under 12 months</span>
-    </a>
-    <a href="work.html" class="wcard reveal" style="transition-delay:.1s">
-      <div class="wimg"><div class="wimg-ph"><span class="pp-lbl">Case study image</span></div></div>
-      <div class="wtag">Full Management — Educational Platform</div>
-      <div class="wtitle">Filmmakers Academy — Content strategy at scale</div>
-      <p class="wdesc">Managing social across platforms for one of the most respected cinematography education platforms in the world, including live events and brand partnerships.</p>
-      <span class="wresult">Ongoing — Multi-platform strategy</span>
-    </a>
-    <a href="work.html" class="wcard reveal" style="transition-delay:.2s">
-      <div class="wimg"><div class="wimg-ph"><span class="pp-lbl">Case study image</span></div></div>
-      <div class="wtag">Strategy — Cinematographer</div>
-      <div class="wtitle">Building a cohesive brand for a working cinematographer</div>
-      <p class="wdesc">A clear roadmap, a cohesive visual identity, and a strategy tailored to how the film industry actually works and hires.</p>
-      <span class="wresult">↑ Immediate profile clarity and audience growth</span>
-    </a>
-    <a href="contact.html" class="wcard reveal" style="transition-delay:.3s;outline:1px dashed rgba(255,102,102,0.1)">
-      <div class="wimg" style="outline:1px dashed rgba(255,102,102,0.1)">
-        <div class="wimg-ph"><span class="pp-lbl" style="color:rgba(255,102,102,0.18)">Your project</span></div>
+  <div class="scene-split">
+    <div class="scene-text-block reveal">
+      <h2 class="scene-hl">Everyone knows<br>what it feels like<br>to be <em>lost.</em></h2>
+      <div class="scene-body">
+        <p>Lost in a career that doesn't quite fit. Lost in an industry that feels impossible to break into. Lost in the gap between where you are and where you know you could be. Lost on social media, posting into a void and wondering why nothing's moving.</p>
+        <p><strong>We know that feeling intimately.</strong> Not as an observation — as lived experience. Before Lost Objects existed, before we built anything, we were both navigating our own versions of that disorientation.</p>
+        <div class="scene-pull">
+          <p><em>The strange thing about feeling lost is that it can make you feel completely alone — even when everyone around you is feeling the same thing.</em></p>
+        </div>
+        <p>That's the feeling we started from. It's also the feeling we refuse to leave our clients in.</p>
       </div>
-      <div class="wtag" style="color:var(--fg3)">Your industry — Your format</div>
-      <div class="wtitle" style="color:var(--fg2)">This could be your story.</div>
-      <p class="wdesc">We work with grip companies, cinematographers, production houses, film tech startups, and creative entrepreneurs. If you're in the industry, we speak your language.</p>
-      <span class="wresult" style="color:var(--fg3)">→ Start the conversation</span>
-    </a>
-  </div>
-</section>
+    </div>
 
-<!-- TESTIMONIAL -->
-<section class="testi reveal" id="about">
-  <div class="testi-inner">
-    <div class="tq-mark">"</div>
-    <p class="tq-txt">Lost Objects grew my Instagram from <em>400 to over 15,000 followers</em> in less than a year — completely organically. Their personalized strategy and attention to detail have been the foundation for building my brand online.</p>
-    <div class="tq-attr">Brendan Riel — <span>Local 80 Key Grip &amp; Owner, Legacy Grip</span></div>
-    <div class="tq-dots">
-      <div class="tdot active"></div>
-      <div class="tdot"></div>
-      <div class="tdot"></div>
+    <!-- Viewfinder illustration -->
+    <div class="reveal" style="transition-delay:.15s; display:flex; justify-content:center; align-items:center;">
+      <svg width="320" height="320" viewBox="0 0 320 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Outer ring -->
+        <circle cx="160" cy="160" r="148" stroke="rgba(232,226,217,0.07)" stroke-width="1"/>
+        <circle cx="160" cy="160" r="140" stroke="rgba(232,226,217,0.05)" stroke-width="0.5"/>
+        <!-- Viewfinder crosshairs -->
+        <line x1="160" y1="12" x2="160" y2="68" stroke="rgba(232,226,217,0.15)" stroke-width="1"/>
+        <line x1="160" y1="252" x2="160" y2="308" stroke="rgba(232,226,217,0.15)" stroke-width="1"/>
+        <line x1="12" y1="160" x2="68" y2="160" stroke="rgba(232,226,217,0.15)" stroke-width="1"/>
+        <line x1="252" y1="160" x2="308" y2="160" stroke="rgba(232,226,217,0.15)" stroke-width="1"/>
+        <!-- Viewfinder frame corners -->
+        <path d="M80 80 L80 104 M80 80 L104 80" stroke="rgba(232,226,217,0.25)" stroke-width="1.5" stroke-linecap="square"/>
+        <path d="M240 80 L240 104 M240 80 L216 80" stroke="rgba(232,226,217,0.25)" stroke-width="1.5" stroke-linecap="square"/>
+        <path d="M80 240 L80 216 M80 240 L104 240" stroke="rgba(232,226,217,0.25)" stroke-width="1.5" stroke-linecap="square"/>
+        <path d="M240 240 L240 216 M240 240 L216 240" stroke="rgba(232,226,217,0.25)" stroke-width="1.5" stroke-linecap="square"/>
+        <!-- Center element — empty / searching -->
+        <circle cx="160" cy="160" r="40" stroke="rgba(255,102,102,0.2)" stroke-width="1" stroke-dasharray="4 4"/>
+        <circle cx="160" cy="160" r="4" fill="rgba(255,102,102,0.3)"/>
+        <!-- Tick marks -->
+        <line x1="160" y1="100" x2="160" y2="112" stroke="rgba(255,102,102,0.2)" stroke-width="1"/>
+        <line x1="160" y1="208" x2="160" y2="220" stroke="rgba(255,102,102,0.2)" stroke-width="1"/>
+        <line x1="100" y1="160" x2="112" y2="160" stroke="rgba(255,102,102,0.2)" stroke-width="1"/>
+        <line x1="208" y1="160" x2="220" y2="160" stroke="rgba(255,102,102,0.2)" stroke-width="1"/>
+        <!-- Label -->
+        <text x="160" y="290" text-anchor="middle" font-family="Inter, sans-serif" font-size="7" letter-spacing="3" fill="rgba(232,226,217,0.2)">SEARCHING</text>
+      </svg>
     </div>
   </div>
 </section>
 
-<!-- CLIENTS -->
-<div class="clients">
-  <div class="clients-lbl-block"><span class="clients-lbl">Trusted by</span></div>
-  <div class="clients-scroll">
-    <div class="clients-track">
-      <div class="chip">Filmmakers Academy</div>
-      <div class="chip">Blackout</div>
-      <div class="chip">Nanlux / Nanlite</div>
-      <div class="chip">B&amp;H Photo</div>
-      <div class="chip">Kodak</div>
-      <div class="chip">Hollyland</div>
-      <div class="chip">Legacy Grip</div>
-      <div class="chip">Filmmakers Academy</div>
-      <div class="chip">Blackout</div>
-      <div class="chip">Nanlux / Nanlite</div>
-      <div class="chip">B&amp;H Photo</div>
-      <div class="chip">Kodak</div>
-      <div class="chip">Hollyland</div>
-      <div class="chip">Legacy Grip</div>
+<!-- ══════════════════════════════════════════════════ -->
+<!-- SCENE 02: HOW WE MET                              -->
+<!-- ══════════════════════════════════════════════════ -->
+<section class="scene" id="scene-02" style="background:var(--bg2);">
+  <div class="scene-marker reveal">
+    <span class="scene-num">Scene 02</span>
+    <div class="scene-rule"></div>
+    <span class="scene-title">How We Found Each Other</span>
+  </div>
+
+  <div class="scene-full">
+    <div class="scene-full-grid">
+      <div class="scene-full-label reveal">West Hollywood,<br>Los Angeles</div>
+      <div class="reveal" style="transition-delay:.1s;">
+        <h2 class="scene-hl" style="margin-bottom:clamp(24px,3.5vh,40px);">Two lost people<br>who found each<br><em>other first.</em></h2>
+        <div class="scene-body">
+          <p>Kyra and Brendan didn't meet with a plan. They met the way most meaningful things happen — at a moment when neither of them was quite sure which direction they were heading in.</p>
+          <p>Kyra was building her acting career, navigating the specific kind of uncertainty that comes with being a working artist in Los Angeles — talented, disciplined, but unsure how to make herself visible in the right rooms. Brendan was deep in the film world, directing, producing, running Filmmakers Academy — and watching talented people struggle with the same invisible problem over and over again: they were extraordinary at their craft and nearly invisible online.</p>
+          <p><strong>They recognized something in each other.</strong> A shared belief that creativity and strategy weren't opposites. That the industry deserved better than generic social media advice from people who'd never been on a set. That the gap between brilliant work and the audience it deserved wasn't inevitable — it was fixable.</p>
+          <div class="scene-pull">
+            <p><em>Together, they stopped feeling lost. And they realized that was worth building something around.</em></p>
+          </div>
+          <p>Lost Objects started not as a business plan, but as a belief: that the people doing the most interesting creative work in the film industry needed a partner who actually understood their world. Someone who'd been in it. Someone who knew what it felt like to wonder if anyone was watching.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════ -->
+<!-- SCENE 03: MEET KYRA & BRENDAN                     -->
+<!-- ══════════════════════════════════════════════════ -->
+<section class="profiles-section" id="scene-03">
+  <div class="scene-marker reveal" style="max-width:var(--max);margin:0 auto;padding:0 var(--pad);margin-bottom:clamp(40px,6vh,64px);">
+    <span class="scene-num">Scene 03</span>
+    <div class="scene-rule"></div>
+    <span class="scene-title">The Characters</span>
+  </div>
+
+  <div class="profiles-grid">
+
+    <!-- KYRA -->
+    <div class="profile-card reveal">
+      <!-- Photo placeholder -->
+      <div class="profile-photo-frame">
+        <!-- Replace with: <img src="images/kyra.jpg" alt="Kyra Sweeney" /> -->
+        <svg width="100%" height="100%" viewBox="0 0 300 400" preserveAspectRatio="xMidYMid slice" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="300" height="400" fill="#161514"/>
+          <!-- Abstract portrait — geometric Kyra -->
+          <circle cx="150" cy="130" r="52" stroke="rgba(255,102,102,0.2)" stroke-width="1"/>
+          <circle cx="150" cy="130" r="38" fill="rgba(255,102,102,0.04)" stroke="rgba(255,102,102,0.12)" stroke-width="0.5"/>
+          <!-- Face suggestion -->
+          <ellipse cx="150" cy="126" rx="22" ry="28" fill="rgba(232,226,217,0.03)" stroke="rgba(232,226,217,0.1)" stroke-width="0.5"/>
+          <!-- Body -->
+          <line x1="150" y1="182" x2="150" y2="280" stroke="rgba(232,226,217,0.1)" stroke-width="1"/>
+          <!-- Arms -->
+          <line x1="150" y1="210" x2="110" y2="248" stroke="rgba(232,226,217,0.08)" stroke-width="1"/>
+          <line x1="150" y1="210" x2="190" y2="244" stroke="rgba(232,226,217,0.08)" stroke-width="1"/>
+          <!-- Legs -->
+          <line x1="150" y1="280" x2="130" y2="340" stroke="rgba(232,226,217,0.08)" stroke-width="1"/>
+          <line x1="150" y1="280" x2="168" y2="340" stroke="rgba(232,226,217,0.08)" stroke-width="1"/>
+          <!-- Pink accent — a spotlight on her -->
+          <circle cx="150" cy="130" r="70" stroke="rgba(255,102,102,0.06)" stroke-width="20" stroke-dasharray="6 8"/>
+          <!-- Label -->
+          <text x="150" y="380" text-anchor="middle" font-family="Inter,sans-serif" font-size="7" letter-spacing="3" fill="rgba(232,226,217,0.18)">KYRA SWEENEY</text>
+        </svg>
+        <div class="frame-corner tl"></div>
+        <div class="frame-corner tr"></div>
+        <div class="frame-corner bl"></div>
+        <div class="frame-corner br"></div>
+      </div>
+
+      <div class="profile-role">Co-Founder — Lost Objects LLC</div>
+      <div class="profile-name">Kyra<br>Sweeney</div>
+      <div class="profile-title">SAG-AFTRA Actor · Social Media Strategist · West Hollywood, LA</div>
+
+      <div class="profile-bio">
+        <p>Kyra brings something most social media strategists simply don't have: she's lived the creative life she's helping others navigate. As a working SAG-AFTRA actor, she understands what it means to build a personal brand in an industry that measures you by your visibility — and how much harder that work becomes when the strategy isn't there.</p>
+        <p>Her approach is personal before it's tactical. She builds strategies around who her clients actually are, not who she thinks they should pretend to be. The result is social media that feels like an authentic extension of the person behind it — because it is.</p>
+        <p><strong>Kyra is the person in the room who makes you feel like you finally have someone in your corner.</strong> She listens before she strategizes. She asks the questions nobody else thinks to ask. And then she builds something that actually fits.</p>
+      </div>
+
+      <div class="profile-facts">
+        <div class="profile-fact"><div class="fact-dot"></div>SAG-AFTRA actor with active credits in film and television</div>
+        <div class="profile-fact"><div class="fact-dot"></div>Specializes in building authentic brand voices for creative professionals</div>
+        <div class="profile-fact"><div class="fact-dot"></div>Co-led B&H BILD 2025 social media seminar alongside Brendan</div>
+        <div class="profile-fact"><div class="fact-dot"></div>Based in West Hollywood — deeply embedded in the LA film community</div>
+      </div>
+    </div>
+
+    <!-- BRENDAN -->
+    <div class="profile-card reveal" style="transition-delay:.12s;">
+      <div class="profile-photo-frame">
+        <!-- Replace with: <img src="images/brendan.jpg" alt="Brendan Sweeney" /> -->
+        <svg width="100%" height="100%" viewBox="0 0 300 400" preserveAspectRatio="xMidYMid slice" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="300" height="400" fill="#161514"/>
+          <!-- Abstract portrait — geometric Brendan -->
+          <circle cx="150" cy="130" r="52" stroke="rgba(240,232,220,0.15)" stroke-width="1"/>
+          <circle cx="150" cy="130" r="38" fill="rgba(240,232,220,0.03)" stroke="rgba(240,232,220,0.08)" stroke-width="0.5"/>
+          <ellipse cx="150" cy="126" rx="22" ry="28" fill="rgba(232,226,217,0.03)" stroke="rgba(232,226,217,0.08)" stroke-width="0.5"/>
+          <line x1="150" y1="182" x2="150" y2="280" stroke="rgba(232,226,217,0.1)" stroke-width="1"/>
+          <line x1="150" y1="210" x2="108" y2="250" stroke="rgba(232,226,217,0.08)" stroke-width="1"/>
+          <line x1="150" y1="210" x2="192" y2="246" stroke="rgba(232,226,217,0.08)" stroke-width="1"/>
+          <line x1="150" y1="280" x2="128" y2="340" stroke="rgba(232,226,217,0.08)" stroke-width="1"/>
+          <line x1="150" y1="280" x2="170" y2="340" stroke="rgba(232,226,217,0.08)" stroke-width="1"/>
+          <!-- Camera viewfinder motif — he's a director -->
+          <rect x="82" y="62" width="136" height="96" rx="2" stroke="rgba(240,232,220,0.1)" stroke-width="0.5"/>
+          <path d="M82 74 L96 74 M82 86 L96 86" stroke="rgba(240,232,220,0.12)" stroke-width="0.5"/>
+          <path d="M204 74 L218 74 M204 86 L218 86" stroke="rgba(240,232,220,0.12)" stroke-width="0.5"/>
+          <text x="150" y="380" text-anchor="middle" font-family="Inter,sans-serif" font-size="7" letter-spacing="3" fill="rgba(232,226,217,0.18)">BRENDAN SWEENEY</text>
+        </svg>
+        <div class="frame-corner tl"></div>
+        <div class="frame-corner tr"></div>
+        <div class="frame-corner bl"></div>
+        <div class="frame-corner br"></div>
+      </div>
+
+      <div class="profile-role">Co-Founder — Lost Objects LLC</div>
+      <div class="profile-name">Brendan<br>Sweeney</div>
+      <div class="profile-title">Director · Producer · CEO, Filmmakers Academy · West Hollywood, LA</div>
+
+      <div class="profile-bio">
+        <p>Brendan has spent years inside the film industry — as a director, producer, and as CEO of Filmmakers Academy, one of the most respected cinematography education platforms in the world. He's worked alongside some of the industry's best, built large-scale content operations, and developed partnerships with brands like Kodak, B&H, Nanlux, and Hollyland.</p>
+        <p>What he noticed, again and again, was the gap. Extraordinary cinematographers with no social presence. Grip companies with loyal followings in the real world and nothing online. Talented people who had no idea how to translate what they did on set into something the internet could find.</p>
+        <p><strong>Lost Objects was built to close that gap.</strong> Brendan brings a filmmaker's instinct for story, a CEO's understanding of strategy, and a genuine love for the craft and the community it lives in.</p>
+      </div>
+
+      <div class="profile-facts">
+        <div class="profile-fact"><div class="fact-dot"></div>CEO of Filmmakers Academy — cinematography education platform</div>
+        <div class="profile-fact"><div class="fact-dot"></div>Director and producer with independent film festival experience</div>
+        <div class="profile-fact"><div class="fact-dot"></div>Brand partnerships with Kodak, B&H Photo, Nanlux, Hollyland, and more</div>
+        <div class="profile-fact"><div class="fact-dot"></div>Based in West Hollywood — lives and breathes the LA creative world</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════ -->
+<!-- CITY STATS BAR                                    -->
+<!-- ══════════════════════════════════════════════════ -->
+<div class="city-bar reveal">
+  <div class="city-bar-inner">
+    <div class="city-stat">
+      <div class="cs-num"><em>15K</em></div>
+      <div class="cs-label">Followers grown for one client — organically — in under 12 months</div>
+    </div>
+    <div class="city-stat">
+      <div class="cs-num">6<em>+</em></div>
+      <div class="cs-label">Brand partnerships across the film industry</div>
+    </div>
+    <div class="city-stat">
+      <div class="cs-num">2</div>
+      <div class="cs-label">People who really, genuinely understand your world</div>
+    </div>
+    <div class="city-stat">
+      <div class="cs-num"><em>01</em></div>
+      <div class="cs-label">West Hollywood, LA — the city that makes things happen</div>
     </div>
   </div>
 </div>
+
+<!-- ══════════════════════════════════════════════════ -->
+<!-- SCENE 04: THE PHILOSOPHY                          -->
+<!-- ══════════════════════════════════════════════════ -->
+<section class="philosophy-scene" id="scene-04">
+  <div class="scene-marker reveal" style="max-width:var(--max);margin:0 auto;padding:0 var(--pad);margin-bottom:clamp(40px,6vh,64px);">
+    <span class="scene-num">Scene 04</span>
+    <div class="scene-rule"></div>
+    <span class="scene-title">What We Actually Believe</span>
+  </div>
+
+  <div class="philosophy-inner">
+
+    <!-- Geometric "found" illustration -->
+    <div class="reveal" style="display:flex;justify-content:center;align-items:center;">
+      <svg width="340" height="340" viewBox="0 0 340 340" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Outer diamond — the frame -->
+        <rect x="120" y="20" width="100" height="100" rx="1" transform="rotate(45 170 170)" stroke="rgba(232,226,217,0.08)" stroke-width="1"/>
+        <rect x="100" y="40" width="140" height="140" rx="1" transform="rotate(45 170 170)" stroke="rgba(232,226,217,0.05)" stroke-width="0.5"/>
+        <!-- Viewfinder corners — found state (pink) -->
+        <path d="M100 100 L100 124 M100 100 L124 100" stroke="rgba(255,102,102,0.45)" stroke-width="2" stroke-linecap="square"/>
+        <path d="M240 100 L240 124 M240 100 L216 100" stroke="rgba(255,102,102,0.45)" stroke-width="2" stroke-linecap="square"/>
+        <path d="M100 240 L100 216 M100 240 L124 240" stroke="rgba(255,102,102,0.45)" stroke-width="2" stroke-linecap="square"/>
+        <path d="M240 240 L240 216 M240 240 L216 240" stroke="rgba(255,102,102,0.45)" stroke-width="2" stroke-linecap="square"/>
+        <!-- Center — the found moment (solid) -->
+        <circle cx="170" cy="170" r="32" fill="rgba(255,102,102,0.08)" stroke="rgba(255,102,102,0.3)" stroke-width="1"/>
+        <circle cx="170" cy="170" r="8" fill="rgba(255,102,102,0.5)"/>
+        <!-- Crosshairs — locked in -->
+        <line x1="170" y1="130" x2="170" y2="152" stroke="rgba(255,102,102,0.3)" stroke-width="1"/>
+        <line x1="170" y1="188" x2="170" y2="210" stroke="rgba(255,102,102,0.3)" stroke-width="1"/>
+        <line x1="130" y1="170" x2="152" y2="170" stroke="rgba(255,102,102,0.3)" stroke-width="1"/>
+        <line x1="188" y1="170" x2="210" y2="170" stroke="rgba(255,102,102,0.3)" stroke-width="1"/>
+        <!-- Two figures — together now, overlapping -->
+        <circle cx="155" cy="170" r="14" fill="none" stroke="rgba(232,226,217,0.2)" stroke-width="1"/>
+        <circle cx="185" cy="170" r="14" fill="none" stroke="rgba(255,102,102,0.25)" stroke-width="1"/>
+        <!-- Intersection -->
+        <ellipse cx="170" cy="170" rx="6" ry="14" fill="rgba(255,102,102,0.08)"/>
+        <!-- Label -->
+        <text x="170" y="310" text-anchor="middle" font-family="Inter,sans-serif" font-size="7" letter-spacing="3" fill="rgba(232,226,217,0.2)">FOUND</text>
+        <!-- Tick marks outer -->
+        <line x1="170" y1="22" x2="170" y2="38" stroke="rgba(232,226,217,0.12)" stroke-width="0.5"/>
+        <line x1="170" y1="302" x2="170" y2="318" stroke="rgba(232,226,217,0.12)" stroke-width="0.5"/>
+        <line x1="22" y1="170" x2="38" y2="170" stroke="rgba(232,226,217,0.12)" stroke-width="0.5"/>
+        <line x1="302" y1="170" x2="318" y2="170" stroke="rgba(232,226,217,0.12)" stroke-width="0.5"/>
+      </svg>
+    </div>
+
+    <div class="reveal" style="transition-delay:.15s;">
+      <h2 class="philosophy-hl">Being lost isn't<br>a weakness.<br><em>It's a starting point.</em></h2>
+      <div class="philosophy-body">
+        <p>The best creative work we've ever seen comes from people who are deeply in their craft and genuinely uncertain about everything else. That's not a flaw. That's actually what happens when you care enough about something to go all the way into it.</p>
+        <p><strong>The problem isn't that you're lost. The problem is that you're trying to navigate social media alone, without a map, without anyone who speaks your language.</strong></p>
+        <p>At Lost Objects, we don't believe in generic strategy. We don't have a template we apply to everyone. We listen first. We ask questions most consultants don't bother to ask. We learn who you actually are before we figure out who you should be online.</p>
+        <p>We built this agency specifically for the film industry because we are in the film industry. We don't have to learn your vocabulary. We already speak it. And that changes everything about the work we do together.</p>
+        <p>When you feel lost — in your career, in your brand, in your social presence — we'll be there. Not to hand you a framework. To actually help you find your way.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════ -->
+<!-- SCENE 05: THE FOUNDING MOMENT                    -->
+<!-- ══════════════════════════════════════════════════ -->
+<section class="founding-scene" id="scene-05">
+  <div class="scene-marker reveal">
+    <span class="scene-num">Scene 05</span>
+    <div class="scene-rule"></div>
+    <span class="scene-title">Why It Exists</span>
+  </div>
+
+  <div class="founding-inner">
+    <div class="founding-grid">
+      <div class="reveal">
+        <h2 class="scene-hl" style="margin-bottom:clamp(24px,3.5vh,40px);">Lost Objects<br>was never<br><em>just a business.</em></h2>
+        <div class="scene-body">
+          <p>It was a decision Kyra and Brendan made together to stop watching talented people disappear into obscurity because they didn't know how to be visible online. It was a response to a gap they kept seeing. It was, honestly, a little bit of an act of defiance against the idea that social media has to feel hollow and performative.</p>
+          <p><strong>The name says everything.</strong> We are all lost objects at some point — people, brands, ideas that haven't been found yet. The work we do is about finding them. Making them visible. Getting them in front of the rooms they deserve to be in.</p>
+          <p>We're selective about who we work with not because we're precious about it — but because we go deep. When we take on a client, we take them seriously. We show up. We don't outsource the thinking. We don't apply a template and call it done.</p>
+          <p>We built Lost Objects to be the agency we wished existed when we were navigating our own uncertainty. The one that actually understood our world. The one that didn't make us feel like a problem to be solved.</p>
+        </div>
+      </div>
+
+      <!-- Film strip / timeline illustration -->
+      <div class="reveal" style="transition-delay:.15s;">
+        <svg width="100%" height="520" viewBox="0 0 280 520" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Vertical film strip -->
+          <rect x="100" y="0" width="80" height="520" fill="rgba(22,21,20,0.8)" stroke="rgba(232,226,217,0.07)" stroke-width="0.5"/>
+          <!-- Perforations -->
+          <rect x="106" y="10" width="14" height="10" rx="1" fill="rgba(232,226,217,0.04)" stroke="rgba(232,226,217,0.1)" stroke-width="0.5"/>
+          <rect x="160" y="10" width="14" height="10" rx="1" fill="rgba(232,226,217,0.04)" stroke="rgba(232,226,217,0.1)" stroke-width="0.5"/>
+          <rect x="106" y="500" width="14" height="10" rx="1" fill="rgba(232,226,217,0.04)" stroke="rgba(232,226,217,0.1)" stroke-width="0.5"/>
+          <rect x="160" y="500" width="14" height="10" rx="1" fill="rgba(232,226,217,0.04)" stroke="rgba(232,226,217,0.1)" stroke-width="0.5"/>
+
+          <!-- Frame 1 — separated -->
+          <rect x="106" y="30" width="68" height="50" fill="rgba(232,226,217,0.02)" stroke="rgba(232,226,217,0.08)" stroke-width="0.5"/>
+          <circle cx="130" cy="55" r="8" stroke="rgba(232,226,217,0.15)" stroke-width="0.5"/>
+          <circle cx="150" cy="55" r="8" stroke="rgba(255,102,102,0.15)" stroke-width="0.5"/>
+          <text x="140" y="72" text-anchor="middle" font-family="Inter,sans-serif" font-size="5" letter-spacing="1" fill="rgba(232,226,217,0.2)">APART</text>
+
+          <!-- Frame 2 — getting closer -->
+          <rect x="106" y="92" width="68" height="50" fill="rgba(232,226,217,0.02)" stroke="rgba(232,226,217,0.1)" stroke-width="0.5"/>
+          <circle cx="134" cy="117" r="8" stroke="rgba(232,226,217,0.2)" stroke-width="0.5"/>
+          <circle cx="146" cy="117" r="8" stroke="rgba(255,102,102,0.2)" stroke-width="0.5"/>
+          <text x="140" y="134" text-anchor="middle" font-family="Inter,sans-serif" font-size="5" letter-spacing="1" fill="rgba(232,226,217,0.2)">CLOSER</text>
+
+          <!-- Frame 3 — meeting -->
+          <rect x="106" y="154" width="68" height="50" fill="rgba(255,102,102,0.03)" stroke="rgba(255,102,102,0.15)" stroke-width="0.5"/>
+          <circle cx="140" cy="179" r="10" stroke="rgba(255,102,102,0.3)" stroke-width="1"/>
+          <circle cx="140" cy="179" r="4" fill="rgba(255,102,102,0.25)"/>
+          <text x="140" y="196" text-anchor="middle" font-family="Inter,sans-serif" font-size="5" letter-spacing="1" fill="rgba(255,102,102,0.4)">FOUND</text>
+
+          <!-- Frame 4 — building -->
+          <rect x="106" y="216" width="68" height="50" fill="rgba(232,226,217,0.02)" stroke="rgba(232,226,217,0.1)" stroke-width="0.5"/>
+          <!-- Abstract "building" -->
+          <rect x="118" y="238" width="8" height="18" fill="rgba(232,226,217,0.08)"/>
+          <rect x="130" y="230" width="8" height="26" fill="rgba(232,226,217,0.1)"/>
+          <rect x="142" y="234" width="8" height="22" fill="rgba(232,226,217,0.08)"/>
+          <rect x="154" y="236" width="8" height="20" fill="rgba(232,226,217,0.06)"/>
+          <text x="140" y="258" text-anchor="middle" font-family="Inter,sans-serif" font-size="5" letter-spacing="1" fill="rgba(232,226,217,0.2)">BUILDING</text>
+
+          <!-- Frame 5 — Lost Objects -->
+          <rect x="106" y="278" width="68" height="50" fill="rgba(255,102,102,0.05)" stroke="rgba(255,102,102,0.25)" stroke-width="1"/>
+          <text x="140" y="298" text-anchor="middle" font-family="DM Serif Display,serif" font-size="8" font-style="italic" fill="rgba(255,102,102,0.6)">Lost</text>
+          <text x="140" y="312" text-anchor="middle" font-family="DM Serif Display,serif" font-size="8" font-style="italic" fill="rgba(255,102,102,0.6)">Objects</text>
+          <text x="140" y="322" text-anchor="middle" font-family="Inter,sans-serif" font-size="5" letter-spacing="1" fill="rgba(255,102,102,0.35)">EST. 2022</text>
+
+          <!-- Rest of the strip fades to possibility -->
+          <rect x="106" y="340" width="68" height="50" fill="rgba(232,226,217,0.01)" stroke="rgba(232,226,217,0.04)" stroke-width="0.5"/>
+          <text x="140" y="370" text-anchor="middle" font-family="Inter,sans-serif" font-size="5" letter-spacing="1" fill="rgba(232,226,217,0.1)">TO BE CONTINUED</text>
+          <rect x="106" y="402" width="68" height="50" fill="rgba(232,226,217,0.005)" stroke="rgba(232,226,217,0.03)" stroke-width="0.5"/>
+          <rect x="106" y="464" width="68" height="50" fill="rgba(232,226,217,0.003)" stroke="rgba(232,226,217,0.02)" stroke-width="0.5"/>
+
+          <!-- Timeline labels left of strip -->
+          <text x="90" y="59" text-anchor="end" font-family="Inter,sans-serif" font-size="7" letter-spacing="1.5" fill="rgba(232,226,217,0.2)">Before</text>
+          <text x="90" y="182" text-anchor="end" font-family="Inter,sans-serif" font-size="7" letter-spacing="1.5" fill="rgba(255,102,102,0.4)">2022</text>
+          <text x="90" y="307" text-anchor="end" font-family="Inter,sans-serif" font-size="7" letter-spacing="1.5" fill="rgba(232,226,217,0.3)">Now</text>
+          <text x="90" y="370" text-anchor="end" font-family="Inter,sans-serif" font-size="7" letter-spacing="1.5" fill="rgba(232,226,217,0.12)">Next</text>
+        </svg>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════ -->
+<!-- CLOSING SCENE                                     -->
+<!-- ══════════════════════════════════════════════════ -->
+<section class="closing-scene reveal">
+  <div class="closing-inner">
+    <h2 class="closing-hl">
+      When you feel lost,<br>we'll help you feel<br><em>found.</em>
+    </h2>
+    <p class="closing-body">
+      That's not a tagline. That's the whole thing. It's why we built this. It's why we're selective about who we work with. It's why we go deep instead of wide. Because we remember what it felt like to not have someone in our corner who actually understood our world — and we decided to be that for someone else.
+    </p>
+    <div class="closing-sig">— Kyra &amp; Brendan, West Hollywood</div>
+  </div>
+</section>
 
 <!-- CTA -->
 <section class="cta-band reveal">
   <div class="cta-inner">
-    <div class="cta-eye">Ready to show up?</div>
-    <h2 class="cta-hl">Let's make the film industry<br><em>impossible to ignore.</em></h2>
-    <p class="cta-sub">No templates. No borrowed strategy. Just social media that actually speaks the language of your world.</p>
-    <a href="contact.html" class="btn-p">Start the conversation</a>
+    <div class="cta-eye">Ready when you are</div>
+    <h2 class="cta-hl">Start the conversation.<br><em>No pressure.</em></h2>
+    <p class="cta-sub">Tell us where you are right now and we'll tell you honestly whether we can help — and how.</p>
+    <a href="contact.html" class="btn-p">Feeling Lost? Let's talk.</a>
   </div>
 </section>
 
@@ -685,458 +1077,80 @@
   <div class="foot-inner">
     <div class="foot-logo">Lost Objects</div>
     <div class="foot-links">
-      <a href="work.html"     class="foot-lnk">Work</a>
+      <a href="index.html" class="foot-lnk">Home</a>
+      <a href="work.html" class="foot-lnk">Work</a>
       <a href="services.html" class="foot-lnk">Services</a>
-      <a href="contact.html"  class="foot-lnk">Contact</a>
+      <a href="contact.html" class="foot-lnk">Contact</a>
     </div>
-    <div class="foot-copy">© 2025 Lost Objects LLC</div>
+    <div class="foot-copy">© 2025 Lost Objects LLC · West Hollywood, LA</div>
   </div>
 </footer>
 
-<!-- EASTER EGG GAME -->
-<div class="game-overlay" id="gameOverlay">
-  <div class="game-modal">
-    <div class="game-header">
-      <div class="game-title">Lost Object — <span>The Game</span></div>
-      <div class="game-score-display">Score <span id="scoreDisplay">0</span></div>
-      <button class="game-close" onclick="closeGame()">✕ Close</button>
-    </div>
-    <canvas id="gameCanvas" width="540" height="400"></canvas>
-    <div class="game-footer">
-      <span class="game-instructions">Arrow keys or WASD to move — collect the lost objects</span>
-      <button class="game-start-btn" id="startBtn" onclick="startGame()">Start</button>
-    </div>
-  </div>
-</div>
-
-<script src="https://player.vimeo.com/api/player.js"></script>
 <script>
-  /* ---------- SITE UTILITIES ---------- */
-  const obs = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
-  }, { threshold: 0.1 });
-  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
-
-  const mainNav = document.getElementById('mainNav');
-  window.addEventListener('scroll', () => { mainNav.classList.toggle('scrolled', window.scrollY > 60); }, { passive: true });
-
   function toggleMenu() { document.getElementById('mobileMenu').classList.toggle('open'); }
 
-  /* ---------- GAME ENGINE ---------- */
-  const PC = '#FF6666', CC = '#F0E8DC';
-  const GRID = 20, COLS = 27, ROWS = 20;
-  const FPS = 30, FMS = 1000 / FPS;
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 
-  let cv, cx, mazeCV, mazeCX;
-  let gLoop = null, lastT = 0;
-  let score, lives, gState;
-  let player, pellets, pMap, ghosts, dir, nDir;
-  let mTick = 0, gTick = 0, ang = 0;
+  /* ── SCENE PROGRESS BAR ──────────────────────────── */
+  const scenes = ['scene-01','scene-02','scene-03','scene-04','scene-05'];
+  const progress = document.getElementById('sceneProgress');
+  const fill = document.getElementById('spFill');
+  const items = document.querySelectorAll('.sp-item');
 
-  /* Wall Set — built once, O(1) lookup */
-  const WALLS = new Set();
-  [[2,2],[3,2],[4,2],[5,2],[6,2],[8,2],[9,2],[10,2],[11,2],[15,2],[16,2],[17,2],[18,2],[20,2],[21,2],[22,2],[23,2],[24,2],
-   [2,4],[6,4],[8,4],[11,4],[15,4],[18,4],[20,4],[24,4],[2,5],[6,5],[8,5],[11,5],[15,5],[18,5],[20,5],[24,5],
-   [2,6],[3,6],[4,6],[6,6],[8,6],[9,6],[10,6],[11,6],[15,6],[16,6],[17,6],[18,6],[20,6],[22,6],[23,6],[24,6],
-   [4,8],[5,8],[6,8],[8,8],[11,8],[12,8],[13,8],[14,8],[15,8],[18,8],[20,8],[21,8],[22,8],
-   [2,10],[3,10],[4,10],[6,10],[8,10],[11,10],[15,10],[18,10],[20,10],[23,10],[24,10],
-   [6,11],[8,11],[11,11],[15,11],[18,11],[20,11],
-   [2,12],[3,12],[4,12],[6,12],[8,12],[9,12],[10,12],[15,12],[16,12],[17,12],[20,12],[22,12],[23,12],[24,12],
-   [4,14],[6,14],[11,14],[12,14],[13,14],[14,14],[15,14],[20,14],[22,14],
-   [2,16],[3,16],[4,16],[6,16],[8,16],[9,16],[10,16],[11,16],[15,16],[16,16],[17,16],[18,16],[20,16],[22,16],[23,16],[24,16],
-   [2,17],[6,17],[20,17],[24,17],
-   [2,18],[3,18],[4,18],[6,18],[7,18],[8,18],[9,18],[10,18],[11,18],[15,18],[16,18],[17,18],[18,18],[19,18],[20,18],[21,18],[22,18],[23,18],[24,18]
-  ].forEach(([c,r]) => WALLS.add(c+','+r));
-  for (let c=0;c<COLS;c++) { WALLS.add(c+',0'); WALLS.add(c+','+(ROWS-1)); }
-  for (let r=0;r<ROWS;r++) { WALLS.add('0,'+r); WALLS.add((COLS-1)+','+r); }
-
-  const isWall  = (c,r) => WALLS.has(c+','+r);
-  const canMove = (c,r) => !isWall(((c%COLS)+COLS)%COLS, ((r%ROWS)+ROWS)%ROWS);
-  const ctr     = (c,r) => ({ x: c*GRID+GRID/2, y: r*GRID+GRID/2 });
-
-  function buildMaze() {
-    mazeCV = document.createElement('canvas');
-    mazeCV.width = COLS*GRID; mazeCV.height = ROWS*GRID;
-    mazeCX = mazeCV.getContext('2d');
-    mazeCX.fillStyle = '#0c0b0a';
-    mazeCX.fillRect(0,0,mazeCV.width,mazeCV.height);
-    for (let r=0;r<ROWS;r++) for (let c=0;c<COLS;c++) {
-      if (isWall(c,r)) {
-        mazeCX.fillStyle = 'rgba(255,102,102,0.055)';
-        mazeCX.fillRect(c*GRID,r*GRID,GRID,GRID);
-        mazeCX.strokeStyle = 'rgba(255,102,102,0.14)';
-        mazeCX.lineWidth = 0.5;
-        mazeCX.strokeRect(c*GRID+.5,r*GRID+.5,GRID-1,GRID-1);
-      }
-    }
+  function scrollToScene(id) {
+    document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
-  function drawPlayer(px,py,size,angle) {
-    cx.save(); cx.translate(px,py); cx.rotate(angle);
-    cx.beginPath();
-    cx.moveTo(0,-size);
-    cx.bezierCurveTo(size*.8,-size*.6, size,size*.3, size*.3,size*.8);
-    cx.bezierCurveTo(0,size, -size*.3,size*.8, -size*.3,size*.8);
-    cx.bezierCurveTo(-size,size*.3, -size*.8,-size*.6, 0,-size);
-    cx.closePath();
-    cx.fillStyle='rgba(255,102,102,0.18)'; cx.fill();
-    cx.strokeStyle=PC; cx.lineWidth=1.2; cx.globalAlpha=0.88; cx.stroke();
-    cx.beginPath(); cx.arc(0,0,size*.12,0,Math.PI*2);
-    cx.fillStyle=PC; cx.globalAlpha=0.7; cx.fill();
-    cx.restore();
-  }
+  function updateProgress() {
+    const triggerEl = document.getElementById('scene-01');
+    if (!triggerEl) return;
 
-  function drawPellet(px,py,big) {
-    cx.save(); cx.translate(px,py); cx.globalAlpha=1;
-    cx.beginPath(); cx.arc(0,0,big?3.5:2,0,Math.PI*2);
-    cx.fillStyle=big?CC:'rgba(240,232,220,0.38)';
-    cx.globalAlpha=big?.65:1; cx.fill();
-    cx.restore();
-  }
+    const triggerTop = triggerEl.getBoundingClientRect().top;
+    const navH = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--nav-h'));
 
-  function drawGhost(px,py,color,scared) {
-    cx.save(); cx.translate(px,py);
-    const s=GRID*.38, col=scared?'rgba(138,172,184,0.6)':color;
-    cx.beginPath(); cx.arc(0,-s*.1,s,Math.PI,0); cx.lineTo(s,s*.9);
-    for(let i=3;i>=0;i--) cx.lineTo(s-(i*(s*2/3)),i%2===0?s*.9:s*.5);
-    cx.lineTo(-s,s*.9); cx.closePath();
-    cx.fillStyle=col; cx.globalAlpha=scared?.55:.8; cx.fill();
-    if (!scared) {
-      [-s*.35,s*.35].forEach(ex => {
-        cx.beginPath(); cx.arc(ex,-s*.1,s*.2,0,Math.PI*2); cx.fillStyle='#e8e2d9'; cx.globalAlpha=1; cx.fill();
-        cx.beginPath(); cx.arc(ex+s*.07,-s*.08,s*.09,0,Math.PI*2); cx.fillStyle='#111'; cx.fill();
-      });
-    }
-    cx.restore();
-  }
-
-  function initGame() {
-    score=0; lives=3; mTick=0; gTick=0; ang=0;
-    dir={x:0,y:0}; nDir={x:1,y:0};
-    player={x:13,y:15};
-    document.getElementById('scoreDisplay').textContent='0';
-    pellets=[]; pMap=new Set();
-    for(let r=1;r<ROWS-1;r++) for(let c=1;c<COLS-1;c++) {
-      if(isWall(c,r)) continue;
-      const big=(r===2&&c===2)||(r===2&&c===COLS-3)||(r===ROWS-3&&c===2)||(r===ROWS-3&&c===COLS-3);
-      pellets.push({x:c,y:r,big,eaten:false});
-      pMap.add(c+','+r);
-    }
-    ghosts=[
-      {x:13,y:8,dx:1,dy:0,color:'rgba(255,102,102,0.75)',scared:false,ft:0},
-      {x:14,y:8,dx:-1,dy:0,color:'rgba(230,149,143,0.75)',scared:false,ft:0},
-      {x:13,y:9,dx:0,dy:1,color:'rgba(138,172,184,0.7)',scared:false,ft:0},
-      {x:14,y:9,dx:0,dy:-1,color:'rgba(240,232,220,0.55)',scared:false,ft:0},
-    ];
-    buildMaze();
-  }
-
-  function tick() {
-    mTick++; gTick++; ang+=0.07;
-
-    if (mTick%6===0) {
-      if (canMove(player.x+nDir.x, player.y+nDir.y)) dir={...nDir};
-      const mc=((player.x+dir.x)+COLS)%COLS, mr=((player.y+dir.y)+ROWS)%ROWS;
-      if (canMove(mc,mr)) { player.x=mc; player.y=mr; }
-      const k=player.x+','+player.y;
-      if (pMap.has(k)) {
-        pMap.delete(k);
-        const p=pellets.find(p=>!p.eaten&&p.x===player.x&&p.y===player.y);
-        if(p){ p.eaten=true; score+=p.big?50:10; document.getElementById('scoreDisplay').textContent=score; if(p.big) ghosts.forEach(g=>{g.scared=true;g.ft=0;}); }
-      }
-      if (pMap.size===0) gState='win';
+    /* Show progress bar once scene 01 reaches the top */
+    if (triggerTop <= navH + 40) {
+      progress.classList.add('visible');
+    } else {
+      progress.classList.remove('visible');
+      items.forEach(i => { i.classList.remove('active','past'); });
+      fill.style.height = '0%';
+      return;
     }
 
-    if (gTick%10===0) {
-      ghosts.forEach(g => {
-        if(g.scared){g.ft++;if(g.ft>30){g.scared=false;g.ft=0;}}
-        const opts=[{x:1,y:0},{x:-1,y:0},{x:0,y:1},{x:0,y:-1}]
-          .filter(d=>canMove(((g.x+d.x)+COLS)%COLS,((g.y+d.y)+ROWS)%ROWS)&&!(d.x===-g.dx&&d.y===-g.dy));
-        const pool=opts.length?opts:[{x:-g.dx,y:-g.dy}];
-        const chosen=g.scared
-          ?pool[Math.floor(Math.random()*pool.length)]
-          :pool.reduce((b,d)=>{
-            const dist=Math.abs(((g.x+d.x)+COLS)%COLS-player.x)+Math.abs(((g.y+d.y)+ROWS)%ROWS-player.y);
-            const bd=Math.abs(((g.x+b.x)+COLS)%COLS-player.x)+Math.abs(((g.y+b.y)+ROWS)%ROWS-player.y);
-            return(dist<bd&&Math.random()>.3)?d:b;
-          },pool[0]);
-        g.dx=chosen.x; g.dy=chosen.y;
-        g.x=((g.x+g.dx)+COLS)%COLS; g.y=((g.y+g.dy)+ROWS)%ROWS;
-        if(g.x===player.x&&g.y===player.y){
-          if(g.scared){g.scared=false;g.x=13;g.y=8;score+=200;document.getElementById('scoreDisplay').textContent=score;}
-          else{lives--;if(lives<=0){gState='over';}else{player.x=13;player.y=15;dir={x:0,y:0};nDir={x:1,y:0};}}
-        }
-      });
-    }
-  }
-
-  function draw() {
-    cx.drawImage(mazeCV,0,0);
-    pellets.forEach(p=>{ if(!p.eaten){ const c=ctr(p.x,p.y); drawPellet(c.x,c.y,p.big); }});
-    ghosts.forEach(g=>{ const c=ctr(g.x,g.y); drawGhost(c.x,c.y,g.color,g.scared); });
-    const p=ctr(player.x,player.y);
-    drawPlayer(p.x,p.y,GRID*.42,ang*.6);
-    for(let i=0;i<lives;i++) drawPlayer(14+i*18,cv.height-10,5,ang*.3);
-
-    if(gState!=='playing'){
-      cx.fillStyle='rgba(12,11,10,0.78)'; cx.fillRect(0,0,cv.width,cv.height);
-      cx.textAlign='center'; cx.globalAlpha=1;
-      const msgs={ready:['Lost Object','PRESS START TO PLAY',PC],over:['You got lost.','SCORE: '+score+'  —  PRESS START TO RETRY',PC],win:['Found.','SCORE: '+score+'  —  ALL OBJECTS RECOVERED',CC]};
-      const m=msgs[gState];
-      if(m){
-        cx.fillStyle=m[2]; cx.globalAlpha=.85; cx.font='italic 26px "DM Serif Display",serif'; cx.fillText(m[0],cv.width/2,cv.height/2-14);
-        cx.globalAlpha=1; cx.fillStyle='rgba(232,226,217,0.3)'; cx.font='9px Inter,sans-serif'; cx.fillText(m[1],cv.width/2,cv.height/2+14);
-      }
-    }
-  }
-
-  function frame(ts) {
-    if (!gLoop) return;
-    if (ts-lastT < FMS) { gLoop=requestAnimationFrame(frame); return; }
-    lastT=ts;
-    if (gState==='playing') tick();
-    draw();
-    gLoop=requestAnimationFrame(frame);
-  }
-
-  function startGame() { initGame(); gState='playing'; document.getElementById('startBtn').textContent='Restart'; }
-
-  function openGame() {
-    document.getElementById('gameOverlay').classList.add('open');
-    if (!cv) { cv=document.getElementById('gameCanvas'); cx=cv.getContext('2d',{alpha:false}); }
-    if (!gLoop) { initGame(); gState='ready'; lastT=0; gLoop=requestAnimationFrame(frame); }
-  }
-
-  function closeGame() {
-    document.getElementById('gameOverlay').classList.remove('open');
-    if (gLoop) { cancelAnimationFrame(gLoop); gLoop=null; }
-  }
-
-  const KM={ArrowUp:{x:0,y:-1},ArrowDown:{x:0,y:1},ArrowLeft:{x:-1,y:0},ArrowRight:{x:1,y:0},w:{x:0,y:-1},s:{x:0,y:1},a:{x:-1,y:0},d:{x:1,y:0},W:{x:0,y:-1},S:{x:0,y:1},A:{x:-1,y:0},D:{x:1,y:0}};
-  document.addEventListener('keydown',e=>{
-    if(document.getElementById('gameOverlay').classList.contains('open')){
-      if(KM[e.key]){nDir=KM[e.key];e.preventDefault();}
-      if(e.key==='Escape') closeGame();
-    }
-  });
-  let ts=null;
-  document.addEventListener('touchstart',e=>{if(document.getElementById('gameOverlay').classList.contains('open')) ts={x:e.touches[0].clientX,y:e.touches[0].clientY};},{passive:true});
-  document.addEventListener('touchend',e=>{
-    if(!ts||!document.getElementById('gameOverlay').classList.contains('open')) return;
-    const dx=e.changedTouches[0].clientX-ts.x,dy=e.changedTouches[0].clientY-ts.y;
-    nDir=Math.abs(dx)>Math.abs(dy)?(dx>0?{x:1,y:0}:{x:-1,y:0}):(dy>0?{x:0,y:1}:{x:0,y:-1});
-    ts=null;
-  },{passive:true});
-</script>
-
-<script src="cursor-fx.js"></script>
-<!-- LEAD CAPTURE MODAL — Lost Objects Free Seminar -->
-<!-- Shared across all pages. Kit form ID: replace YOUR_KIT_FORM_ID below -->
-<div id="leadModal" style="
-  display:none;
-  position:fixed;
-  inset:0;
-  z-index:99995;
-  align-items:center;
-  justify-content:center;
-  background:rgba(10,9,8,0.88);
-  backdrop-filter:blur(10px);
-  -webkit-backdrop-filter:blur(10px);
-  padding:20px;
-">
-  <div style="
-    background:#111010;
-    border:1px solid rgba(255,102,102,0.22);
-    max-width:520px;
-    width:100%;
-    position:relative;
-  ">
-    <!-- Close -->
-    <button onclick="closeLead()" style="
-      position:absolute;top:14px;right:16px;
-      background:none;border:none;cursor:pointer;
-      font-size:9px;letter-spacing:0.2em;text-transform:uppercase;
-      color:rgba(232,226,217,0.25);font-family:'Inter',sans-serif;
-      transition:color 0.2s;
-    " onmouseover="this.style.color='#FF6666'" onmouseout="this.style.color='rgba(232,226,217,0.25)'">✕ Close</button>
-
-    <!-- Header -->
-    <div style="padding:36px 36px 0;border-bottom:1px solid rgba(232,226,217,0.07);padding-bottom:28px;">
-      <div style="font-size:8px;letter-spacing:0.28em;text-transform:uppercase;color:#FF6666;opacity:0.6;margin-bottom:12px;font-family:'Inter',sans-serif;">Free — B&amp;H BILD Expo 2025</div>
-      <h2 style="font-family:'DM Serif Display',serif;font-size:clamp(22px,3.5vw,32px);font-weight:400;line-height:1.05;letter-spacing:-0.02em;color:#e8e2d9;margin-bottom:12px;">
-        How Instagram is changing<br><em style="font-style:italic;color:#FF6666;">filmmakers' lives.</em>
-      </h2>
-      <p style="font-size:12px;font-weight:300;color:rgba(232,226,217,0.5);line-height:1.75;font-family:'Inter',sans-serif;">
-        Kyra and Brendan's full keynote from the B&amp;H BILD Expo — free. What's changing, what it means for your career, and exactly what to do about it. No pitch, no paywall.
-      </p>
-    </div>
-
-    <!-- Form -->
-    <div style="padding:28px 36px 36px;" id="leadFormWrap">
-      <form id="leadForm" style="display:flex;flex-direction:column;gap:12px;">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-          <div style="display:flex;flex-direction:column;gap:7px;">
-            <label style="font-size:8px;letter-spacing:0.22em;text-transform:uppercase;color:rgba(232,226,217,0.22);font-family:'Inter',sans-serif;">First name <span style="color:#FF6666;">*</span></label>
-            <input type="text" id="lf-first" name="first_name" placeholder="First" required style="
-              background:#161514;border:1px solid rgba(232,226,217,0.07);
-              color:#e8e2d9;font-family:'Inter',sans-serif;font-size:13px;font-weight:300;
-              padding:11px 14px;outline:none;border-radius:0;-webkit-appearance:none;
-              transition:border-color 0.2s;
-            " onfocus="this.style.borderColor='rgba(255,102,102,0.4)'" onblur="this.style.borderColor='rgba(232,226,217,0.07)'" />
-          </div>
-          <div style="display:flex;flex-direction:column;gap:7px;">
-            <label style="font-size:8px;letter-spacing:0.22em;text-transform:uppercase;color:rgba(232,226,217,0.22);font-family:'Inter',sans-serif;">Last name <span style="color:#FF6666;">*</span></label>
-            <input type="text" id="lf-last" name="last_name" placeholder="Last" required style="
-              background:#161514;border:1px solid rgba(232,226,217,0.07);
-              color:#e8e2d9;font-family:'Inter',sans-serif;font-size:13px;font-weight:300;
-              padding:11px 14px;outline:none;border-radius:0;-webkit-appearance:none;
-              transition:border-color 0.2s;
-            " onfocus="this.style.borderColor='rgba(255,102,102,0.4)'" onblur="this.style.borderColor='rgba(232,226,217,0.07)'" />
-          </div>
-        </div>
-        <div style="display:flex;flex-direction:column;gap:7px;">
-          <label style="font-size:8px;letter-spacing:0.22em;text-transform:uppercase;color:rgba(232,226,217,0.22);font-family:'Inter',sans-serif;">Email address <span style="color:#FF6666;">*</span></label>
-          <input type="email" id="lf-email" name="email" placeholder="you@yourdomain.com" required style="
-            background:#161514;border:1px solid rgba(232,226,217,0.07);
-            color:#e8e2d9;font-family:'Inter',sans-serif;font-size:13px;font-weight:300;
-            padding:11px 14px;outline:none;border-radius:0;-webkit-appearance:none;
-            transition:border-color 0.2s;
-          " onfocus="this.style.borderColor='rgba(255,102,102,0.4)'" onblur="this.style.borderColor='rgba(232,226,217,0.07)'" />
-        </div>
-
-        <!-- Opt-in consent -->
-        <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;margin-top:4px;">
-          <input type="checkbox" id="lf-optin" name="optin" required style="
-            width:14px;height:14px;flex-shrink:0;margin-top:2px;
-            background:#161514;border:1px solid rgba(232,226,217,0.2);
-            appearance:none;-webkit-appearance:none;cursor:pointer;
-            transition:background 0.2s,border-color 0.2s;position:relative;
-          " onchange="this.style.background=this.checked?'#FF6666':'#161514';this.style.borderColor=this.checked?'#FF6666':'rgba(232,226,217,0.2)';" />
-          <span style="font-size:10px;font-weight:300;color:rgba(232,226,217,0.35);line-height:1.6;font-family:'Inter',sans-serif;">
-            I agree to receive the free seminar and occasional emails from Lost Objects about social media strategy for the film industry. Unsubscribe any time.
-          </span>
-        </label>
-
-        <button type="submit" id="leadSubmitBtn" style="
-          background:#FF6666;color:#0f0e0d;
-          font-size:10px;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;
-          padding:13px 28px;border:none;cursor:pointer;
-          font-family:'Inter',sans-serif;margin-top:8px;
-          transition:opacity 0.2s;
-        " onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
-          Send me the free seminar →
-        </button>
-
-        <p style="font-size:9px;color:rgba(232,226,217,0.2);line-height:1.6;font-family:'Inter',sans-serif;margin-top:4px;">
-          No spam. No selling your info. Just the seminar and useful things when we have them.
-        </p>
-      </form>
-    </div>
-
-    <!-- Success state -->
-    <div id="leadSuccess" style="display:none;padding:36px;text-align:center;">
-      <div style="width:48px;height:48px;border:1px solid rgba(255,102,102,0.3);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;">
-        <svg width="18" height="14" viewBox="0 0 18 14" fill="none"><path d="M1 7l5 5 11-11" stroke="#FF6666" stroke-width="1.5" stroke-linecap="square"/></svg>
-      </div>
-      <h3 style="font-family:'DM Serif Display',serif;font-size:26px;font-style:italic;color:#e8e2d9;margin-bottom:10px;">You're in.</h3>
-      <p style="font-size:12px;font-weight:300;color:rgba(232,226,217,0.5);line-height:1.75;font-family:'Inter',sans-serif;">Check your inbox — the seminar is on its way. If you don't see it in a few minutes, check your spam folder.</p>
-    </div>
-
-  </div>
-</div>
-
-<script>
-/* ── LEAD CAPTURE ─────────────────────────────────── */
-function openLead() {
-  const m = document.getElementById('leadModal');
-  m.style.display = 'flex';
-  document.body.style.overflow = 'hidden';
-}
-
-function closeLead() {
-  const m = document.getElementById('leadModal');
-  m.style.display = 'none';
-  document.body.style.overflow = '';
-}
-
-/* Close on backdrop click */
-document.getElementById('leadModal').addEventListener('click', function(e) {
-  if (e.target === this) closeLead();
-});
-
-/* Close on Escape */
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') closeLead();
-});
-
-/* Form submission — Kit (ConvertKit) API */
-document.getElementById('leadForm').addEventListener('submit', async function(e) {
-  e.preventDefault();
-  const btn = document.getElementById('leadSubmitBtn');
-  btn.textContent = 'Sending...';
-  btn.style.opacity = '0.6';
-  btn.disabled = true;
-
-  const first = document.getElementById('lf-first').value.trim();
-  const last  = document.getElementById('lf-last').value.trim();
-  const email = document.getElementById('lf-email').value.trim();
-
-  /*
-    ── KIT (CONVERTKIT) SETUP ──────────────────────────
-    1. Go to kit.com and create a free account
-    2. Go to Grow → Landing Pages & Forms → Create a Form
-    3. Name it "B&H Seminar Lead Capture"
-    4. In the form settings, get your Form ID (shown in the URL or embed code)
-    5. Replace YOUR_KIT_FORM_ID below with that number
-    6. Also grab your public API key from Settings → Developer
-       and replace YOUR_KIT_API_KEY below
-
-    Kit free tier: up to 10,000 subscribers, unlimited emails.
-    ────────────────────────────────────────────────────
-  */
-  const KIT_FORM_ID = 'YOUR_KIT_FORM_ID';
-  const KIT_API_KEY = 'YOUR_KIT_API_KEY';
-
-  try {
-    const res = await fetch(`https://api.convertkit.com/v3/forms/${KIT_FORM_ID}/subscribe`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        api_key: KIT_API_KEY,
-        first_name: first + ' ' + last,
-        email: email,
-        tags: ['bh-seminar', 'website-lead'],
-      })
+    /* Find which scene is currently most visible */
+    let activeIndex = -1;
+    scenes.forEach((id, i) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      if (rect.top <= window.innerHeight * 0.45) activeIndex = i;
     });
 
-    if (res.ok) {
-      document.getElementById('leadFormWrap').style.display = 'none';
-      document.getElementById('leadSuccess').style.display  = 'block';
-      /* Remember they signed up so we don't show the timed popup again */
-      try { localStorage.setItem('lo_lead_captured', '1'); } catch(e) {}
-    } else {
-      btn.textContent = 'Something went wrong — try again';
-      btn.style.opacity = '1';
-      btn.disabled = false;
-    }
-  } catch(err) {
-    btn.textContent = 'Something went wrong — try again';
-    btn.style.opacity = '1';
-    btn.disabled = false;
-  }
-});
+    /* Update dots */
+    items.forEach((item, i) => {
+      item.classList.remove('active','past');
+      if (i === activeIndex) item.classList.add('active');
+      else if (i < activeIndex) item.classList.add('past');
+    });
 
-/* ── TIMED POPUP — shows after 25s if not already captured ── */
-(function() {
-  try {
-    if (localStorage.getItem('lo_lead_captured')) return;
-  } catch(e) {}
-  setTimeout(() => {
-    const m = document.getElementById('leadModal');
-    if (m && m.style.display === 'none') openLead();
-  }, 25000);
-})();
+    /* Update fill height — proportional to progress through scenes */
+    if (activeIndex >= 0) {
+      const pct = (activeIndex / (scenes.length - 1)) * 100;
+      fill.style.height = pct + '%';
+    } else {
+      fill.style.height = '0%';
+    }
+  }
+
+  window.addEventListener('scroll', updateProgress, { passive: true });
+  updateProgress();
 </script>
 
+
+<script src="lead-popup.js"></script>
 </body>
 </html>
