@@ -18,7 +18,7 @@
 
     :root {
       --pink:   #FF6666;
-      --yellow: #FFCF5A;
+      --yellow: #F0E8DC;
       --bg:     #0f0e0d;
       --bg2:    #161514;
       --fg:     #e8e2d9;
@@ -191,17 +191,17 @@
       background: var(--bg);
     }
 
-    /* Vimeo iframe — covers the full container regardless of aspect ratio */
+    /* Vimeo iframe — covers full viewport, handles any aspect ratio */
     .hero-video-wrap iframe {
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      /* Vimeo iframes need explicit sizing to fill and bleed */
-      width: 100vw;
-      height: 56.25vw; /* 16:9 ratio */
+      /* Cover math: use whichever dimension is larger */
+      width: 177.78vh;   /* 16:9 fallback width */
+      height: 133.33vw;  /* 4:3 height from width */
+      min-width: 100vw;
       min-height: 100vh;
-      min-width: 177.78vh; /* 16:9 ratio inverse */
       border: none;
       pointer-events: none;
     }
@@ -932,7 +932,7 @@
            autopause=0    → keeps playing even if other videos exist on page
       -->
       <iframe
-        src="https://player.vimeo.com/video/199503852?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&muted=1&loop=1&background=1"
+        src="https://player.vimeo.com/video/199503852?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&muted=1&loop=1&background=1&quality=auto"
         frameborder="0"
         allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
         referrerpolicy="strict-origin-when-cross-origin"
