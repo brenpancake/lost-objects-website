@@ -438,11 +438,149 @@
     @media (max-width: 480px) {
       .city-bar-inner { grid-template-columns: 1fr 1fr; }
     }
+    /* ── SCENE PROGRESS BAR ─────────────────────────── */
+    .scene-progress {
+      position: fixed;
+      left: clamp(14px, 2vw, 28px);
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 150;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0;
+      width: 140px;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      pointer-events: none;
+    }
+
+    .scene-progress.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* Vertical spine line */
+    .sp-spine {
+      position: absolute;
+      top: 0; bottom: 0;
+      left: 3px;
+      width: 1px;
+      background: rgba(232,226,217,0.08);
+      z-index: 0;
+    }
+
+    /* Fill line that grows as you scroll */
+    .sp-fill {
+      position: absolute;
+      top: 0;
+      left: 3px;
+      width: 1px;
+      height: 0%;
+      background: var(--pink);
+      opacity: 0.5;
+      z-index: 1;
+      transition: height 0.2s ease;
+    }
+
+    .sp-item {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      padding: 10px 0;
+    }
+
+    .sp-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      border: 1px solid rgba(232,226,217,0.2);
+      background: transparent;
+      flex-shrink: 0;
+      transition: background 0.3s, border-color 0.3s, transform 0.3s;
+    }
+
+    .sp-item.active .sp-dot {
+      background: var(--pink);
+      border-color: var(--pink);
+      transform: scale(1.4);
+    }
+
+    .sp-item.past .sp-dot {
+      background: rgba(255,102,102,0.35);
+      border-color: rgba(255,102,102,0.35);
+    }
+
+    .sp-label {
+      font-size: 8px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--fg3);
+      white-space: nowrap;
+      opacity: 0;
+      transform: translateX(-6px);
+      transition: opacity 0.25s, transform 0.25s, color 0.25s;
+    }
+
+    .sp-item:hover .sp-label,
+    .sp-item.active .sp-label {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .sp-item.active .sp-label { color: var(--pink); }
+
+    .sp-num {
+      font-size: 7px;
+      letter-spacing: 0.18em;
+      color: rgba(232,226,217,0.18);
+      display: block;
+      margin-bottom: 1px;
+    }
+
+    /* Hide on mobile — not enough space */
+    @media (max-width: 768px) {
+      .scene-progress { display: none; }
+    }
   </style>
 </head>
 <body>
 
 <div class="grain"></div>
+
+<!-- SCENE PROGRESS BAR -->
+<div class="scene-progress" id="sceneProgress" aria-label="Scene navigation">
+  <div class="sp-spine"></div>
+  <div class="sp-fill" id="spFill"></div>
+
+  <div class="sp-item" data-target="scene-01" onclick="scrollToScene('scene-01')">
+    <div class="sp-dot"></div>
+    <div class="sp-label"><span class="sp-num">01</span>The Feeling</div>
+  </div>
+
+  <div class="sp-item" data-target="scene-02" onclick="scrollToScene('scene-02')">
+    <div class="sp-dot"></div>
+    <div class="sp-label"><span class="sp-num">02</span>How We Met</div>
+  </div>
+
+  <div class="sp-item" data-target="scene-03" onclick="scrollToScene('scene-03')">
+    <div class="sp-dot"></div>
+    <div class="sp-label"><span class="sp-num">03</span>The Characters</div>
+  </div>
+
+  <div class="sp-item" data-target="scene-04" onclick="scrollToScene('scene-04')">
+    <div class="sp-dot"></div>
+    <div class="sp-label"><span class="sp-num">04</span>What We Believe</div>
+  </div>
+
+  <div class="sp-item" data-target="scene-05" onclick="scrollToScene('scene-05')">
+    <div class="sp-dot"></div>
+    <div class="sp-label"><span class="sp-num">05</span>Why It Exists</div>
+  </div>
+</div>
 
 <!-- NAV -->
 <nav>
@@ -538,9 +676,7 @@
 <!-- ══════════════════════════════════════════════════ -->
 <!-- SCENE 01: THE FEELING                             -->
 <!-- ══════════════════════════════════════════════════ -->
-<section class="scene">
-  <div class="scene-marker reveal">
-    <span class="scene-num">Scene 01</span>
+<section class="scene" id="scene-01">
     <div class="scene-rule"></div>
     <span class="scene-title">The Feeling</span>
   </div>
@@ -592,7 +728,7 @@
 <!-- ══════════════════════════════════════════════════ -->
 <!-- SCENE 02: HOW WE MET                              -->
 <!-- ══════════════════════════════════════════════════ -->
-<section class="scene" style="background:var(--bg2);">
+<section class="scene" id="scene-02" style="background:var(--bg2);">
   <div class="scene-marker reveal">
     <span class="scene-num">Scene 02</span>
     <div class="scene-rule"></div>
@@ -621,7 +757,7 @@
 <!-- ══════════════════════════════════════════════════ -->
 <!-- SCENE 03: MEET KYRA & BRENDAN                     -->
 <!-- ══════════════════════════════════════════════════ -->
-<section class="profiles-section">
+<section class="profiles-section" id="scene-03">
   <div class="scene-marker reveal" style="max-width:var(--max);margin:0 auto;padding:0 var(--pad);margin-bottom:clamp(40px,6vh,64px);">
     <span class="scene-num">Scene 03</span>
     <div class="scene-rule"></div>
@@ -754,7 +890,7 @@
 <!-- ══════════════════════════════════════════════════ -->
 <!-- SCENE 04: THE PHILOSOPHY                          -->
 <!-- ══════════════════════════════════════════════════ -->
-<section class="philosophy-scene">
+<section class="philosophy-scene" id="scene-04">
   <div class="scene-marker reveal" style="max-width:var(--max);margin:0 auto;padding:0 var(--pad);margin-bottom:clamp(40px,6vh,64px);">
     <span class="scene-num">Scene 04</span>
     <div class="scene-rule"></div>
@@ -814,7 +950,7 @@
 <!-- ══════════════════════════════════════════════════ -->
 <!-- SCENE 05: THE FOUNDING MOMENT                    -->
 <!-- ══════════════════════════════════════════════════ -->
-<section class="founding-scene">
+<section class="founding-scene" id="scene-05">
   <div class="scene-marker reveal">
     <span class="scene-num">Scene 05</span>
     <div class="scene-rule"></div>
@@ -941,6 +1077,61 @@
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
   }, { threshold: 0.08 });
   document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+  /* ── SCENE PROGRESS BAR ──────────────────────────── */
+  const scenes = ['scene-01','scene-02','scene-03','scene-04','scene-05'];
+  const progress = document.getElementById('sceneProgress');
+  const fill = document.getElementById('spFill');
+  const items = document.querySelectorAll('.sp-item');
+
+  function scrollToScene(id) {
+    document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function updateProgress() {
+    const triggerEl = document.getElementById('scene-01');
+    if (!triggerEl) return;
+
+    const triggerTop = triggerEl.getBoundingClientRect().top;
+    const navH = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--nav-h'));
+
+    /* Show progress bar once scene 01 reaches the top */
+    if (triggerTop <= navH + 40) {
+      progress.classList.add('visible');
+    } else {
+      progress.classList.remove('visible');
+      items.forEach(i => { i.classList.remove('active','past'); });
+      fill.style.height = '0%';
+      return;
+    }
+
+    /* Find which scene is currently most visible */
+    let activeIndex = -1;
+    scenes.forEach((id, i) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      if (rect.top <= window.innerHeight * 0.45) activeIndex = i;
+    });
+
+    /* Update dots */
+    items.forEach((item, i) => {
+      item.classList.remove('active','past');
+      if (i === activeIndex) item.classList.add('active');
+      else if (i < activeIndex) item.classList.add('past');
+    });
+
+    /* Update fill height — proportional to progress through scenes */
+    if (activeIndex >= 0) {
+      const pct = (activeIndex / (scenes.length - 1)) * 100;
+      fill.style.height = pct + '%';
+    } else {
+      fill.style.height = '0%';
+    }
+  }
+
+  window.addEventListener('scroll', updateProgress, { passive: true });
+  updateProgress();
 </script>
 
 </body>
