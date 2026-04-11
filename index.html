@@ -489,7 +489,7 @@
       </div>
     </div>
     <div style="display:flex;align-items:center;gap:14px;">
-      <a href="contact.html" class="nav-cta">Feeling Lost?</a>
+      <a href="contact.html" class="nav-cta">Feeling Lost?</a><a href="https://www.instagram.com/wearelostobjects/" target="_blank" rel="noopener" aria-label="Lost Objects on Instagram" style="display:flex;align-items:center;opacity:0.5;transition:opacity 0.2s;margin-left:4px;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="2" width="20" height="20" rx="5" stroke="#FF6666" stroke-width="1.5"/><circle cx="12" cy="12" r="5" stroke="#FF6666" stroke-width="1.5"/><circle cx="17.5" cy="6.5" r="1.2" fill="#FF6666"/></svg></a>
       <div class="hamburger" onclick="toggleMenu()">
         <span></span><span></span>
       </div>
@@ -502,7 +502,9 @@
   <a href="services.html" onclick="toggleMenu()">Services</a>
   <a href="about.html"        onclick="toggleMenu()">About</a>
   <a href="contact.html"  onclick="toggleMenu()">Feeling Lost?</a>
-</div>
+  <a href="https://www.instagram.com/wearelostobjects/" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:10px;font-size:13px;letter-spacing:0.16em;text-transform:uppercase;color:rgba(232,226,217,0.5);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="#FF6666" stroke-width="1.5"/><circle cx="12" cy="12" r="5" stroke="#FF6666" stroke-width="1.5"/><circle cx="17.5" cy="6.5" r="1.2" fill="#FF6666"/></svg>Instagram</a>
+  <button onclick="toggleMenu();openLead();" style="display:flex;align-items:center;gap:10px;background:none;border:none;cursor:pointer;font-size:13px;letter-spacing:0.16em;text-transform:uppercase;color:rgba(255,102,102,0.65);font-family:'Inter',sans-serif;padding:0;"><svg width="12" height="12" viewBox="0 0 10 10" fill="none"><polygon points="1,0.5 9.5,5 1,9.5" fill="#FF6666" opacity="0.8"/></svg>Free Seminar</button>
+
 
 <!-- HERO -->
 <section class="hero">
@@ -928,5 +930,213 @@
 </script>
 
 <script src="cursor-fx.js"></script>
+<!-- LEAD CAPTURE MODAL — Lost Objects Free Seminar -->
+<!-- Shared across all pages. Kit form ID: replace YOUR_KIT_FORM_ID below -->
+<div id="leadModal" style="
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:99995;
+  align-items:center;
+  justify-content:center;
+  background:rgba(10,9,8,0.88);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  padding:20px;
+">
+  <div style="
+    background:#111010;
+    border:1px solid rgba(255,102,102,0.22);
+    max-width:520px;
+    width:100%;
+    position:relative;
+  ">
+    <!-- Close -->
+    <button onclick="closeLead()" style="
+      position:absolute;top:14px;right:16px;
+      background:none;border:none;cursor:pointer;
+      font-size:9px;letter-spacing:0.2em;text-transform:uppercase;
+      color:rgba(232,226,217,0.25);font-family:'Inter',sans-serif;
+      transition:color 0.2s;
+    " onmouseover="this.style.color='#FF6666'" onmouseout="this.style.color='rgba(232,226,217,0.25)'">✕ Close</button>
+
+    <!-- Header -->
+    <div style="padding:36px 36px 0;border-bottom:1px solid rgba(232,226,217,0.07);padding-bottom:28px;">
+      <div style="font-size:8px;letter-spacing:0.28em;text-transform:uppercase;color:#FF6666;opacity:0.6;margin-bottom:12px;font-family:'Inter',sans-serif;">Free — B&amp;H BILD Expo 2025</div>
+      <h2 style="font-family:'DM Serif Display',serif;font-size:clamp(22px,3.5vw,32px);font-weight:400;line-height:1.05;letter-spacing:-0.02em;color:#e8e2d9;margin-bottom:12px;">
+        How Instagram is changing<br><em style="font-style:italic;color:#FF6666;">filmmakers' lives.</em>
+      </h2>
+      <p style="font-size:12px;font-weight:300;color:rgba(232,226,217,0.5);line-height:1.75;font-family:'Inter',sans-serif;">
+        Kyra and Brendan's full keynote from the B&amp;H BILD Expo — free. What's changing, what it means for your career, and exactly what to do about it. No pitch, no paywall.
+      </p>
+    </div>
+
+    <!-- Form -->
+    <div style="padding:28px 36px 36px;" id="leadFormWrap">
+      <form id="leadForm" style="display:flex;flex-direction:column;gap:12px;">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <div style="display:flex;flex-direction:column;gap:7px;">
+            <label style="font-size:8px;letter-spacing:0.22em;text-transform:uppercase;color:rgba(232,226,217,0.22);font-family:'Inter',sans-serif;">First name <span style="color:#FF6666;">*</span></label>
+            <input type="text" id="lf-first" name="first_name" placeholder="First" required style="
+              background:#161514;border:1px solid rgba(232,226,217,0.07);
+              color:#e8e2d9;font-family:'Inter',sans-serif;font-size:13px;font-weight:300;
+              padding:11px 14px;outline:none;border-radius:0;-webkit-appearance:none;
+              transition:border-color 0.2s;
+            " onfocus="this.style.borderColor='rgba(255,102,102,0.4)'" onblur="this.style.borderColor='rgba(232,226,217,0.07)'" />
+          </div>
+          <div style="display:flex;flex-direction:column;gap:7px;">
+            <label style="font-size:8px;letter-spacing:0.22em;text-transform:uppercase;color:rgba(232,226,217,0.22);font-family:'Inter',sans-serif;">Last name <span style="color:#FF6666;">*</span></label>
+            <input type="text" id="lf-last" name="last_name" placeholder="Last" required style="
+              background:#161514;border:1px solid rgba(232,226,217,0.07);
+              color:#e8e2d9;font-family:'Inter',sans-serif;font-size:13px;font-weight:300;
+              padding:11px 14px;outline:none;border-radius:0;-webkit-appearance:none;
+              transition:border-color 0.2s;
+            " onfocus="this.style.borderColor='rgba(255,102,102,0.4)'" onblur="this.style.borderColor='rgba(232,226,217,0.07)'" />
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:7px;">
+          <label style="font-size:8px;letter-spacing:0.22em;text-transform:uppercase;color:rgba(232,226,217,0.22);font-family:'Inter',sans-serif;">Email address <span style="color:#FF6666;">*</span></label>
+          <input type="email" id="lf-email" name="email" placeholder="you@yourdomain.com" required style="
+            background:#161514;border:1px solid rgba(232,226,217,0.07);
+            color:#e8e2d9;font-family:'Inter',sans-serif;font-size:13px;font-weight:300;
+            padding:11px 14px;outline:none;border-radius:0;-webkit-appearance:none;
+            transition:border-color 0.2s;
+          " onfocus="this.style.borderColor='rgba(255,102,102,0.4)'" onblur="this.style.borderColor='rgba(232,226,217,0.07)'" />
+        </div>
+
+        <!-- Opt-in consent -->
+        <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;margin-top:4px;">
+          <input type="checkbox" id="lf-optin" name="optin" required style="
+            width:14px;height:14px;flex-shrink:0;margin-top:2px;
+            background:#161514;border:1px solid rgba(232,226,217,0.2);
+            appearance:none;-webkit-appearance:none;cursor:pointer;
+            transition:background 0.2s,border-color 0.2s;position:relative;
+          " onchange="this.style.background=this.checked?'#FF6666':'#161514';this.style.borderColor=this.checked?'#FF6666':'rgba(232,226,217,0.2)';" />
+          <span style="font-size:10px;font-weight:300;color:rgba(232,226,217,0.35);line-height:1.6;font-family:'Inter',sans-serif;">
+            I agree to receive the free seminar and occasional emails from Lost Objects about social media strategy for the film industry. Unsubscribe any time.
+          </span>
+        </label>
+
+        <button type="submit" id="leadSubmitBtn" style="
+          background:#FF6666;color:#0f0e0d;
+          font-size:10px;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;
+          padding:13px 28px;border:none;cursor:pointer;
+          font-family:'Inter',sans-serif;margin-top:8px;
+          transition:opacity 0.2s;
+        " onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
+          Send me the free seminar →
+        </button>
+
+        <p style="font-size:9px;color:rgba(232,226,217,0.2);line-height:1.6;font-family:'Inter',sans-serif;margin-top:4px;">
+          No spam. No selling your info. Just the seminar and useful things when we have them.
+        </p>
+      </form>
+    </div>
+
+    <!-- Success state -->
+    <div id="leadSuccess" style="display:none;padding:36px;text-align:center;">
+      <div style="width:48px;height:48px;border:1px solid rgba(255,102,102,0.3);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;">
+        <svg width="18" height="14" viewBox="0 0 18 14" fill="none"><path d="M1 7l5 5 11-11" stroke="#FF6666" stroke-width="1.5" stroke-linecap="square"/></svg>
+      </div>
+      <h3 style="font-family:'DM Serif Display',serif;font-size:26px;font-style:italic;color:#e8e2d9;margin-bottom:10px;">You're in.</h3>
+      <p style="font-size:12px;font-weight:300;color:rgba(232,226,217,0.5);line-height:1.75;font-family:'Inter',sans-serif;">Check your inbox — the seminar is on its way. If you don't see it in a few minutes, check your spam folder.</p>
+    </div>
+
+  </div>
+</div>
+
+<script>
+/* ── LEAD CAPTURE ─────────────────────────────────── */
+function openLead() {
+  const m = document.getElementById('leadModal');
+  m.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLead() {
+  const m = document.getElementById('leadModal');
+  m.style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+/* Close on backdrop click */
+document.getElementById('leadModal').addEventListener('click', function(e) {
+  if (e.target === this) closeLead();
+});
+
+/* Close on Escape */
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeLead();
+});
+
+/* Form submission — Kit (ConvertKit) API */
+document.getElementById('leadForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const btn = document.getElementById('leadSubmitBtn');
+  btn.textContent = 'Sending...';
+  btn.style.opacity = '0.6';
+  btn.disabled = true;
+
+  const first = document.getElementById('lf-first').value.trim();
+  const last  = document.getElementById('lf-last').value.trim();
+  const email = document.getElementById('lf-email').value.trim();
+
+  /*
+    ── KIT (CONVERTKIT) SETUP ──────────────────────────
+    1. Go to kit.com and create a free account
+    2. Go to Grow → Landing Pages & Forms → Create a Form
+    3. Name it "B&H Seminar Lead Capture"
+    4. In the form settings, get your Form ID (shown in the URL or embed code)
+    5. Replace YOUR_KIT_FORM_ID below with that number
+    6. Also grab your public API key from Settings → Developer
+       and replace YOUR_KIT_API_KEY below
+
+    Kit free tier: up to 10,000 subscribers, unlimited emails.
+    ────────────────────────────────────────────────────
+  */
+  const KIT_FORM_ID = 'YOUR_KIT_FORM_ID';
+  const KIT_API_KEY = 'YOUR_KIT_API_KEY';
+
+  try {
+    const res = await fetch(`https://api.convertkit.com/v3/forms/${KIT_FORM_ID}/subscribe`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        api_key: KIT_API_KEY,
+        first_name: first + ' ' + last,
+        email: email,
+        tags: ['bh-seminar', 'website-lead'],
+      })
+    });
+
+    if (res.ok) {
+      document.getElementById('leadFormWrap').style.display = 'none';
+      document.getElementById('leadSuccess').style.display  = 'block';
+      /* Remember they signed up so we don't show the timed popup again */
+      try { localStorage.setItem('lo_lead_captured', '1'); } catch(e) {}
+    } else {
+      btn.textContent = 'Something went wrong — try again';
+      btn.style.opacity = '1';
+      btn.disabled = false;
+    }
+  } catch(err) {
+    btn.textContent = 'Something went wrong — try again';
+    btn.style.opacity = '1';
+    btn.disabled = false;
+  }
+});
+
+/* ── TIMED POPUP — shows after 25s if not already captured ── */
+(function() {
+  try {
+    if (localStorage.getItem('lo_lead_captured')) return;
+  } catch(e) {}
+  setTimeout(() => {
+    const m = document.getElementById('leadModal');
+    if (m && m.style.display === 'none') openLead();
+  }, 25000);
+})();
+</script>
+
 </body>
 </html>
