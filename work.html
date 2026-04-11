@@ -3,15 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Lost Objects — Social Strategy for the Film Industry</title>
-  <meta name="description" content="Kyra and Brendan Sweeney. Social media strategy and full management for filmmakers, creative brands, and film tech companies." />
+  <title>Work — Lost Objects</title>
+  <meta name="description" content="Selected work from Lost Objects. Social media content for filmmakers, grip companies, cinematographers, and film tech brands." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
     html { scroll-behavior: smooth; }
-    img { display: block; max-width: 100%; }
     a { text-decoration: none; color: inherit; }
 
     :root {
@@ -52,25 +51,12 @@
       animation: grain 0.6s steps(1) infinite;
     }
     @keyframes grain {
-      0%   { transform: translate(0,0); }
-      10%  { transform: translate(-3%,-4%); }
-      20%  { transform: translate(4%,2%); }
-      30%  { transform: translate(-1%,5%); }
-      40%  { transform: translate(3%,-3%); }
-      50%  { transform: translate(-4%,1%); }
-      60%  { transform: translate(2%,4%); }
-      70%  { transform: translate(-3%,-1%); }
-      80%  { transform: translate(1%,3%); }
-      90%  { transform: translate(-2%,-4%); }
+      0%   { transform: translate(0,0); }   10%  { transform: translate(-3%,-4%); }
+      20%  { transform: translate(4%,2%); }  30%  { transform: translate(-1%,5%); }
+      40%  { transform: translate(3%,-3%); } 50%  { transform: translate(-4%,1%); }
+      60%  { transform: translate(2%,4%); }  70%  { transform: translate(-3%,-1%); }
+      80%  { transform: translate(1%,3%); }  90%  { transform: translate(-2%,-4%); }
       100% { transform: translate(3%,0); }
-    }
-
-    .vignette {
-      position: fixed;
-      inset: 0;
-      background: radial-gradient(ellipse at 50% 0%, transparent 45%, rgba(10,9,8,0.6) 100%);
-      pointer-events: none;
-      z-index: 9998;
     }
 
     /* NAV */
@@ -79,335 +65,342 @@
       top: 0; left: 0; right: 0;
       z-index: 200;
       height: var(--nav-h);
-      background: transparent;
-      border-bottom: 1px solid transparent;
-      transition: background 0.4s, border-color 0.4s, backdrop-filter 0.4s;
-    }
-    nav.scrolled {
       background: rgba(15,14,13,0.9);
-      border-bottom-color: var(--fg4);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--fg4);
     }
     .nav-inner {
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 0 var(--pad);
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      max-width: var(--max); margin: 0 auto;
+      padding: 0 var(--pad); height: 100%;
+      display: flex; align-items: center; justify-content: space-between;
     }
-    .nav-logo {
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.28em;
-      text-transform: uppercase;
-      color: var(--pink);
-    }
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: clamp(20px, 3vw, 40px);
-    }
-    .nav-links a {
-      font-size: 10px;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: rgba(232,226,217,0.55);
-      transition: color 0.2s;
-    }
+    .nav-logo { font-size: 11px; font-weight: 600; letter-spacing: 0.28em; text-transform: uppercase; color: var(--pink); }
+    .nav-links { display: flex; align-items: center; gap: clamp(20px,3vw,40px); }
+    .nav-links a { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--fg3); transition: color 0.2s; }
     .nav-links a:hover { color: var(--fg); }
-    .lo-icon {
-      cursor: pointer;
-      opacity: 0.45;
-      transition: opacity 0.2s, transform 0.3s;
-      display: flex;
-      align-items: center;
-      margin-left: 2px;
-    }
-    .lo-icon:hover { opacity: 1; transform: rotate(15deg) scale(1.1); }
-    .nav-cta {
-      font-size: 10px;
-      font-weight: 500;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--pink);
-      border: 1px solid rgba(255,102,102,0.35);
-      padding: 8px 20px;
-      transition: background 0.2s, color 0.2s;
-    }
+    .nav-links a.active { color: var(--fg2); }
+    .nav-cta { font-size: 10px; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--pink); border: 1px solid rgba(255,102,102,0.35); padding: 8px 20px; transition: background 0.2s, color 0.2s; }
     .nav-cta:hover { background: var(--pink); color: var(--bg); }
-    .hamburger {
-      display: none;
-      flex-direction: column;
-      gap: 5px;
-      cursor: pointer;
-    }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
     .hamburger span { display: block; width: 22px; height: 1px; background: rgba(232,226,217,0.6); }
-    .mobile-menu {
-      display: none;
-      position: fixed;
-      top: var(--nav-h);
-      left: 0; right: 0;
-      background: rgba(15,14,13,0.97);
-      z-index: 199;
-      padding: 28px var(--pad) 36px;
-      border-bottom: 1px solid var(--fg4);
-      flex-direction: column;
-      gap: 24px;
-    }
+    .mobile-menu { display: none; position: fixed; top: var(--nav-h); left: 0; right: 0; background: rgba(15,14,13,0.97); z-index: 199; padding: 28px var(--pad) 36px; border-bottom: 1px solid var(--fg4); flex-direction: column; gap: 24px; }
     .mobile-menu.open { display: flex; }
     .mobile-menu a { font-size: 13px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--fg2); }
 
-    /* HERO */
-    .hero {
-      position: relative;
-      width: 100%;
-      height: 100svh;
-      min-height: 600px;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    /* PAGE HEADER */
+    .page-header {
+      padding-top: var(--nav-h);
+      border-bottom: 1px solid var(--fg4);
     }
-    .hero-video-wrap {
-      position: absolute;
-      inset: 0;
-      z-index: 1;
-      background: var(--bg);
+    .page-header-inner {
+      max-width: var(--max); margin: 0 auto;
+      padding: clamp(52px,8vh,96px) var(--pad) clamp(36px,5vh,56px);
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: end;
+      gap: 40px;
     }
-    .hero-video-wrap iframe {
-      position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      width: 177.78vh;
-      height: 133.33vw;
-      min-width: 100vw;
-      min-height: 100vh;
-      border: none;
-      pointer-events: none;
+    .page-eyebrow {
+      display: flex; align-items: center; gap: 14px;
+      margin-bottom: clamp(16px,2.5vh,28px);
+      opacity: 0; animation: fadeUp 0.7s ease 0.1s forwards;
     }
-    .hero-overlay-base     { position: absolute; inset: 0; background: rgba(10,9,8,0.52); z-index: 2; }
-    .hero-overlay-gradient {
-      position: absolute; inset: 0; z-index: 3;
-      background: linear-gradient(to bottom, rgba(15,14,13,0.45) 0%, transparent 35%, transparent 65%, rgba(15,14,13,0.72) 100%);
-    }
-    .hero-overlay-vignette {
-      position: absolute; inset: 0; z-index: 4;
-      background: radial-gradient(ellipse at center, transparent 40%, rgba(10,9,8,0.55) 100%);
-    }
-    .hero-content {
-      position: relative;
-      z-index: 10;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      padding: var(--nav-h) var(--pad) 0;
-      max-width: min(860px, 90vw);
-    }
-    .hero-eyebrow {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      margin-bottom: clamp(20px, 3.5vh, 36px);
-      opacity: 0;
-      animation: fadeUp 0.7s ease 0.15s forwards;
-    }
-    .eyebrow-line { width: 28px; height: 1px; background: var(--pink); opacity: 0.5; flex-shrink: 0; }
-    .eyebrow-text { font-size: 9px; letter-spacing: 0.28em; text-transform: uppercase; color: var(--pink); opacity: 0.7; }
-    .hero-hl {
+    .eyebrow-line { width: 28px; height: 1px; background: var(--pink); opacity: 0.45; flex-shrink: 0; }
+    .eyebrow-text { font-size: 9px; letter-spacing: 0.26em; text-transform: uppercase; color: var(--pink); opacity: 0.65; }
+    .page-title {
       font-family: var(--serif);
-      font-size: clamp(52px, 7.5vw, 108px);
+      font-size: clamp(48px, 6vw, 88px);
       font-weight: 400;
       line-height: 0.95;
       letter-spacing: -0.025em;
       color: var(--fg);
-      margin-bottom: clamp(20px, 3.5vh, 36px);
-      opacity: 0;
-      animation: fadeUp 0.8s ease 0.3s forwards;
-      text-shadow: 0 2px 40px rgba(10,9,8,0.6);
+      opacity: 0; animation: fadeUp 0.7s ease 0.2s forwards;
     }
-    .hero-hl em { font-style: italic; color: var(--pink); }
-    .hero-desc {
-      font-size: clamp(12px, 1.1vw, 15px);
+    .page-title em { font-style: italic; color: var(--pink); }
+    .page-header-meta {
+      text-align: right;
+      opacity: 0; animation: fadeUp 0.7s ease 0.35s forwards;
+    }
+    .page-header-meta p {
+      font-size: clamp(11px,0.9vw,13px);
       font-weight: 300;
-      color: rgba(232,226,217,0.72);
+      color: var(--fg2);
       line-height: 1.8;
-      max-width: 480px;
-      margin-bottom: clamp(28px, 4.5vh, 48px);
-      opacity: 0;
-      animation: fadeUp 0.7s ease 0.5s forwards;
-      text-shadow: 0 1px 12px rgba(10,9,8,0.8);
+      max-width: 320px;
     }
-    .hero-desc strong { color: var(--fg); font-weight: 400; }
-    .hero-actions {
+
+    /* FILTER BAR */
+    .filter-bar {
+      border-bottom: 1px solid var(--fg4);
+    }
+    .filter-inner {
+      max-width: var(--max); margin: 0 auto;
+      padding: 0 var(--pad);
       display: flex;
       align-items: center;
-      gap: 20px;
-      flex-wrap: wrap;
-      justify-content: center;
-      opacity: 0;
-      animation: fadeUp 0.7s ease 0.65s forwards;
+      gap: 0;
+      overflow-x: auto;
+      scrollbar-width: none;
     }
-    .hero-scroll {
+    .filter-inner::-webkit-scrollbar { display: none; }
+    .filter-btn {
+      font-size: 9px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--fg3);
+      padding: 16px 22px;
+      border-right: 1px solid var(--fg4);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: color 0.2s, background 0.2s;
+      background: none;
+      border-top: none;
+      border-bottom: none;
+      border-left: none;
+      position: relative;
+    }
+    .filter-btn::after {
+      content: '';
       position: absolute;
-      bottom: 28px; left: 50%;
-      transform: translateX(-50%);
-      z-index: 10;
+      bottom: 0; left: 0; right: 0;
+      height: 1px;
+      background: var(--pink);
+      transform: scaleX(0);
+      transition: transform 0.25s ease;
+    }
+    .filter-btn:hover { color: var(--fg2); }
+    .filter-btn.active { color: var(--fg); }
+    .filter-btn.active::after { transform: scaleX(1); }
+    .filter-count {
+      display: inline-block;
+      font-size: 7px;
+      letter-spacing: 0.1em;
+      color: var(--pink);
+      opacity: 0.5;
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+
+    /* MASONRY GRID */
+    .work-section {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: clamp(36px,5vh,64px) var(--pad);
+    }
+
+    .masonry {
+      columns: 3;
+      column-gap: 16px;
+    }
+
+    /* Work card — the core unit */
+    .work-card {
+      break-inside: avoid;
+      margin-bottom: 16px;
+      background: var(--bg2);
+      border: 1px solid var(--fg4);
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      transition: border-color 0.3s;
+      display: block;
+    }
+    .work-card:hover { border-color: rgba(255,102,102,0.22); }
+    .work-card:hover .card-overlay { opacity: 1; }
+    .work-card:hover .card-meta { transform: translateY(0); opacity: 1; }
+
+    /* 4x5 ratio (portrait Instagram) */
+    .ratio-4x5 .card-media { aspect-ratio: 4/5; }
+
+    /* 9x16 ratio (Reels / Stories) */
+    .ratio-9x16 .card-media { aspect-ratio: 9/16; }
+
+    /* 1x1 ratio (square post) */
+    .ratio-1x1 .card-media { aspect-ratio: 1/1; }
+
+    /* 16x9 ratio (landscape) */
+    .ratio-16x9 .card-media { aspect-ratio: 16/9; }
+
+    /* FEATURED — spans conceptually wider, we handle via column-span */
+    .work-card.featured {
+      margin-bottom: 16px;
+    }
+
+    .card-media {
+      width: 100%;
+      background: var(--bg);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Placeholder shown before real content */
+    .card-placeholder {
+      position: absolute;
+      inset: 0;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 8px;
+      justify-content: center;
+      gap: 12px;
+    }
+    .placeholder-icon {
+      width: 32px; height: 32px;
+      border: 1px solid rgba(255,102,102,0.15);
+      border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .placeholder-icon svg { opacity: 0.3; }
+    .placeholder-label {
+      font-size: 8px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(232,226,217,0.14);
+    }
+    .placeholder-ratio {
+      font-family: var(--serif);
+      font-size: 11px;
+      font-style: italic;
+      color: rgba(255,102,102,0.2);
+    }
+
+    /* Instagram embed container */
+    .ig-embed-wrap {
+      width: 100%;
+      display: none; /* shown via JS after load */
+    }
+    .ig-embed-wrap.loaded { display: block; }
+
+    /* Hover overlay */
+    .card-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(10,9,8,0.88) 0%, rgba(10,9,8,0.2) 50%, transparent 100%);
       opacity: 0;
-      animation: fadeIn 1s ease 1.2s forwards;
+      transition: opacity 0.35s ease;
+      z-index: 2;
     }
-    .hero-scroll span { font-size: 8px; letter-spacing: 0.28em; text-transform: uppercase; color: rgba(232,226,217,0.3); }
-    .scroll-line {
-      width: 1px; height: 32px;
-      background: linear-gradient(to bottom, rgba(232,226,217,0.3), transparent);
-      animation: scrollPulse 2s ease-in-out infinite;
-    }
-    @keyframes scrollPulse {
-      0%,100% { opacity: 0.3; }
-      50%      { opacity: 0.8; }
-    }
-    .hero-meta-strip {
+
+    /* Card metadata — slides up on hover */
+    .card-meta {
       position: absolute;
       bottom: 0; left: 0; right: 0;
-      z-index: 10;
-      display: flex;
-      justify-content: space-between;
-      padding: 0 var(--pad) 28px;
-      pointer-events: none;
+      padding: 20px;
+      z-index: 3;
+      transform: translateY(8px);
+      opacity: 0;
+      transition: transform 0.35s ease, opacity 0.35s ease;
     }
-    .hero-meta-lbl { font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(232,226,217,0.25); }
-    .hero-meta-right { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--cream); opacity: 0.45; }
+    .card-client {
+      font-size: 8px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--pink);
+      opacity: 0.7;
+      margin-bottom: 5px;
+    }
+    .card-title {
+      font-family: var(--serif);
+      font-size: clamp(14px,1.2vw,18px);
+      color: var(--fg);
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+    }
+    .card-type {
+      margin-top: 8px;
+      font-size: 8px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--cream);
+      opacity: 0.45;
+    }
 
-    /* BUTTONS */
-    .btn-p {
-      display: inline-block;
+    /* Card info below the media (shown always on mobile) */
+    .card-info {
+      padding: 16px;
+      border-top: 1px solid var(--fg4);
+    }
+    .card-info-client {
+      font-size: 8px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--pink);
+      opacity: 0.55;
+      margin-bottom: 4px;
+    }
+    .card-info-title {
+      font-family: var(--serif);
+      font-size: 15px;
+      color: var(--fg);
+      line-height: 1.25;
+      letter-spacing: -0.01em;
+    }
+
+    /* CASE STUDY CARDS — wider editorial cards with text */
+    .case-card {
+      break-inside: avoid;
+      margin-bottom: 16px;
+      background: var(--bg2);
+      border: 1px solid var(--fg4);
+      display: block;
+      transition: border-color 0.3s, background 0.3s;
+      position: relative;
+    }
+    .case-card:hover { border-color: rgba(255,102,102,0.22); background: #1a1918; }
+    .case-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 2px; height: 0;
       background: var(--pink);
-      color: var(--bg);
-      font-size: 10px; font-weight: 600;
-      letter-spacing: 0.2em; text-transform: uppercase;
-      padding: 13px 28px;
-      transition: opacity 0.2s;
-      white-space: nowrap;
+      transition: height 0.4s ease;
     }
-    .btn-p:hover { opacity: 0.82; }
-    .btn-g {
-      font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
-      color: rgba(232,226,217,0.6);
-      border-bottom: 1px solid rgba(232,226,217,0.22);
-      padding-bottom: 2px;
-      transition: color 0.2s, border-color 0.2s;
-      white-space: nowrap;
-    }
-    .btn-g:hover { color: var(--fg); border-color: rgba(232,226,217,0.5); }
+    .case-card:hover::before { height: 100%; }
 
-    /* SECTION SHELL */
-    .sec { border-top: 1px solid var(--fg4); }
-    .sec-head {
+    .case-media { aspect-ratio: 16/9; width: 100%; background: var(--bg); overflow: hidden; position: relative; }
+    .case-media img { width: 100%; height: 100%; object-fit: cover; opacity: 0.7; filter: grayscale(15%); transition: transform 0.6s, opacity 0.3s; }
+    .case-card:hover .case-media img { transform: scale(1.03); opacity: 0.88; }
+    .case-media-ph { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
+
+    .case-body { padding: clamp(20px,2.5vw,32px); }
+    .case-tag { font-size: 8px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--pink); opacity: 0.5; margin-bottom: 10px; }
+    .case-title { font-family: var(--serif); font-size: clamp(18px,1.6vw,24px); color: var(--fg); line-height: 1.2; margin-bottom: 12px; letter-spacing: -0.01em; }
+    .case-desc { font-size: clamp(11px,0.82vw,13px); font-weight: 300; color: var(--fg2); line-height: 1.8; }
+    .case-result { display: inline-block; margin-top: 16px; font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--cream); opacity: 0.55; }
+
+    /* SECTION DIVIDER */
+    .work-divider {
+      max-width: var(--max); margin: 0 auto;
+      padding: 0 var(--pad);
+      border-top: 1px solid var(--fg4);
       display: grid;
       grid-template-columns: 66px 1fr;
-      border-bottom: 1px solid var(--fg4);
-      max-width: var(--max);
-      margin: 0 auto;
+      margin-bottom: clamp(28px,4vh,48px);
     }
-    .sec-gut {
+    .divider-gutter {
       border-right: 1px solid var(--fg4);
-      display: flex; align-items: center; justify-content: center;
       padding: 16px;
+      display: flex; align-items: center; justify-content: center;
     }
-    .sec-gut span {
+    .divider-gutter span {
       font-size: 8px; letter-spacing: 0.24em; text-transform: uppercase;
       color: var(--fg3); writing-mode: vertical-rl; transform: rotate(180deg);
     }
-    .sec-hc {
+    .divider-content {
       padding: 16px var(--pad);
       display: flex; justify-content: space-between; align-items: center;
     }
-    .sec-lbl { font-size: 9px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--fg3); }
+    .divider-label { font-size: 9px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--fg3); }
 
-    /* TAGLINE */
-    .tagline { border-top: 1px solid var(--fg4); }
-    .tagline-inner {
-      max-width: var(--max); margin: 0 auto;
-      padding: clamp(40px, 7vh, 80px) var(--pad);
-      display: flex; gap: clamp(32px, 6vw, 100px); align-items: flex-start;
-    }
-    .tagline-idx { font-size: 9px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--fg3); padding-top: 5px; flex-shrink: 0; }
-    .tagline-txt { font-family: var(--serif); font-size: clamp(17px, 1.9vw, 28px); font-style: italic; color: var(--fg2); line-height: 1.45; letter-spacing: -0.01em; }
-    .tagline-txt em { font-style: normal; color: var(--fg); }
-
-    /* SERVICES */
-    .svc-grid { max-width: var(--max); margin: 0 auto; display: grid; grid-template-columns: 66px repeat(3,1fr); }
-    .svc-gut { border-right: 1px solid var(--fg4); }
-    .svc {
-      padding: clamp(28px, 4vw, 48px) clamp(20px, 2.5vw, 36px);
-      border-right: 1px solid var(--fg4);
-      position: relative; transition: background 0.3s;
-    }
-    .svc:last-child { border-right: none; }
-    .svc::before { content: ''; position: absolute; top: 0; left: 0; width: 2px; height: 0; background: var(--pink); transition: height 0.4s ease; }
-    .svc:hover { background: rgba(255,102,102,0.022); }
-    .svc:hover::before { height: 100%; }
-    .svc-num { font-size: 9px; letter-spacing: 0.22em; color: var(--pink); opacity: 0.36; margin-bottom: clamp(18px, 2.5vw, 28px); }
-    .svc-name { font-family: var(--serif); font-size: clamp(19px, 1.7vw, 26px); color: var(--fg); line-height: 1.15; margin-bottom: 16px; letter-spacing: -0.01em; }
-    .svc-rule { width: 22px; height: 1px; background: var(--pink); opacity: 0.28; margin-bottom: 16px; }
-    .svc-desc { font-size: clamp(11px, 0.85vw, 13px); font-weight: 300; color: var(--fg2); line-height: 1.85; }
-    .svc-lnk { display: inline-block; margin-top: 20px; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--pink); opacity: 0.4; border-bottom: 1px solid rgba(255,102,102,0.15); padding-bottom: 2px; transition: opacity 0.2s; }
-    .svc:hover .svc-lnk { opacity: 1; }
-
-    /* WORK */
-    .work-grid { max-width: var(--max); margin: 0 auto; display: grid; grid-template-columns: repeat(2,1fr); gap: 1px; background: var(--fg4); }
-    .wcard { background: var(--bg); padding: clamp(22px, 3vw, 44px); display: block; transition: background 0.3s; }
-    .wcard:hover { background: var(--bg2); }
-    .wimg { aspect-ratio: 16/9; background: var(--bg2); margin-bottom: clamp(18px, 2.5vw, 28px); overflow: hidden; }
-    .wimg img { width: 100%; height: 100%; object-fit: cover; opacity: 0.7; filter: grayscale(18%); transition: transform 0.6s, opacity 0.3s; }
-    .wcard:hover .wimg img { transform: scale(1.03); opacity: 0.86; }
-    .wimg-ph { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
-    .pp-lbl { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(232,226,217,0.14); }
-    .wtag { font-size: 8px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--pink); opacity: 0.48; margin-bottom: 9px; }
-    .wtitle { font-family: var(--serif); font-size: clamp(17px, 1.5vw, 22px); color: var(--fg); line-height: 1.2; margin-bottom: 11px; letter-spacing: -0.01em; }
-    .wdesc { font-size: clamp(11px, 0.82vw, 13px); font-weight: 300; color: var(--fg2); line-height: 1.8; }
-    .wresult { display: inline-block; margin-top: 16px; font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--cream); opacity: 0.55; }
-
-    /* TESTIMONIAL */
-    .testi { border-top: 1px solid var(--fg4); }
-    .testi-inner {
-      max-width: var(--max); margin: 0 auto;
-      padding: clamp(52px, 9vh, 100px) var(--pad) clamp(52px, 9vh, 100px) clamp(60px, 11vw, 160px);
-      position: relative;
-    }
-    .tq-mark { position: absolute; left: var(--pad); top: clamp(44px, 7vh, 80px); font-family: var(--serif); font-size: clamp(60px, 7.5vw, 108px); font-style: italic; color: var(--pink); opacity: 0.12; line-height: 1; user-select: none; }
-    .tq-txt { font-family: var(--serif); font-size: clamp(17px, 1.7vw, 25px); font-style: italic; color: var(--fg2); line-height: 1.5; max-width: 680px; }
-    .tq-txt em { font-style: normal; color: var(--fg); }
-    .tq-attr { margin-top: 22px; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--fg3); }
-    .tq-attr span { color: var(--cream); opacity: 0.6; }
-    .tq-dots { display: flex; gap: 10px; margin-top: 26px; }
-    .tdot { height: 1px; width: 18px; background: var(--fg3); cursor: pointer; transition: background 0.2s, width 0.2s; }
-    .tdot.active { background: var(--pink); width: 30px; }
-
-    /* CLIENTS */
-    .clients { border-top: 1px solid var(--fg4); border-bottom: 1px solid var(--fg4); display: flex; overflow: hidden; }
-    .clients-lbl-block { padding: 17px 22px; border-right: 1px solid var(--fg4); flex-shrink: 0; display: flex; align-items: center; }
-    .clients-lbl { font-size: 8px; letter-spacing: 0.26em; text-transform: uppercase; color: var(--fg3); white-space: nowrap; }
-    .clients-scroll { overflow: hidden; flex: 1; }
-    .clients-track { display: flex; animation: ticker 24s linear infinite; }
-    @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-    .chip { padding: 17px 30px; border-right: 1px solid var(--fg4); font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(232,226,217,0.19); font-weight: 500; white-space: nowrap; transition: color 0.2s; }
-    .chip:hover { color: var(--fg2); }
-
-    /* CTA */
-    .cta-band { border-top: 1px solid var(--fg4); }
-    .cta-inner { max-width: var(--max); margin: 0 auto; padding: clamp(64px, 11vh, 120px) var(--pad); text-align: center; }
+    /* CTA BAND */
+    .cta-band { border-top: 1px solid var(--fg4); margin-top: clamp(40px,6vh,80px); }
+    .cta-inner { max-width: var(--max); margin: 0 auto; padding: clamp(64px,10vh,100px) var(--pad); text-align: center; }
     .cta-eye { font-size: 9px; letter-spacing: 0.26em; text-transform: uppercase; color: var(--pink); opacity: 0.55; margin-bottom: 22px; }
-    .cta-hl { font-family: var(--serif); font-size: clamp(32px, 4.2vw, 64px); font-style: italic; color: var(--fg); line-height: 1.08; letter-spacing: -0.02em; margin-bottom: 28px; }
+    .cta-hl { font-family: var(--serif); font-size: clamp(30px,3.8vw,58px); font-style: italic; color: var(--fg); line-height: 1.08; letter-spacing: -0.02em; margin-bottom: 28px; }
     .cta-hl em { font-style: normal; color: var(--pink); }
-    .cta-sub { font-size: clamp(12px, 0.95vw, 14px); font-weight: 300; color: var(--fg2); line-height: 1.75; max-width: 460px; margin: 0 auto 36px; }
+    .cta-sub { font-size: clamp(12px,0.9vw,14px); font-weight: 300; color: var(--fg2); line-height: 1.75; max-width: 440px; margin: 0 auto 36px; }
+    .btn-p { display: inline-block; background: var(--pink); color: var(--bg); font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; padding: 13px 28px; transition: opacity 0.2s; }
+    .btn-p:hover { opacity: 0.82; }
 
     /* FOOTER */
     footer { border-top: 1px solid var(--fg4); }
@@ -418,81 +411,50 @@
     .foot-lnk:hover { color: var(--fg2); }
     .foot-copy { font-size: 9px; letter-spacing: 0.1em; color: var(--fg3); }
 
-    /* GAME MODAL */
-    .game-overlay { display: none; position: fixed; inset: 0; background: rgba(10,9,8,0.92); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(8px); }
-    .game-overlay.open { display: flex; }
-    .game-modal { position: relative; background: #111010; border: 1px solid rgba(255,102,102,0.2); display: flex; flex-direction: column; align-items: center; max-width: 95vw; }
-    .game-header { width: 100%; padding: 16px 20px; border-bottom: 1px solid rgba(255,102,102,0.1); display: flex; justify-content: space-between; align-items: center; }
-    .game-title { font-size: 9px; letter-spacing: 0.26em; text-transform: uppercase; color: rgba(232,226,217,0.3); }
-    .game-title span { color: var(--pink); opacity: 0.7; }
-    .game-score-display { font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(232,226,217,0.3); }
-    .game-score-display span { color: var(--pink); font-family: var(--serif); font-size: 13px; }
-    .game-close { position: absolute; top: 14px; right: 16px; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(232,226,217,0.25); cursor: pointer; background: none; border: none; transition: color 0.2s; }
-    .game-close:hover { color: var(--pink); }
-    #gameCanvas { display: block; background: #0c0b0a; }
-    .game-footer { width: 100%; padding: 12px 20px; border-top: 1px solid rgba(255,102,102,0.08); display: flex; justify-content: space-between; align-items: center; }
-    .game-instructions { font-size: 8px; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(232,226,217,0.18); }
-    .game-start-btn { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--pink); opacity: 0.6; border: 1px solid rgba(255,102,102,0.25); padding: 7px 16px; cursor: pointer; background: none; transition: opacity 0.2s, background 0.2s; }
-    .game-start-btn:hover { opacity: 1; background: rgba(255,102,102,0.08); }
-
     /* REVEAL */
-    .reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
     .reveal.visible { opacity: 1; transform: translateY(0); }
 
     @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
-    @keyframes fadeIn  { from { opacity: 0; } to { opacity: 1; } }
 
     /* RESPONSIVE */
+    @media (max-width: 1024px) { .masonry { columns: 2; } }
     @media (max-width: 768px) {
       :root { --nav-h: 56px; }
       .nav-links { display: none; }
       .hamburger { display: flex; }
-      .hero-hl { font-size: clamp(44px, 10vw, 72px); }
-      .tagline-inner { flex-direction: column; gap: 14px; }
-      .sec-head { grid-template-columns: 1fr; }
-      .sec-gut { display: none; }
-      .sec-hc { padding: 14px var(--pad); }
-      .svc-grid { grid-template-columns: 1fr; }
-      .svc-gut { display: none; }
-      .svc { border-right: none; border-bottom: 1px solid var(--fg4); }
-      .work-grid { grid-template-columns: 1fr; }
-      .testi-inner { padding-left: var(--pad); }
-      .tq-mark { display: none; }
+      .page-header-inner { grid-template-columns: 1fr; gap: 20px; }
+      .page-header-meta { text-align: left; }
+      .masonry { columns: 2; column-gap: 10px; }
+      .work-card { margin-bottom: 10px; }
+      .card-meta { opacity: 1; transform: translateY(0); }
+      .card-overlay { opacity: 1; }
+      .work-divider { grid-template-columns: 1fr; }
+      .divider-gutter { display: none; }
       .foot-inner { flex-direction: column; align-items: flex-start; }
     }
     @media (max-width: 480px) {
-      .hero-actions { flex-direction: column; gap: 14px; }
-      .wcard { padding: 18px; }
-      .hero-meta-strip { display: none; }
+      .masonry { columns: 1; }
+      .filter-btn { padding: 14px 16px; }
     }
   </style>
 </head>
 <body>
 
 <div class="grain"></div>
-<div class="vignette"></div>
 
 <!-- NAV -->
-<nav id="mainNav">
+<nav>
   <div class="nav-inner">
     <a href="index.html" class="nav-logo">Lost Objects</a>
     <div class="nav-links">
-      <a href="work.html">Work</a>
+      <a href="work.html" class="active">Work</a>
       <a href="services.html">Services</a>
       <a href="about.html">About</a>
-      <div class="lo-icon" onclick="openGame()" title="You found something...">
-        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M11 2C7 2 3.5 5 3 8.5C2.5 12 4 13.5 3.5 16C3 18.5 5 20 8 19.5C9.5 19.2 10 18 11 18C12 18 12.5 19.2 14 19.5C17 20 19 18.5 18.5 16C18 13.5 19.5 12 19 8.5C18.5 5 15 2 11 2Z" stroke="#FF6666" stroke-width="1" fill="none" opacity="0.5"/>
-          <path d="M11 6C9 6 7.5 7.5 7.5 9C7.5 10.5 8.5 11.5 8.5 13C8.5 14 9.5 15 11 15C12.5 15 13.5 14 13.5 13C13.5 11.5 14.5 10.5 14.5 9C14.5 7.5 13 6 11 6Z" stroke="#FF6666" stroke-width="0.75" fill="none" opacity="0.35"/>
-          <circle cx="11" cy="10" r="1.2" fill="#FF6666" opacity="0.6"/>
-        </svg>
-      </div>
     </div>
     <div style="display:flex;align-items:center;gap:14px;">
       <a href="contact.html" class="nav-cta">Feeling Lost?</a>
-      <div class="hamburger" onclick="toggleMenu()">
-        <span></span><span></span>
-      </div>
+      <div class="hamburger" onclick="toggleMenu()"><span></span><span></span></div>
     </div>
   </div>
 </nav>
@@ -500,180 +462,327 @@
 <div class="mobile-menu" id="mobileMenu">
   <a href="work.html"     onclick="toggleMenu()">Work</a>
   <a href="services.html" onclick="toggleMenu()">Services</a>
-  <a href="about.html"        onclick="toggleMenu()">About</a>
+  <a href="about.html" onclick="toggleMenu()">About</a>
   <a href="contact.html"  onclick="toggleMenu()">Feeling Lost?</a>
 </div>
 
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-video-wrap">
-    <iframe
-      src="https://player.vimeo.com/video/1182148229?h=acf06f1fbe&badge=0&autopause=0&autoplay=1&muted=1&loop=1&background=1&quality=auto"
-      frameborder="0"
-      allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
-      referrerpolicy="strict-origin-when-cross-origin"
-      title="Lost Objects reel"
-    ></iframe>
-  </div>
-  <div class="hero-overlay-base"></div>
-  <div class="hero-overlay-gradient"></div>
-  <div class="hero-overlay-vignette"></div>
-
-  <div class="hero-content">
-    <div class="hero-eyebrow">
-      <div class="eyebrow-line"></div>
-      <span class="eyebrow-text">Kyra &amp; Brendan Sweeney</span>
-      <div class="eyebrow-line"></div>
-    </div>
-    <h1 class="hero-hl">We speak the<br>language of <em>cinema.</em></h1>
-    <p class="hero-desc">
-      <strong>We're in the film industry.</strong> That's not a selling point — it's the whole thing. We built Lost Objects because filmmakers and creative brands deserve social media that actually speaks their language.
-    </p>
-    <div class="hero-actions">
-      <a href="services.html" class="btn-p">Work with us</a>
-      <a href="work.html"     class="btn-g">See our work ↗</a>
-    </div>
-  </div>
-
-  <div class="hero-scroll">
-    <div class="scroll-line"></div>
-    <span>Scroll</span>
-  </div>
-  <div class="hero-meta-strip">
-    <span class="hero-meta-lbl">Social strategy — Film industry</span>
-    <span class="hero-meta-right">Los Angeles, CA</span>
-  </div>
-</section>
-
-<!-- TAGLINE -->
-<div class="tagline reveal">
-  <div class="tagline-inner">
-    <span class="tagline-idx">— About</span>
-    <p class="tagline-txt">We started Lost Objects because we kept seeing the same thing: <em>filmmakers and brands with real stories to tell, showing up online like everyone else.</em> We're here to fix that.</p>
-  </div>
-</div>
-
-<!-- SERVICES -->
-<section class="sec" id="services">
-  <div class="sec-head">
-    <div class="sec-gut"><span>Services</span></div>
-    <div class="sec-hc">
-      <span class="sec-lbl">What we do</span>
-      <span class="sec-lbl">Three offerings. One industry.</span>
-    </div>
-  </div>
-  <div class="svc-grid">
-    <div class="svc-gut"></div>
-    <div class="svc reveal">
-      <div class="svc-num">01</div>
-      <div class="svc-name">Social Media<br>Audit</div>
-      <div class="svc-rule"></div>
-      <p class="svc-desc">A deep look at where you are and a clear map to where you need to be. Real feedback, real strategy, no filler. You walk away knowing exactly what to fix and why.</p>
-      <a href="services.html" class="svc-lnk">Learn more ↗</a>
-    </div>
-    <div class="svc reveal" style="transition-delay:.1s">
-      <div class="svc-num">02</div>
-      <div class="svc-name">Strategy<br>Session</div>
-      <div class="svc-rule"></div>
-      <p class="svc-desc">The tools, direction, and confidence to build or revamp your online presence. Built for filmmakers serious about showing up with intention and a real point of view.</p>
-      <a href="services.html" class="svc-lnk">Learn more ↗</a>
-    </div>
-    <div class="svc reveal" style="transition-delay:.2s">
-      <div class="svc-num">03</div>
-      <div class="svc-name">Full<br>Management</div>
-      <div class="svc-rule"></div>
-      <p class="svc-desc">We run your social so you can stay on set, on brand, and ahead of the curve. Content, scheduling, analytics, trend integration — completely handled.</p>
-      <a href="services.html" class="svc-lnk">Learn more ↗</a>
-    </div>
-  </div>
-</section>
-
-<!-- WORK -->
-<section class="sec" id="work">
-  <div class="sec-head">
-    <div class="sec-gut"><span>Work</span></div>
-    <div class="sec-hc">
-      <span class="sec-lbl">Selected projects</span>
-      <a href="work.html" class="sec-lbl" style="color:var(--pink);opacity:.55;cursor:pointer;">View all ↗</a>
-    </div>
-  </div>
-  <div class="work-grid">
-    <a href="work.html" class="wcard reveal">
-      <div class="wimg"><div class="wimg-ph"><span class="pp-lbl">Case study image</span></div></div>
-      <div class="wtag">Full Management — Grip &amp; Lighting</div>
-      <div class="wtitle">Legacy Grip — From obscurity to 15,000 followers</div>
-      <p class="wdesc">A Local 80 Key Grip with a great reputation and zero social presence. We built the strategy, voice, and community from scratch.</p>
-      <span class="wresult">↑ 400 → 15,000 followers in under 12 months</span>
-    </a>
-    <a href="work.html" class="wcard reveal" style="transition-delay:.1s">
-      <div class="wimg"><div class="wimg-ph"><span class="pp-lbl">Case study image</span></div></div>
-      <div class="wtag">Full Management — Educational Platform</div>
-      <div class="wtitle">Filmmakers Academy — Content strategy at scale</div>
-      <p class="wdesc">Managing social across platforms for one of the most respected cinematography education platforms in the world, including live events and brand partnerships.</p>
-      <span class="wresult">Ongoing — Multi-platform strategy</span>
-    </a>
-    <a href="work.html" class="wcard reveal" style="transition-delay:.2s">
-      <div class="wimg"><div class="wimg-ph"><span class="pp-lbl">Case study image</span></div></div>
-      <div class="wtag">Strategy — Cinematographer</div>
-      <div class="wtitle">Building a cohesive brand for a working cinematographer</div>
-      <p class="wdesc">A clear roadmap, a cohesive visual identity, and a strategy tailored to how the film industry actually works and hires.</p>
-      <span class="wresult">↑ Immediate profile clarity and audience growth</span>
-    </a>
-    <a href="contact.html" class="wcard reveal" style="transition-delay:.3s;outline:1px dashed rgba(255,102,102,0.1)">
-      <div class="wimg" style="outline:1px dashed rgba(255,102,102,0.1)">
-        <div class="wimg-ph"><span class="pp-lbl" style="color:rgba(255,102,102,0.18)">Your project</span></div>
+<!-- PAGE HEADER -->
+<header class="page-header">
+  <div class="page-header-inner">
+    <div>
+      <div class="page-eyebrow">
+        <div class="eyebrow-line"></div>
+        <span class="eyebrow-text">Selected work</span>
       </div>
-      <div class="wtag" style="color:var(--fg3)">Your industry — Your format</div>
-      <div class="wtitle" style="color:var(--fg2)">This could be your story.</div>
-      <p class="wdesc">We work with grip companies, cinematographers, production houses, film tech startups, and creative entrepreneurs. If you're in the industry, we speak your language.</p>
-      <span class="wresult" style="color:var(--fg3)">→ Start the conversation</span>
-    </a>
-  </div>
-</section>
-
-<!-- TESTIMONIAL -->
-<section class="testi reveal" id="about">
-  <div class="testi-inner">
-    <div class="tq-mark">"</div>
-    <p class="tq-txt">Lost Objects grew my Instagram from <em>400 to over 15,000 followers</em> in less than a year — completely organically. Their personalized strategy and attention to detail have been the foundation for building my brand online.</p>
-    <div class="tq-attr">Brendan Riel — <span>Local 80 Key Grip &amp; Owner, Legacy Grip</span></div>
-    <div class="tq-dots">
-      <div class="tdot active"></div>
-      <div class="tdot"></div>
-      <div class="tdot"></div>
+      <h1 class="page-title">The work<br>speaks for <em>itself.</em></h1>
+    </div>
+    <div class="page-header-meta">
+      <p>Content built for the film industry. 4×5 and 9×16 formats for Instagram, Reels, and Stories — strategy-first, always.</p>
     </div>
   </div>
-</section>
+</header>
 
-<!-- CLIENTS -->
-<div class="clients">
-  <div class="clients-lbl-block"><span class="clients-lbl">Trusted by</span></div>
-  <div class="clients-scroll">
-    <div class="clients-track">
-      <div class="chip">Filmmakers Academy</div>
-      <div class="chip">Blackout</div>
-      <div class="chip">Nanlux / Nanlite</div>
-      <div class="chip">B&amp;H Photo</div>
-      <div class="chip">Kodak</div>
-      <div class="chip">Hollyland</div>
-      <div class="chip">Legacy Grip</div>
-      <div class="chip">Filmmakers Academy</div>
-      <div class="chip">Blackout</div>
-      <div class="chip">Nanlux / Nanlite</div>
-      <div class="chip">B&amp;H Photo</div>
-      <div class="chip">Kodak</div>
-      <div class="chip">Hollyland</div>
-      <div class="chip">Legacy Grip</div>
-    </div>
+<!-- FILTER BAR -->
+<div class="filter-bar">
+  <div class="filter-inner">
+    <button class="filter-btn active" data-filter="all">All work <span class="filter-count">12</span></button>
+    <button class="filter-btn" data-filter="management">Full Management <span class="filter-count">5</span></button>
+    <button class="filter-btn" data-filter="strategy">Strategy <span class="filter-count">3</span></button>
+    <button class="filter-btn" data-filter="audit">Audit <span class="filter-count">2</span></button>
+    <button class="filter-btn" data-filter="grip">Grip &amp; Lighting <span class="filter-count">3</span></button>
+    <button class="filter-btn" data-filter="cine">Cinematographers <span class="filter-count">4</span></button>
+    <button class="filter-btn" data-filter="brand">Brands <span class="filter-count">5</span></button>
   </div>
 </div>
+
+<!-- ─────────────────────────────────────────────────── -->
+<!-- CASE STUDIES — editorial feature cards             -->
+<!-- ─────────────────────────────────────────────────── -->
+<div class="work-section">
+
+  <div class="work-divider reveal">
+    <div class="divider-gutter"><span>Case Studies</span></div>
+    <div class="divider-content">
+      <span class="divider-label">Full client stories</span>
+      <span class="divider-label">Results that speak</span>
+    </div>
+  </div>
+
+  <div class="masonry" id="caseGrid">
+
+    <!-- CASE STUDY 1 — Legacy Grip (featured, full management) -->
+    <div class="case-card reveal" data-category="management grip">
+      <div class="case-media">
+        <!-- Replace with: <img src="images/legacy-grip.jpg" alt="Legacy Grip Instagram" /> -->
+        <div class="case-media-ph">
+          <span style="font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(232,226,217,0.12);">Case study image</span>
+        </div>
+      </div>
+      <div class="case-body">
+        <div class="case-tag">Full Management — Grip &amp; Lighting — Local 80</div>
+        <div class="case-title">Legacy Grip — Building a community from zero</div>
+        <p class="case-desc">A Local 80 Key Grip with a great reputation and zero social presence. We built the strategy, found the voice, and grew an engaged community of industry professionals who actually care about the craft.</p>
+        <span class="case-result">↑ 400 → 15,000 followers — under 12 months — 100% organic</span>
+      </div>
+    </div>
+
+    <!-- CASE STUDY 2 — Filmmakers Academy -->
+    <div class="case-card reveal" data-category="management brand" style="transition-delay:.1s">
+      <div class="case-media">
+        <div class="case-media-ph">
+          <span style="font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(232,226,217,0.12);">Case study image</span>
+        </div>
+      </div>
+      <div class="case-body">
+        <div class="case-tag">Full Management — Educational Platform — Multi-channel</div>
+        <div class="case-title">Filmmakers Academy — Content strategy at scale</div>
+        <p class="case-desc">Managing social across platforms for one of the most respected cinematography education platforms in the world. Live events, masterclass launches, brand partnerships, and a community of working filmmakers.</p>
+        <span class="case-result">Ongoing — Multi-platform content strategy</span>
+      </div>
+    </div>
+
+    <!-- CASE STUDY 3 — Cinematographer brand strategy -->
+    <div class="case-card reveal" data-category="strategy cine" style="transition-delay:.2s">
+      <div class="case-media">
+        <div class="case-media-ph">
+          <span style="font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(232,226,217,0.12);">Case study image</span>
+        </div>
+      </div>
+      <div class="case-body">
+        <div class="case-tag">Strategy Session — Cinematographer — Brand Identity</div>
+        <div class="case-title">Building a cohesive brand for a working cinematographer</div>
+        <p class="case-desc">A clear roadmap, a cohesive visual identity across platforms, and a strategy tailored to how the film industry actually hires. The kind of presence that makes people reach out before you even pitch.</p>
+        <span class="case-result">↑ Immediate profile clarity and inbound inquiry growth</span>
+      </div>
+    </div>
+
+  </div><!-- /caseGrid -->
+
+  <!-- ─────────────────────────────────────────────────── -->
+  <!-- INSTAGRAM CONTENT GRID — masonry of posts          -->
+  <!-- ─────────────────────────────────────────────────── -->
+
+  <div class="work-divider reveal" style="margin-top:clamp(40px,6vh,72px);">
+    <div class="divider-gutter"><span>Content</span></div>
+    <div class="divider-content">
+      <span class="divider-label">Instagram — Reels — Stories</span>
+      <span class="divider-label">4×5 · 9×16 · 1×1</span>
+    </div>
+  </div>
+
+  <!--
+    ═══════════════════════════════════════════════════════
+    HOW TO ADD INSTAGRAM POSTS:
+
+    1. Go to the Instagram post you want to feature
+    2. Copy the post URL (e.g. https://www.instagram.com/p/ABC123/)
+    3. Find the card you want to update below
+    4. Replace the data-url="INSTAGRAM_POST_URL" value
+    5. The page will automatically call Instagram's embed API
+
+    ASPECT RATIOS: Set class to match the content:
+      ratio-4x5  → portrait photo/carousel (most common)
+      ratio-9x16 → Reels or Stories
+      ratio-1x1  → square post
+      ratio-16x9 → landscape
+
+    CATEGORIES: Set data-category to match filter buttons:
+      management, strategy, audit, grip, cine, brand
+      (can have multiple, space-separated)
+    ═══════════════════════════════════════════════════════
+  -->
+
+  <div class="masonry" id="contentGrid">
+
+    <!-- POST 1 — 4x5 portrait, grip -->
+    <div class="work-card ratio-4x5 reveal" data-category="management grip" data-url="INSTAGRAM_POST_URL">
+      <div class="card-media">
+        <div class="card-placeholder">
+          <div class="placeholder-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FF6666" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="#FF6666"/></svg>
+          </div>
+          <span class="placeholder-label">Instagram post</span>
+          <span class="placeholder-ratio">4 × 5</span>
+        </div>
+        <div class="ig-embed-wrap" id="embed-1"></div>
+        <div class="card-overlay"></div>
+        <div class="card-meta">
+          <div class="card-client">Legacy Grip</div>
+          <div class="card-title">On-set grip work</div>
+          <div class="card-type">4×5 · Instagram Post</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- POST 2 — 9x16 reel, brand -->
+    <div class="work-card ratio-9x16 reveal" data-category="management brand" data-url="INSTAGRAM_POST_URL" style="transition-delay:.05s">
+      <div class="card-media">
+        <div class="card-placeholder">
+          <div class="placeholder-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FF6666" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="#FF6666"/></svg>
+          </div>
+          <span class="placeholder-label">Instagram Reel</span>
+          <span class="placeholder-ratio">9 × 16</span>
+        </div>
+        <div class="ig-embed-wrap" id="embed-2"></div>
+        <div class="card-overlay"></div>
+        <div class="card-meta">
+          <div class="card-client">Filmmakers Academy</div>
+          <div class="card-title">Masterclass launch Reel</div>
+          <div class="card-type">9×16 · Instagram Reel</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- POST 3 — 4x5 portrait, cinematographer -->
+    <div class="work-card ratio-4x5 reveal" data-category="strategy cine" data-url="INSTAGRAM_POST_URL" style="transition-delay:.1s">
+      <div class="card-media">
+        <div class="card-placeholder">
+          <div class="placeholder-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FF6666" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="#FF6666"/></svg>
+          </div>
+          <span class="placeholder-label">Instagram post</span>
+          <span class="placeholder-ratio">4 × 5</span>
+        </div>
+        <div class="ig-embed-wrap" id="embed-3"></div>
+        <div class="card-overlay"></div>
+        <div class="card-meta">
+          <div class="card-client">Cinematographer</div>
+          <div class="card-title">Portfolio highlight</div>
+          <div class="card-type">4×5 · Instagram Post</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- POST 4 — 1x1 square, brand -->
+    <div class="work-card ratio-1x1 reveal" data-category="brand" data-url="INSTAGRAM_POST_URL" style="transition-delay:.15s">
+      <div class="card-media">
+        <div class="card-placeholder">
+          <div class="placeholder-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FF6666" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="#FF6666"/></svg>
+          </div>
+          <span class="placeholder-label">Instagram post</span>
+          <span class="placeholder-ratio">1 × 1</span>
+        </div>
+        <div class="ig-embed-wrap" id="embed-4"></div>
+        <div class="card-overlay"></div>
+        <div class="card-meta">
+          <div class="card-client">Brand Partner</div>
+          <div class="card-title">Product campaign post</div>
+          <div class="card-type">1×1 · Instagram Post</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- POST 5 — 9x16 reel, grip -->
+    <div class="work-card ratio-9x16 reveal" data-category="management grip" data-url="INSTAGRAM_POST_URL" style="transition-delay:.2s">
+      <div class="card-media">
+        <div class="card-placeholder">
+          <div class="placeholder-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FF6666" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="#FF6666"/></svg>
+          </div>
+          <span class="placeholder-label">Instagram Reel</span>
+          <span class="placeholder-ratio">9 × 16</span>
+        </div>
+        <div class="ig-embed-wrap" id="embed-5"></div>
+        <div class="card-overlay"></div>
+        <div class="card-meta">
+          <div class="card-client">Legacy Grip</div>
+          <div class="card-title">Behind the scenes Reel</div>
+          <div class="card-type">9×16 · Instagram Reel</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- POST 6 — 4x5 portrait, brand -->
+    <div class="work-card ratio-4x5 reveal" data-category="brand" data-url="INSTAGRAM_POST_URL" style="transition-delay:.25s">
+      <div class="card-media">
+        <div class="card-placeholder">
+          <div class="placeholder-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FF6666" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="#FF6666"/></svg>
+          </div>
+          <span class="placeholder-label">Instagram post</span>
+          <span class="placeholder-ratio">4 × 5</span>
+        </div>
+        <div class="ig-embed-wrap" id="embed-6"></div>
+        <div class="card-overlay"></div>
+        <div class="card-meta">
+          <div class="card-client">Brand Partner</div>
+          <div class="card-title">Editorial brand content</div>
+          <div class="card-type">4×5 · Instagram Post</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- POST 7 — 4x5, cinematographer -->
+    <div class="work-card ratio-4x5 reveal" data-category="strategy cine" data-url="INSTAGRAM_POST_URL" style="transition-delay:.3s">
+      <div class="card-media">
+        <div class="card-placeholder">
+          <div class="placeholder-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FF6666" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="#FF6666"/></svg>
+          </div>
+          <span class="placeholder-label">Instagram post</span>
+          <span class="placeholder-ratio">4 × 5</span>
+        </div>
+        <div class="ig-embed-wrap" id="embed-7"></div>
+        <div class="card-overlay"></div>
+        <div class="card-meta">
+          <div class="card-client">Cinematographer</div>
+          <div class="card-title">Lighting breakdown post</div>
+          <div class="card-type">4×5 · Instagram Post</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- POST 8 — 1x1, brand -->
+    <div class="work-card ratio-1x1 reveal" data-category="brand" data-url="INSTAGRAM_POST_URL" style="transition-delay:.35s">
+      <div class="card-media">
+        <div class="card-placeholder">
+          <div class="placeholder-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FF6666" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="#FF6666"/></svg>
+          </div>
+          <span class="placeholder-label">Instagram post</span>
+          <span class="placeholder-ratio">1 × 1</span>
+        </div>
+        <div class="ig-embed-wrap" id="embed-8"></div>
+        <div class="card-overlay"></div>
+        <div class="card-meta">
+          <div class="card-client">Brand Partner</div>
+          <div class="card-title">Partnership announcement</div>
+          <div class="card-type">1×1 · Instagram Post</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- POST 9 — 9x16, cinematographer -->
+    <div class="work-card ratio-9x16 reveal" data-category="cine" data-url="INSTAGRAM_POST_URL" style="transition-delay:.4s">
+      <div class="card-media">
+        <div class="card-placeholder">
+          <div class="placeholder-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FF6666" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="#FF6666"/></svg>
+          </div>
+          <span class="placeholder-label">Instagram Reel</span>
+          <span class="placeholder-ratio">9 × 16</span>
+        </div>
+        <div class="ig-embed-wrap" id="embed-9"></div>
+        <div class="card-overlay"></div>
+        <div class="card-meta">
+          <div class="card-client">Cinematographer</div>
+          <div class="card-title">Day on set Reel</div>
+          <div class="card-type">9×16 · Instagram Reel</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /contentGrid -->
+</div><!-- /work-section -->
 
 <!-- CTA -->
 <section class="cta-band reveal">
   <div class="cta-inner">
-    <div class="cta-eye">Ready to show up?</div>
-    <h2 class="cta-hl">Let's make the film industry<br><em>impossible to ignore.</em></h2>
-    <p class="cta-sub">No templates. No borrowed strategy. Just social media that actually speaks the language of your world.</p>
+    <div class="cta-eye">Like what you see?</div>
+    <h2 class="cta-hl">Let's build something<br><em>worth showing.</em></h2>
+    <p class="cta-sub">Every piece of content we make is built with strategy behind it. No filler, no guesswork — just work that earns attention in the right rooms.</p>
     <a href="contact.html" class="btn-p">Start the conversation</a>
   </div>
 </section>
@@ -683,249 +792,94 @@
   <div class="foot-inner">
     <div class="foot-logo">Lost Objects</div>
     <div class="foot-links">
-      <a href="work.html"     class="foot-lnk">Work</a>
+      <a href="index.html" class="foot-lnk">Home</a>
       <a href="services.html" class="foot-lnk">Services</a>
-      <a href="contact.html"  class="foot-lnk">Contact</a>
+      <a href="contact.html" class="foot-lnk">Contact</a>
     </div>
     <div class="foot-copy">© 2025 Lost Objects LLC</div>
   </div>
 </footer>
 
-<!-- EASTER EGG GAME -->
-<div class="game-overlay" id="gameOverlay">
-  <div class="game-modal">
-    <div class="game-header">
-      <div class="game-title">Lost Object — <span>The Game</span></div>
-      <div class="game-score-display">Score <span id="scoreDisplay">0</span></div>
-      <button class="game-close" onclick="closeGame()">✕ Close</button>
-    </div>
-    <canvas id="gameCanvas" width="540" height="400"></canvas>
-    <div class="game-footer">
-      <span class="game-instructions">Arrow keys or WASD to move — collect the lost objects</span>
-      <button class="game-start-btn" id="startBtn" onclick="startGame()">Start</button>
-    </div>
-  </div>
-</div>
-
-<script src="https://player.vimeo.com/api/player.js"></script>
 <script>
-  /* ---------- SITE UTILITIES ---------- */
-  const obs = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
-  }, { threshold: 0.1 });
-  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
-
-  const mainNav = document.getElementById('mainNav');
-  window.addEventListener('scroll', () => { mainNav.classList.toggle('scrolled', window.scrollY > 60); }, { passive: true });
-
+  /* MOBILE MENU */
   function toggleMenu() { document.getElementById('mobileMenu').classList.toggle('open'); }
 
-  /* ---------- GAME ENGINE ---------- */
-  const PC = '#FF6666', CC = '#F0E8DC';
-  const GRID = 20, COLS = 27, ROWS = 20;
-  const FPS = 30, FMS = 1000 / FPS;
+  /* SCROLL REVEAL */
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 
-  let cv, cx, mazeCV, mazeCX;
-  let gLoop = null, lastT = 0;
-  let score, lives, gState;
-  let player, pellets, pMap, ghosts, dir, nDir;
-  let mTick = 0, gTick = 0, ang = 0;
+  /* FILTER */
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const allCards = document.querySelectorAll('[data-category]');
 
-  /* Wall Set — built once, O(1) lookup */
-  const WALLS = new Set();
-  [[2,2],[3,2],[4,2],[5,2],[6,2],[8,2],[9,2],[10,2],[11,2],[15,2],[16,2],[17,2],[18,2],[20,2],[21,2],[22,2],[23,2],[24,2],
-   [2,4],[6,4],[8,4],[11,4],[15,4],[18,4],[20,4],[24,4],[2,5],[6,5],[8,5],[11,5],[15,5],[18,5],[20,5],[24,5],
-   [2,6],[3,6],[4,6],[6,6],[8,6],[9,6],[10,6],[11,6],[15,6],[16,6],[17,6],[18,6],[20,6],[22,6],[23,6],[24,6],
-   [4,8],[5,8],[6,8],[8,8],[11,8],[12,8],[13,8],[14,8],[15,8],[18,8],[20,8],[21,8],[22,8],
-   [2,10],[3,10],[4,10],[6,10],[8,10],[11,10],[15,10],[18,10],[20,10],[23,10],[24,10],
-   [6,11],[8,11],[11,11],[15,11],[18,11],[20,11],
-   [2,12],[3,12],[4,12],[6,12],[8,12],[9,12],[10,12],[15,12],[16,12],[17,12],[20,12],[22,12],[23,12],[24,12],
-   [4,14],[6,14],[11,14],[12,14],[13,14],[14,14],[15,14],[20,14],[22,14],
-   [2,16],[3,16],[4,16],[6,16],[8,16],[9,16],[10,16],[11,16],[15,16],[16,16],[17,16],[18,16],[20,16],[22,16],[23,16],[24,16],
-   [2,17],[6,17],[20,17],[24,17],
-   [2,18],[3,18],[4,18],[6,18],[7,18],[8,18],[9,18],[10,18],[11,18],[15,18],[16,18],[17,18],[18,18],[19,18],[20,18],[21,18],[22,18],[23,18],[24,18]
-  ].forEach(([c,r]) => WALLS.add(c+','+r));
-  for (let c=0;c<COLS;c++) { WALLS.add(c+',0'); WALLS.add(c+','+(ROWS-1)); }
-  for (let r=0;r<ROWS;r++) { WALLS.add('0,'+r); WALLS.add((COLS-1)+','+r); }
-
-  const isWall  = (c,r) => WALLS.has(c+','+r);
-  const canMove = (c,r) => !isWall(((c%COLS)+COLS)%COLS, ((r%ROWS)+ROWS)%ROWS);
-  const ctr     = (c,r) => ({ x: c*GRID+GRID/2, y: r*GRID+GRID/2 });
-
-  function buildMaze() {
-    mazeCV = document.createElement('canvas');
-    mazeCV.width = COLS*GRID; mazeCV.height = ROWS*GRID;
-    mazeCX = mazeCV.getContext('2d');
-    mazeCX.fillStyle = '#0c0b0a';
-    mazeCX.fillRect(0,0,mazeCV.width,mazeCV.height);
-    for (let r=0;r<ROWS;r++) for (let c=0;c<COLS;c++) {
-      if (isWall(c,r)) {
-        mazeCX.fillStyle = 'rgba(255,102,102,0.055)';
-        mazeCX.fillRect(c*GRID,r*GRID,GRID,GRID);
-        mazeCX.strokeStyle = 'rgba(255,102,102,0.14)';
-        mazeCX.lineWidth = 0.5;
-        mazeCX.strokeRect(c*GRID+.5,r*GRID+.5,GRID-1,GRID-1);
-      }
-    }
-  }
-
-  function drawPlayer(px,py,size,angle) {
-    cx.save(); cx.translate(px,py); cx.rotate(angle);
-    cx.beginPath();
-    cx.moveTo(0,-size);
-    cx.bezierCurveTo(size*.8,-size*.6, size,size*.3, size*.3,size*.8);
-    cx.bezierCurveTo(0,size, -size*.3,size*.8, -size*.3,size*.8);
-    cx.bezierCurveTo(-size,size*.3, -size*.8,-size*.6, 0,-size);
-    cx.closePath();
-    cx.fillStyle='rgba(255,102,102,0.18)'; cx.fill();
-    cx.strokeStyle=PC; cx.lineWidth=1.2; cx.globalAlpha=0.88; cx.stroke();
-    cx.beginPath(); cx.arc(0,0,size*.12,0,Math.PI*2);
-    cx.fillStyle=PC; cx.globalAlpha=0.7; cx.fill();
-    cx.restore();
-  }
-
-  function drawPellet(px,py,big) {
-    cx.save(); cx.translate(px,py); cx.globalAlpha=1;
-    cx.beginPath(); cx.arc(0,0,big?3.5:2,0,Math.PI*2);
-    cx.fillStyle=big?CC:'rgba(240,232,220,0.38)';
-    cx.globalAlpha=big?.65:1; cx.fill();
-    cx.restore();
-  }
-
-  function drawGhost(px,py,color,scared) {
-    cx.save(); cx.translate(px,py);
-    const s=GRID*.38, col=scared?'rgba(138,172,184,0.6)':color;
-    cx.beginPath(); cx.arc(0,-s*.1,s,Math.PI,0); cx.lineTo(s,s*.9);
-    for(let i=3;i>=0;i--) cx.lineTo(s-(i*(s*2/3)),i%2===0?s*.9:s*.5);
-    cx.lineTo(-s,s*.9); cx.closePath();
-    cx.fillStyle=col; cx.globalAlpha=scared?.55:.8; cx.fill();
-    if (!scared) {
-      [-s*.35,s*.35].forEach(ex => {
-        cx.beginPath(); cx.arc(ex,-s*.1,s*.2,0,Math.PI*2); cx.fillStyle='#e8e2d9'; cx.globalAlpha=1; cx.fill();
-        cx.beginPath(); cx.arc(ex+s*.07,-s*.08,s*.09,0,Math.PI*2); cx.fillStyle='#111'; cx.fill();
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const filter = btn.dataset.filter;
+      allCards.forEach(card => {
+        const cats = card.dataset.category || '';
+        const show = filter === 'all' || cats.includes(filter);
+        card.style.opacity = show ? '1' : '0.15';
+        card.style.pointerEvents = show ? 'auto' : 'none';
+        card.style.transition = 'opacity 0.35s ease';
       });
-    }
-    cx.restore();
-  }
-
-  function initGame() {
-    score=0; lives=3; mTick=0; gTick=0; ang=0;
-    dir={x:0,y:0}; nDir={x:1,y:0};
-    player={x:13,y:15};
-    document.getElementById('scoreDisplay').textContent='0';
-    pellets=[]; pMap=new Set();
-    for(let r=1;r<ROWS-1;r++) for(let c=1;c<COLS-1;c++) {
-      if(isWall(c,r)) continue;
-      const big=(r===2&&c===2)||(r===2&&c===COLS-3)||(r===ROWS-3&&c===2)||(r===ROWS-3&&c===COLS-3);
-      pellets.push({x:c,y:r,big,eaten:false});
-      pMap.add(c+','+r);
-    }
-    ghosts=[
-      {x:13,y:8,dx:1,dy:0,color:'rgba(255,102,102,0.75)',scared:false,ft:0},
-      {x:14,y:8,dx:-1,dy:0,color:'rgba(230,149,143,0.75)',scared:false,ft:0},
-      {x:13,y:9,dx:0,dy:1,color:'rgba(138,172,184,0.7)',scared:false,ft:0},
-      {x:14,y:9,dx:0,dy:-1,color:'rgba(240,232,220,0.55)',scared:false,ft:0},
-    ];
-    buildMaze();
-  }
-
-  function tick() {
-    mTick++; gTick++; ang+=0.07;
-
-    if (mTick%6===0) {
-      if (canMove(player.x+nDir.x, player.y+nDir.y)) dir={...nDir};
-      const mc=((player.x+dir.x)+COLS)%COLS, mr=((player.y+dir.y)+ROWS)%ROWS;
-      if (canMove(mc,mr)) { player.x=mc; player.y=mr; }
-      const k=player.x+','+player.y;
-      if (pMap.has(k)) {
-        pMap.delete(k);
-        const p=pellets.find(p=>!p.eaten&&p.x===player.x&&p.y===player.y);
-        if(p){ p.eaten=true; score+=p.big?50:10; document.getElementById('scoreDisplay').textContent=score; if(p.big) ghosts.forEach(g=>{g.scared=true;g.ft=0;}); }
-      }
-      if (pMap.size===0) gState='win';
-    }
-
-    if (gTick%10===0) {
-      ghosts.forEach(g => {
-        if(g.scared){g.ft++;if(g.ft>30){g.scared=false;g.ft=0;}}
-        const opts=[{x:1,y:0},{x:-1,y:0},{x:0,y:1},{x:0,y:-1}]
-          .filter(d=>canMove(((g.x+d.x)+COLS)%COLS,((g.y+d.y)+ROWS)%ROWS)&&!(d.x===-g.dx&&d.y===-g.dy));
-        const pool=opts.length?opts:[{x:-g.dx,y:-g.dy}];
-        const chosen=g.scared
-          ?pool[Math.floor(Math.random()*pool.length)]
-          :pool.reduce((b,d)=>{
-            const dist=Math.abs(((g.x+d.x)+COLS)%COLS-player.x)+Math.abs(((g.y+d.y)+ROWS)%ROWS-player.y);
-            const bd=Math.abs(((g.x+b.x)+COLS)%COLS-player.x)+Math.abs(((g.y+b.y)+ROWS)%ROWS-player.y);
-            return(dist<bd&&Math.random()>.3)?d:b;
-          },pool[0]);
-        g.dx=chosen.x; g.dy=chosen.y;
-        g.x=((g.x+g.dx)+COLS)%COLS; g.y=((g.y+g.dy)+ROWS)%ROWS;
-        if(g.x===player.x&&g.y===player.y){
-          if(g.scared){g.scared=false;g.x=13;g.y=8;score+=200;document.getElementById('scoreDisplay').textContent=score;}
-          else{lives--;if(lives<=0){gState='over';}else{player.x=13;player.y=15;dir={x:0,y:0};nDir={x:1,y:0};}}
-        }
-      });
-    }
-  }
-
-  function draw() {
-    cx.drawImage(mazeCV,0,0);
-    pellets.forEach(p=>{ if(!p.eaten){ const c=ctr(p.x,p.y); drawPellet(c.x,c.y,p.big); }});
-    ghosts.forEach(g=>{ const c=ctr(g.x,g.y); drawGhost(c.x,c.y,g.color,g.scared); });
-    const p=ctr(player.x,player.y);
-    drawPlayer(p.x,p.y,GRID*.42,ang*.6);
-    for(let i=0;i<lives;i++) drawPlayer(14+i*18,cv.height-10,5,ang*.3);
-
-    if(gState!=='playing'){
-      cx.fillStyle='rgba(12,11,10,0.78)'; cx.fillRect(0,0,cv.width,cv.height);
-      cx.textAlign='center'; cx.globalAlpha=1;
-      const msgs={ready:['Lost Object','PRESS START TO PLAY',PC],over:['You got lost.','SCORE: '+score+'  —  PRESS START TO RETRY',PC],win:['Found.','SCORE: '+score+'  —  ALL OBJECTS RECOVERED',CC]};
-      const m=msgs[gState];
-      if(m){
-        cx.fillStyle=m[2]; cx.globalAlpha=.85; cx.font='italic 26px "DM Serif Display",serif'; cx.fillText(m[0],cv.width/2,cv.height/2-14);
-        cx.globalAlpha=1; cx.fillStyle='rgba(232,226,217,0.3)'; cx.font='9px Inter,sans-serif'; cx.fillText(m[1],cv.width/2,cv.height/2+14);
-      }
-    }
-  }
-
-  function frame(ts) {
-    if (!gLoop) return;
-    if (ts-lastT < FMS) { gLoop=requestAnimationFrame(frame); return; }
-    lastT=ts;
-    if (gState==='playing') tick();
-    draw();
-    gLoop=requestAnimationFrame(frame);
-  }
-
-  function startGame() { initGame(); gState='playing'; document.getElementById('startBtn').textContent='Restart'; }
-
-  function openGame() {
-    document.getElementById('gameOverlay').classList.add('open');
-    if (!cv) { cv=document.getElementById('gameCanvas'); cx=cv.getContext('2d',{alpha:false}); }
-    if (!gLoop) { initGame(); gState='ready'; lastT=0; gLoop=requestAnimationFrame(frame); }
-  }
-
-  function closeGame() {
-    document.getElementById('gameOverlay').classList.remove('open');
-    if (gLoop) { cancelAnimationFrame(gLoop); gLoop=null; }
-  }
-
-  const KM={ArrowUp:{x:0,y:-1},ArrowDown:{x:0,y:1},ArrowLeft:{x:-1,y:0},ArrowRight:{x:1,y:0},w:{x:0,y:-1},s:{x:0,y:1},a:{x:-1,y:0},d:{x:1,y:0},W:{x:0,y:-1},S:{x:0,y:1},A:{x:-1,y:0},D:{x:1,y:0}};
-  document.addEventListener('keydown',e=>{
-    if(document.getElementById('gameOverlay').classList.contains('open')){
-      if(KM[e.key]){nDir=KM[e.key];e.preventDefault();}
-      if(e.key==='Escape') closeGame();
-    }
+    });
   });
-  let ts=null;
-  document.addEventListener('touchstart',e=>{if(document.getElementById('gameOverlay').classList.contains('open')) ts={x:e.touches[0].clientX,y:e.touches[0].clientY};},{passive:true});
-  document.addEventListener('touchend',e=>{
-    if(!ts||!document.getElementById('gameOverlay').classList.contains('open')) return;
-    const dx=e.changedTouches[0].clientX-ts.x,dy=e.changedTouches[0].clientY-ts.y;
-    nDir=Math.abs(dx)>Math.abs(dy)?(dx>0?{x:1,y:0}:{x:-1,y:0}):(dy>0?{x:0,y:1}:{x:0,y:-1});
-    ts=null;
-  },{passive:true});
+
+  /*
+    ═══════════════════════════════════════════════════════
+    INSTAGRAM EMBED LOADER
+
+    When you're ready to add real Instagram posts:
+    1. Set data-url="https://www.instagram.com/p/YOUR_POST_ID/"
+       on each .work-card element above
+    2. Uncomment the loadInstagramEmbeds() call below
+    3. Make sure your site is served over HTTPS (Vercel handles this)
+
+    Note: Instagram embeds require the viewer to be logged in
+    to Instagram to see the full post. The placeholder will show
+    for logged-out visitors, which is fine for a portfolio page.
+    ═══════════════════════════════════════════════════════
+  */
+
+  async function loadInstagramEmbeds() {
+    const cards = document.querySelectorAll('.work-card[data-url]');
+    for (const card of cards) {
+      const url = card.dataset.url;
+      if (!url || url === 'INSTAGRAM_POST_URL') continue;
+
+      try {
+        const res = await fetch(
+          `https://graph.facebook.com/v18.0/instagram_oembed?url=${encodeURIComponent(url)}&omitscript=true&maxwidth=480`,
+          { headers: { 'Authorization': 'Bearer YOUR_ACCESS_TOKEN' } }
+          // Replace YOUR_ACCESS_TOKEN with a Facebook app access token
+          // Free to get at: developers.facebook.com → create app → Instagram Basic Display
+        );
+        const data = await res.json();
+        if (data.html) {
+          const embedWrap = card.querySelector('.ig-embed-wrap');
+          const placeholder = card.querySelector('.card-placeholder');
+          embedWrap.innerHTML = data.html;
+          embedWrap.classList.add('loaded');
+          if (placeholder) placeholder.style.display = 'none';
+        }
+      } catch (err) {
+        console.log('Embed load skipped for:', url);
+      }
+    }
+    // Process any embeds Instagram injected
+    if (window.instgrm) window.instgrm.Embeds.process();
+  }
+
+  // Uncomment when you have real URLs and an access token:
+  // loadInstagramEmbeds();
 </script>
+
+<!-- Instagram embed script (load when ready) -->
+<!-- <script async src="//www.instagram.com/embed.js"></script> -->
 
 </body>
 </html>
