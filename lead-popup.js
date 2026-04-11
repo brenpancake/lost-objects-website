@@ -67,8 +67,9 @@
 
     /* Collapsed state — just a narrow tab on the edge */
     #lo-launcher.lo-collapsed #lo-trigger {
-      padding: 13px 6px;
-      max-width: 28px;
+      padding: 13px 10px;
+      max-width: 36px;
+      min-height: 52px;
     }
 
     /* Hide label text when collapsed */
@@ -90,7 +91,8 @@
       border-radius: 0 0 0 3px;
       border-top: 1px solid rgba(255,102,102,0.15);
       width: 100%;
-      padding: 5px 8px;
+      min-height: 32px;
+      padding: 7px 10px;
       cursor: pointer;
       display: flex;
       align-items: center;
@@ -356,6 +358,15 @@
 
     @media (max-width: 480px) {
       #lo-launcher { bottom: 16px; }
+      #lo-launcher.lo-collapsed #lo-trigger {
+        padding: 16px 12px;
+        max-width: 44px;
+        min-height: 60px;
+      }
+      #lo-launcher.lo-collapsed #lo-collapse-btn {
+        min-height: 36px;
+        padding: 8px 12px;
+      }
       #lo-modal-header { padding: 24px 20px 18px; }
       #lo-modal-body { padding: 18px 20px 24px; }
       .lo-field-row { grid-template-columns: 1fr; }
