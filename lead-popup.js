@@ -21,12 +21,16 @@
   css.textContent = `
 
     /* ── LAUNCHER WRAPPER ─────────────────────────── */
-    /* Sits fixed bottom-right, slides in on load      */
+    /* Sits fixed bottom-right, slides in on load.
+       z-index 10000 keeps the launcher above the site's .vignette
+       layer (9998, index.html only) and .grain layer (9999, all
+       pages), so the pink pill reads with identical vibrance on
+       every page instead of being subtly muted. */
     #lo-launcher {
       position: fixed;
       bottom: 28px;
       right: 0;
-      z-index: 9000;
+      z-index: 10000;
       display: flex;
       align-items: flex-end;
       flex-direction: column;
@@ -84,31 +88,33 @@
       pointer-events: none;
     }
 
-    /* Collapse toggle — little tab below the button */
+    /* Collapse toggle — tab below the button. Reads as its own
+       actionable control with clear Hide/Show affordance. */
     #lo-collapse-btn {
-      background: rgba(255,102,102,0.12);
+      background: rgba(255,102,102,0.22);
       border: none;
       border-radius: 0 0 0 3px;
-      border-top: 1px solid rgba(255,102,102,0.15);
+      border-top: 1px solid rgba(255,102,102,0.5);
       width: 100%;
-      min-height: 32px;
-      padding: 7px 10px;
+      min-height: 34px;
+      padding: 9px 12px;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: flex-end;
-      gap: 5px;
+      gap: 6px;
       transition: background 0.2s;
     }
 
-    #lo-collapse-btn:hover { background: rgba(255,102,102,0.2); }
+    #lo-collapse-btn:hover { background: rgba(255,102,102,0.38); }
 
     #lo-collapse-label {
       font-family: 'Inter', system-ui, sans-serif;
-      font-size: 7px;
-      letter-spacing: 0.18em;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
-      color: rgba(255,102,102,0.6);
+      color: rgba(255,102,102,0.95);
       transition: opacity 0.2s, width 0.35s;
       overflow: hidden;
       white-space: nowrap;
@@ -120,8 +126,9 @@
     }
 
     #lo-collapse-icon {
-      color: rgba(255,102,102,0.6);
-      font-size: 9px;
+      color: rgba(255,102,102,0.95);
+      font-size: 13px;
+      font-weight: 700;
       line-height: 1;
       transition: transform 0.3s ease;
       flex-shrink: 0;
@@ -134,14 +141,19 @@
     }
 
     /* ── MODAL OVERLAY ────────────────────────────── */
+    /* z-index 10001 sits one step above the launcher (10000) so the
+       modal properly covers the pill when opened, and above the
+       site's grain (9999) + vignette (9998) so the modal looks
+       identically crisp on every page — including index.html where
+       a Vimeo video is playing behind the blur. */
     #lo-overlay {
       display: none;
       position: fixed;
       inset: 0;
-      z-index: 9001;
-      background: rgba(10,9,8,0.88);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      z-index: 10001;
+      background: rgba(10,9,8,0.93);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       align-items: center;
       justify-content: center;
       padding: 20px;
@@ -151,7 +163,8 @@
 
     #lo-modal {
       background: #0f0e0d;
-      border: 1px solid rgba(255,102,102,0.25);
+      border: 1px solid rgba(255,102,102,0.42);
+      box-shadow: 0 24px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,102,102,0.08);
       width: 100%;
       max-width: 520px;
       position: relative;
@@ -424,21 +437,35 @@
       text-align: center;
     }
 
+    /* Close button — must sit ABOVE #lo-modal-header (z-index: 1)
+       or it will be painted behind the header's background. */
     #lo-close {
       position: absolute;
-      top: 12px; right: 14px;
-      background: none;
-      border: none;
+      top: 14px;
+      right: 14px;
+      z-index: 3;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255,102,102,0.08);
+      border: 1px solid rgba(255,102,102,0.42);
+      border-radius: 2px;
       cursor: pointer;
       font-family: 'Inter', system-ui, sans-serif;
-      font-size: 9px;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: rgba(232,226,217,0.22);
-      transition: color 0.2s;
-      padding: 4px;
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 1;
+      color: rgba(242,236,225,0.85);
+      padding: 0;
+      transition: color 0.2s, background 0.2s, border-color 0.2s;
     }
-    #lo-close:hover { color: #FF6666; }
+    #lo-close:hover {
+      color: #14120f;
+      background: #FF6666;
+      border-color: #FF6666;
+    }
 
     #lo-success {
       display: none;
@@ -509,7 +536,7 @@
     <div id="lo-overlay" role="dialog" aria-modal="true" aria-labelledby="lo-modal-title">
       <div id="lo-modal">
 
-        <button id="lo-close" aria-label="Close">✕ Close</button>
+        <button id="lo-close" type="button" aria-label="Close">&#x2715;</button>
 
         <div id="lo-form-wrap">
           <div id="lo-modal-header">
