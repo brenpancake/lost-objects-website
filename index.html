@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lost Objects — Social Strategy for the Film Industry</title>
+  <meta name="description" content="Kyra and Brendan Sweeney. Social media strategy and full management for filmmakers, creative brands, and film tech companies." />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ─── RESET ─────────────────────────────────────── */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    img { display: block; max-width: 100%; }
+    a { text-decoration: none; color: inherit; }
+
+    /* ─── TOKENS ─────────────────────────────────────── */
+    :root {
+      --pink:       #FF6666;
+      --yellow:     #FFCF5A;
+      --accent:     #E6958F;
+      --bg:         #0f0e0d;
+      --bg2:        #141312;
+      --fg:         #e8e2d9;
+      --fg2:        rgba(232,226,217,0.5);
+      --fg3:        rgba(232,226,217,0.22);
+      --fg4:        rgba(232,226,217,0.08);
+      --rule:       rgba(255,102,102,0.12);
+      --serif:      'DM Serif Display', Georgia, serif;
+      --sans:       'Inter', system-ui, sans-serif;
+    }
+
+    /* ─── BASE ───────────────────────────────────────── */
+    body {
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--sans);
+      font-weight: 300;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* ─── GRAIN ──────────────────────────────────────── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: -100px;
+      width: calc(100% + 200px);
+      height: calc(100% + 200px);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)'/%3E%3C/svg%3E");
+      opacity: 0.05;
+      pointer-events: none;
+      z-index: 9999;
+      animation: grain 0.5s steps(1) infinite;
+    }
+
+    @keyframes grain {
+      0%   { transform: translate(0,   0);   }
+      10%  { transform: translate(-3%, -4%); }
+      20%  { transform: translate(4%,  2%);  }
+      30%  { transform: translate(-1%, 5%);  }
+      40%  { transform: translate(3%,  -3%); }
+      50%  { transform: translate(-4%, 1%);  }
+      60%  { transform: translate(2%,  4%);  }
+      70%  { transform: translate(-3%, -1%); }
+      80%  { transform: translate(1%,  3%);  }
+      90%  { transform: translate(-2%, -4%); }
+      100% { transform: translate(3%,  0);   }
+    }
+
+    /* ─── VIGNETTE ───────────────────────────────────── */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 0%, transparent 50%, rgba(10,9,8,0.65) 100%);
+      pointer-events: none;
+      z-index: 9998;
+    }
+
+    /* ─── NAV ────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 22px 48px;
+      border-bottom: 1px solid var(--fg4);
+      background: rgba(15,14,13,0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .nav-logo {
+      font-family: var(--sans);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--pink);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+    }
+
+    .nav-links a {
+      font-size: 10px;
+      font-weight: 400;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--fg3);
+      transition: color 0.25s ease;
+    }
+
+    .nav-links a:hover { color: var(--fg); }
+
+    .nav-cta {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--pink);
+      border: 1px solid rgba(255,102,102,0.35);
+      padding: 9px 22px;
+      transition: background 0.25s ease, color 0.25s ease;
+    }
+
+    .nav-cta:hover {
+      background: var(--pink);
+      color: var(--bg);
+    }
+
+    /* ─── HERO ───────────────────────────────────────── */
+    .hero {
+      padding-top: 88px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .hero-meta-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 48px;
+      border-bottom: 1px solid var(--fg4);
+    }
+
+    .hero-meta {
+      font-size: 9px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--fg3);
+    }
+
+    .hero-meta-right {
+      font-size: 9px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--yellow);
+      opacity: 0.65;
+    }
+
+    .hero-body {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      gap: 0;
+      padding: 52px 48px 0;
+      align-items: start;
+    }
+
+    /* Headline */
+    .hero-headline-block {}
+
+    .hero-eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 32px;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.1s forwards;
+    }
+
+    .hero-eyebrow-line {
+      width: 36px;
+      height: 1px;
+      background: var(--pink);
+      opacity: 0.5;
+    }
+
+    .hero-eyebrow span {
+      font-size: 9px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--pink);
+      opacity: 0.7;
+    }
+
+    .hl {
+      font-family: var(--serif);
+      font-size: clamp(64px, 8.5vw, 112px);
+      font-weight: 400;
+      line-height: 0.92;
+      letter-spacing: -0.02em;
+      color: var(--fg);
+      display: block;
+      opacity: 0;
+    }
+
+    .hl-1 { animation: fadeUp 0.8s ease 0.2s forwards; }
+    .hl-2 { padding-left: clamp(40px, 6vw, 80px); animation: fadeUp 0.8s ease 0.35s forwards; }
+    .hl-3 { padding-left: clamp(80px, 12vw, 160px); animation: fadeUp 0.8s ease 0.5s forwards; }
+
+    .hl em {
+      font-style: italic;
+      color: var(--pink);
+    }
+
+    .hero-sub {
+      margin-top: 48px;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.65s forwards;
+    }
+
+    .hero-sub p {
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--fg2);
+      line-height: 1.85;
+      max-width: 360px;
+    }
+
+    .hero-sub p strong {
+      color: var(--fg);
+      font-weight: 400;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      margin-top: 36px;
+    }
+
+    .btn-primary {
+      display: inline-block;
+      background: var(--pink);
+      color: var(--bg);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      padding: 14px 32px;
+      transition: opacity 0.2s ease;
+      cursor: pointer;
+    }
+
+    .btn-primary:hover { opacity: 0.85; }
+
+    .btn-ghost {
+      font-size: 10px;
+      font-weight: 400;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--fg3);
+      border-bottom: 1px solid rgba(232,226,217,0.15);
+      padding-bottom: 2px;
+      transition: color 0.25s ease, border-color 0.25s ease;
+    }
+
+    .btn-ghost:hover {
+      color: var(--fg);
+      border-color: rgba(232,226,217,0.4);
+    }
+
+    /* Hero photo */
+    .hero-photo-col {
+      padding-top: 8px;
+      opacity: 0;
+      animation: fadeIn 1s ease 0.7s forwards;
+    }
+
+    .hero-photo-frame {
+      position: relative;
+      aspect-ratio: 16/9;
+      background: var(--bg2);
+      overflow: hidden;
+    }
+
+    .hero-photo-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.85;
+      filter: grayscale(15%) contrast(1.05);
+    }
+
+    /* Corner brackets */
+    .hero-photo-frame::before,
+    .hero-photo-frame::after {
+      content: '';
+      position: absolute;
+      width: 16px; height: 16px;
+      z-index: 2;
+    }
+
+    .hero-photo-frame::before {
+      top: 0; left: 0;
+      border-top: 1px solid var(--pink);
+      border-left: 1px solid var(--pink);
+    }
+
+    .hero-photo-frame::after {
+      bottom: 0; right: 0;
+      border-bottom: 1px solid var(--pink);
+      border-right: 1px solid var(--pink);
+    }
+
+    .photo-corner-tr,
+    .photo-corner-bl {
+      position: absolute;
+      width: 16px; height: 16px;
+      z-index: 2;
+    }
+
+    .photo-corner-tr {
+      top: 0; right: 0;
+      border-top: 1px solid var(--pink);
+      border-right: 1px solid var(--pink);
+    }
+
+    .photo-corner-bl {
+      bottom: 0; left: 0;
+      border-bottom: 1px solid var(--pink);
+      border-left: 1px solid var(--pink);
+    }
+
+    .hero-photo-caption {
+      margin-top: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .photo-caption-text {
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--fg3);
+    }
+
+    .photo-caption-index {
+      font-family: var(--serif);
+      font-size: 11px;
+      font-style: italic;
+      color: var(--pink);
+      opacity: 0.4;
+    }
+
+    /* Stats row under photo */
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--fg4);
+      margin-top: 24px;
+    }
+
+    .hero-stat {
+      background: var(--bg);
+      padding: 18px 16px;
+    }
+
+    .stat-num {
+      font-family: var(--serif);
+      font-size: 28px;
+      font-style: italic;
+      color: var(--fg);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .stat-num em { color: var(--pink); font-style: normal; }
+
+    .stat-label {
+      font-size: 9px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--fg3);
+      line-height: 1.5;
+    }
+
+    /* ─── TAGLINE STRIP ──────────────────────────────── */
+    .tagline-strip {
+      padding: 52px 48px;
+      border-top: 1px solid var(--fg4);
+      display: flex;
+      align-items: flex-start;
+      gap: 80px;
+    }
+
+    .tagline-index {
+      font-size: 9px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--fg3);
+      padding-top: 6px;
+      flex-shrink: 0;
+    }
+
+    .tagline-text {
+      font-family: var(--serif);
+      font-size: clamp(22px, 2.8vw, 34px);
+      font-style: italic;
+      font-weight: 400;
+      color: var(--fg2);
+      line-height: 1.4;
+      letter-spacing: -0.01em;
+    }
+
+    .tagline-text em {
+      font-style: normal;
+      color: var(--fg);
+    }
+
+    /* ─── SERVICES ───────────────────────────────────── */
+    .services {
+      border-top: 1px solid var(--fg4);
+    }
+
+    .section-header {
+      display: grid;
+      grid-template-columns: 72px 1fr;
+      border-bottom: 1px solid var(--fg4);
+    }
+
+    .section-gutter {
+      border-right: 1px solid var(--fg4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .section-gutter span {
+      font-size: 8px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--fg3);
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+    }
+
+    .section-header-content {
+      padding: 20px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .section-label {
+      font-size: 9px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--fg3);
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: 72px repeat(3, 1fr);
+    }
+
+    .svc-gutter {
+      border-right: 1px solid var(--fg4);
+    }
+
+    .svc {
+      padding: 40px 36px;
+      border-right: 1px solid var(--fg4);
+      position: relative;
+      transition: background 0.3s ease;
+    }
+
+    .svc:last-child { border-right: none; }
+
+    .svc::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 2px; height: 0;
+      background: var(--pink);
+      transition: height 0.4s ease;
+    }
+
+    .svc:hover { background: rgba(255,102,102,0.02); }
+    .svc:hover::before { height: 100%; }
+
+    .svc-num {
+      font-size: 9px;
+      letter-spacing: 0.25em;
+      color: var(--pink);
+      opacity: 0.4;
+      margin-bottom: 28px;
+    }
+
+    .svc-name {
+      font-family: var(--serif);
+      font-size: 26px;
+      font-weight: 400;
+      color: var(--fg);
+      line-height: 1.15;
+      margin-bottom: 20px;
+      letter-spacing: -0.01em;
+    }
+
+    .svc-rule {
+      width: 24px;
+      height: 1px;
+      background: var(--pink);
+      opacity: 0.35;
+      margin-bottom: 20px;
+    }
+
+    .svc-desc {
+      font-size: 12px;
+      font-weight: 300;
+      color: var(--fg2);
+      line-height: 1.85;
+    }
+
+    .svc-link {
+      display: inline-block;
+      margin-top: 24px;
+      font-size: 9px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--pink);
+      opacity: 0.5;
+      border-bottom: 1px solid rgba(255,102,102,0.2);
+      padding-bottom: 2px;
+      transition: opacity 0.2s ease;
+      cursor: pointer;
+    }
+
+    .svc:hover .svc-link { opacity: 1; }
+
+    /* ─── WORK / CASE STUDIES ────────────────────────── */
+    .work {
+      border-top: 1px solid var(--fg4);
+    }
+
+    .work-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1px;
+      background: var(--fg4);
+    }
+
+    .work-card {
+      background: var(--bg);
+      padding: 40px;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .work-card:hover { background: var(--bg2); }
+
+    .work-card-img {
+      aspect-ratio: 16/9;
+      background: var(--bg2);
+      margin-bottom: 28px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .work-card-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.7;
+      filter: grayscale(20%);
+      transition: transform 0.6s ease, opacity 0.3s ease;
+    }
+
+    .work-card:hover .work-card-img img {
+      transform: scale(1.03);
+      opacity: 0.85;
+    }
+
+    .work-card-img-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #1a1715 0%, #111010 100%);
+    }
+
+    .work-placeholder-label {
+      font-size: 9px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--fg3);
+    }
+
+    .work-card-tag {
+      font-size: 8px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--pink);
+      opacity: 0.55;
+      margin-bottom: 12px;
+    }
+
+    .work-card-title {
+      font-family: var(--serif);
+      font-size: 22px;
+      font-weight: 400;
+      color: var(--fg);
+      line-height: 1.2;
+      margin-bottom: 14px;
+      letter-spacing: -0.01em;
+    }
+
+    .work-card-desc {
+      font-size: 12px;
+      font-weight: 300;
+      color: var(--fg2);
+      line-height: 1.8;
+    }
+
+    .work-card-result {
+      display: inline-block;
+      margin-top: 20px;
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--yellow);
+      opacity: 0.6;
+    }
+
+    /* ─── TESTIMONIAL ────────────────────────────────── */
+    .testimonial {
+      border-top: 1px solid var(--fg4);
+      padding: 72px 48px 72px 160px;
+      position: relative;
+    }
+
+    .testimonial-mark {
+      position: absolute;
+      left: 48px;
+      top: 60px;
+      font-family: var(--serif);
+      font-size: 100px;
+      font-style: italic;
+      color: var(--pink);
+      opacity: 0.15;
+      line-height: 1;
+      user-select: none;
+    }
+
+    .testimonial-text {
+      font-family: var(--serif);
+      font-size: clamp(20px, 2.2vw, 28px);
+      font-style: italic;
+      color: var(--fg2);
+      line-height: 1.5;
+      letter-spacing: -0.01em;
+      max-width: 680px;
+    }
+
+    .testimonial-text em {
+      font-style: normal;
+      color: var(--fg);
+    }
+
+    .testimonial-attr {
+      margin-top: 28px;
+      font-size: 9px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--fg3);
+    }
+
+    .testimonial-attr span {
+      color: var(--yellow);
+      opacity: 0.65;
+    }
+
+    .testimonial-nav {
+      display: flex;
+      gap: 12px;
+      margin-top: 32px;
+    }
+
+    .t-dot {
+      width: 20px;
+      height: 1px;
+      background: var(--fg3);
+      cursor: pointer;
+      transition: background 0.2s ease, width 0.2s ease;
+    }
+
+    .t-dot.active {
+      background: var(--pink);
+      width: 36px;
+    }
+
+    /* ─── CLIENTS STRIP ──────────────────────────────── */
+    .clients {
+      border-top: 1px solid var(--fg4);
+      border-bottom: 1px solid var(--fg4);
+      display: flex;
+      align-items: stretch;
+      overflow: hidden;
+    }
+
+    .clients-label-block {
+      padding: 20px 28px;
+      border-right: 1px solid var(--fg4);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+    }
+
+    .clients-label {
+      font-size: 8px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--fg3);
+      white-space: nowrap;
+    }
+
+    .clients-scroll {
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      flex: 1;
+    }
+
+    .clients-track {
+      display: flex;
+      animation: scroll-clients 22s linear infinite;
+      white-space: nowrap;
+    }
+
+    @keyframes scroll-clients {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    .client-item {
+      padding: 20px 36px;
+      border-right: 1px solid var(--fg4);
+      font-size: 9px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: rgba(232,226,217,0.22);
+      font-weight: 500;
+      white-space: nowrap;
+      transition: color 0.25s ease;
+    }
+
+    .client-item:hover { color: var(--fg2); }
+
+    /* ─── CTA BAND ───────────────────────────────────── */
+    .cta-band {
+      padding: 100px 48px;
+      text-align: center;
+      position: relative;
+    }
+
+    .cta-band-eyebrow {
+      font-size: 9px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--pink);
+      opacity: 0.6;
+      margin-bottom: 28px;
+    }
+
+    .cta-band-headline {
+      font-family: var(--serif);
+      font-size: clamp(40px, 5.5vw, 72px);
+      font-weight: 400;
+      font-style: italic;
+      color: var(--fg);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      margin-bottom: 40px;
+    }
+
+    .cta-band-headline em {
+      font-style: normal;
+      color: var(--pink);
+    }
+
+    .cta-band-sub {
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--fg2);
+      margin-bottom: 44px;
+      line-height: 1.7;
+    }
+
+    /* ─── FOOTER ─────────────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--fg4);
+      padding: 36px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-logo {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--pink);
+      opacity: 0.6;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 28px;
+    }
+
+    .footer-link {
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--fg3);
+      transition: color 0.2s ease;
+      cursor: pointer;
+    }
+
+    .footer-link:hover { color: var(--fg2); }
+
+    .footer-copy {
+      font-size: 9px;
+      letter-spacing: 0.12em;
+      color: var(--fg3);
+    }
+
+    /* ─── ANIMATIONS ─────────────────────────────────── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    /* ─── SCROLL REVEAL ──────────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ─── RESPONSIVE ─────────────────────────────────── */
+    @media (max-width: 900px) {
+      nav { padding: 20px 24px; }
+      .nav-links { display: none; }
+
+      .hero-meta-row { padding: 14px 24px; }
+      .hero-body { grid-template-columns: 1fr; padding: 36px 24px 0; }
+      .hero-photo-col { order: -1; }
+
+      .hl { font-size: clamp(48px, 11vw, 72px); }
+      .hl-2 { padding-left: clamp(24px, 4vw, 48px); }
+      .hl-3 { padding-left: clamp(48px, 8vw, 96px); }
+
+      .tagline-strip { padding: 40px 24px; gap: 32px; flex-direction: column; }
+
+      .services-grid { grid-template-columns: 1fr; }
+      .svc-gutter { display: none; }
+      .svc { border-right: none; border-bottom: 1px solid var(--fg4); }
+
+      .work-grid { grid-template-columns: 1fr; }
+      .work-card { padding: 28px 24px; }
+
+      .testimonial { padding: 48px 24px 48px 24px; }
+      .testimonial-mark { display: none; }
+
+      .cta-band { padding: 64px 24px; }
+      footer { flex-direction: column; gap: 20px; text-align: center; }
+      .footer-links { flex-wrap: wrap; justify-content: center; }
+    }
+
+    @media (max-width: 600px) {
+      .section-header { grid-template-columns: 1fr; }
+      .section-gutter { display: none; }
+      .section-header-content { padding: 16px 24px; }
+      .hero-stats { grid-template-columns: repeat(3, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── NAV ─────────────────────────────────────────── -->
+  <nav>
+    <a href="index.html" class="nav-logo">Lost Objects</a>
+    <div class="nav-links">
+      <a href="work.html">Work</a>
+      <a href="services.html">Services</a>
+      <a href="index.html#about">About</a>
+    </div>
+    <a href="contact.html" class="nav-cta">Let's Talk</a>
+  </nav>
+
+  <!-- ── HERO ─────────────────────────────────────────── -->
+  <section class="hero">
+
+    <div class="hero-meta-row">
+      <span class="hero-meta">Social strategy — Film industry</span>
+      <span class="hero-meta-right">Los Angeles, CA</span>
+    </div>
+
+    <div class="hero-body">
+
+      <!-- Left: headline + copy -->
+      <div class="hero-headline-block">
+        <div class="hero-eyebrow">
+          <div class="hero-eyebrow-line"></div>
+          <span>Kyra & Brendan Sweeney</span>
+        </div>
+
+        <!-- TAGLINE OPTIONS — pick one, delete the rest -->
+        <!-- OPTION A: -->
+        <span class="hl hl-1">We speak</span>
+        <span class="hl hl-2">the language</span>
+        <span class="hl hl-3"><em>of cinema.</em></span>
+
+        <!-- OPTION B (uncomment to try):
+        <span class="hl hl-1">Made for</span>
+        <span class="hl hl-2">the ones</span>
+        <span class="hl hl-3"><em>on set.</em></span>
+        -->
+
+        <!-- OPTION C (uncomment to try):
+        <span class="hl hl-1">Your story</span>
+        <span class="hl hl-2">deserves an</span>
+        <span class="hl hl-3"><em>audience.</em></span>
+        -->
+
+        <!-- OPTION D (uncomment to try):
+        <span class="hl hl-1">Social media</span>
+        <span class="hl hl-2">built for</span>
+        <span class="hl hl-3"><em>film people.</em></span>
+        -->
+
+        <div class="hero-sub">
+          <p>
+            <strong>We're in the film industry.</strong> That's not a selling point, it's the whole thing. Kyra is a SAG-AFTRA actor and social strategist. Brendan is a director, producer, and CEO of Filmmakers Academy. We built Lost Objects because the industry deserved better than borrowed social media strategy.
+          </p>
+          <div class="hero-actions">
+            <a href="services.html" class="btn-primary">Work with us</a>
+            <a href="work.html" class="btn-ghost">See our work ↗</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: photo + stats -->
+      <div class="hero-photo-col">
+        <div class="hero-photo-frame">
+          <!-- Replace src with your actual photo path -->
+          <!-- <img src="images/kyra-brendan.jpg" alt="Kyra and Brendan Sweeney" /> -->
+
+          <!-- Remove this placeholder block once image is added -->
+          <div class="work-card-img-placeholder" style="aspect-ratio:16/9; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:10px;">
+            <div style="width:36px;height:36px;border:1px solid rgba(255,102,102,0.2);display:flex;align-items:center;justify-content:center;">
+              <div style="width:14px;height:10px;border:1px solid rgba(255,102,102,0.3);"></div>
+            </div>
+            <span style="font-size:9px;letter-spacing:0.22em;text-transform:uppercase;color:rgba(232,226,217,0.18);">Your photo — 16×9</span>
+          </div>
+
+          <div class="photo-corner-tr"></div>
+          <div class="photo-corner-bl"></div>
+        </div>
+
+        <div class="hero-photo-caption">
+          <span class="photo-caption-text">Kyra & Brendan Sweeney — Los Angeles</span>
+          <span class="photo-caption-index">01 / 01</span>
+        </div>
+
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <div class="stat-num"><em>15K</em></div>
+            <div class="stat-label">Followers grown organically</div>
+          </div>
+          <div class="hero-stat">
+            <div class="stat-num">3+</div>
+            <div class="stat-label">Years in the film industry</div>
+          </div>
+          <div class="hero-stat">
+            <div class="stat-num">6+</div>
+            <div class="stat-label">Brand partners</div>
+          </div>
+        </div>
+
+      </div>
+    </div><!-- /hero-body -->
+
+  </section><!-- /hero -->
+
+  <!-- ── TAGLINE STRIP ─────────────────────────────────── -->
+  <div class="tagline-strip reveal">
+    <span class="tagline-index">— About</span>
+    <p class="tagline-text">
+      We started Lost Objects because we kept seeing the same thing: <em>filmmakers and brands with real stories to tell, showing up online like everyone else.</em> We're here to fix that.
+    </p>
+  </div>
+
+  <!-- ── SERVICES ──────────────────────────────────────── -->
+  <section class="services" id="services">
+    <div class="section-header">
+      <div class="section-gutter"><span>Services</span></div>
+      <div class="section-header-content">
+        <span class="section-label">What we do</span>
+        <span class="section-label">Three offerings. One industry.</span>
+      </div>
+    </div>
+    <div class="services-grid">
+      <div class="svc-gutter"></div>
+
+      <div class="svc reveal">
+        <div class="svc-num">01</div>
+        <div class="svc-name">Social Media<br>Audit</div>
+        <div class="svc-rule"></div>
+        <p class="svc-desc">A deep look at where you are and a clear map to where you need to be. Real feedback, real strategy, no filler. You walk away knowing exactly what to fix and why.</p>
+        <a href="services.html" class="svc-link">Learn more ↗</a>
+      </div>
+
+      <div class="svc reveal" style="transition-delay:0.1s;">
+        <div class="svc-num">02</div>
+        <div class="svc-name">Strategy<br>Session</div>
+        <div class="svc-rule"></div>
+        <p class="svc-desc">The tools, direction, and confidence to build or revamp your online presence. Built for filmmakers who are serious about showing up with intention and a real point of view.</p>
+        <a href="services.html" class="svc-link">Learn more ↗</a>
+      </div>
+
+      <div class="svc reveal" style="transition-delay:0.2s;">
+        <div class="svc-num">03</div>
+        <div class="svc-name">Full<br>Management</div>
+        <div class="svc-rule"></div>
+        <p class="svc-desc">We run your social so you can stay on set, on brand, and ahead of the curve. Content creation, scheduling, analytics, trend integration — completely handled.</p>
+        <a href="services.html" class="svc-link">Learn more ↗</a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── WORK ──────────────────────────────────────────── -->
+  <section class="work" id="work">
+    <div class="section-header">
+      <div class="section-gutter"><span>Work</span></div>
+      <div class="section-header-content">
+        <span class="section-label">Selected projects</span>
+        <a href="work.html" class="section-label" style="color:var(--pink);opacity:0.6;cursor:pointer;">View all ↗</a>
+      </div>
+    </div>
+    <div class="work-grid">
+
+      <!-- Case Study 1 -->
+      <a href="work.html" class="work-card reveal">
+        <div class="work-card-img">
+          <!-- <img src="images/case-legacy-grip.jpg" alt="Legacy Grip case study" /> -->
+          <div class="work-card-img-placeholder">
+            <span class="work-placeholder-label">Case study image</span>
+          </div>
+        </div>
+        <div class="work-card-tag">Full Management — Grip & Lighting</div>
+        <div class="work-card-title">Legacy Grip — From obscurity to 15,000 followers</div>
+        <p class="work-card-desc">A Local 80 Key Grip with a great reputation and zero social presence. We built the strategy, the voice, and the community from scratch.</p>
+        <span class="work-card-result">↑ 400 → 15,000 followers in under 12 months</span>
+      </a>
+
+      <!-- Case Study 2 -->
+      <a href="work.html" class="work-card reveal" style="transition-delay:0.1s;">
+        <div class="work-card-img">
+          <!-- <img src="images/case-fa.jpg" alt="Filmmakers Academy case study" /> -->
+          <div class="work-card-img-placeholder">
+            <span class="work-placeholder-label">Case study image</span>
+          </div>
+        </div>
+        <div class="work-card-tag">Full Management — Educational Platform</div>
+        <div class="work-card-title">Filmmakers Academy — Content strategy at scale</div>
+        <p class="work-card-desc">Managing social across platforms for one of the most respected cinematography education platforms in the world, including live events, masterclass launches, and brand partnerships.</p>
+        <span class="work-card-result">Ongoing — Multi-platform content strategy</span>
+      </a>
+
+      <!-- Case Study 3 -->
+      <a href="work.html" class="work-card reveal" style="transition-delay:0.2s;">
+        <div class="work-card-img">
+          <div class="work-card-img-placeholder">
+            <span class="work-placeholder-label">Case study image</span>
+          </div>
+        </div>
+        <div class="work-card-tag">Strategy — Cinematographer</div>
+        <div class="work-card-title">Building a cohesive brand for a working cinematographer</div>
+        <p class="work-card-desc">A clear roadmap, a cohesive visual identity across platforms, and a strategy tailored to how the film industry actually works and hires.</p>
+        <span class="work-card-result">↑ Profile clarity, immediate audience growth</span>
+      </a>
+
+      <!-- Case Study 4 — Coming Soon Shell -->
+      <a href="contact.html" class="work-card reveal" style="transition-delay:0.3s;">
+        <div class="work-card-img">
+          <div class="work-card-img-placeholder" style="border:1px dashed rgba(255,102,102,0.12);">
+            <span class="work-placeholder-label" style="color:rgba(255,102,102,0.2);">Your project here</span>
+          </div>
+        </div>
+        <div class="work-card-tag" style="color:var(--fg3);">Your industry — Your format</div>
+        <div class="work-card-title" style="color:var(--fg2);">This could be your story.</div>
+        <p class="work-card-desc">We work with grip companies, cinematographers, production houses, film tech startups, and creative entrepreneurs. If you're in the industry, we speak your language.</p>
+        <span class="work-card-result" style="color:var(--fg3);">→ Let's start the conversation</span>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ── TESTIMONIAL ───────────────────────────────────── -->
+  <section class="testimonial reveal" id="testimonials">
+    <div class="testimonial-mark">"</div>
+    <p class="testimonial-text">
+      Lost Objects grew my Instagram from <em>400 to over 15,000 followers</em> in less than a year — completely organically. Their personalized strategy and attention to detail have been the foundation for building my brand online.
+    </p>
+    <div class="testimonial-attr">Brendan Riel — <span>Local 80 Key Grip & Owner, Legacy Grip</span></div>
+    <div class="testimonial-nav">
+      <div class="t-dot active"></div>
+      <div class="t-dot"></div>
+      <div class="t-dot"></div>
+    </div>
+  </section>
+
+  <!-- ── CLIENTS ───────────────────────────────────────── -->
+  <div class="clients">
+    <div class="clients-label-block">
+      <span class="clients-label">Trusted by</span>
+    </div>
+    <div class="clients-scroll">
+      <div class="clients-track">
+        <div class="client-item">Filmmakers Academy</div>
+        <div class="client-item">Blackout</div>
+        <div class="client-item">Nanlux / Nanlite</div>
+        <div class="client-item">B&H Photo</div>
+        <div class="client-item">Kodak</div>
+        <div class="client-item">Hollyland</div>
+        <div class="client-item">Legacy Grip</div>
+        <!-- Duplicate for seamless loop -->
+        <div class="client-item">Filmmakers Academy</div>
+        <div class="client-item">Blackout</div>
+        <div class="client-item">Nanlux / Nanlite</div>
+        <div class="client-item">B&H Photo</div>
+        <div class="client-item">Kodak</div>
+        <div class="client-item">Hollyland</div>
+        <div class="client-item">Legacy Grip</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── CTA BAND ──────────────────────────────────────── -->
+  <section class="cta-band reveal">
+    <div class="cta-band-eyebrow">Ready to show up?</div>
+    <h2 class="cta-band-headline">Let's make the film industry<br><em>impossible to ignore.</em></h2>
+    <p class="cta-band-sub">No templates. No borrowed strategy. Just social media that actually speaks the language of your world.</p>
+    <a href="contact.html" class="btn-primary">Start the conversation</a>
+  </section>
+
+  <!-- ── FOOTER ────────────────────────────────────────── -->
+  <footer>
+    <div class="footer-logo">Lost Objects</div>
+    <div class="footer-links">
+      <a href="work.html" class="footer-link">Work</a>
+      <a href="services.html" class="footer-link">Services</a>
+      <a href="contact.html" class="footer-link">Contact</a>
+    </div>
+    <div class="footer-copy">© 2025 Lost Objects LLC</div>
+  </footer>
+
+  <!-- ── SCROLL REVEAL SCRIPT ──────────────────────────── -->
+  <script>
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    reveals.forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>
