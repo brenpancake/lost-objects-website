@@ -1,10 +1,10 @@
 /*!
- * Lost Objects — Lead Capture Popup
- * Fixed bottom-right button that opens a seminar signup modal.
- * Add to every page with: <script src="lead-popup.js"></script>
+ * Lost Objects — Lead Capture Popup with Collapsible Tab
+ * Stays on screen always as a small tab. Expands to full button.
+ * Never fully dismisses — just tucks away.
  *
  * SETUP: Replace YOUR_KIT_FORM_ID and YOUR_KIT_API_KEY below
- * with your values from kit.com (free up to 10,000 subscribers)
+ * with values from kit.com (free up to 10,000 subscribers)
  */
 (function () {
   'use strict';
@@ -12,48 +12,126 @@
   const KIT_FORM_ID = 'YOUR_KIT_FORM_ID';
   const KIT_API_KEY = 'YOUR_KIT_API_KEY';
 
-  /* Don't show again if already signed up this session */
-  try {
-    if (localStorage.getItem('lo_signed_up') === '1') return;
-  } catch (e) {}
+  /* Don't show the button if already signed up */
+  let signedUp = false;
+  try { signedUp = localStorage.getItem('lo_signed_up') === '1'; } catch (e) {}
 
-  /* ── STYLES ───────────────────────────────────────── */
-  const style = document.createElement('style');
-  style.textContent = `
-    #lo-popup-btn {
+  /* ── STYLES ─────────────────────────────────────── */
+  const css = document.createElement('style');
+  css.textContent = `
+
+    /* ── LAUNCHER WRAPPER ─────────────────────────── */
+    /* Sits fixed bottom-right, slides in on load      */
+    #lo-launcher {
       position: fixed;
       bottom: 28px;
-      right: 28px;
+      right: 0;
       z-index: 9000;
+      display: flex;
+      align-items: flex-end;
+      flex-direction: column;
+      gap: 0;
+      animation: lo-slide-in 0.5s cubic-bezier(0.34,1.56,0.64,1) 1.5s both;
+    }
+
+    @keyframes lo-slide-in {
+      from { opacity: 0; transform: translateX(60px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+
+    /* ── EXPANDED STATE — full pill button ────────── */
+    #lo-trigger {
       display: flex;
       align-items: center;
       gap: 10px;
       background: #FF6666;
       color: #0f0e0d;
       border: none;
-      padding: 13px 20px;
+      border-radius: 2px 0 0 2px;
+      padding: 13px 18px;
       cursor: pointer;
       font-family: 'Inter', system-ui, sans-serif;
       font-size: 10px;
       font-weight: 600;
       letter-spacing: 0.18em;
       text-transform: uppercase;
-      box-shadow: 0 8px 32px rgba(255,102,102,0.3);
-      transition: opacity 0.2s, transform 0.2s;
-      animation: lo-bounce-in 0.5s cubic-bezier(0.34,1.56,0.64,1) 1.5s both;
-    }
-    #lo-popup-btn:hover {
-      opacity: 0.88;
-      transform: translateY(-2px);
-    }
-    #lo-popup-btn svg {
-      flex-shrink: 0;
-    }
-    @keyframes lo-bounce-in {
-      from { opacity: 0; transform: translateY(20px); }
-      to   { opacity: 1; transform: translateY(0); }
+      box-shadow: -4px 4px 24px rgba(255,102,102,0.28);
+      transition: opacity 0.2s, padding 0.35s cubic-bezier(0.4,0,0.2,1),
+                  width 0.35s cubic-bezier(0.4,0,0.2,1);
+      overflow: hidden;
+      white-space: nowrap;
+      max-width: 200px;
     }
 
+    #lo-trigger:hover { opacity: 0.88; }
+
+    /* Collapsed state — just a narrow tab on the edge */
+    #lo-launcher.lo-collapsed #lo-trigger {
+      padding: 13px 6px;
+      max-width: 28px;
+    }
+
+    /* Hide label text when collapsed */
+    #lo-trigger-label {
+      transition: opacity 0.2s, width 0.35s;
+      overflow: hidden;
+    }
+
+    #lo-launcher.lo-collapsed #lo-trigger-label {
+      opacity: 0;
+      width: 0;
+      pointer-events: none;
+    }
+
+    /* Collapse toggle — little tab below the button */
+    #lo-collapse-btn {
+      background: rgba(255,102,102,0.12);
+      border: none;
+      border-radius: 0 0 0 3px;
+      border-top: 1px solid rgba(255,102,102,0.15);
+      width: 100%;
+      padding: 5px 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 5px;
+      transition: background 0.2s;
+    }
+
+    #lo-collapse-btn:hover { background: rgba(255,102,102,0.2); }
+
+    #lo-collapse-label {
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 7px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,102,102,0.6);
+      transition: opacity 0.2s, width 0.35s;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    #lo-launcher.lo-collapsed #lo-collapse-label {
+      opacity: 0;
+      width: 0;
+    }
+
+    #lo-collapse-icon {
+      color: rgba(255,102,102,0.6);
+      font-size: 9px;
+      line-height: 1;
+      transition: transform 0.3s ease;
+      flex-shrink: 0;
+    }
+
+    /* Arrow points left when expanded (to collapse),
+       right when collapsed (to expand) */
+    #lo-launcher.lo-collapsed #lo-collapse-icon {
+      transform: rotate(180deg);
+    }
+
+    /* ── MODAL OVERLAY ────────────────────────────── */
     #lo-overlay {
       display: none;
       position: fixed;
@@ -66,9 +144,8 @@
       justify-content: center;
       padding: 20px;
     }
-    #lo-overlay.lo-open {
-      display: flex;
-    }
+
+    #lo-overlay.lo-open { display: flex; }
 
     #lo-modal {
       background: #111010;
@@ -78,6 +155,7 @@
       position: relative;
       animation: lo-modal-in 0.35s cubic-bezier(0.34,1.56,0.64,1);
     }
+
     @keyframes lo-modal-in {
       from { opacity: 0; transform: scale(0.95) translateY(12px); }
       to   { opacity: 1; transform: scale(1) translateY(0); }
@@ -107,10 +185,7 @@
       margin-bottom: 10px;
     }
 
-    .lo-modal-hl em {
-      font-style: italic;
-      color: #FF6666;
-    }
+    .lo-modal-hl em { font-style: italic; color: #FF6666; }
 
     .lo-modal-sub {
       font-family: 'Inter', system-ui, sans-serif;
@@ -120,9 +195,7 @@
       line-height: 1.75;
     }
 
-    #lo-modal-body {
-      padding: 24px 32px 32px;
-    }
+    #lo-modal-body { padding: 24px 32px 32px; }
 
     .lo-field-row {
       display: grid;
@@ -164,13 +237,8 @@
       box-sizing: border-box;
     }
 
-    .lo-input:focus {
-      border-color: rgba(255,102,102,0.4);
-    }
-
-    .lo-input::placeholder {
-      color: rgba(232,226,217,0.2);
-    }
+    .lo-input:focus { border-color: rgba(255,102,102,0.4); }
+    .lo-input::placeholder { color: rgba(232,226,217,0.2); }
 
     .lo-optin {
       display: flex;
@@ -192,23 +260,18 @@
       -webkit-appearance: none;
       position: relative;
       transition: background 0.2s, border-color 0.2s;
+      flex-shrink: 0;
     }
 
-    .lo-checkbox:checked {
-      background: #FF6666;
-      border-color: #FF6666;
-    }
+    .lo-checkbox:checked { background: #FF6666; border-color: #FF6666; }
 
     .lo-checkbox:checked::after {
       content: '';
       position: absolute;
-      top: 2px;
-      left: 4px;
-      width: 4px;
-      height: 7px;
+      top: 2px; left: 4px;
+      width: 4px; height: 7px;
       border: 1.5px solid #0f0e0d;
-      border-top: none;
-      border-left: none;
+      border-top: none; border-left: none;
       transform: rotate(40deg);
     }
 
@@ -249,8 +312,7 @@
 
     #lo-close {
       position: absolute;
-      top: 12px;
-      right: 14px;
+      top: 12px; right: 14px;
       background: none;
       border: none;
       cursor: pointer;
@@ -271,62 +333,61 @@
     }
 
     .lo-success-icon {
-      width: 48px;
-      height: 48px;
+      width: 48px; height: 48px;
       border: 1px solid rgba(255,102,102,0.3);
       border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: flex; align-items: center; justify-content: center;
       margin: 0 auto 20px;
     }
 
     .lo-success-hl {
       font-family: 'DM Serif Display', Georgia, serif;
-      font-size: 28px;
-      font-style: italic;
-      color: #e8e2d9;
-      margin-bottom: 10px;
+      font-size: 28px; font-style: italic;
+      color: #e8e2d9; margin-bottom: 10px;
     }
 
     .lo-success-hl em { font-style: normal; color: #FF6666; }
 
     .lo-success-sub {
       font-family: 'Inter', system-ui, sans-serif;
-      font-size: 12px;
-      font-weight: 300;
-      color: rgba(232,226,217,0.45);
-      line-height: 1.75;
+      font-size: 12px; font-weight: 300;
+      color: rgba(232,226,217,0.45); line-height: 1.75;
     }
 
     @media (max-width: 480px) {
-      #lo-popup-btn { bottom: 16px; right: 16px; padding: 11px 16px; }
+      #lo-launcher { bottom: 16px; }
       #lo-modal-header { padding: 24px 20px 18px; }
       #lo-modal-body { padding: 18px 20px 24px; }
       .lo-field-row { grid-template-columns: 1fr; }
       #lo-success { padding: 36px 20px; }
     }
   `;
-  document.head.appendChild(style);
+  document.head.appendChild(css);
 
-  /* ── HTML ─────────────────────────────────────────── */
+  /* ── HTML ───────────────────────────────────────── */
   const wrap = document.createElement('div');
   wrap.innerHTML = `
-    <!-- Trigger button -->
-    <button id="lo-popup-btn" aria-label="Get free seminar">
-      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-        <polygon points="2,1 13,7 2,13" fill="#0f0e0d"/>
-      </svg>
-      Free Seminar
-    </button>
+    <div id="lo-launcher">
 
-    <!-- Overlay + Modal -->
+      <button id="lo-trigger" aria-label="Get free seminar">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0">
+          <polygon points="1,0.5 11,6 1,11.5" fill="#0f0e0d"/>
+        </svg>
+        <span id="lo-trigger-label">Free Seminar</span>
+      </button>
+
+      <button id="lo-collapse-btn" aria-label="Toggle seminar button">
+        <span id="lo-collapse-label">Hide</span>
+        <span id="lo-collapse-icon">&#8249;</span>
+      </button>
+
+    </div>
+
     <div id="lo-overlay" role="dialog" aria-modal="true" aria-labelledby="lo-modal-title">
       <div id="lo-modal">
 
         <button id="lo-close" aria-label="Close">✕ Close</button>
 
-        <!-- Form state -->
         <div id="lo-form-wrap">
           <div id="lo-modal-header">
             <div class="lo-eyebrow">Free — B&amp;H BILD Expo 2025</div>
@@ -365,16 +426,15 @@
               </label>
 
               <button class="lo-submit" type="submit" id="lo-submit-btn">
-                Send me the free seminar →
+                Send me the free seminar &#8594;
               </button>
 
-              <p class="lo-fine-print">No spam. No selling your info. Just the seminar and useful things when we have them.</p>
+              <p class="lo-fine-print">No spam. No selling your info. Just the seminar and useful things.</p>
 
             </form>
           </div>
         </div>
 
-        <!-- Success state -->
         <div id="lo-success">
           <div class="lo-success-icon">
             <svg width="18" height="14" viewBox="0 0 18 14" fill="none">
@@ -390,19 +450,53 @@
   `;
   document.body.appendChild(wrap);
 
-  /* ── LOGIC ────────────────────────────────────────── */
-  const btn      = document.getElementById('lo-popup-btn');
-  const overlay  = document.getElementById('lo-overlay');
-  const closeBtn = document.getElementById('lo-close');
-  const form     = document.getElementById('lo-form');
-  const submitBtn = document.getElementById('lo-submit-btn');
-  const formWrap = document.getElementById('lo-form-wrap');
-  const success  = document.getElementById('lo-success');
+  /* ── REFERENCES ─────────────────────────────────── */
+  const launcher   = document.getElementById('lo-launcher');
+  const trigger    = document.getElementById('lo-trigger');
+  const collapseBtn = document.getElementById('lo-collapse-btn');
+  const collapseLabel = document.getElementById('lo-collapse-label');
+  const overlay    = document.getElementById('lo-overlay');
+  const closeBtn   = document.getElementById('lo-close');
+  const form       = document.getElementById('lo-form');
+  const submitBtn  = document.getElementById('lo-submit-btn');
+  const formWrap   = document.getElementById('lo-form-wrap');
+  const success    = document.getElementById('lo-success');
 
+  /* ── COLLAPSE STATE ─────────────────────────────── */
+  let collapsed = false;
+
+  /* Restore collapse preference */
+  try {
+    if (sessionStorage.getItem('lo_collapsed') === '1') {
+      collapsed = true;
+      launcher.classList.add('lo-collapsed');
+    }
+  } catch (e) {}
+
+  function setCollapsed(val) {
+    collapsed = val;
+    if (collapsed) {
+      launcher.classList.add('lo-collapsed');
+      collapseLabel.textContent = 'Show';
+    } else {
+      launcher.classList.remove('lo-collapsed');
+      collapseLabel.textContent = 'Hide';
+    }
+    try { sessionStorage.setItem('lo_collapsed', collapsed ? '1' : '0'); } catch (e) {}
+  }
+
+  collapseBtn.addEventListener('click', function (e) {
+    e.stopPropagation();
+    setCollapsed(!collapsed);
+  });
+
+  /* ── MODAL OPEN / CLOSE ─────────────────────────── */
   function openModal() {
+    /* If collapsed, expand first then open */
+    if (collapsed) setCollapsed(false);
     overlay.classList.add('lo-open');
     document.body.style.overflow = 'hidden';
-    document.getElementById('lo-first').focus();
+    setTimeout(() => document.getElementById('lo-first').focus(), 100);
   }
 
   function closeModal() {
@@ -410,17 +504,16 @@
     document.body.style.overflow = '';
   }
 
-  btn.addEventListener('click', openModal);
+  trigger.addEventListener('click', openModal);
   closeBtn.addEventListener('click', closeModal);
-
   overlay.addEventListener('click', function (e) {
     if (e.target === overlay) closeModal();
   });
-
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') closeModal();
   });
 
+  /* ── FORM SUBMIT ────────────────────────────────── */
   form.addEventListener('submit', async function (e) {
     e.preventDefault();
 
@@ -430,7 +523,6 @@
     const optin = document.getElementById('lo-optin').checked;
 
     if (!first || !last || !email || !optin) {
-      /* Simple shake on the submit button */
       submitBtn.style.opacity = '0.5';
       setTimeout(() => { submitBtn.style.opacity = '1'; }, 400);
       return;
@@ -457,7 +549,8 @@
       if (res.ok) {
         formWrap.style.display = 'none';
         success.style.display  = 'block';
-        btn.style.display      = 'none';
+        /* Collapse the launcher to just a tiny tab after signup */
+        setTimeout(() => setCollapsed(true), 1200);
         try { localStorage.setItem('lo_signed_up', '1'); } catch (err) {}
       } else {
         submitBtn.textContent = 'Something went wrong — try again';
@@ -468,5 +561,10 @@
       submitBtn.disabled    = false;
     }
   });
+
+  /* Hide trigger entirely if already signed up */
+  if (signedUp) {
+    launcher.style.display = 'none';
+  }
 
 })();
