@@ -139,9 +139,9 @@
       position: fixed;
       inset: 0;
       z-index: 9001;
-      background: rgba(10,9,8,0.85);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
+      background: rgba(10,9,8,0.88);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       align-items: center;
       justify-content: center;
       padding: 20px;
@@ -150,41 +150,126 @@
     #lo-overlay.lo-open { display: flex; }
 
     #lo-modal {
-      background: #111010;
-      border: 1px solid rgba(255,102,102,0.2);
+      background: #0f0e0d;
+      border: 1px solid rgba(255,102,102,0.25);
       width: 100%;
-      max-width: 500px;
+      max-width: 520px;
       position: relative;
-      animation: lo-modal-in 0.35s cubic-bezier(0.34,1.56,0.64,1);
+      overflow: hidden;
+      animation: lo-modal-in 0.4s cubic-bezier(0.34,1.56,0.64,1);
     }
 
     @keyframes lo-modal-in {
-      from { opacity: 0; transform: scale(0.95) translateY(12px); }
+      from { opacity: 0; transform: scale(0.94) translateY(16px); }
       to   { opacity: 1; transform: scale(1) translateY(0); }
     }
 
+    /* Animated grain on the modal */
+    #lo-modal::before {
+      content: '';
+      position: absolute;
+      inset: -50px;
+      width: calc(100% + 100px);
+      height: calc(100% + 100px);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+      opacity: 0.055;
+      pointer-events: none;
+      z-index: 0;
+      animation: lo-grain 0.5s steps(1) infinite;
+    }
+
+    @keyframes lo-grain {
+      0%  { transform: translate(0,0); }
+      20% { transform: translate(-2%,-3%); }
+      40% { transform: translate(3%,2%); }
+      60% { transform: translate(-1%,3%); }
+      80% { transform: translate(2%,-2%); }
+      100%{ transform: translate(0,0); }
+    }
+
+    /* Pink atmospheric glow behind the header */
     #lo-modal-header {
-      padding: 32px 32px 24px;
+      position: relative;
+      z-index: 1;
+      padding: 36px 36px 28px;
       border-bottom: 1px solid rgba(232,226,217,0.07);
+      background:
+        radial-gradient(ellipse at 20% 0%, rgba(255,102,102,0.12) 0%, transparent 65%),
+        #111010;
+      overflow: hidden;
+    }
+
+    /* Film frame corners on modal header */
+    #lo-modal-header::before,
+    #lo-modal-header::after {
+      content: '';
+      position: absolute;
+      width: 16px; height: 16px;
+    }
+    #lo-modal-header::before {
+      top: 0; left: 0;
+      border-top: 1px solid rgba(255,102,102,0.5);
+      border-left: 1px solid rgba(255,102,102,0.5);
+    }
+    #lo-modal-header::after {
+      top: 0; right: 0;
+      border-top: 1px solid rgba(255,102,102,0.5);
+      border-right: 1px solid rgba(255,102,102,0.5);
+    }
+
+    /* Bottom frame corners via wrapper */
+    #lo-modal-body {
+      position: relative;
+      z-index: 1;
+      padding: 28px 36px 36px;
+      background: #0f0e0d;
+    }
+
+    #lo-modal-body::before,
+    #lo-modal-body::after {
+      content: '';
+      position: absolute;
+      width: 16px; height: 16px;
+    }
+    #lo-modal-body::before {
+      bottom: 0; left: 0;
+      border-bottom: 1px solid rgba(255,102,102,0.3);
+      border-left: 1px solid rgba(255,102,102,0.3);
+    }
+    #lo-modal-body::after {
+      bottom: 0; right: 0;
+      border-bottom: 1px solid rgba(255,102,102,0.3);
+      border-right: 1px solid rgba(255,102,102,0.3);
     }
 
     .lo-eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 10px;
       font-family: 'Inter', system-ui, sans-serif;
       font-size: 8px;
       letter-spacing: 0.28em;
       text-transform: uppercase;
-      color: rgba(255,102,102,0.65);
-      margin-bottom: 12px;
+      color: rgba(255,102,102,0.7);
+      margin-bottom: 16px;
+    }
+
+    .lo-eyebrow::before {
+      content: '';
+      display: block;
+      width: 24px; height: 1px;
+      background: rgba(255,102,102,0.4);
+      flex-shrink: 0;
     }
 
     .lo-modal-hl {
       font-family: 'DM Serif Display', Georgia, serif;
-      font-size: clamp(20px, 4vw, 28px);
+      font-size: clamp(26px, 5vw, 36px);
       font-weight: 400;
-      line-height: 1.1;
-      letter-spacing: -0.02em;
+      line-height: 1.0;
+      letter-spacing: -0.025em;
       color: #e8e2d9;
-      margin-bottom: 10px;
+      margin-bottom: 14px;
     }
 
     .lo-modal-hl em { font-style: italic; color: #FF6666; }
@@ -193,11 +278,33 @@
       font-family: 'Inter', system-ui, sans-serif;
       font-size: 12px;
       font-weight: 300;
-      color: rgba(232,226,217,0.48);
-      line-height: 1.75;
+      color: rgba(232,226,217,0.52);
+      line-height: 1.8;
     }
 
-    #lo-modal-body { padding: 24px 32px 32px; }
+    /* Stat pill — adds social proof energy */
+    .lo-stat-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 16px;
+      padding: 7px 14px;
+      background: rgba(255,102,102,0.08);
+      border: 1px solid rgba(255,102,102,0.18);
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 9px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,102,102,0.7);
+    }
+
+    .lo-stat-pill strong {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-style: italic;
+      font-size: 14px;
+      letter-spacing: 0;
+      color: #FF6666;
+    }
 
     .lo-field-row {
       display: grid;
@@ -225,22 +332,25 @@
 
     .lo-input {
       background: #161514;
-      border: 1px solid rgba(232,226,217,0.07);
+      border: 1px solid rgba(232,226,217,0.1);
       color: #e8e2d9;
       font-family: 'Inter', system-ui, sans-serif;
       font-size: 13px;
       font-weight: 300;
-      padding: 11px 14px;
+      padding: 12px 14px;
       outline: none;
       width: 100%;
-      transition: border-color 0.2s;
+      transition: border-color 0.2s, background 0.2s;
       border-radius: 0;
       -webkit-appearance: none;
       box-sizing: border-box;
     }
 
-    .lo-input:focus { border-color: rgba(255,102,102,0.4); }
-    .lo-input::placeholder { color: rgba(232,226,217,0.2); }
+    .lo-input:focus {
+      border-color: rgba(255,102,102,0.5);
+      background: #1a1918;
+    }
+    .lo-input::placeholder { color: rgba(232,226,217,0.22); }
 
     .lo-optin {
       display: flex;
@@ -292,16 +402,18 @@
       border: none;
       font-family: 'Inter', system-ui, sans-serif;
       font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 0.2em;
+      font-weight: 700;
+      letter-spacing: 0.22em;
       text-transform: uppercase;
-      padding: 14px;
+      padding: 15px;
       cursor: pointer;
-      transition: opacity 0.2s;
+      transition: opacity 0.2s, transform 0.15s;
+      box-shadow: 0 4px 24px rgba(255,102,102,0.35);
     }
 
-    .lo-submit:hover { opacity: 0.85; }
-    .lo-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+    .lo-submit:hover { opacity: 0.88; transform: translateY(-1px); }
+    .lo-submit:active { transform: translateY(0); }
+    .lo-submit:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
     .lo-fine-print {
       font-family: 'Inter', system-ui, sans-serif;
@@ -406,8 +518,11 @@
               Instagram is changing<br><em>filmmakers' lives.</em>
             </h2>
             <p class="lo-modal-sub">
-              Watch Kyra and Brendan's full keynote from the B&amp;H BILD Expo — free. What's changing on Instagram, what it means for your career, and exactly what to do about it.
+              Watch Kyra and Brendan's full keynote from the B&amp;H BILD Expo — free. What's changing on Instagram, what it means for your career, and exactly what to do about it. No pitch, no paywall.
             </p>
+            <div class="lo-stat-pill">
+              <strong>Free</strong> keynote — opt in to unlock
+            </div>
           </div>
 
           <div id="lo-modal-body">
