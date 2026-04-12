@@ -112,123 +112,10 @@
     }
     .page-header-meta p { font-size: clamp(11px,0.9vw,13px); font-weight: 400; color: var(--fg2); line-height: 1.8; max-width: 280px; }
 
-    /* ── MAP SECTION ──────────────────────────────────── */
-    .map-section {
-      border-bottom: 1px solid var(--fg4);
-      position: relative;
-      overflow: hidden;
-      background: var(--bg2);
-    }
-
-    .map-container {
-      width: 100%;
-      height: clamp(340px, 50vh, 560px);
-      position: relative;
-    }
-
-    /* The SVG map fills the container */
-    .map-svg {
-      width: 100%;
-      height: 100%;
-      display: block;
-    }
-
-    /* Map overlay — info panel */
-    .map-info {
-      position: absolute;
-      bottom: clamp(20px,4vh,40px);
-      left: clamp(20px,4vw,60px);
-      z-index: 10;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .map-label {
-      font-size: 8px; letter-spacing: 0.28em; text-transform: uppercase;
-      color: rgba(232,226,217,0.3);
-    }
-
-    .map-location {
-      font-family: var(--serif);
-      font-size: clamp(18px,2vw,28px);
-      font-style: italic;
-      color: var(--fg);
-      text-shadow: 0 2px 20px rgba(10,9,8,0.8);
-    }
-
-    .map-coords {
-      font-size: 9px; letter-spacing: 0.18em;
-      color: var(--pink); opacity: 0.55;
-    }
-
-    /* Vignette over map */
-    .map-vignette {
-      position: absolute; inset: 0;
-      background:
-        linear-gradient(to right, rgba(15,14,13,0.7) 0%, transparent 35%, transparent 65%, rgba(15,14,13,0.5) 100%),
-        linear-gradient(to bottom, rgba(15,14,13,0.4) 0%, transparent 30%, transparent 70%, rgba(15,14,13,0.8) 100%);
-      pointer-events: none;
-      z-index: 2;
-    }
-
     /* ── FORM SECTION ─────────────────────────────────── */
     .form-section {
       max-width: var(--max); margin: 0 auto;
       padding: clamp(52px,8vh,88px) var(--pad);
-    }
-
-    /* Mode toggle */
-    .mode-toggle {
-      display: flex;
-      align-items: center;
-      gap: 0;
-      margin-bottom: clamp(40px,6vh,64px);
-      border: 1px solid var(--fg4);
-      width: fit-content;
-    }
-
-    .mode-btn {
-      font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase;
-      padding: 13px 28px;
-      cursor: pointer;
-      background: none;
-      border: none;
-      color: var(--fg3);
-      transition: color 0.25s, background 0.25s;
-      position: relative;
-      white-space: nowrap;
-    }
-
-    .mode-btn::after {
-      content: '';
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      height: 1px;
-      background: var(--pink);
-      transform: scaleX(0);
-      transition: transform 0.25s ease;
-    }
-
-    .mode-btn.active {
-      color: var(--fg);
-      background: rgba(255,102,102,0.05);
-    }
-
-    .mode-btn.active::after { transform: scaleX(1); }
-
-    .mode-divider {
-      width: 1px; height: 44px;
-      background: var(--fg4);
-      flex-shrink: 0;
-    }
-
-    .mode-tag {
-      padding: 0 16px;
-      font-size: 8px; letter-spacing: 0.22em; text-transform: uppercase;
-      color: var(--pink); opacity: 0.45;
-      align-self: center;
-      white-space: nowrap;
     }
 
     /* Form panels */
@@ -462,6 +349,243 @@
     .success-hl em { font-style: normal; color: var(--pink); }
     .success-sub { font-size: clamp(12px,0.9vw,14px); font-weight: 400; color: var(--fg2); line-height: 1.8; max-width: 440px; margin: 0 auto; }
 
+    /* ── BRIDGE SUBHEAD (page-header right column) ────── */
+    .bridge-copy {
+      font-family: var(--serif);
+      font-size: clamp(15px,1.3vw,19px);
+      font-style: italic;
+      line-height: 1.45;
+      color: var(--fg);
+      max-width: 320px;
+      letter-spacing: -0.005em;
+      margin-left: auto;
+    }
+    .bridge-sub {
+      margin-top: 14px;
+      font-size: clamp(11px,0.85vw,13px);
+      color: var(--fg3);
+      line-height: 1.75;
+      max-width: 320px;
+      margin-left: auto;
+    }
+
+    /* ── PATH CHOOSER ─────────────────────────────────── */
+    .path-chooser {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: clamp(52px,8vh,96px) var(--pad) 0;
+    }
+    .path-chooser-head {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: clamp(22px,3vh,32px);
+    }
+    .path-chooser-head .eyebrow-line { width: 28px; height: 1px; background: var(--pink); opacity: 0.45; flex-shrink: 0; }
+    .path-chooser-head .eyebrow-text { font-size: 9px; letter-spacing: 0.26em; text-transform: uppercase; color: var(--pink); opacity: 0.65; }
+    .path-chooser-title {
+      font-family: var(--serif);
+      font-size: clamp(26px,3.2vw,48px);
+      font-weight: 400;
+      line-height: 1.08;
+      letter-spacing: -0.02em;
+      color: var(--fg);
+      margin-bottom: clamp(28px,4vh,48px);
+      max-width: 760px;
+    }
+    .path-chooser-title em { font-style: italic; color: var(--pink); }
+
+    .path-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--fg4);
+      border: 1px solid var(--fg4);
+    }
+    .path-card {
+      background: var(--bg);
+      padding: clamp(32px,4.5vw,56px) clamp(28px,3.5vw,48px);
+      cursor: pointer;
+      text-align: left;
+      border: none;
+      color: inherit;
+      font-family: inherit;
+      position: relative;
+      transition: background 0.3s;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      overflow: hidden;
+    }
+    .path-card:hover { background: var(--bg2); }
+    .path-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 2px;
+      background: var(--pink);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s ease;
+    }
+    .path-card:hover::before { transform: scaleX(1); }
+
+    .path-card-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 8px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--pink);
+      opacity: 0.55;
+    }
+    .path-card.recommended .path-card-tag { opacity: 1; }
+    .path-card-tag-dot {
+      width: 5px; height: 5px;
+      background: var(--pink);
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .path-card-title {
+      font-family: var(--serif);
+      font-size: clamp(22px,2.6vw,36px);
+      font-weight: 400;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      color: var(--fg);
+    }
+    .path-card-title em { font-style: italic; color: var(--pink); }
+    .path-card-desc {
+      font-size: clamp(12px,0.95vw,14px);
+      line-height: 1.75;
+      color: var(--fg2);
+      max-width: 460px;
+    }
+    .path-card-meta {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-top: 6px;
+      padding-top: 20px;
+      border-top: 1px solid var(--fg4);
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--fg3);
+    }
+    .path-card-meta strong {
+      color: var(--fg2);
+      font-weight: 500;
+    }
+    .path-card-meta .dot { opacity: 0.4; }
+    .path-card-arrow {
+      margin-left: auto;
+      font-family: var(--serif);
+      font-size: 20px;
+      color: var(--pink);
+      opacity: 0.6;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+    .path-card:hover .path-card-arrow { transform: translateX(4px); opacity: 1; }
+
+    /* ── WHAT HAPPENS NEXT ────────────────────────────── */
+    .next-steps {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: clamp(56px,8vh,96px) var(--pad) 0;
+    }
+    .next-steps-head {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: clamp(22px,3vh,32px);
+    }
+    .next-steps-head .eyebrow-line { width: 28px; height: 1px; background: var(--pink); opacity: 0.45; flex-shrink: 0; }
+    .next-steps-head .eyebrow-text { font-size: 9px; letter-spacing: 0.26em; text-transform: uppercase; color: var(--pink); opacity: 0.65; }
+    .next-steps-title {
+      font-family: var(--serif);
+      font-size: clamp(22px,2.4vw,36px);
+      font-weight: 400;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      color: var(--fg);
+      margin-bottom: clamp(28px,4vh,44px);
+      max-width: 640px;
+    }
+    .next-steps-title em { font-style: italic; color: var(--pink); }
+
+    .next-steps-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border-top: 1px solid var(--fg4);
+      border-bottom: 1px solid var(--fg4);
+    }
+    .next-step {
+      padding: clamp(28px,3.5vw,44px) clamp(20px,2.2vw,36px);
+      border-right: 1px solid var(--fg4);
+      position: relative;
+    }
+    .next-step:last-child { border-right: none; }
+    .next-step-num {
+      font-family: var(--serif);
+      font-size: clamp(34px,3.8vw,56px);
+      font-style: italic;
+      font-weight: 400;
+      color: var(--pink);
+      opacity: 0.32;
+      line-height: 1;
+      margin-bottom: 14px;
+      letter-spacing: -0.02em;
+    }
+    .next-step-title {
+      font-family: var(--serif);
+      font-size: clamp(16px,1.4vw,22px);
+      font-weight: 400;
+      line-height: 1.2;
+      color: var(--fg);
+      margin-bottom: 10px;
+      letter-spacing: -0.01em;
+    }
+    .next-step-desc {
+      font-size: 11px;
+      line-height: 1.7;
+      color: var(--fg3);
+    }
+
+    /* ── FORM SWITCHER (replaces mode-toggle) ─────────── */
+    .form-switcher {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: clamp(28px,4vh,44px);
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--fg3);
+      flex-wrap: wrap;
+    }
+    .form-switcher-label strong {
+      color: var(--fg);
+      font-weight: 500;
+    }
+    .form-switcher-sep { opacity: 0.4; }
+    .form-switcher-link {
+      color: var(--pink);
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 0;
+      font-family: inherit;
+      font-size: inherit;
+      letter-spacing: inherit;
+      text-transform: inherit;
+      font-weight: 500;
+      border-bottom: 1px solid rgba(255,102,102,0.4);
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .form-switcher-link:hover { border-color: var(--pink); color: var(--pink); }
+
     /* ── CONTACT STRIP ────────────────────────────────── */
     .contact-strip {
       border-top: 1px solid var(--fg4);
@@ -507,6 +631,13 @@
     @keyframes fadeIn { from{opacity:0} to{opacity:1} }
 
     /* RESPONSIVE */
+    @media (max-width: 960px) {
+      .path-grid { grid-template-columns: 1fr; }
+      .next-steps-grid { grid-template-columns: 1fr 1fr; }
+      .next-step { border-right: 1px solid var(--fg4); border-bottom: 1px solid var(--fg4); }
+      .next-step:nth-child(2n) { border-right: none; }
+      .next-step:nth-child(3), .next-step:nth-child(4) { border-bottom: none; }
+    }
     @media (max-width: 900px) {
       .contact-strip-inner { grid-template-columns: 1fr; }
       .form-grid { grid-template-columns: 1fr; }
@@ -518,9 +649,14 @@
       .hamburger { display: flex; }
       .page-header-inner { grid-template-columns: 1fr; gap: 20px; }
       .page-header-meta { text-align: left; }
-      .mode-toggle { width: 100%; }
+      .bridge-copy, .bridge-sub { margin-left: 0; max-width: none; }
       .form-submit-row { flex-direction: column; align-items: flex-start; }
       .foot-top, .foot-bot { flex-direction: column; align-items: flex-start; }
+    }
+    @media (max-width: 560px) {
+      .next-steps-grid { grid-template-columns: 1fr; }
+      .next-step { border-right: none; border-bottom: 1px solid var(--fg4); }
+      .next-step:last-child { border-bottom: none; }
     }
   </style>
 </head>
@@ -586,274 +722,109 @@
       </h1>
     </div>
     <div class="page-header-meta">
-      <p>Good. That's exactly where we start. Tell us where you are — we'll help you figure out the rest.</p>
+      <p class="bridge-copy">You've seen the reel. You've read the work. You've met us.</p>
+      <p class="bridge-sub">If any of it resonated — this is the door. Tell us where you are, and we'll help you figure out the rest.</p>
     </div>
   </div>
 </header>
 
-<!-- LA NIGHTSCAPE ILLUSTRATION -->
-<div class="map-section reveal">
-  <div class="map-container" style="height:clamp(280px,45vh,520px);">
-    <svg style="width:100%;height:100%;display:block;" viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stop-color="#060504"/>
-          <stop offset="55%" stop-color="#0e0c0a"/>
-          <stop offset="100%" stop-color="#1a1210"/>
-        </linearGradient>
-        <linearGradient id="weho-glow" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stop-color="#FF6666" stop-opacity="0.28"/>
-          <stop offset="100%" stop-color="#FF6666" stop-opacity="0"/>
-        </linearGradient>
-        <linearGradient id="hills-l" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stop-color="#1c1916"/>
-          <stop offset="100%" stop-color="#0d0b09"/>
-        </linearGradient>
-        <linearGradient id="hills-f" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stop-color="#141210"/>
-          <stop offset="100%" stop-color="#0a0908"/>
-        </linearGradient>
-        <linearGradient id="ground" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stop-color="#0d0b09"/>
-          <stop offset="100%" stop-color="#080706"/>
-        </linearGradient>
-      </defs>
+<!-- PATH CHOOSER -->
+<section class="path-chooser reveal">
+  <div class="path-chooser-head">
+    <div class="eyebrow-line"></div>
+    <span class="eyebrow-text">Two doors</span>
+  </div>
+  <h2 class="path-chooser-title">There are two ways to start.<br>Pick the one that fits <em>where you are.</em></h2>
 
-      <rect width="1200" height="600" fill="url(#sky)"/>
+  <div class="path-grid">
+    <button type="button" class="path-card recommended" onclick="choosePath('audit')">
+      <span class="path-card-tag"><span class="path-card-tag-dot"></span>Recommended · if you're serious</span>
+      <h3 class="path-card-title">The Discovery<br><em>Questionnaire.</em></h3>
+      <p class="path-card-desc">You already know you want to work with us. Tell us your situation in detail — business, goals, what's working, what isn't — and we'll come to our first call already understanding your world. No warm-up, no wasted time.</p>
+      <div class="path-card-meta">
+        <span><strong>~5 min</strong></span>
+        <span class="dot">·</span>
+        <span>For qualified leads</span>
+        <span class="path-card-arrow">→</span>
+      </div>
+    </button>
 
-      <!-- Stars -->
-      <circle cx="80" cy="60" r="1" fill="#e8e2d9" opacity="0.35"/>
-      <circle cx="190" cy="40" r="1.2" fill="#e8e2d9" opacity="0.25"/>
-      <circle cx="310" cy="80" r="0.8" fill="#e8e2d9" opacity="0.3"/>
-      <circle cx="420" cy="30" r="1" fill="#e8e2d9" opacity="0.2"/>
-      <circle cx="560" cy="55" r="1.2" fill="#e8e2d9" opacity="0.28"/>
-      <circle cx="650" cy="20" r="0.8" fill="#e8e2d9" opacity="0.22"/>
-      <circle cx="750" cy="70" r="1" fill="#e8e2d9" opacity="0.3"/>
-      <circle cx="860" cy="35" r="1.2" fill="#e8e2d9" opacity="0.2"/>
-      <circle cx="940" cy="65" r="0.8" fill="#e8e2d9" opacity="0.25"/>
-      <circle cx="1050" cy="45" r="1" fill="#e8e2d9" opacity="0.3"/>
-      <circle cx="1140" cy="75" r="0.8" fill="#e8e2d9" opacity="0.2"/>
-      <circle cx="150" cy="110" r="0.6" fill="#e8e2d9" opacity="0.15"/>
-      <circle cx="480" cy="95" r="0.7" fill="#e8e2d9" opacity="0.18"/>
-      <circle cx="820" cy="100" r="0.6" fill="#e8e2d9" opacity="0.15"/>
-      <circle cx="1080" cy="110" r="0.7" fill="#e8e2d9" opacity="0.18"/>
+    <button type="button" class="path-card" onclick="choosePath('open')">
+      <span class="path-card-tag"><span class="path-card-tag-dot"></span>Low commitment · open door</span>
+      <h3 class="path-card-title">Just talk<br><em>to us.</em></h3>
+      <p class="path-card-desc">Not quite sure yet. You just want to say hi, ask a question, or see where this goes. No boxes to check, no format required — write us like a human. We'll take it from there.</p>
+      <div class="path-card-meta">
+        <span><strong>~1 min</strong></span>
+        <span class="dot">·</span>
+        <span>For anyone</span>
+        <span class="path-card-arrow">→</span>
+      </div>
+    </button>
+  </div>
+</section>
 
-      <!-- WeHo atmospheric glow -->
-      <ellipse cx="480" cy="310" rx="280" ry="100" fill="url(#weho-glow)"/>
-      <ellipse cx="480" cy="318" rx="180" ry="60" fill="#FF6666" opacity="0.04"/>
+<!-- WHAT HAPPENS NEXT -->
+<section class="next-steps reveal">
+  <div class="next-steps-head">
+    <div class="eyebrow-line"></div>
+    <span class="eyebrow-text">What happens next</span>
+  </div>
+  <h2 class="next-steps-title">Four steps. No mystery,<br>no sales funnel, no <em>surprises.</em></h2>
 
-      <!-- Hollywood Hills — far range -->
-      <path d="M0 340 Q80 295 160 302 Q220 288 280 272 Q330 258 380 265 Q420 252 460 240 Q500 228 535 238 Q565 225 595 232 Q630 220 665 228 Q700 215 730 222 Q760 212 795 220 Q825 210 858 218 Q890 208 920 215 Q950 205 980 212 Q1010 202 1040 210 Q1070 200 1100 208 Q1130 198 1160 205 Q1185 200 1200 205 L1200 370 L0 370 Z" fill="url(#hills-l)"/>
-
-      <!-- Hollywood Hills — near range -->
-      <path d="M0 358 Q60 332 120 338 Q175 322 225 328 Q268 314 305 322 Q340 308 372 316 Q402 302 432 310 Q458 296 488 304 Q515 290 542 298 Q568 284 595 292 Q620 278 648 286 Q672 272 698 280 Q722 268 748 276 Q772 262 800 270 Q825 258 850 266 Q875 252 902 260 Q928 248 955 256 Q980 244 1008 252 Q1032 240 1060 248 Q1085 236 1115 244 Q1140 232 1168 240 Q1185 236 1200 240 L1200 375 L0 375 Z" fill="url(#hills-f)"/>
-
-      <!-- Ground / horizon -->
-      <rect x="0" y="370" width="1200" height="230" fill="url(#ground)"/>
-
-      <!-- City buildings — left cluster (Hollywood) -->
-      <g>
-        <rect x="30" y="342" width="14" height="30" fill="#1a1714"/>
-        <rect x="48" y="330" width="18" height="42" fill="#1e1b18"/>
-        <rect x="70" y="348" width="12" height="24" fill="#181512"/>
-        <rect x="86" y="325" width="22" height="47" fill="#201d1a"/>
-        <rect x="112" y="340" width="14" height="32" fill="#1c1916"/>
-        <rect x="130" y="320" width="20" height="52" fill="#221f1c"/>
-        <rect x="154" y="336" width="16" height="36" fill="#1e1b18"/>
-        <rect x="174" y="328" width="12" height="44" fill="#1c1916"/>
-        <rect x="190" y="344" width="18" height="28" fill="#181512"/>
-        <rect x="212" y="318" width="24" height="54" fill="#242118"/>
-        <rect x="240" y="335" width="14" height="37" fill="#1e1b18"/>
-        <rect x="258" y="345" width="10" height="27" fill="#1a1714"/>
-        <rect x="272" y="325" width="18" height="47" fill="#201d1a"/>
-        <rect x="294" y="340" width="12" height="32" fill="#1c1916"/>
-      </g>
-
-      <!-- City buildings — WeHo cluster (centre-left, taller/denser) -->
-      <g>
-        <rect x="350" y="315" width="16" height="57" fill="#201d1a"/>
-        <rect x="370" y="300" width="22" height="72" fill="#242118"/>
-        <rect x="396" y="310" width="18" height="62" fill="#221f1c"/>
-        <rect x="418" y="295" width="28" height="77" fill="#28251e"/>
-        <rect x="450" y="305" width="20" height="67" fill="#261f1c"/>
-        <rect x="474" y="288" width="24" height="84" fill="#2a2720"/>
-        <rect x="502" y="300" width="18" height="72" fill="#242118"/>
-        <rect x="524" y="312" width="14" height="60" fill="#201d1a"/>
-        <rect x="542" y="295" width="22" height="77" fill="#262320"/>
-        <rect x="568" y="308" width="16" height="64" fill="#221f1c"/>
-        <rect x="588" y="320" width="12" height="52" fill="#1e1b18"/>
-        <rect x="604" y="298" width="20" height="74" fill="#242118"/>
-        <rect x="628" y="315" width="14" height="57" fill="#201d1a"/>
-        <rect x="646" y="305" width="18" height="67" fill="#221f1c"/>
-        <rect x="668" y="295" width="22" height="77" fill="#262320"/>
-        <rect x="694" y="318" width="12" height="54" fill="#1e1b18"/>
-      </g>
-
-      <!-- City buildings — right cluster (Beverly Hills / Mid-Wilshire) -->
-      <g>
-        <rect x="740" y="335" width="16" height="37" fill="#1e1b18"/>
-        <rect x="760" y="322" width="20" height="50" fill="#221f1c"/>
-        <rect x="784" y="338" width="14" height="34" fill="#1c1916"/>
-        <rect x="802" y="315" width="24" height="57" fill="#242118"/>
-        <rect x="830" y="330" width="16" height="42" fill="#201d1a"/>
-        <rect x="850" y="318" width="20" height="54" fill="#221f1c"/>
-        <rect x="874" y="335" width="14" height="37" fill="#1e1b18"/>
-        <rect x="892" y="310" width="26" height="62" fill="#262320"/>
-        <rect x="922" y="325" width="18" height="47" fill="#201d1a"/>
-        <rect x="944" y="340" width="12" height="32" fill="#1c1916"/>
-        <rect x="960" y="318" width="22" height="54" fill="#242118"/>
-        <rect x="986" y="330" width="16" height="42" fill="#1e1b18"/>
-        <rect x="1006" y="315" width="20" height="57" fill="#221f1c"/>
-        <rect x="1030" y="338" width="12" height="34" fill="#1a1714"/>
-        <rect x="1046" y="322" width="18" height="50" fill="#201d1a"/>
-        <rect x="1068" y="335" width="14" height="37" fill="#1c1916"/>
-        <rect x="1086" y="315" width="22" height="57" fill="#242118"/>
-        <rect x="1112" y="328" width="16" height="44" fill="#1e1b18"/>
-        <rect x="1132" y="340" width="12" height="32" fill="#1a1714"/>
-        <rect x="1148" y="318" width="20" height="54" fill="#201d1a"/>
-        <rect x="1172" y="330" width="16" height="42" fill="#1c1916"/>
-      </g>
-
-      <!-- Window lights — WeHo buildings -->
-      <g opacity="0.55">
-        <rect x="378" y="308" width="2" height="2" fill="#e8c870" opacity="0.6"/>
-        <rect x="384" y="315" width="2" height="2" fill="#e8c870" opacity="0.5"/>
-        <rect x="378" y="322" width="2" height="2" fill="#FF6666" opacity="0.5"/>
-        <rect x="424" y="302" width="3" height="2" fill="#e8c870" opacity="0.55"/>
-        <rect x="430" y="310" width="3" height="2" fill="#e8c870" opacity="0.45"/>
-        <rect x="424" y="318" width="3" height="2" fill="#e8c870" opacity="0.5"/>
-        <rect x="424" y="326" width="3" height="2" fill="#FF6666" opacity="0.4"/>
-        <rect x="480" y="296" width="3" height="2" fill="#e8c870" opacity="0.6"/>
-        <rect x="486" y="304" width="3" height="2" fill="#e8c870" opacity="0.5"/>
-        <rect x="480" y="312" width="3" height="2" fill="#e8c870" opacity="0.55"/>
-        <rect x="486" y="320" width="3" height="2" fill="#FF6666" opacity="0.45"/>
-        <rect x="480" y="328" width="3" height="2" fill="#e8c870" opacity="0.4"/>
-        <rect x="548" y="302" width="3" height="2" fill="#e8c870" opacity="0.5"/>
-        <rect x="554" y="310" width="3" height="2" fill="#e8c870" opacity="0.55"/>
-        <rect x="548" y="318" width="3" height="2" fill="#FF6666" opacity="0.4"/>
-        <rect x="610" y="305" width="3" height="2" fill="#e8c870" opacity="0.5"/>
-        <rect x="616" y="313" width="3" height="2" fill="#e8c870" opacity="0.45"/>
-        <rect x="610" y="321" width="3" height="2" fill="#e8c870" opacity="0.5"/>
-        <rect x="676" y="302" width="3" height="2" fill="#e8c870" opacity="0.55"/>
-        <rect x="682" y="310" width="3" height="2" fill="#FF6666" opacity="0.4"/>
-        <rect x="676" y="318" width="3" height="2" fill="#e8c870" opacity="0.5"/>
-      </g>
-
-      <!-- Window lights — left cluster -->
-      <g opacity="0.4">
-        <rect x="92" y="330" width="2" height="2" fill="#e8c870" opacity="0.5"/>
-        <rect x="98" y="338" width="2" height="2" fill="#e8c870" opacity="0.45"/>
-        <rect x="136" y="326" width="2" height="2" fill="#e8c870" opacity="0.5"/>
-        <rect x="142" y="334" width="2" height="2" fill="#FF6666" opacity="0.4"/>
-        <rect x="218" y="324" width="3" height="2" fill="#e8c870" opacity="0.5"/>
-        <rect x="224" y="332" width="3" height="2" fill="#e8c870" opacity="0.45"/>
-      </g>
-
-      <!-- Window lights — right cluster -->
-      <g opacity="0.4">
-        <rect x="808" y="322" width="3" height="2" fill="#e8c870" opacity="0.5"/>
-        <rect x="814" y="330" width="3" height="2" fill="#e8c870" opacity="0.45"/>
-        <rect x="898" y="316" width="3" height="2" fill="#e8c870" opacity="0.5"/>
-        <rect x="904" y="324" width="3" height="2" fill="#FF6666" opacity="0.4"/>
-        <rect x="966" y="324" width="3" height="2" fill="#e8c870" opacity="0.45"/>
-        <rect x="1012" y="320" width="3" height="2" fill="#e8c870" opacity="0.5"/>
-        <rect x="1092" y="320" width="3" height="2" fill="#e8c870" opacity="0.5"/>
-        <rect x="1098" y="328" width="3" height="2" fill="#FF6666" opacity="0.4"/>
-      </g>
-
-      <!-- Street lights — thin vertical lines -->
-      <g opacity="0.18">
-        <line x1="60" y1="370" x2="60" y2="560" stroke="#e8e2d9" stroke-width="0.5"/>
-        <line x1="130" y1="370" x2="130" y2="560" stroke="#e8e2d9" stroke-width="0.5"/>
-        <line x1="200" y1="370" x2="200" y2="560" stroke="#e8e2d9" stroke-width="0.5"/>
-        <line x1="270" y1="370" x2="270" y2="560" stroke="#e8e2d9" stroke-width="0.5"/>
-        <line x1="340" y1="370" x2="340" y2="560" stroke="#e8e2d9" stroke-width="0.5"/>
-        <line x1="410" y1="370" x2="410" y2="560" stroke="#e8e2d9" stroke-width="0.5"/>
-        <line x1="480" y1="370" x2="480" y2="560" stroke="#e8e2d9" stroke-width="0.5"/>
-        <line x1="550" y1="370" x2="550" y2="560" stroke="#e8e2d9" stroke-width="0.5"/>
-        <line x1="620" y1="370" x2="620" y2="560" stroke="#e8e2d9" stroke-width="0.5"/>
-        <line x1="690" y1="370" x2="690" y2="560" stroke="#e8e2d9" stroke-width="0.5"/>
-        <line x1="760" y1="370" x2="760" y2="560" stroke="#e8e2d9" stroke-width="0.5"/>
-        <line x1="830" y1="370" x2="830" y2="560" stroke="#e8e2d9" stroke-width="0.5"/>
-        <line x1="900" y1="370" x2="900" y2="560" stroke="#e8e2d9" stroke-width="0.5"/>
-        <line x1="970" y1="370" x2="970" y2="560" stroke="#e8e2d9" stroke-width="0.5"/>
-        <line x1="1040" y1="370" x2="1040" y2="560" stroke="#e8e2d9" stroke-width="0.5"/>
-        <line x1="1110" y1="370" x2="1110" y2="560" stroke="#e8e2d9" stroke-width="0.5"/>
-        <line x1="1180" y1="370" x2="1180" y2="560" stroke="#e8e2d9" stroke-width="0.5"/>
-      </g>
-
-      <!-- Horizontal streets -->
-      <line x1="0" y1="430" x2="1200" y2="430" stroke="rgba(232,226,217,0.06)" stroke-width="1"/>
-      <line x1="0" y1="490" x2="1200" y2="490" stroke="rgba(232,226,217,0.05)" stroke-width="1"/>
-      <line x1="0" y1="540" x2="1200" y2="540" stroke="rgba(232,226,217,0.04)" stroke-width="1"/>
-
-      <!-- WeHo pin -->
-      <line x1="480" y1="260" x2="480" y2="370" stroke="rgba(255,102,102,0.2)" stroke-width="0.75" stroke-dasharray="3 5"/>
-      <circle cx="480" cy="258" r="6" fill="none" stroke="#FF6666" stroke-width="1" opacity="0.6"/>
-      <circle cx="480" cy="258" r="2.5" fill="#FF6666" opacity="0.85"/>
-      <circle cx="480" cy="258" r="12" fill="none" stroke="rgba(255,102,102,0.2)" stroke-width="0.5" stroke-dasharray="2 4"/>
-
-      <!-- WeHo label -->
-      <text x="494" y="253" font-family="Inter, sans-serif" font-size="9" letter-spacing="2.5" fill="rgba(255,102,102,0.7)">WEST HOLLYWOOD</text>
-
-      <!-- Bottom text band -->
-      <rect x="0" y="565" width="1200" height="35" fill="rgba(8,7,6,0.9)"/>
-      <text x="40" y="585" font-family="Inter, sans-serif" font-size="9" letter-spacing="3.5" fill="rgba(232,226,217,0.28)">LOS ANGELES, CALIFORNIA</text>
-      <text x="480" y="585" font-family="Inter, sans-serif" font-size="9" letter-spacing="3" fill="rgba(232,226,217,0.14)">A CITY WE BELIEVE IN</text>
-      <text x="1160" y="585" text-anchor="end" font-family="Inter, sans-serif" font-size="8" letter-spacing="1.5" fill="rgba(255,102,102,0.35)">34.09° N  118.36° W</text>
-
-      <!-- Frame corners -->
-      <path d="M0 0 L36 0 M0 0 L0 24" stroke="rgba(255,102,102,0.25)" stroke-width="1"/>
-      <path d="M1200 0 L1164 0 M1200 0 L1200 24" stroke="rgba(255,102,102,0.25)" stroke-width="1"/>
-      <path d="M0 600 L36 600 M0 600 L0 576" stroke="rgba(255,102,102,0.25)" stroke-width="1"/>
-      <path d="M1200 600 L1164 600 M1200 600 L1200 576" stroke="rgba(255,102,102,0.25)" stroke-width="1"/>
-    </svg>
-
-    <div class="map-vignette"></div>
-
-    <div class="map-info">
-      <span class="map-label">Based in</span>
-      <div class="map-location">West Hollywood, Los Angeles</div>
-      <div class="map-coords">34.0900° N, 118.3617° W</div>
+  <div class="next-steps-grid">
+    <div class="next-step">
+      <div class="next-step-num">01</div>
+      <div class="next-step-title">You hit send.</div>
+      <div class="next-step-desc">However you reached out — questionnaire or open letter — it lands in one inbox. No routing to an assistant, no autoresponder pretending to be us.</div>
+    </div>
+    <div class="next-step">
+      <div class="next-step-num">02</div>
+      <div class="next-step-title">We read it. Personally.</div>
+      <div class="next-step-desc">Kyra or Brendan read every submission themselves. Within 48 hours, one of us replies with real thoughts on what you sent.</div>
+    </div>
+    <div class="next-step">
+      <div class="next-step-num">03</div>
+      <div class="next-step-title">We hop on a call.</div>
+      <div class="next-step-desc">If it feels like a fit on both sides, we schedule a discovery call. No pitch deck, no scripted agenda — just a real conversation about where you are and where you're trying to go.</div>
+    </div>
+    <div class="next-step">
+      <div class="next-step-num">04</div>
+      <div class="next-step-title">We build you a plan.</div>
+      <div class="next-step-desc">If we decide to work together, you leave that call knowing exactly what the next step looks like — and what it'll take to get you there.</div>
     </div>
   </div>
-</div>
+</section>
 
-<!-- CONTACT STRIP -->
+<!-- TRUST STRIP -->
 <div class="contact-strip reveal">
   <div class="contact-strip-inner">
     <div class="contact-item">
-      <div class="ci-label">Location</div>
-      <div class="ci-value">West Hollywood</div>
-      <div class="ci-sub">Los Angeles, California</div>
-    </div>
-    <div class="contact-item">
-      <div class="ci-label">Working with</div>
-      <div class="ci-value">Film industry clients</div>
-      <div class="ci-sub">Worldwide — strategy doesn't have a zip code</div>
+      <div class="ci-label">Who reads this</div>
+      <div class="ci-value">Kyra &amp; Brendan, personally</div>
+      <div class="ci-sub">No filters, no assistants, no bots in between.</div>
     </div>
     <div class="contact-item">
       <div class="ci-label">Response time</div>
       <div class="ci-value">Within 48 hours</div>
-      <div class="ci-sub">We read everything. We respond to everything.</div>
+      <div class="ci-sub">Every submission, every time — even the ones that aren't a fit.</div>
+    </div>
+    <div class="contact-item">
+      <div class="ci-label">What you won't get</div>
+      <div class="ci-value">No sales funnels.</div>
+      <div class="ci-sub">No drip sequences, no fake urgency. Just a conversation.</div>
     </div>
   </div>
 </div>
 
 <!-- FORM SECTION -->
-<div class="form-section reveal">
+<div class="form-section reveal" id="form-section">
 
-  <!-- Mode toggle -->
-  <div class="mode-toggle">
-    <button class="mode-btn active" id="btn-audit" onclick="switchMode('audit')">
-      Discovery Questionnaire
-    </button>
-    <div class="mode-divider"></div>
-    <button class="mode-btn" id="btn-open" onclick="switchMode('open')">
-      Just Talk to Us
-    </button>
-    <div class="mode-divider"></div>
-    <span class="mode-tag">Choose your path</span>
+  <!-- Form switcher (small inline) -->
+  <div class="form-switcher">
+    <span class="form-switcher-label">You're on: <strong id="current-path-label">Discovery Questionnaire</strong></span>
+    <span class="form-switcher-sep">·</span>
+    <button type="button" class="form-switcher-link" id="btn-audit" onclick="switchMode('audit')" style="display:none;">Switch to Discovery Questionnaire</button>
+    <button type="button" class="form-switcher-link" id="btn-open" onclick="switchMode('open')">Switch to Just Talk to Us</button>
   </div>
 
   <!-- SUCCESS STATE (shared) -->
@@ -1130,9 +1101,19 @@
   function switchMode(mode) {
     document.getElementById('panel-audit').classList.toggle('active', mode === 'audit');
     document.getElementById('panel-open').classList.toggle('active', mode === 'open');
-    document.getElementById('btn-audit').classList.toggle('active', mode === 'audit');
-    document.getElementById('btn-open').classList.toggle('active', mode === 'open');
+    // Show the OPPOSITE switcher link (you can only switch to the one you're not on)
+    document.getElementById('btn-audit').style.display = mode === 'audit' ? 'none' : 'inline-block';
+    document.getElementById('btn-open').style.display  = mode === 'open'  ? 'none' : 'inline-block';
+    document.getElementById('current-path-label').textContent =
+      mode === 'audit' ? 'Discovery Questionnaire' : 'Just Talk to Us';
     document.getElementById('formSuccess').classList.remove('visible');
+  }
+
+  /* PATH CHOOSER — from the top-of-page cards */
+  function choosePath(mode) {
+    switchMode(mode);
+    const target = document.getElementById('form-section');
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
   /* FORM SUBMIT — Formspree AJAX */

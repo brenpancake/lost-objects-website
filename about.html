@@ -213,6 +213,75 @@
       position: sticky; top: calc(var(--nav-h) + 24px);
     }
 
+    /* ── SCENE MAP (establishing shot for Scene 02) ──── */
+    .scene-map {
+      position: relative;
+      width: 100%;
+      margin: clamp(36px,5vh,64px) 0 clamp(48px,6vh,80px);
+      border-top: 1px solid var(--fg4);
+      border-bottom: 1px solid var(--fg4);
+      overflow: hidden;
+      background: #0a0908;
+    }
+    .scene-map-inner {
+      width: 100%;
+      height: clamp(300px,48vh,540px);
+      position: relative;
+    }
+    .scene-map-inner > svg {
+      width: 100%; height: 100%; display: block;
+    }
+    .scene-map-vignette {
+      position: absolute; inset: 0;
+      background:
+        linear-gradient(to right, rgba(15,14,13,0.65) 0%, transparent 30%, transparent 70%, rgba(15,14,13,0.55) 100%),
+        linear-gradient(to bottom, rgba(15,14,13,0.35) 0%, transparent 25%, transparent 75%, rgba(15,14,13,0.75) 100%);
+      pointer-events: none;
+      z-index: 2;
+    }
+    .scene-map-info {
+      position: absolute;
+      bottom: clamp(22px,4vh,44px);
+      left: clamp(22px,4vw,64px);
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      pointer-events: none;
+    }
+    .scene-map-label {
+      font-size: 8px; letter-spacing: 0.28em; text-transform: uppercase;
+      color: rgba(232,226,217,0.32);
+    }
+    .scene-map-location {
+      font-family: var(--serif);
+      font-size: clamp(18px,2vw,28px);
+      font-style: italic;
+      color: var(--fg);
+      text-shadow: 0 2px 20px rgba(10,9,8,0.85);
+    }
+    .scene-map-coords {
+      font-size: 9px; letter-spacing: 0.18em;
+      color: var(--pink); opacity: 0.55;
+    }
+    .scene-map-caption {
+      position: absolute;
+      bottom: clamp(22px,4vh,44px);
+      right: clamp(22px,4vw,64px);
+      z-index: 10;
+      max-width: 280px;
+      text-align: right;
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: clamp(12px,0.95vw,14px);
+      color: rgba(232,226,217,0.55);
+      line-height: 1.5;
+      pointer-events: none;
+    }
+    @media (max-width: 768px) {
+      .scene-map-caption { display: none; }
+    }
+
     /* ── INDIVIDUAL PROFILES ───────────────────────── */
     .profiles-section {
       border-top: 1px solid var(--fg4);
@@ -765,6 +834,238 @@
     <span class="scene-num">Scene 02</span>
     <div class="scene-rule"></div>
     <span class="scene-title">How We Found Each Other</span>
+  </div>
+
+  <!-- Establishing shot: WeHo nightscape -->
+  <div class="scene-map reveal">
+    <div class="scene-map-inner">
+      <svg viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#060504"/>
+            <stop offset="55%" stop-color="#0e0c0a"/>
+            <stop offset="100%" stop-color="#1a1210"/>
+          </linearGradient>
+          <linearGradient id="weho-glow" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#FF6666" stop-opacity="0.28"/>
+            <stop offset="100%" stop-color="#FF6666" stop-opacity="0"/>
+          </linearGradient>
+          <linearGradient id="hills-l" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#1c1916"/>
+            <stop offset="100%" stop-color="#0d0b09"/>
+          </linearGradient>
+          <linearGradient id="hills-f" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#141210"/>
+            <stop offset="100%" stop-color="#0a0908"/>
+          </linearGradient>
+          <linearGradient id="ground" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#0d0b09"/>
+            <stop offset="100%" stop-color="#080706"/>
+          </linearGradient>
+        </defs>
+
+        <rect width="1200" height="600" fill="url(#sky)"/>
+
+        <!-- Stars -->
+        <circle cx="80" cy="60" r="1" fill="#e8e2d9" opacity="0.35"/>
+        <circle cx="190" cy="40" r="1.2" fill="#e8e2d9" opacity="0.25"/>
+        <circle cx="310" cy="80" r="0.8" fill="#e8e2d9" opacity="0.3"/>
+        <circle cx="420" cy="30" r="1" fill="#e8e2d9" opacity="0.2"/>
+        <circle cx="560" cy="55" r="1.2" fill="#e8e2d9" opacity="0.28"/>
+        <circle cx="650" cy="20" r="0.8" fill="#e8e2d9" opacity="0.22"/>
+        <circle cx="750" cy="70" r="1" fill="#e8e2d9" opacity="0.3"/>
+        <circle cx="860" cy="35" r="1.2" fill="#e8e2d9" opacity="0.2"/>
+        <circle cx="940" cy="65" r="0.8" fill="#e8e2d9" opacity="0.25"/>
+        <circle cx="1050" cy="45" r="1" fill="#e8e2d9" opacity="0.3"/>
+        <circle cx="1140" cy="75" r="0.8" fill="#e8e2d9" opacity="0.2"/>
+        <circle cx="150" cy="110" r="0.6" fill="#e8e2d9" opacity="0.15"/>
+        <circle cx="480" cy="95" r="0.7" fill="#e8e2d9" opacity="0.18"/>
+        <circle cx="820" cy="100" r="0.6" fill="#e8e2d9" opacity="0.15"/>
+        <circle cx="1080" cy="110" r="0.7" fill="#e8e2d9" opacity="0.18"/>
+
+        <!-- WeHo atmospheric glow -->
+        <ellipse cx="480" cy="310" rx="280" ry="100" fill="url(#weho-glow)"/>
+        <ellipse cx="480" cy="318" rx="180" ry="60" fill="#FF6666" opacity="0.04"/>
+
+        <!-- Hollywood Hills — far range -->
+        <path d="M0 340 Q80 295 160 302 Q220 288 280 272 Q330 258 380 265 Q420 252 460 240 Q500 228 535 238 Q565 225 595 232 Q630 220 665 228 Q700 215 730 222 Q760 212 795 220 Q825 210 858 218 Q890 208 920 215 Q950 205 980 212 Q1010 202 1040 210 Q1070 200 1100 208 Q1130 198 1160 205 Q1185 200 1200 205 L1200 370 L0 370 Z" fill="url(#hills-l)"/>
+
+        <!-- Hollywood Hills — near range -->
+        <path d="M0 358 Q60 332 120 338 Q175 322 225 328 Q268 314 305 322 Q340 308 372 316 Q402 302 432 310 Q458 296 488 304 Q515 290 542 298 Q568 284 595 292 Q620 278 648 286 Q672 272 698 280 Q722 268 748 276 Q772 262 800 270 Q825 258 850 266 Q875 252 902 260 Q928 248 955 256 Q980 244 1008 252 Q1032 240 1060 248 Q1085 236 1115 244 Q1140 232 1168 240 Q1185 236 1200 240 L1200 375 L0 375 Z" fill="url(#hills-f)"/>
+
+        <!-- Ground / horizon -->
+        <rect x="0" y="370" width="1200" height="230" fill="url(#ground)"/>
+
+        <!-- City buildings — left cluster (Hollywood) -->
+        <g>
+          <rect x="30" y="342" width="14" height="30" fill="#1a1714"/>
+          <rect x="48" y="330" width="18" height="42" fill="#1e1b18"/>
+          <rect x="70" y="348" width="12" height="24" fill="#181512"/>
+          <rect x="86" y="325" width="22" height="47" fill="#201d1a"/>
+          <rect x="112" y="340" width="14" height="32" fill="#1c1916"/>
+          <rect x="130" y="320" width="20" height="52" fill="#221f1c"/>
+          <rect x="154" y="336" width="16" height="36" fill="#1e1b18"/>
+          <rect x="174" y="328" width="12" height="44" fill="#1c1916"/>
+          <rect x="190" y="344" width="18" height="28" fill="#181512"/>
+          <rect x="212" y="318" width="24" height="54" fill="#242118"/>
+          <rect x="240" y="335" width="14" height="37" fill="#1e1b18"/>
+          <rect x="258" y="345" width="10" height="27" fill="#1a1714"/>
+          <rect x="272" y="325" width="18" height="47" fill="#201d1a"/>
+          <rect x="294" y="340" width="12" height="32" fill="#1c1916"/>
+        </g>
+
+        <!-- City buildings — WeHo cluster (centre-left, taller/denser) -->
+        <g>
+          <rect x="350" y="315" width="16" height="57" fill="#201d1a"/>
+          <rect x="370" y="300" width="22" height="72" fill="#242118"/>
+          <rect x="396" y="310" width="18" height="62" fill="#221f1c"/>
+          <rect x="418" y="295" width="28" height="77" fill="#28251e"/>
+          <rect x="450" y="305" width="20" height="67" fill="#261f1c"/>
+          <rect x="474" y="288" width="24" height="84" fill="#2a2720"/>
+          <rect x="502" y="300" width="18" height="72" fill="#242118"/>
+          <rect x="524" y="312" width="14" height="60" fill="#201d1a"/>
+          <rect x="542" y="295" width="22" height="77" fill="#262320"/>
+          <rect x="568" y="308" width="16" height="64" fill="#221f1c"/>
+          <rect x="588" y="320" width="12" height="52" fill="#1e1b18"/>
+          <rect x="604" y="298" width="20" height="74" fill="#242118"/>
+          <rect x="628" y="315" width="14" height="57" fill="#201d1a"/>
+          <rect x="646" y="305" width="18" height="67" fill="#221f1c"/>
+          <rect x="668" y="295" width="22" height="77" fill="#262320"/>
+          <rect x="694" y="318" width="12" height="54" fill="#1e1b18"/>
+        </g>
+
+        <!-- City buildings — right cluster (Beverly Hills / Mid-Wilshire) -->
+        <g>
+          <rect x="740" y="335" width="16" height="37" fill="#1e1b18"/>
+          <rect x="760" y="322" width="20" height="50" fill="#221f1c"/>
+          <rect x="784" y="338" width="14" height="34" fill="#1c1916"/>
+          <rect x="802" y="315" width="24" height="57" fill="#242118"/>
+          <rect x="830" y="330" width="16" height="42" fill="#201d1a"/>
+          <rect x="850" y="318" width="20" height="54" fill="#221f1c"/>
+          <rect x="874" y="335" width="14" height="37" fill="#1e1b18"/>
+          <rect x="892" y="310" width="26" height="62" fill="#262320"/>
+          <rect x="922" y="325" width="18" height="47" fill="#201d1a"/>
+          <rect x="944" y="340" width="12" height="32" fill="#1c1916"/>
+          <rect x="960" y="318" width="22" height="54" fill="#242118"/>
+          <rect x="986" y="330" width="16" height="42" fill="#1e1b18"/>
+          <rect x="1006" y="315" width="20" height="57" fill="#221f1c"/>
+          <rect x="1030" y="338" width="12" height="34" fill="#1a1714"/>
+          <rect x="1046" y="322" width="18" height="50" fill="#201d1a"/>
+          <rect x="1068" y="335" width="14" height="37" fill="#1c1916"/>
+          <rect x="1086" y="315" width="22" height="57" fill="#242118"/>
+          <rect x="1112" y="328" width="16" height="44" fill="#1e1b18"/>
+          <rect x="1132" y="340" width="12" height="32" fill="#1a1714"/>
+          <rect x="1148" y="318" width="20" height="54" fill="#201d1a"/>
+          <rect x="1172" y="330" width="16" height="42" fill="#1c1916"/>
+        </g>
+
+        <!-- Window lights — WeHo buildings -->
+        <g opacity="0.55">
+          <rect x="378" y="308" width="2" height="2" fill="#e8c870" opacity="0.6"/>
+          <rect x="384" y="315" width="2" height="2" fill="#e8c870" opacity="0.5"/>
+          <rect x="378" y="322" width="2" height="2" fill="#FF6666" opacity="0.5"/>
+          <rect x="424" y="302" width="3" height="2" fill="#e8c870" opacity="0.55"/>
+          <rect x="430" y="310" width="3" height="2" fill="#e8c870" opacity="0.45"/>
+          <rect x="424" y="318" width="3" height="2" fill="#e8c870" opacity="0.5"/>
+          <rect x="424" y="326" width="3" height="2" fill="#FF6666" opacity="0.4"/>
+          <rect x="480" y="296" width="3" height="2" fill="#e8c870" opacity="0.6"/>
+          <rect x="486" y="304" width="3" height="2" fill="#e8c870" opacity="0.5"/>
+          <rect x="480" y="312" width="3" height="2" fill="#e8c870" opacity="0.55"/>
+          <rect x="486" y="320" width="3" height="2" fill="#FF6666" opacity="0.45"/>
+          <rect x="480" y="328" width="3" height="2" fill="#e8c870" opacity="0.4"/>
+          <rect x="548" y="302" width="3" height="2" fill="#e8c870" opacity="0.5"/>
+          <rect x="554" y="310" width="3" height="2" fill="#e8c870" opacity="0.55"/>
+          <rect x="548" y="318" width="3" height="2" fill="#FF6666" opacity="0.4"/>
+          <rect x="610" y="305" width="3" height="2" fill="#e8c870" opacity="0.5"/>
+          <rect x="616" y="313" width="3" height="2" fill="#e8c870" opacity="0.45"/>
+          <rect x="610" y="321" width="3" height="2" fill="#e8c870" opacity="0.5"/>
+          <rect x="676" y="302" width="3" height="2" fill="#e8c870" opacity="0.55"/>
+          <rect x="682" y="310" width="3" height="2" fill="#FF6666" opacity="0.4"/>
+          <rect x="676" y="318" width="3" height="2" fill="#e8c870" opacity="0.5"/>
+        </g>
+
+        <!-- Window lights — left cluster -->
+        <g opacity="0.4">
+          <rect x="92" y="330" width="2" height="2" fill="#e8c870" opacity="0.5"/>
+          <rect x="98" y="338" width="2" height="2" fill="#e8c870" opacity="0.45"/>
+          <rect x="136" y="326" width="2" height="2" fill="#e8c870" opacity="0.5"/>
+          <rect x="142" y="334" width="2" height="2" fill="#FF6666" opacity="0.4"/>
+          <rect x="218" y="324" width="3" height="2" fill="#e8c870" opacity="0.5"/>
+          <rect x="224" y="332" width="3" height="2" fill="#e8c870" opacity="0.45"/>
+        </g>
+
+        <!-- Window lights — right cluster -->
+        <g opacity="0.4">
+          <rect x="808" y="322" width="3" height="2" fill="#e8c870" opacity="0.5"/>
+          <rect x="814" y="330" width="3" height="2" fill="#e8c870" opacity="0.45"/>
+          <rect x="898" y="316" width="3" height="2" fill="#e8c870" opacity="0.5"/>
+          <rect x="904" y="324" width="3" height="2" fill="#FF6666" opacity="0.4"/>
+          <rect x="966" y="324" width="3" height="2" fill="#e8c870" opacity="0.45"/>
+          <rect x="1012" y="320" width="3" height="2" fill="#e8c870" opacity="0.5"/>
+          <rect x="1092" y="320" width="3" height="2" fill="#e8c870" opacity="0.5"/>
+          <rect x="1098" y="328" width="3" height="2" fill="#FF6666" opacity="0.4"/>
+        </g>
+
+        <!-- Street lights — thin vertical lines -->
+        <g opacity="0.18">
+          <line x1="60" y1="370" x2="60" y2="560" stroke="#e8e2d9" stroke-width="0.5"/>
+          <line x1="130" y1="370" x2="130" y2="560" stroke="#e8e2d9" stroke-width="0.5"/>
+          <line x1="200" y1="370" x2="200" y2="560" stroke="#e8e2d9" stroke-width="0.5"/>
+          <line x1="270" y1="370" x2="270" y2="560" stroke="#e8e2d9" stroke-width="0.5"/>
+          <line x1="340" y1="370" x2="340" y2="560" stroke="#e8e2d9" stroke-width="0.5"/>
+          <line x1="410" y1="370" x2="410" y2="560" stroke="#e8e2d9" stroke-width="0.5"/>
+          <line x1="480" y1="370" x2="480" y2="560" stroke="#e8e2d9" stroke-width="0.5"/>
+          <line x1="550" y1="370" x2="550" y2="560" stroke="#e8e2d9" stroke-width="0.5"/>
+          <line x1="620" y1="370" x2="620" y2="560" stroke="#e8e2d9" stroke-width="0.5"/>
+          <line x1="690" y1="370" x2="690" y2="560" stroke="#e8e2d9" stroke-width="0.5"/>
+          <line x1="760" y1="370" x2="760" y2="560" stroke="#e8e2d9" stroke-width="0.5"/>
+          <line x1="830" y1="370" x2="830" y2="560" stroke="#e8e2d9" stroke-width="0.5"/>
+          <line x1="900" y1="370" x2="900" y2="560" stroke="#e8e2d9" stroke-width="0.5"/>
+          <line x1="970" y1="370" x2="970" y2="560" stroke="#e8e2d9" stroke-width="0.5"/>
+          <line x1="1040" y1="370" x2="1040" y2="560" stroke="#e8e2d9" stroke-width="0.5"/>
+          <line x1="1110" y1="370" x2="1110" y2="560" stroke="#e8e2d9" stroke-width="0.5"/>
+          <line x1="1180" y1="370" x2="1180" y2="560" stroke="#e8e2d9" stroke-width="0.5"/>
+        </g>
+
+        <!-- Horizontal streets -->
+        <line x1="0" y1="430" x2="1200" y2="430" stroke="rgba(232,226,217,0.06)" stroke-width="1"/>
+        <line x1="0" y1="490" x2="1200" y2="490" stroke="rgba(232,226,217,0.05)" stroke-width="1"/>
+        <line x1="0" y1="540" x2="1200" y2="540" stroke="rgba(232,226,217,0.04)" stroke-width="1"/>
+
+        <!-- WeHo pin -->
+        <line x1="480" y1="260" x2="480" y2="370" stroke="rgba(255,102,102,0.2)" stroke-width="0.75" stroke-dasharray="3 5"/>
+        <circle cx="480" cy="258" r="6" fill="none" stroke="#FF6666" stroke-width="1" opacity="0.6"/>
+        <circle cx="480" cy="258" r="2.5" fill="#FF6666" opacity="0.85"/>
+        <circle cx="480" cy="258" r="12" fill="none" stroke="rgba(255,102,102,0.2)" stroke-width="0.5" stroke-dasharray="2 4"/>
+
+        <!-- WeHo label -->
+        <text x="494" y="253" font-family="Inter, sans-serif" font-size="9" letter-spacing="2.5" fill="rgba(255,102,102,0.7)">WEST HOLLYWOOD</text>
+
+        <!-- Bottom text band -->
+        <rect x="0" y="565" width="1200" height="35" fill="rgba(8,7,6,0.9)"/>
+        <text x="40" y="585" font-family="Inter, sans-serif" font-size="9" letter-spacing="3.5" fill="rgba(232,226,217,0.28)">LOS ANGELES, CALIFORNIA</text>
+        <text x="480" y="585" font-family="Inter, sans-serif" font-size="9" letter-spacing="3" fill="rgba(232,226,217,0.14)">THE CITY THAT FOUND US FIRST</text>
+        <text x="1160" y="585" text-anchor="end" font-family="Inter, sans-serif" font-size="8" letter-spacing="1.5" fill="rgba(255,102,102,0.35)">34.09° N  118.36° W</text>
+
+        <!-- Frame corners -->
+        <path d="M0 0 L36 0 M0 0 L0 24" stroke="rgba(255,102,102,0.25)" stroke-width="1"/>
+        <path d="M1200 0 L1164 0 M1200 0 L1200 24" stroke="rgba(255,102,102,0.25)" stroke-width="1"/>
+        <path d="M0 600 L36 600 M0 600 L0 576" stroke="rgba(255,102,102,0.25)" stroke-width="1"/>
+        <path d="M1200 600 L1164 600 M1200 600 L1200 576" stroke="rgba(255,102,102,0.25)" stroke-width="1"/>
+      </svg>
+
+      <div class="scene-map-vignette"></div>
+
+      <div class="scene-map-info">
+        <span class="scene-map-label">Interior. Night.</span>
+        <div class="scene-map-location">West Hollywood, Los Angeles</div>
+        <div class="scene-map-coords">34.0900° N, 118.3617° W</div>
+      </div>
+
+      <div class="scene-map-caption">
+        "Two people, in the same city, at the same strange moment — both looking for something they couldn't quite name."
+      </div>
+    </div>
   </div>
 
   <div class="scene-full">
