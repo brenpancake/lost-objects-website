@@ -4,7 +4,10 @@
       "Bash(ls:*)",
       "Bash(node --check lo-game.js)",
       "Bash(node --check cookie-notice.js)",
-      "Bash(node --check lead-popup.js)"
+      "Bash(node --check lead-popup.js)",
+      "Bash(sed -n '594,820p')",
+      "Read(//tmp/**)",
+      "Bash(python -c ':*)"
     ]
   }
 }
