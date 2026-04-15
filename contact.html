@@ -1073,6 +1073,7 @@
     <div class="foot-top">
       <div class="foot-logo">Lost Objects</div>
       <div class="foot-links">
+        <a href="crm/index.html" class="foot-lnk" style="opacity:.35" onmouseenter="this.style.opacity='1';this.style.color='var(--pink)'" onmouseleave="this.style.opacity='.35';this.style.color=''">Login</a>
         <a href="index.html" class="foot-lnk">Home</a>
         <a href="work.html" class="foot-lnk">Work</a>
         <a href="services.html" class="foot-lnk">Services</a>
@@ -1120,7 +1121,156 @@
     if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
-  /* FORM SUBMIT — Formspree AJAX */
+  /* ── CRM BRIDGE (demo mode — localStorage only) ───────────── */
+  function crmUid() {
+    return Math.random().toString(36).slice(2) + Date.now().toString(36);
+  }
+  function splitName(full) {
+    var parts = (full || '').trim().split(/\s+/);
+    return { first: parts[0] || '', last: parts.slice(1).join(' ') || '' };
+  }
+  function saveToCRM(formId) {
+    var CK = 'lo-contacts-v3';
+    var contacts = [];
+    try { contacts = JSON.parse(localStorage.getItem(CK)) || []; } catch(e) {}
+
+    if (formId === 'auditForm') {
+      var name   = splitName(document.getElementById('a-name').value);
+      var email  = document.getElementById('a-email').value.trim();
+      var phone  = document.getElementById('a-phone').value.trim();
+      var biz    = document.getElementById('a-business').value.trim();
+      var role   = document.getElementById('a-role').value;
+      var ig     = document.getElementById('a-ig').value.trim();
+      var igUrl  = document.getElementById('a-ig-url').value.trim();
+      var otherH = document.getElementById('a-other-handle').value.trim();
+      var webUrl = document.getElementById('a-website').value.trim();
+
+      // Platforms checkboxes
+      var platforms = Array.from(document.querySelectorAll('#auditForm input[name="platforms"]:checked')).map(function(cb){return cb.value;});
+
+      // Social presence radio
+      var presEl = document.querySelector('#auditForm input[name="current_presence"]:checked');
+      var presence = presEl ? presEl.value : '';
+
+      // Challenges checkboxes
+      var challenges = Array.from(document.querySelectorAll('#auditForm input[name="challenges"]:checked')).map(function(cb){return cb.value;});
+
+      var goal    = document.getElementById('a-goal').value.trim();
+      var service = document.getElementById('a-service').value || '';
+      var budget  = document.getElementById('a-budget').value || '';
+      var extra   = document.getElementById('a-anything').value.trim();
+
+      // Build tags
+      var tags = ['website-inquiry'];
+      // Map platforms to CRM tag keys
+      var platformMap = {Instagram:'instagram',TikTok:'tiktok',YouTube:'youtube',Facebook:'facebook',LinkedIn:'linkedin'};
+      platforms.forEach(function(p){ if(platformMap[p]) tags.push(platformMap[p]); });
+      // Map service interest to tag
+      var svcMap = {'Basic Social Media Audit':'social-audit','Premium Social Media Audit':'social-audit','Basic Social Media Strategy Session':'strategy-session','Premium Social Media Strategy Session':'strategy-session','Full Social Media Management':'social-retainer'};
+      if(svcMap[service]) tags.push(svcMap[service]);
+
+      // Pick best website value: prefer IG handle, fall back to IG URL, other handle, or website
+      var website = ig || igUrl || otherH || webUrl || '';
+
+      // Build notes
+      var noteLines = [];
+      if(presence) noteLines.push('Social Presence: ' + presence);
+      if(challenges.length) noteLines.push('Challenges: ' + challenges.join(', '));
+      if(platforms.length) noteLines.push('Platforms: ' + platforms.join(', '));
+      if(goal) noteLines.push('Goal: ' + goal);
+      if(budget) noteLines.push('Budget: ' + budget);
+      if(extra) noteLines.push('Additional: ' + extra);
+
+      // Build inquiry data blob for CRM detail panel
+      var inquiry = {
+        formType: 'Discovery Questionnaire',
+        submitted: new Date().toISOString(),
+        presence: presence,
+        challenges: challenges,
+        platforms: platforms,
+        goal: goal,
+        serviceInterest: service,
+        budget: budget,
+        igHandle: ig,
+        igUrl: igUrl,
+        otherHandle: otherH,
+        websiteUrl: webUrl,
+        additional: extra
+      };
+
+      contacts.push({
+        id: crmUid(),
+        created: Date.now(),
+        first: name.first,
+        last: name.last,
+        company: biz,
+        title: role,
+        email: email,
+        phone: phone,
+        website: website,
+        cat: 'prospects',
+        service: service,
+        formerReason: '',
+        tags: tags,
+        lastContact: new Date().toISOString().slice(0,10),
+        notes: noteLines.join('\n'),
+        comments: [],
+        inquiry: inquiry
+      });
+
+    } else if (formId === 'openForm') {
+      var name   = splitName(document.getElementById('o-name').value);
+      var email  = document.getElementById('o-email').value.trim();
+      var phone  = document.getElementById('o-phone').value.trim();
+      var biz    = document.getElementById('o-business').value.trim();
+      var msg    = document.getElementById('o-mind').value.trim();
+
+      var inquiry = {
+        formType: 'Just Talk to Us',
+        submitted: new Date().toISOString(),
+        message: msg
+      };
+
+      contacts.push({
+        id: crmUid(),
+        created: Date.now(),
+        first: name.first,
+        last: name.last,
+        company: biz,
+        title: '',
+        email: email,
+        phone: phone,
+        website: '',
+        cat: 'prospects',
+        service: '',
+        formerReason: '',
+        tags: ['website-inquiry','warm'],
+        lastContact: new Date().toISOString().slice(0,10),
+        notes: msg,
+        comments: [],
+        inquiry: inquiry
+      });
+    }
+
+    localStorage.setItem(CK, JSON.stringify(contacts));
+
+    // Write feed item so the CRM Feed tab picks it up
+    var newContact = contacts[contacts.length - 1];
+    var FK = 'lo-feed-v1';
+    var feedItems = [];
+    try { feedItems = JSON.parse(localStorage.getItem(FK)) || []; } catch(e) {}
+    feedItems.unshift({
+      id: crmUid(),
+      type: 'intake',
+      contactId: newContact.id,
+      text: 'New inquiry from <strong>' + (newContact.first||'') + ' ' + (newContact.last||'') + '</strong>',
+      detail: (newContact.company ? newContact.company + ' \u00B7 ' : '') + (newContact.service || 'General inquiry'),
+      ts: Date.now()
+    });
+    localStorage.setItem(FK, JSON.stringify(feedItems));
+  }
+
+  /* FORM SUBMIT — CRM bridge + Formspree AJAX */
   async function handleSubmit(e, formId) {
     e.preventDefault();
     const form = document.getElementById(formId);
@@ -1130,6 +1280,9 @@
     btn.innerHTML = 'Sending...';
     btn.style.opacity = '0.6';
     btn.disabled = true;
+
+    // Write to CRM localStorage before Formspree fires
+    try { saveToCRM(formId); } catch(err) { console.warn('[CRM bridge]', err); }
 
     try {
       const res = await fetch(form.action, {
