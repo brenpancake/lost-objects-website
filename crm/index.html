@@ -37,6 +37,8 @@ body{font-family:var(--fb);background:var(--black);color:var(--text);min-height:
 .login-btn{width:100%;margin-top:16px;background:var(--pink);color:#fff;border:none;border-radius:var(--r);font-family:var(--fd);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:13px;cursor:pointer;transition:all .15s;}
 .login-btn:hover{background:#ff5555;}
 .login-err{margin-top:9px;color:var(--accent);font-size:12px;text-align:center;min-height:16px;}
+.forgot-link{background:none;border:none;color:var(--muted);font-family:var(--fb);font-size:11px;cursor:pointer;margin-top:10px;transition:color .15s;display:block;text-align:center;width:100%;}
+.forgot-link:hover{color:var(--pink);}
 
 /* APP */
 #app{display:none;min-height:100vh;flex-direction:column;}
@@ -482,6 +484,167 @@ body{font-family:var(--fb);background:var(--black);color:var(--text);min-height:
 .notif-meta{font-size:10px;color:var(--muted);margin-top:2px;}
 .notif-empty{padding:22px 13px;text-align:center;color:var(--muted);font-size:12px;}
 
+/* trash */
+.trash-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:14px;margin-bottom:8px;position:relative;overflow:hidden;}
+.trash-card::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:#ff5050;border-radius:3px 0 0 3px;}
+.trash-hdr{display:flex;align-items:center;gap:10px;margin-bottom:6px;}
+.trash-av{width:32px;height:32px;border-radius:50%;background:#333;display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:11px;font-weight:700;color:#fff;flex-shrink:0;}
+.trash-name{font-size:14px;font-weight:600;}
+.trash-co{font-size:12px;color:var(--muted);}
+.trash-meta{font-size:11px;color:var(--muted);margin-bottom:10px;line-height:1.5;}
+.trash-meta strong{color:#ff5050;}
+.trash-acts{display:flex;gap:8px;}
+.trash-btn{font-family:var(--fb);font-size:11px;font-weight:500;padding:6px 14px;border-radius:var(--r);cursor:pointer;transition:all .15s;border:1px solid var(--b2);background:transparent;color:var(--text);}
+.trash-btn:hover{border-color:var(--pink);color:var(--pink);}
+.trash-btn.danger{border-color:rgba(255,80,80,.3);color:#ff5050;}
+.trash-btn.danger:hover{background:rgba(255,80,80,.08);border-color:#ff5050;}
+.req-del-btn{background:none;border:1px solid rgba(255,80,80,.3);color:#ff5050;border-radius:var(--r);font-family:var(--fb);font-size:11px;padding:6px 12px;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:4px;margin-top:6px;}
+.req-del-btn:hover{background:rgba(255,80,80,.08);border-color:#ff5050;}
+
+/* ═══ DASHBOARD ══════════════════════════════════════════════ */
+.dash{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;width:100%;}
+.dash-welcome{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:16px 20px;gap:12px;flex-wrap:wrap;}
+.dw-left{flex:1;min-width:200px;}
+.dw-greeting{font-size:18px;font-weight:600;letter-spacing:-.01em;margin-bottom:3px;}
+.dw-greeting em{color:var(--pink);font-style:normal;}
+.dw-summary{font-size:11px;color:var(--muted);display:flex;gap:12px;flex-wrap:wrap;}
+.dw-chip{display:inline-flex;align-items:center;gap:4px;}
+.dw-chip .dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;}
+.dw-date{font-family:var(--fd);font-size:10px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;}
+
+/* panels */
+.dash-panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);display:flex;flex-direction:column;overflow:hidden;min-height:0;}
+.dash-panel-hdr{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid var(--border);flex-shrink:0;}
+.dp-title{font-family:var(--fd);font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;}
+.dp-count{font-size:9px;font-weight:700;background:var(--s2);color:var(--muted);border-radius:20px;padding:1px 7px;min-width:18px;text-align:center;}
+.dp-count.urgent{background:rgba(224,120,64,.15);color:#e07840;}
+.dp-count.pink{background:rgba(255,102,102,.12);color:var(--pink);}
+.dash-panel-body{overflow-y:auto;flex:1;min-height:0;}
+.dash-scroll{max-height:calc(100vh - 260px);overflow-y:auto;}
+
+/* sub-section headers */
+.dp-sub{display:flex;align-items:center;gap:8px;padding:8px 14px 4px;position:sticky;top:0;background:var(--surface);z-index:2;}
+.dp-sub-title{font-size:10px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;}
+.dp-sub-title.red{color:#e07840;}
+.dp-sub-title.pink{color:var(--pink);}
+.dp-sub-title.muted{color:var(--muted);}
+.dp-sub-line{flex:1;height:1px;background:var(--border);}
+
+/* contact rows */
+.dash-row{display:flex;align-items:center;gap:10px;padding:7px 14px;cursor:pointer;transition:background .12s;position:relative;}
+.dash-row:hover{background:var(--s2);}
+.dr-av{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:10px;font-weight:700;color:#fff;flex-shrink:0;}
+.dr-body{flex:1;min-width:0;}
+.dr-name{font-size:12px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.dr-meta{font-size:10px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.dr-badge{font-size:9px;font-weight:600;padding:2px 8px;border-radius:20px;white-space:nowrap;flex-shrink:0;}
+.dr-badge.overdue{background:rgba(224,120,64,.12);color:#e07840;}
+.dr-badge.new{background:rgba(255,102,102,.1);color:var(--pink);}
+.dr-badge.stale{background:var(--s2);color:var(--muted);}
+.dr-action{background:none;border:1px solid var(--b2);border-radius:var(--r);font-family:var(--fb);font-size:10px;color:var(--muted);padding:3px 8px;cursor:pointer;transition:all .15s;white-space:nowrap;flex-shrink:0;}
+.dr-action:hover{border-color:var(--pink);color:var(--pink);}
+.overdue-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:#e07840;margin-right:4px;animation:pulse 2s infinite;vertical-align:middle;}
+.dash-show-more{display:block;width:100%;background:none;border:none;border-top:1px solid var(--border);color:var(--muted);font-family:var(--fb);font-size:11px;padding:8px;cursor:pointer;transition:color .15s;}
+.dash-show-more:hover{color:var(--pink);}
+
+/* feed column */
+.feed-card{background:var(--s2);border:1px solid transparent;border-radius:var(--r);padding:9px 12px;position:relative;overflow:hidden;cursor:pointer;transition:border-color .15s,background .15s;margin:0 10px 4px;}
+.feed-card:hover{border-color:var(--border);background:var(--surface);}
+.feed-card::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;border-radius:3px 0 0 3px;}
+.feed-card.type-intake::before{background:var(--pink);}
+.feed-card.type-overdue::before{background:#e07840;}
+.feed-card.type-comment::before{background:var(--blue);}
+.feed-card.type-deletion::before{background:var(--yellow);}
+.feed-card.type-activity::before{background:var(--b2);}
+.feed-top{display:flex;align-items:flex-start;gap:8px;}
+.feed-icon{width:24px;height:24px;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:12px;}
+.feed-card.type-intake .feed-icon{background:rgba(255,102,102,.12);}
+.feed-card.type-overdue .feed-icon{background:rgba(224,120,64,.12);}
+.feed-card.type-comment .feed-icon{background:rgba(102,144,224,.12);}
+.feed-card.type-deletion .feed-icon{background:rgba(255,207,90,.12);}
+.feed-card.type-activity .feed-icon{background:var(--s3);}
+.feed-body{flex:1;min-width:0;}
+.feed-hl{font-size:11px;font-weight:500;line-height:1.4;}
+.feed-hl strong{color:var(--pink);font-weight:600;}
+.feed-detail{font-size:10px;color:var(--muted);line-height:1.4;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.feed-time{font-size:9px;color:var(--muted);white-space:nowrap;flex-shrink:0;margin-top:1px;}
+.feed-empty{text-align:center;color:var(--muted);padding:30px 14px;font-size:12px;}
+
+/* team comms */
+.tc-tabs{display:flex;border-bottom:1px solid var(--border);}
+.tc-tab{flex:1;text-align:center;font-size:10px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;padding:8px;cursor:pointer;color:var(--muted);background:none;border:none;font-family:var(--fb);transition:color .15s;position:relative;}
+.tc-tab.active{color:var(--pink);}
+.tc-tab.active::after{content:'';position:absolute;bottom:-1px;left:20%;right:20%;height:2px;background:var(--pink);border-radius:2px;}
+.tc-tab .tc-badge{font-size:8px;background:var(--pink);color:#fff;border-radius:20px;padding:0 4px;margin-left:4px;vertical-align:top;}
+.ch-msgs{padding:8px 12px;display:flex;flex-direction:column;gap:6px;overflow-y:auto;flex:1;min-height:0;}
+.ch-msg{display:flex;gap:8px;align-items:flex-start;}
+.ch-av{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:9px;font-weight:700;color:#fff;flex-shrink:0;background:var(--pink);}
+.ch-av.kyra{background:var(--yellow);color:#333;}
+.ch-bubble{flex:1;min-width:0;}
+.ch-author{font-size:10px;font-weight:600;color:var(--text);margin-bottom:1px;}
+.ch-author span{font-weight:400;color:var(--muted);margin-left:6px;font-size:9px;}
+.ch-text{font-size:12px;line-height:1.5;color:var(--text);word-break:break-word;}
+.ch-input-row{display:flex;gap:6px;padding:8px 12px;border-top:1px solid var(--border);flex-shrink:0;}
+.ch-input{flex:1;background:var(--s2);border:1px solid var(--b2);border-radius:var(--r);color:var(--text);font-family:var(--fb);font-size:12px;padding:7px 10px;outline:none;resize:none;}
+.ch-input:focus{border-color:var(--pink);}
+.ch-send{background:var(--pink);border:none;border-radius:var(--r);color:#fff;width:32px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s;flex-shrink:0;}
+.ch-send:hover{background:#ff5555;}
+
+/* dash DMs */
+.ddm-thread{display:flex;align-items:center;gap:8px;padding:8px 12px;cursor:pointer;transition:background .12s;}
+.ddm-thread:hover{background:var(--s2);}
+.ddm-av{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:10px;font-weight:700;color:#fff;flex-shrink:0;background:var(--pink);}
+.ddm-av.kyra{background:var(--yellow);color:#333;}
+.ddm-info{flex:1;min-width:0;}
+.ddm-name{font-size:12px;font-weight:500;}
+.ddm-prev{font-size:10px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ddm-time{font-size:9px;color:var(--muted);flex-shrink:0;}
+.ddm-unread{background:var(--pink);color:#fff;font-size:8px;font-weight:700;border-radius:20px;padding:1px 5px;min-width:14px;text-align:center;flex-shrink:0;}
+.ddm-chat-hdr{display:flex;align-items:center;gap:8px;padding:8px 12px;border-bottom:1px solid var(--border);flex-shrink:0;}
+.ddm-back{background:none;border:none;color:var(--muted);cursor:pointer;font-size:14px;padding:0 4px;transition:color .15s;}
+.ddm-back:hover{color:var(--pink);}
+.ddm-msgs{flex:1;overflow-y:auto;padding:8px 12px;display:flex;flex-direction:column;gap:4px;min-height:0;}
+.ddm-msg{display:flex;flex-direction:column;max-width:82%;}
+.ddm-msg.mine{align-self:flex-end;align-items:flex-end;}
+.ddm-msg.theirs{align-self:flex-start;align-items:flex-start;}
+.ddm-bub{padding:6px 10px;border-radius:10px;font-size:12px;line-height:1.4;word-break:break-word;}
+.ddm-msg.mine .ddm-bub{background:var(--pink);color:#fff;border-bottom-right-radius:3px;}
+.ddm-msg.theirs .ddm-bub{background:var(--s2);color:var(--text);border-bottom-left-radius:3px;}
+.ddm-msg-meta{font-size:9px;color:var(--muted);margin-top:2px;}
+
+/* quick stats */
+.dash-stats{grid-column:1/-1;display:flex;gap:8px;flex-wrap:wrap;}
+.ds-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:10px 14px;flex:1;min-width:100px;}
+.ds-val{font-family:var(--fd);font-size:20px;font-weight:700;color:var(--pink);}
+.ds-lbl{font-size:10px;color:var(--muted);margin-top:2px;}
+
+/* dash edit popout */
+.de-ov{position:fixed;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(2px);z-index:800;opacity:0;pointer-events:none;transition:opacity .2s;}
+.de-ov.open{opacity:1;pointer-events:all;}
+.de-panel{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:90%;max-width:520px;max-height:85vh;background:var(--surface);border:1px solid var(--b2);border-radius:var(--rl);box-shadow:0 16px 48px rgba(0,0,0,.5);display:flex;flex-direction:column;overflow:hidden;}
+.de-hdr{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--border);flex-shrink:0;}
+.de-hdr-left{display:flex;align-items:center;gap:10px;}
+.de-av{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:13px;font-weight:700;color:#fff;}
+.de-name{font-size:15px;font-weight:600;}
+.de-co{font-size:11px;color:var(--muted);}
+.de-close{background:none;border:none;color:var(--muted);font-size:18px;cursor:pointer;padding:4px;transition:color .15s;}
+.de-close:hover{color:var(--pink);}
+.de-body{overflow-y:auto;padding:14px 16px;flex:1;min-height:0;display:flex;flex-direction:column;gap:10px;}
+.de-field{display:flex;flex-direction:column;gap:3px;}
+.de-label{font-size:9px;font-weight:700;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;}
+.de-input{background:var(--s2);border:1px solid var(--b2);border-radius:var(--r);color:var(--text);font-family:var(--fb);font-size:13px;padding:7px 10px;outline:none;transition:border-color .2s;width:100%;}
+.de-input:focus{border-color:var(--pink);}
+textarea.de-input{resize:vertical;min-height:60px;}
+select.de-input{cursor:pointer;}
+.de-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.de-tags{display:flex;flex-wrap:wrap;gap:4px;}
+.de-tag{font-size:10px;padding:2px 8px;border-radius:20px;background:rgba(255,102,102,.1);color:var(--pink);border:1px solid rgba(255,102,102,.15);}
+.de-footer{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;border-top:1px solid var(--border);flex-shrink:0;}
+
+/* responsive */
+@media(max-width:1023px){.dash{grid-template-columns:1fr 1fr;}.dash-welcome,.dash-stats{grid-column:1/-1;}}
+@media(max-width:767px){.dash{grid-template-columns:1fr;gap:8px;}.dash-welcome{padding:12px 14px;}.dw-greeting{font-size:15px;}.dash-scroll{max-height:none;}}
+
 /* comments */
 .cmts{margin-top:14px;}
 .cmt{display:flex;gap:7px;margin-bottom:10px;}
@@ -562,8 +725,40 @@ body{font-family:var(--fb);background:var(--black);color:var(--text);min-height:
     <h2>Client Tracker — Private</h2>
     <div class="lf"><label>Username</label><input type="text" id="login-user" placeholder="Username" autocomplete="off"/></div>
     <div class="lf"><label>Password</label><input type="password" id="login-pass" placeholder="Password"/></div>
+    <label style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);cursor:pointer;margin-top:2px;user-select:none"><input type="checkbox" id="show-pass" onchange="document.getElementById('login-pass').type=this.checked?'text':'password'" style="accent-color:var(--pink);cursor:pointer"/> Show password</label>
     <button class="login-btn" onclick="tryLogin()">Sign In</button>
     <div class="login-err" id="login-err"></div>
+    <button class="forgot-link" onclick="showForgotStep('email')">Forgot your password?</button>
+  </div>
+  <!-- Forgot Password Flow -->
+  <div class="login-box" id="forgot-box" style="display:none">
+    <!-- Step 1: Enter email -->
+    <div id="forgot-email" style="display:none">
+      <h2>Reset Password</h2>
+      <p style="font-size:12px;color:var(--muted);margin-bottom:14px;line-height:1.5">Enter the email address associated with your account and we'll send you a reset code.</p>
+      <div class="lf"><label>Email</label><input type="email" id="forgot-email-input" placeholder="you@example.com"/></div>
+      <button class="login-btn" onclick="sendResetCode()">Send Reset Code</button>
+      <div class="login-err" id="forgot-err"></div>
+      <button class="forgot-link" onclick="hideForgot()">&#x2190; Back to sign in</button>
+    </div>
+    <!-- Step 2: Enter code -->
+    <div id="forgot-code" style="display:none">
+      <h2>Enter Code</h2>
+      <p style="font-size:12px;color:var(--muted);margin-bottom:14px;line-height:1.5">We sent a 6-digit code to <strong id="forgot-sent-to"></strong>. Enter it below.</p>
+      <div class="lf"><label>Reset Code</label><input type="text" id="forgot-code-input" placeholder="000000" maxlength="6" style="font-family:var(--fd);letter-spacing:.3em;text-align:center;font-size:18px"/></div>
+      <button class="login-btn" onclick="verifyResetCode()">Verify Code</button>
+      <div class="login-err" id="code-err"></div>
+      <button class="forgot-link" onclick="showForgotStep('email')">Didn't get it? Try again</button>
+    </div>
+    <!-- Step 3: New password -->
+    <div id="forgot-newpass" style="display:none">
+      <h2>New Password</h2>
+      <p style="font-size:12px;color:var(--muted);margin-bottom:14px;line-height:1.5">Choose a new password for <strong id="forgot-reset-user"></strong>.</p>
+      <div class="lf"><label>New Password</label><input type="password" id="forgot-pass1" placeholder="At least 6 characters"/></div>
+      <div class="lf"><label>Confirm Password</label><input type="password" id="forgot-pass2" placeholder="Re-enter password"/></div>
+      <button class="login-btn" onclick="completeReset()">Reset Password</button>
+      <div class="login-err" id="newpass-err"></div>
+    </div>
   </div>
 </div>
 
@@ -591,13 +786,15 @@ body{font-family:var(--fb);background:var(--black);color:var(--text);min-height:
   </header>
 
   <nav class="nav">
-    <button class="ntab active" data-tab="companies" onclick="switchTab('companies')">Companies <span class="tcnt" id="cnt-companies">0</span></button>
+    <button class="ntab active" data-tab="feed" onclick="switchTab('feed')">&#x26A1; Dashboard</button>
+    <button class="ntab" data-tab="companies" onclick="switchTab('companies')">Companies <span class="tcnt" id="cnt-companies">0</span></button>
     <button class="ntab" data-tab="all" onclick="switchTab('all')">All <span class="tcnt" id="cnt-all">0</span></button>
     <button class="ntab" data-tab="active" onclick="switchTab('active')">Active <span class="tcnt" id="cnt-active">0</span></button>
     <button class="ntab" data-tab="prospects" onclick="switchTab('prospects')">Prospects <span class="tcnt" id="cnt-prospects">0</span></button>
     <button class="ntab" data-tab="contacts" onclick="switchTab('contacts')">Contacts <span class="tcnt" id="cnt-contacts">0</span></button>
     <button class="ntab" data-tab="former" onclick="switchTab('former')">Former <span class="tcnt" id="cnt-former">0</span></button>
     <button class="ntab" data-tab="favorites" onclick="switchTab('favorites')">&#9733; <span class="tcnt" id="cnt-favorites">0</span></button>
+    <button class="ntab" data-tab="trash" onclick="switchTab('trash')" id="trash-tab" style="display:none">&#x1F5D1; Trash <span class="tcnt" id="cnt-trash">0</span></button>
   </nav>
 
   <main class="main">
@@ -848,6 +1045,24 @@ body{font-family:var(--fb);background:var(--black);color:var(--text);min-height:
   </div>
 </div>
 
+<!-- DASH EDIT POPOUT -->
+<div class="de-ov" id="de-ov" onclick="if(event.target===this)closeDashEdit()">
+  <div class="de-panel">
+    <div class="de-hdr">
+      <div class="de-hdr-left"><div class="de-av" id="de-av"></div><div><div class="de-name" id="de-name"></div><div class="de-co" id="de-co"></div></div></div>
+      <button class="de-close" onclick="closeDashEdit()">&#x2715;</button>
+    </div>
+    <div class="de-body" id="de-body"></div>
+    <div class="de-footer">
+      <button class="btn-s" onclick="closeDashEdit()">Cancel</button>
+      <div style="display:flex;gap:6px;">
+        <button class="btn-s" onclick="openDet(dashEditId);closeDashEdit()">Full Detail ↗</button>
+        <button class="btn-p" onclick="saveDashEdit()">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- SHARE -->
 <div class="share-ov" id="share-ov" onclick="if(event.target===this)closeShare()">
   <div class="share-card">
@@ -906,9 +1121,11 @@ body{font-family:var(--fb);background:var(--black);color:var(--text);min-height:
 var EMOJIS=['🎬','🎥','📽️','🌴','🎞️','⚡','🔥','✨','🎭','🎨','🦁','🐺','🦊','🐉','🌙','🌊','🎸','🎤','📸','🚀'];
 var CO_COLORS=['#FF6666','#6690e0','#50b880','#FFCF5A','#c080e0','#e09050','#60c8c8','#e06099','#a060e0','#80d0b8','#FF8C42','#4ECDC4','#A8DADC','#E63946','#457B9D'];
 var BASE_USERS={
-  brendan:{pass:'lostobjects2025',role:'owner',defaultName:'Brendan',avatarClass:''},
-  kyra:{pass:'lostobjects2025',role:'owner',defaultName:'Kyra',avatarClass:'kyra'},
-  guest:{pass:'lostobjects-guest',role:'viewer',defaultName:'Guest',avatarClass:'guest'}
+  brendan:{pass:'sweencake2026',role:'owner',defaultName:'Brendan Sweeney',avatarClass:'',email:'brendan@wearelostobjects.com'},
+  kyra:{pass:'kdot2026',role:'owner',defaultName:'Kyra Sweeney',avatarClass:'kyra',email:'kyra@wearelostobjects.com'},
+  chrishaigh:{pass:'chaighy2026',role:'editor',defaultName:'Chris Haigh',avatarClass:'',email:'chris@lostobjects.co'},
+  juliaroberts:{pass:'robertsjulia2026',role:'editor',defaultName:'Julia Roberts',avatarClass:'',email:'julia@wearelostobjects.com'},
+  guest:{pass:'lostobjects-guest',role:'viewer',defaultName:'Guest',avatarClass:'guest',email:''}
 };
 var ROLE_PERMS={
   owner:{canEdit:true,canAdd:true,canDelete:true,canComment:true,canManageTeam:true},
@@ -920,7 +1137,8 @@ var TAG_GROUPS=[
   {label:'Services',tags:[{key:'social-retainer',label:'Social Retainer'},{key:'marketing-retainer',label:'Mktg Retainer'},{key:'social-audit',label:'Social Audit'},{key:'marketing-audit',label:'Mktg Audit'},{key:'meta-ads',label:'Meta Ads'},{key:'strategy-session',label:'Strategy'},{key:'content-creation',label:'Content'},{key:'brand-consulting',label:'Brand Consulting'},{key:'speaking',label:'Speaking'},{key:'event',label:'Event'}]},
   {label:'Platforms',tags:[{key:'instagram',label:'Instagram'},{key:'youtube',label:'YouTube'},{key:'facebook',label:'Facebook'},{key:'tiktok',label:'TikTok'},{key:'threads',label:'Threads'},{key:'x',label:'X/Twitter'},{key:'linkedin',label:'LinkedIn'},{key:'podcast',label:'Podcast'}]},
   {label:'Relationship',tags:[{key:'partner',label:'Partner'},{key:'sponsor',label:'Sponsor'},{key:'collab',label:'Collaborator'},{key:'referral',label:'Referral'},{key:'repeat',label:'Repeat Client'},{key:'press',label:'Press'},{key:'met',label:'Met IRL'}]},
-  {label:'Stage',tags:[{key:'cold',label:'Cold'},{key:'warm',label:'Warm'},{key:'proposal',label:'Proposal'},{key:'contract',label:'Contract'},{key:'negotiating',label:'Negotiating'},{key:'on-hold',label:'On Hold'},{key:'wishlist',label:'Wishlist'}]}
+  {label:'Stage',tags:[{key:'cold',label:'Cold'},{key:'warm',label:'Warm'},{key:'proposal',label:'Proposal'},{key:'contract',label:'Contract'},{key:'negotiating',label:'Negotiating'},{key:'on-hold',label:'On Hold'},{key:'wishlist',label:'Wishlist'}]},
+  {label:'Source',tags:[{key:'website-inquiry',label:'Website Inquiry'}]}
 ];
 var TAG_MAP={};TAG_GROUPS.forEach(function(g){g.tags.forEach(function(t){TAG_MAP[t.key]=t.label;});});
 var CK='lo-contacts-v3',PK='lo-prefs-v1',NK='lo-notifs-v1',UK='lo-users-v1',DK='lo-dms-v1',PRK='lo-presence-v1',ECK='lo-email-cfg',COK='lo-companies-v1';
@@ -945,7 +1163,7 @@ function getAllUsers(){
   var custom=ls.get(UK)||{};var prefs=ls.get(PK)||{};var merged={};
   Object.keys(BASE_USERS).forEach(function(k){
     var v=BASE_USERS[k];var up=prefs[k]||{};
-    merged[k]={pass:up.pass||v.pass,role:v.role,defaultName:v.defaultName,avatarClass:v.avatarClass,displayName:up.displayName||v.defaultName,emoji:up.emoji||null,bio:up.bio||'',email:up.email||''};
+    merged[k]={pass:up.pass||v.pass,role:v.role,defaultName:v.defaultName,avatarClass:v.avatarClass,displayName:up.displayName||v.defaultName,emoji:up.emoji||null,bio:up.bio||'',email:up.email||v.email||''};
   });
   Object.keys(custom).forEach(function(k){merged[k]=custom[k];});
   return merged;
@@ -962,13 +1180,76 @@ function tryLogin(){
   if(def&&def.pass===p){sessionStorage.setItem('lo-auth',u);document.getElementById('login-err').textContent='';bootApp(u);}
   else{document.getElementById('login-err').textContent='Incorrect username or password.';document.getElementById('login-pass').value='';}
 }
-function logout(){clearPresence();sessionStorage.removeItem('lo-auth');currentUser=null;document.getElementById('login-screen').classList.remove('hidden');document.getElementById('app').classList.remove('visible');document.getElementById('login-user').value='';document.getElementById('login-pass').value='';closeRail();}
+function logout(){clearPresence();sessionStorage.removeItem('lo-auth');currentUser=null;document.getElementById('login-screen').classList.remove('hidden');document.getElementById('app').classList.remove('visible');document.getElementById('login-user').value='';document.getElementById('login-pass').value='';closeRail();hideForgot();}
+
+// ═══ FORGOT PASSWORD (demo simulation) ═════════════════════════════════════
+var resetCode='',resetUser='';
+function showForgotStep(step){
+  document.querySelector('.login-box:not(#forgot-box)').style.display='none';
+  document.getElementById('forgot-box').style.display='';
+  ['forgot-email','forgot-code','forgot-newpass'].forEach(function(id){document.getElementById(id).style.display='none';});
+  document.getElementById('forgot-'+step).style.display='';
+  ['forgot-err','code-err','newpass-err'].forEach(function(id){var el=document.getElementById(id);if(el)el.textContent='';});
+}
+function hideForgot(){
+  document.querySelector('.login-box:not(#forgot-box)').style.display='';
+  document.getElementById('forgot-box').style.display='none';
+  resetCode='';resetUser='';
+}
+function sendResetCode(){
+  var email=document.getElementById('forgot-email-input').value.trim();
+  if(!email){document.getElementById('forgot-err').textContent='Please enter an email address.';return;}
+  // Find user by email
+  var users=getAllUsers(),prefs=ls.get(PK)||{};
+  var foundUser=null;
+  Object.keys(users).forEach(function(k){
+    var u=users[k],up=prefs[k]||{};
+    if((up.email||u.email||'').toLowerCase()===email.toLowerCase())foundUser=k;
+  });
+  if(!foundUser){document.getElementById('forgot-err').textContent='No account found with that email.';return;}
+  // Generate 6-digit code
+  resetCode=String(Math.floor(100000+Math.random()*900000));
+  resetUser=foundUser;
+  document.getElementById('forgot-sent-to').textContent=email;
+  // Demo mode: show code via toast since we can't send real email
+  showForgotStep('code');
+  setTimeout(function(){
+    var t=document.getElementById('toast');
+    if(t){document.getElementById('toast-msg').textContent='Demo mode \u2014 your reset code is: '+resetCode;t.classList.add('show');setTimeout(function(){t.classList.remove('show');},6000);}
+  },500);
+}
+function verifyResetCode(){
+  var input=document.getElementById('forgot-code-input').value.trim();
+  if(!input){document.getElementById('code-err').textContent='Please enter the code.';return;}
+  if(input!==resetCode){document.getElementById('code-err').textContent='Incorrect code. Please try again.';return;}
+  document.getElementById('forgot-reset-user').textContent=resetUser;
+  showForgotStep('newpass');
+}
+function completeReset(){
+  var p1=document.getElementById('forgot-pass1').value,p2=document.getElementById('forgot-pass2').value;
+  if(!p1||p1.length<6){document.getElementById('newpass-err').textContent='Password must be at least 6 characters.';return;}
+  if(p1!==p2){document.getElementById('newpass-err').textContent='Passwords do not match.';return;}
+  // Save new password
+  var bi=!!BASE_USERS[resetUser];
+  if(bi){var p=ls.get(PK)||{};if(!p[resetUser])p[resetUser]={};p[resetUser].pass=p1;ls.set(PK,p);}
+  else{var c=ls.get(UK)||{};if(c[resetUser])c[resetUser].pass=p1;ls.set(UK,c);}
+  // Return to login
+  hideForgot();
+  document.getElementById('login-user').value=resetUser;
+  document.getElementById('login-pass').value='';
+  document.getElementById('login-err').style.color='var(--green)';
+  document.getElementById('login-err').textContent='Password reset! You can now sign in.';
+  setTimeout(function(){document.getElementById('login-err').style.color='';},5000);
+  resetCode='';resetUser='';
+}
+
 function bootApp(username){
   currentUser=username;applyPrefs();updateHeaderUser();
   document.getElementById('login-screen').classList.add('hidden');
   document.getElementById('app').classList.add('visible');
   document.getElementById('add-btn').style.display=canDo('canAdd')?'':'none';
   document.getElementById('team-nav-btn').style.display=canDo('canManageTeam')?'':'none';
+  document.getElementById('trash-tab').style.display=canDo('canDelete')?'':'none';
   init();updateNotifBadge();updateDMBadge();startPresence();renderPW();loadEmailCfgUI();
 }
 function updateHeaderUser(){
@@ -991,38 +1272,43 @@ function uid(){return Math.random().toString(36).slice(2)+Date.now().toString(36
 if(!contacts.length){
   var now=Date.now();
   contacts=[
-    {id:uid(),first:'Jeff',last:'Ellerby',company:'Blackout',title:'Founder / CEO',email:'jeff@blackoutconsole.com',phone:'310-555-0101',website:'blackoutconsole.com',cat:'active',service:'Marketing Retainer',formerReason:'',tags:['marketing-retainer','strategy-session','instagram'],lastContact:'2025-04-01',notes:'Lead client. Cine Gear LA June 5-6. Solmen brand architecture in progress.',comments:[],created:now-8},
-    {id:uid(),first:'Alan',last:'Marcus',company:'Blackout',title:'Marketing Consultant',email:'alan@marcus.co',phone:'',website:'',cat:'active',service:'Marketing Retainer',formerReason:'',tags:['marketing-retainer','strategy-session'],lastContact:'2025-03-28',notes:'Key stakeholder on roadmap decisions. Very responsive.',comments:[],created:now-7},
-    {id:uid(),first:'Maya',last:'Tran',company:'Blackout',title:'Product Manager',email:'maya@blackoutconsole.com',phone:'',website:'@mayatran',cat:'contacts',service:'',formerReason:'',tags:['partner','linkedin'],lastContact:'2025-03-15',notes:'PM on Live Plot Designer. Good bridge between design and engineering.',comments:[],created:now-6},
-    {id:uid(),first:'Shane',last:'Hurlbut',company:'Filmmakers Academy',title:'Co-Founder / ASC',email:'shane@filmmakersacademy.com',phone:'',website:'@shanehurlbutasc',cat:'active',service:'Marketing Retainer',formerReason:'',tags:['marketing-retainer','instagram','youtube','partner'],lastContact:'2025-03-20',notes:'Fix It In Prep launch. NAB Show April 17-22. Quality of Light speaking slot locked.',comments:[],created:now-8},
-    {id:uid(),first:'Lydia',last:'Hurlbut',company:'Filmmakers Academy',title:'Co-Founder',email:'lydia@filmmakersacademy.com',phone:'',website:'',cat:'active',service:'Marketing Retainer',formerReason:'',tags:['marketing-retainer','partner'],lastContact:'2025-03-20',notes:'Operations and partnerships lead.',comments:[],created:now-8},
-    {id:uid(),first:'Chris',last:'Haigh',company:'Filmmakers Academy',title:'Co-Host / Creative Director',email:'chris@lostobjects.co',phone:'',website:'@chrishaigh',cat:'active',service:'Marketing Retainer',formerReason:'',tags:['marketing-retainer','collab','instagram'],lastContact:'2025-04-01',notes:'Co-host on The Film Hang. Co-founder Lost Objects.',comments:[],created:now-9},
-    {id:uid(),first:'Rachel',last:'Kim',company:'Filmmakers Academy',title:'Community Manager',email:'rachel@filmmakersacademy.com',phone:'',website:'',cat:'contacts',service:'',formerReason:'',tags:['partner'],lastContact:'2025-02-10',notes:'Manages member engagement on Uscreen.',comments:[],created:now-5},
-    {id:uid(),first:'Ted',last:'Sim',company:'Aputure',title:'CEO',email:'ted@aputure.com',phone:'',website:'@tedsim',cat:'prospects',service:'',formerReason:'',tags:['warm','brand-consulting','instagram','youtube'],lastContact:'2025-02-15',notes:'Exploring brand consulting retainer. Very active at trade shows.',comments:[],created:now-7},
-    {id:uid(),first:'Rachel',last:'Chen',company:'Aputure',title:'Head of Marketing',email:'rchen@aputure.com',phone:'',website:'',cat:'prospects',service:'',formerReason:'',tags:['warm','marketing-audit','instagram'],lastContact:'2025-02-20',notes:'Primary day-to-day contact for any marketing engagement.',comments:[],created:now-6},
-    {id:uid(),first:'David',last:'Liang',company:'Aputure',title:'PR Manager',email:'dliang@aputure.com',phone:'',website:'',cat:'contacts',service:'',formerReason:'',tags:['press','partner'],lastContact:'2025-01-18',notes:'Handles press accreditation and media partnerships.',comments:[],created:now-5},
-    {id:uid(),first:'Jess',last:'Wong',company:'Aputure',title:'Partnerships Lead',email:'jwong@aputure.com',phone:'',website:'@jesswong',cat:'contacts',service:'',formerReason:'',tags:['partner','collab'],lastContact:'2025-03-05',notes:'Manages creator and brand collaborations.',comments:[],created:now-4},
-    {id:uid(),first:'Marco',last:'Rossi',company:'Nanlux',title:'North America Sales Director',email:'marco@nanlux.com',phone:'',website:'',cat:'active',service:'Speaking Engagement',formerReason:'',tags:['speaking','partner','met'],lastContact:'2025-03-10',notes:'Shane presenting The Quality of Light at NAB. $15.5k speaking package.',comments:[],created:now-7},
-    {id:uid(),first:'Lisa',last:'Park',company:'Nanlux',title:'Social Media Manager',email:'lisa@nanlux.com',phone:'',website:'@lisaparklights',cat:'contacts',service:'',formerReason:'',tags:['instagram','youtube','collab'],lastContact:'2025-02-28',notes:'Runs their social content. Great creative instincts.',comments:[],created:now-5},
-    {id:uid(),first:'Kevin',last:'Huang',company:'Nanlux',title:'Product Marketing Manager',email:'khuang@nanlux.com',phone:'',website:'',cat:'contacts',service:'',formerReason:'',tags:['partner'],lastContact:'2025-01-22',notes:'Product side contact for gear review coordination.',comments:[],created:now-4},
-    {id:uid(),first:'Greta',last:'Hoffman',company:'ARRI',title:'VP Brand Partnerships',email:'ghoffman@arri.com',phone:'',website:'',cat:'prospects',service:'',formerReason:'',tags:['cold','brand-consulting','sponsor'],lastContact:'',notes:'Top wishlist partner. Warm connection through Shane.',comments:[],created:now-6},
-    {id:uid(),first:'James',last:'Whitfield',company:'ARRI',title:'Director of Education',email:'jwhitfield@arri.com',phone:'',website:'',cat:'contacts',service:'',formerReason:'',tags:['partner','speaking','met'],lastContact:'2025-01-30',notes:'Met at Cine Gear. Education program alignment is strong.',comments:[],created:now-5},
-    {id:uid(),first:'Mia',last:'Bauer',company:'ARRI',title:'Digital Content Lead',email:'mbauer@arri.com',phone:'',website:'@miabauer',cat:'contacts',service:'',formerReason:'',tags:['collab','instagram','youtube'],lastContact:'2025-02-14',notes:'Runs their digital editorial content.',comments:[],created:now-4},
-    {id:uid(),first:'Ryan',last:'Gallagher',company:'Atomos',title:'CEO',email:'ryan@atomos.com',phone:'',website:'@ryangallagher',cat:'prospects',service:'',formerReason:'',tags:['warm','sponsor','brand-consulting'],lastContact:'2025-03-18',notes:'Open to a sponsorship conversation.',comments:[],created:now-5},
-    {id:uid(),first:'Priya',last:'Shah',company:'Atomos',title:'Social Media Manager',email:'pshah@atomos.com',phone:'',website:'@priyashah',cat:'contacts',service:'',formerReason:'',tags:['instagram','tiktok','collab'],lastContact:'2025-02-22',notes:'Great TikTok instincts.',comments:[],created:now-4},
-    {id:uid(),first:'Nathan',last:'Cole',company:'Atomos',title:'Content Director',email:'ncole@atomos.com',phone:'',website:'',cat:'contacts',service:'',formerReason:'',tags:['content-creation','youtube'],lastContact:'2025-01-15',notes:'Manages long-form content production.',comments:[],created:now-3},
-    {id:uid(),first:'Sofia',last:'Mendez',company:'Teradek',title:'VP Marketing',email:'smendez@teradek.com',phone:'',website:'',cat:'prospects',service:'',formerReason:'',tags:['proposal','marketing-retainer'],lastContact:'2025-03-22',notes:'Proposal sent March 22. Follow up after NAB.',comments:[],created:now-5},
-    {id:uid(),first:'Aaron',last:'Fitch',company:'Teradek',title:'Brand Partnerships',email:'afitch@teradek.com',phone:'',website:'@aaronfitch',cat:'contacts',service:'',formerReason:'',tags:['partner','collab','met'],lastContact:'2025-02-08',notes:'Met at Cine Gear 2024. Needs relationship building.',comments:[],created:now-4},
-    {id:uid(),first:'Lucas',last:'Zhang',company:'SmallRig',title:'Global Marketing Director',email:'lzhang@smallrig.com',phone:'',website:'',cat:'active',service:'Social Media Retainer',formerReason:'',tags:['social-retainer','instagram','youtube'],lastContact:'2025-04-02',notes:'Monthly deliverables running smoothly.',comments:[],created:now-7},
-    {id:uid(),first:'Amy',last:'Li',company:'SmallRig',title:'Creator Relations Manager',email:'ali@smallrig.com',phone:'',website:'@amyli',cat:'active',service:'Social Media Retainer',formerReason:'',tags:['social-retainer','collab','instagram'],lastContact:'2025-03-30',notes:'Day-to-day for creator program. Excellent communicator.',comments:[],created:now-7},
-    {id:uid(),first:'Tom',last:'Xu',company:'SmallRig',title:'Product Development',email:'txu@smallrig.com',phone:'',website:'',cat:'contacts',service:'',formerReason:'',tags:['partner'],lastContact:'2025-01-09',notes:'Good for early review access.',comments:[],created:now-4},
-    {id:uid(),first:'Dana',last:'Mills',company:'SmallRig',title:'Content Creator',email:'dmills@smallrig.com',phone:'',website:'@danamills',cat:'contacts',service:'',formerReason:'',tags:['content-creation','youtube','collab'],lastContact:'2025-02-17',notes:'Potential collab content series.',comments:[],created:now-3},
-    {id:uid(),first:'Ellie',last:'Kong',company:'DJI',title:'Brand Marketing Manager',email:'ekong@dji.com',phone:'',website:'',cat:'contacts',service:'',formerReason:'',tags:['partner','sponsor'],lastContact:'2025-02-05',notes:'Handles influencer and brand deals. Very process-driven.',comments:[],created:now-5},
-    {id:uid(),first:'Marcus',last:'Lee',company:'DJI',title:'Creator Partnerships Lead',email:'mlee@dji.com',phone:'',website:'@marcuslee',cat:'contacts',service:'',formerReason:'',tags:['collab','instagram','youtube'],lastContact:'2025-03-01',notes:'Manages the creator program.',comments:[],created:now-4},
-    {id:uid(),first:'Chloe',last:'Sun',company:'DJI',title:'Social Content Manager',email:'csun@dji.com',phone:'',website:'',cat:'former',service:'',formerReason:'Scope too small — moved internal',tags:['social-audit'],lastContact:'2024-10-15',notes:'Did a social audit Q3 2024. Amicable exit.',comments:[],created:now-9},
-    {id:uid(),first:'Henry',last:'Wu',company:'Zhiyun',title:'International Marketing Lead',email:'hwu@zhiyun.com',phone:'',website:'',cat:'prospects',service:'',formerReason:'',tags:['wishlist','marketing-audit','instagram'],lastContact:'',notes:'Wishlist client. Strong product line that needs brand strategy.',comments:[],created:now-6},
-    {id:uid(),first:'Becky',last:'Lin',company:'Zhiyun',title:'Creator Partnerships',email:'blin@zhiyun.com',phone:'',website:'@beckylin',cat:'contacts',service:'',formerReason:'',tags:['collab','tiktok'],lastContact:'2025-01-28',notes:'Interesting fit for Kyra-led content strategy.',comments:[],created:now-4},
-    {id:uid(),first:'Sam',last:'Torres',company:'Zhiyun',title:'North America Rep',email:'storres@zhiyun.com',phone:'',website:'',cat:'contacts',service:'',formerReason:'',tags:['cold','met'],lastContact:'2025-02-11',notes:'Met at NAB 2024. Relationship still cold.',comments:[],created:now-3}
+    {id:uid(),first:'Jeff',last:'Ellerby',company:'Blackout',title:'Founder / CEO',email:'jeff@blackoutconsole.com',phone:'310-555-0101',website:'blackoutconsole.com',cat:'active',service:'Marketing Retainer',formerReason:'',tags:['marketing-retainer','strategy-session','instagram'],lastContact:'2025-04-01',notes:'Lead client. Cine Gear LA June 5-6. Solmen brand architecture in progress.',comments:[{author:'Kyra Sweeney',text:'Jeff wants to finalize the Cine Gear content plan by end of week. I told him we\u2019d have the shot list over by Wednesday.',ts:now-7*86400000,likes:['brendan']},{author:'Chris Haigh',text:'Solmen architecture is looking solid \u2014 shared the moodboard with Jeff and he\u2019s into the direction.',ts:now-3*86400000,likes:[]},{author:'Brendan Sweeney',text:'Solmen brand architecture deck is ready \u2014 scheduling review for Thursday',ts:now-4*3600000,likes:['juliaroberts']},{author:'Julia Roberts',text:'I\u2019ll prep the social teasers for the Solmen launch once the deck is approved. Already have some caption drafts ready.',ts:now-2*3600000,likes:['brendan','kyra']}],created:now-8},
+    {id:uid(),first:'Alan',last:'Marcus',company:'Blackout',title:'Marketing Consultant',email:'alan@marcus.co',phone:'',website:'',cat:'active',service:'Marketing Retainer',formerReason:'',tags:['marketing-retainer','strategy-session'],lastContact:'2025-03-28',notes:'Key stakeholder on roadmap decisions. Very responsive.',comments:[{author:'Brendan Sweeney',text:'Alan confirmed the Q2 roadmap priorities. Content focus is on the console launch.',ts:now-6*86400000,likes:['kyra']}],created:now-7},
+    {id:uid(),first:'Maya',last:'Tran',company:'Blackout',title:'Product Manager',email:'maya@blackoutconsole.com',phone:'',website:'@mayatran',cat:'contacts',service:'',formerReason:'',tags:['partner','linkedin'],lastContact:'2025-03-15',notes:'PM on Live Plot Designer. Good bridge between design and engineering.',comments:[{author:'Brendan Sweeney',text:'Maya introduced us to the engineering team. Useful for understanding the Live Plot Designer launch timeline.',ts:now-14*86400000,likes:['kyra']},{author:'Chris Haigh',text:'Good LinkedIn presence \u2014 could be worth looping her into the Blackout content series as a subject matter expert.',ts:now-8*86400000,likes:[]}],created:now-6},
+    {id:uid(),first:'Shane',last:'Hurlbut',company:'Filmmakers Academy',title:'Co-Founder / ASC',email:'shane@filmmakersacademy.com',phone:'',website:'@shanehurlbutasc',cat:'active',service:'Marketing Retainer',formerReason:'',tags:['marketing-retainer','instagram','youtube','partner'],lastContact:'2025-03-20',notes:'Fix It In Prep launch. NAB Show April 17-22. Quality of Light speaking slot locked.',comments:[{author:'Brendan Sweeney',text:'NAB booth assets are in. Need Shane to approve the banner layout before we send to print.',ts:now-5*86400000,likes:['kyra']},{author:'Kyra Sweeney',text:'Shane confirmed \u2014 he wants the Quality of Light branding front and center.',ts:now-4*86400000,likes:['brendan','chrishaigh']},{author:'Chris Haigh',text:'NAB booth layout confirmed. Quality of Light session locked for April 19th',ts:now-8*3600000,likes:['juliaroberts']},{author:'Julia Roberts',text:'I\u2019ve scheduled the pre-NAB hype posts for Shane\u2019s channels \u2014 3 reels and a carousel dropping this week.',ts:now-6*3600000,likes:['brendan','kyra','chrishaigh']}],created:now-8},
+    {id:uid(),first:'Lydia',last:'Hurlbut',company:'Filmmakers Academy',title:'Co-Founder',email:'lydia@filmmakersacademy.com',phone:'',website:'',cat:'active',service:'Marketing Retainer',formerReason:'',tags:['marketing-retainer','partner'],lastContact:'2025-03-20',notes:'Operations and partnerships lead.',comments:[{author:'Kyra Sweeney',text:'Lydia approved the partnership deck for Nanlux collab. She\u2019s handling all the contract side.',ts:now-10*86400000,likes:['brendan']},{author:'Brendan Sweeney',text:'Lydia wants to discuss the Uscreen integration strategy for the membership platform. Scheduling a call next week.',ts:now-5*86400000,likes:['chrishaigh']}],created:now-8},
+    {id:uid(),first:'Demi',last:'Chase',company:'Filmmakers Academy',title:'Social Media Coordinator',email:'demi@filmmakersacademy.com',phone:'',website:'@demichase',cat:'active',service:'Marketing Retainer',formerReason:'',tags:['marketing-retainer','collab','instagram'],lastContact:'2025-04-01',notes:'Day-to-day social media coordinator for FA. Manages content scheduling and community engagement.',comments:[{author:'Brendan Sweeney',text:'Demi has been crushing the content calendar \u2014 engagement is up 40% since she took over scheduling.',ts:now-6*86400000,likes:['kyra','juliaroberts']},{author:'Kyra Sweeney',text:'Demi\u2019s Instagram reels for FA are performing really well \u2014 the behind-the-scenes content is averaging 3x normal engagement.',ts:now-3*86400000,likes:['brendan','chrishaigh']},{author:'Julia Roberts',text:'I\u2019ve been coordinating with Demi on the posting schedule \u2014 she\u2019s great to work with. We\u2019re aligned on the May content themes.',ts:now-1*86400000,likes:['brendan','kyra']}],created:now-9},
+    {id:uid(),first:'Rachel',last:'Kim',company:'Filmmakers Academy',title:'Community Manager',email:'rachel@filmmakersacademy.com',phone:'',website:'',cat:'contacts',service:'',formerReason:'',tags:['partner'],lastContact:'2025-02-10',notes:'Manages member engagement on Uscreen.',comments:[{author:'Chris Haigh',text:'Rachel can get us engagement data from the Uscreen community \u2014 useful for the quarterly report.',ts:now-20*86400000,likes:['brendan']}],created:now-5},
+    {id:uid(),first:'Ted',last:'Sim',company:'Aputure',title:'CEO',email:'ted@aputure.com',phone:'',website:'@tedsim',cat:'prospects',service:'',formerReason:'',tags:['warm','brand-consulting','instagram','youtube'],lastContact:'2025-02-15',notes:'Exploring brand consulting retainer. Very active at trade shows.',comments:[{author:'Brendan Sweeney',text:'Had a good call with Ted. He\u2019s interested but wants to see what we did for Blackout first \u2014 sending the case study.',ts:now-6*86400000,likes:[]},{author:'Chris Haigh',text:'Brand consulting deck drafted \u2014 review before sending?',ts:now-2*86400000,likes:['brendan']}],created:now-7},
+    {id:uid(),first:'Rachel',last:'Chen',company:'Aputure',title:'Head of Marketing',email:'rchen@aputure.com',phone:'',website:'',cat:'prospects',service:'',formerReason:'',tags:['warm','marketing-audit','instagram'],lastContact:'2025-02-20',notes:'Primary day-to-day contact for any marketing engagement.',comments:[{author:'Kyra Sweeney',text:'Rachel seems really receptive. She mentioned they\u2019re restructuring their social team \u2014 good timing for us.',ts:now-5*86400000,likes:['brendan']},{author:'Brendan Sweeney',text:'Following up after Aputure marketing meeting \u2014 warm response',ts:now-2.5*86400000,likes:[]}],created:now-6},
+    {id:uid(),first:'David',last:'Liang',company:'Aputure',title:'PR Manager',email:'dliang@aputure.com',phone:'',website:'',cat:'contacts',service:'',formerReason:'',tags:['press','partner'],lastContact:'2025-01-18',notes:'Handles press accreditation and media partnerships.',comments:[{author:'Brendan Sweeney',text:'David can get us press passes for the next Aputure launch event. Worth staying in touch.',ts:now-30*86400000,likes:[]},{author:'Kyra Sweeney',text:'Pinged David about media credentials for NAB. He said he\u2019ll check internally.',ts:now-18*86400000,likes:['brendan']}],created:now-5},
+    {id:uid(),first:'Jess',last:'Wong',company:'Aputure',title:'Partnerships Lead',email:'jwong@aputure.com',phone:'',website:'@jesswong',cat:'contacts',service:'',formerReason:'',tags:['partner','collab'],lastContact:'2025-03-05',notes:'Manages creator and brand collaborations.',comments:[{author:'Chris Haigh',text:'Jess mentioned they\u2019re looking for creators for the LS 600 Pro campaign. Could be a fit for our talent network.',ts:now-12*86400000,likes:['kyra','brendan']}],created:now-4},
+    {id:uid(),first:'Marco',last:'Rossi',company:'Nanlux',title:'North America Sales Director',email:'marco@nanlux.com',phone:'',website:'',cat:'active',service:'Speaking Engagement',formerReason:'',tags:['speaking','partner','met'],lastContact:'2025-03-10',notes:'Shane presenting The Quality of Light at NAB. $15.5k speaking package.',comments:[{author:'Brendan Sweeney',text:'Speaking package signed and paid. $15.5k. Shane\u2019s presentation deck is in progress.',ts:now-8*86400000,likes:['kyra','chrishaigh']},{author:'Chris Haigh',text:'Marco wants us to handle the social clips from the NAB talk. Great add-on opportunity.',ts:now-4*86400000,likes:['brendan','juliaroberts']},{author:'Julia Roberts',text:'I can cut the social clips from the NAB talk into 3 reels + a highlights carousel. Should have a turnaround of 48 hours post-event.',ts:now-2*86400000,likes:['brendan','chrishaigh','kyra']}],created:now-7},
+    {id:uid(),first:'Lisa',last:'Park',company:'Nanlux',title:'Social Media Manager',email:'lisa@nanlux.com',phone:'',website:'@lisaparklights',cat:'contacts',service:'',formerReason:'',tags:['instagram','youtube','collab'],lastContact:'2025-02-28',notes:'Runs their social content. Great creative instincts.',comments:[{author:'Kyra Sweeney',text:'Lisa\u2019s reels are really good. We should study what she\u2019s doing for our own Nanlux content \u2014 similar tone to what we\u2019re building.',ts:now-15*86400000,likes:['chrishaigh','juliaroberts']},{author:'Chris Haigh',text:'Coordinated with Lisa on the NAB product reveal content. She\u2019s handling the unboxing, we\u2019re doing the lifestyle shots.',ts:now-7*86400000,likes:['brendan','kyra']}],created:now-5},
+    {id:uid(),first:'Kevin',last:'Huang',company:'Nanlux',title:'Product Marketing Manager',email:'khuang@nanlux.com',phone:'',website:'',cat:'contacts',service:'',formerReason:'',tags:['partner'],lastContact:'2025-01-22',notes:'Product side contact for gear review coordination.',comments:[{author:'Brendan Sweeney',text:'Kevin can get us early access units for the new EVO series. Good for review content.',ts:now-25*86400000,likes:[]}],created:now-4},
+    {id:uid(),first:'Greta',last:'Hoffman',company:'ARRI',title:'VP Brand Partnerships',email:'ghoffman@arri.com',phone:'',website:'',cat:'prospects',service:'',formerReason:'',tags:['cold','brand-consulting','sponsor'],lastContact:'',notes:'Top wishlist partner. Warm connection through Shane.',comments:[{author:'Brendan Sweeney',text:'Shane offered to make an intro to Greta. This is our best path into ARRI.',ts:now-20*86400000,likes:['kyra','chrishaigh']},{author:'Chris Haigh',text:'Added Greta to prospects. ARRI is the dream partnership \u2014 let\u2019s play this one carefully.',ts:now-3*86400000,likes:['brendan','kyra']}],created:now-6},
+    {id:uid(),first:'James',last:'Whitfield',company:'ARRI',title:'Director of Education',email:'jwhitfield@arri.com',phone:'',website:'',cat:'contacts',service:'',formerReason:'',tags:['partner','speaking','met'],lastContact:'2025-01-30',notes:'Met at Cine Gear. Education program alignment is strong.',comments:[{author:'Brendan Sweeney',text:'James is interested in co-producing an education series with Filmmakers Academy. Great synergy here.',ts:now-22*86400000,likes:['chrishaigh']},{author:'Kyra Sweeney',text:'James followed up after Cine Gear \u2014 he wants to explore a speaking slot for Shane at ARRI\u2019s education summit.',ts:now-15*86400000,likes:['brendan']}],created:now-5},
+    {id:uid(),first:'Mia',last:'Bauer',company:'ARRI',title:'Digital Content Lead',email:'mbauer@arri.com',phone:'',website:'@miabauer',cat:'contacts',service:'',formerReason:'',tags:['collab','instagram','youtube'],lastContact:'2025-02-14',notes:'Runs their digital editorial content.',comments:[{author:'Chris Haigh',text:'Mia\u2019s editorial style is really aligned with what we do. If ARRI comes on board she\u2019d be the day-to-day creative contact.',ts:now-16*86400000,likes:['kyra']}],created:now-4},
+    {id:uid(),first:'Ryan',last:'Gallagher',company:'Atomos',title:'CEO',email:'ryan@atomos.com',phone:'',website:'@ryangallagher',cat:'prospects',service:'',formerReason:'',tags:['warm','sponsor','brand-consulting'],lastContact:'2025-03-18',notes:'Open to a sponsorship conversation.',comments:[{author:'Brendan Sweeney',text:'Ryan\u2019s team is looking for a long-term content partner. He mentioned they\u2019re unhappy with their current agency.',ts:now-3*86400000,likes:['kyra','chrishaigh']},{author:'Kyra Sweeney',text:'Atomos sponsorship convo went well \u2014 they want to see a proposal',ts:now-18*3600000,likes:['brendan','juliaroberts']}],created:now-5},
+    {id:uid(),first:'Priya',last:'Shah',company:'Atomos',title:'Social Media Manager',email:'pshah@atomos.com',phone:'',website:'@priyashah',cat:'contacts',service:'',formerReason:'',tags:['instagram','tiktok','collab'],lastContact:'2025-02-22',notes:'Great TikTok instincts.',comments:[{author:'Kyra Sweeney',text:'Priya\u2019s TikTok game is strong. We should study her format for the short-form content strategy we\u2019re building.',ts:now-14*86400000,likes:['chrishaigh','brendan','juliaroberts']}],created:now-4},
+    {id:uid(),first:'Nathan',last:'Cole',company:'Atomos',title:'Content Director',email:'ncole@atomos.com',phone:'',website:'',cat:'contacts',service:'',formerReason:'',tags:['content-creation','youtube'],lastContact:'2025-01-15',notes:'Manages long-form content production.',comments:[{author:'Brendan Sweeney',text:'Nathan\u2019s YouTube production quality is excellent. If we land Atomos, he\u2019d be a great collab partner for long-form.',ts:now-28*86400000,likes:[]}],created:now-3},
+    {id:uid(),first:'Sofia',last:'Mendez',company:'Teradek',title:'VP Marketing',email:'smendez@teradek.com',phone:'',website:'',cat:'prospects',service:'',formerReason:'',tags:['proposal','marketing-retainer'],lastContact:'2025-03-22',notes:'Proposal sent March 22. Follow up after NAB.',comments:[{author:'Kyra Sweeney',text:'Moved Sofia to prospects \u2014 she\u2019s ready for a real conversation. Proposal went out today.',ts:now-5*3600000,likes:['brendan']},{author:'Brendan Sweeney',text:'Good call with Sofia. Teradek wants something similar to what we\u2019re doing for Blackout. Following up after NAB.',ts:now-10*86400000,likes:[]}],created:now-5},
+    {id:uid(),first:'Aaron',last:'Fitch',company:'Teradek',title:'Brand Partnerships',email:'afitch@teradek.com',phone:'',website:'@aaronfitch',cat:'contacts',service:'',formerReason:'',tags:['partner','collab','met'],lastContact:'2025-02-08',notes:'Met at Cine Gear 2024. Needs relationship building.',comments:[{author:'Brendan Sweeney',text:'Aaron was super friendly at Cine Gear but we haven\u2019t kept the momentum going. Need to re-engage.',ts:now-18*86400000,likes:[]},{author:'Kyra Sweeney',text:'Sent Aaron a follow-up DM. He responded \u2014 says they\u2019re looking at partnerships for Q3. Keeping warm.',ts:now-10*86400000,likes:['brendan']}],created:now-4},
+    {id:uid(),first:'Lucas',last:'Zhang',company:'SmallRig',title:'Global Marketing Director',email:'lzhang@smallrig.com',phone:'',website:'',cat:'active',service:'Social Media Retainer',formerReason:'',tags:['social-retainer','instagram','youtube'],lastContact:'2025-04-02',notes:'Monthly deliverables running smoothly.',comments:[{author:'Chris Haigh',text:'April content calendar approved by Lucas. All posts scheduled through the 30th.',ts:now-2*86400000,likes:['brendan','kyra']},{author:'Brendan Sweeney',text:'Monthly deliverables approved \u2014 SmallRig is in great shape this month.',ts:now-12*3600000,likes:['juliaroberts']},{author:'Julia Roberts',text:'All SmallRig posts are performing above benchmark. The product lifestyle shots are driving the most saves \u2014 doubling down on that format.',ts:now-8*3600000,likes:['brendan','kyra']}],created:now-7},
+    {id:uid(),first:'Amy',last:'Li',company:'SmallRig',title:'Creator Relations Manager',email:'ali@smallrig.com',phone:'',website:'@amyli',cat:'active',service:'Social Media Retainer',formerReason:'',tags:['social-retainer','collab','instagram'],lastContact:'2025-03-30',notes:'Day-to-day for creator program. Excellent communicator.',comments:[{author:'Kyra Sweeney',text:'Creator program deliverables on track \u2014 Amy confirmed the collab lineup for May.',ts:now-2*86400000,likes:['brendan']},{author:'Chris Haigh',text:'Amy flagged that one of the creator collabs fell through. Working on a replacement.',ts:now-4*86400000,likes:[]}],created:now-7},
+    {id:uid(),first:'Tom',last:'Xu',company:'SmallRig',title:'Product Development',email:'txu@smallrig.com',phone:'',website:'',cat:'contacts',service:'',formerReason:'',tags:['partner'],lastContact:'2025-01-09',notes:'Good for early review access.',comments:[{author:'Chris Haigh',text:'Tom can get us pre-release units 2\u20133 weeks before launch. Huge for first-look content.',ts:now-30*86400000,likes:['brendan']}],created:now-4},
+    {id:uid(),first:'Dana',last:'Mills',company:'SmallRig',title:'Content Creator',email:'dmills@smallrig.com',phone:'',website:'@danamills',cat:'contacts',service:'',formerReason:'',tags:['content-creation','youtube','collab'],lastContact:'2025-02-17',notes:'Potential collab content series.',comments:[{author:'Kyra Sweeney',text:'Dana pitched a collab series idea \u2014 \u201CRig Builds\u201D where she builds custom setups using SmallRig gear. Could be great for their socials.',ts:now-16*86400000,likes:['brendan','chrishaigh','juliaroberts']},{author:'Brendan Sweeney',text:'Love the concept. Let\u2019s build a quick pitch deck and run it by Lucas and Amy.',ts:now-14*86400000,likes:['kyra']}],created:now-3},
+    {id:uid(),first:'Ellie',last:'Kong',company:'DJI',title:'Brand Marketing Manager',email:'ekong@dji.com',phone:'',website:'',cat:'contacts',service:'',formerReason:'',tags:['partner','sponsor'],lastContact:'2025-02-05',notes:'Handles influencer and brand deals. Very process-driven.',comments:[{author:'Brendan Sweeney',text:'Ellie runs a tight ship. Any DJI partnership will need a formal proposal with deliverables, timelines, and KPIs.',ts:now-22*86400000,likes:['kyra']},{author:'Kyra Sweeney',text:'Noted. Let\u2019s build the proposal template first so we\u2019re ready when the timing is right.',ts:now-20*86400000,likes:['brendan']}],created:now-5},
+    {id:uid(),first:'Marcus',last:'Lee',company:'DJI',title:'Creator Partnerships Lead',email:'mlee@dji.com',phone:'',website:'@marcuslee',cat:'contacts',service:'',formerReason:'',tags:['collab','instagram','youtube'],lastContact:'2025-03-01',notes:'Manages the creator program.',comments:[{author:'Chris Haigh',text:'Marcus runs the DJI creator ambassador program. If we get in, it\u2019s recurring content plus gear access.',ts:now-12*86400000,likes:['brendan','kyra']}],created:now-4},
+    {id:uid(),first:'Chloe',last:'Sun',company:'DJI',title:'Social Content Manager',email:'csun@dji.com',phone:'',website:'',cat:'former',service:'',formerReason:'Scope too small — moved internal',tags:['social-audit'],lastContact:'2024-10-15',notes:'Did a social audit Q3 2024. Amicable exit.',comments:[{author:'Kyra Sweeney',text:'Audit went well but DJI decided to handle social internally. Chloe was great to work with \u2014 keep the door open.',ts:now-120*86400000,likes:['brendan']},{author:'Brendan Sweeney',text:'No hard feelings here. Chloe appreciated the work and said she\u2019d recommend us internally if scope changes.',ts:now-115*86400000,likes:[]}],created:now-9},
+    {id:uid(),first:'Henry',last:'Wu',company:'Zhiyun',title:'International Marketing Lead',email:'hwu@zhiyun.com',phone:'',website:'',cat:'prospects',service:'',formerReason:'',tags:['wishlist','marketing-audit','instagram'],lastContact:'',notes:'Wishlist client. Strong product line that needs brand strategy.',comments:[{author:'Brendan Sweeney',text:'Zhiyun\u2019s product line is strong but their brand identity is scattered. A marketing audit would be a perfect entry point.',ts:now-18*86400000,likes:['kyra']},{author:'Chris Haigh',text:'Their Instagram is all over the place. If we can show them what good looks like with a competitive comparison, that\u2019s the pitch.',ts:now-10*86400000,likes:['brendan','kyra']}],created:now-6},
+    {id:uid(),first:'Becky',last:'Lin',company:'Zhiyun',title:'Creator Partnerships',email:'blin@zhiyun.com',phone:'',website:'@beckylin',cat:'contacts',service:'',formerReason:'',tags:['collab','tiktok'],lastContact:'2025-01-28',notes:'Interesting fit for Kyra-led content strategy.',comments:[{author:'Kyra Sweeney',text:'Becky\u2019s TikTok creator network is exactly the audience Zhiyun needs. If we land Henry, Becky becomes our creative bridge.',ts:now-12*86400000,likes:['brendan']}],created:now-4},
+    {id:uid(),first:'Sam',last:'Torres',company:'Zhiyun',title:'North America Rep',email:'storres@zhiyun.com',phone:'',website:'',cat:'contacts',service:'',formerReason:'',tags:['cold','met'],lastContact:'2025-02-11',notes:'Met at NAB 2024. Relationship still cold.',comments:[{author:'Brendan Sweeney',text:'Sam was friendly at NAB but gave off \u201CI\u2019m just the trade show guy\u201D energy. Henry is the real decision maker.',ts:now-24*86400000,likes:['kyra']}],created:now-3},
+    // ── Website Inquiries (demo) ──
+    {id:uid(),first:'Daniel',last:'Park',company:'Moonrise Interactive',title:'Gaming Company or Studio',email:'daniel@moonriseinteractive.com',phone:'213-555-0188',website:'@moonrisegames',cat:'prospects',service:'Full Social Media Management',formerReason:'',tags:['website-inquiry','social-retainer','instagram','tiktok'],lastContact:new Date(now-2*3600000).toISOString().slice(0,10),notes:'Social Presence: Minimal\nChallenges: No strategy, Not growing\nPlatforms: Instagram, TikTok, YouTube\nGoal: Build a real community around our indie game studio. We want 10K followers across platforms in 6 months and a content pipeline for game launches.\nBudget: $1,500 \u2013 $3,000 / month\nAdditional: We\u2019re launching our first title in Q3. Need someone who understands creator culture and gaming audiences.',comments:[{author:'Brendan Sweeney',text:'This is a great lead \u2014 gaming studio with a real launch timeline and budget. Exactly the kind of entertainment client we\u2019re trying to attract.',ts:now-1*3600000,likes:['kyra','chrishaigh']},{author:'Kyra Sweeney',text:'Agreed. Their TikTok strategy needs to be native to gaming culture. I have some ideas for launch content \u2014 let\u2019s discuss on the next call.',ts:now-0.5*3600000,likes:['brendan']}],created:now-2*3600000,inquiry:{formType:'Discovery Questionnaire',submitted:new Date(now-2*3600000).toISOString(),presence:'Minimal',challenges:['No strategy','Not growing'],platforms:['Instagram','TikTok','YouTube'],goal:'Build a real community around our indie game studio. We want 10K followers across platforms in 6 months and a content pipeline for game launches.',serviceInterest:'Full Social Media Management',budget:'$1,500 \u2013 $3,000 / month',igHandle:'@moonrisegames',igUrl:'',otherHandle:'@moonrisegames',websiteUrl:'https://moonriseinteractive.com',additional:'We\u2019re launching our first title in Q3. Need someone who understands creator culture and gaming audiences.'}},
+    {id:uid(),first:'Maria',last:'Santos',company:'Estrella Theater Company',title:'Theater or Performing Arts',email:'maria@estrellatheatre.org',phone:'323-555-0244',website:'@estrellatheatre',cat:'prospects',service:'Basic Social Media Strategy Session',formerReason:'',tags:['website-inquiry','strategy-session','instagram','facebook'],lastContact:new Date(now-24*3600000).toISOString().slice(0,10),notes:'Social Presence: Active but stuck\nChallenges: Don\'t know what to post, Inconsistent, Wrong audience\nPlatforms: Instagram, Facebook\nGoal: Sell more tickets and attract a younger audience. Our shows are incredible but our social media feels like it\u2019s run by a committee.\nBudget: Under $500 / month\nAdditional: We\u2019re a nonprofit theater company in East LA. Small budget but big ambitions. We do 4 productions a year.',comments:[{author:'Kyra Sweeney',text:'Love this inquiry. Theater company with real passion but no social direction. A strategy session would give them a clear playbook.',ts:now-18*3600000,likes:['brendan']},{author:'Chris Haigh',text:'Their Instagram has great raw content \u2014 rehearsal photos, opening night energy. They just need structure. This is a quick win.',ts:now-12*3600000,likes:['kyra','brendan']}],created:now-24*3600000,inquiry:{formType:'Discovery Questionnaire',submitted:new Date(now-24*3600000).toISOString(),presence:'Active but stuck',challenges:['Don\'t know what to post','Inconsistent','Wrong audience'],platforms:['Instagram','Facebook'],goal:'Sell more tickets and attract a younger audience. Our shows are incredible but our social media feels like it\u2019s run by a committee.',serviceInterest:'Basic Social Media Strategy Session',budget:'Under $500 / month',igHandle:'@estrellatheatre',igUrl:'https://instagram.com/estrellatheatre',otherHandle:'',websiteUrl:'https://estrellatheatre.org',additional:'We\u2019re a nonprofit theater company in East LA. Small budget but big ambitions. We do 4 productions a year.'}},
+    {id:uid(),first:'Jordan',last:'Okafor',company:'',title:'Content Creator',email:'jordan@jordanokafor.com',phone:'',website:'@jordanokafor',cat:'prospects',service:'Premium Social Media Audit',formerReason:'',tags:['website-inquiry','social-audit','instagram','youtube','tiktok'],lastContact:new Date(now-48*3600000).toISOString().slice(0,10),notes:'Social Presence: Active and growing\nChallenges: No strategy, Not growing\nPlatforms: Instagram, YouTube, TikTok\nGoal: I have 28K on YouTube and 12K on Instagram but growth has flatlined. I know I\u2019m doing something wrong but I can\u2019t figure out what. Need fresh eyes.\nBudget: $500 \u2013 $1,500 / month',comments:[{author:'Brendan Sweeney',text:'Creator with a real audience that\u2019s plateaued. A premium audit would uncover exactly what\u2019s holding them back. Great fit for us.',ts:now-36*3600000,likes:['kyra']},{author:'Julia Roberts',text:'I looked at Jordan\u2019s content \u2014 strong visual identity but posting cadence is inconsistent. An audit would give them a clear roadmap.',ts:now-30*3600000,likes:['brendan','kyra']}],created:now-48*3600000,inquiry:{formType:'Discovery Questionnaire',submitted:new Date(now-48*3600000).toISOString(),presence:'Active and growing',challenges:['No strategy','Not growing'],platforms:['Instagram','YouTube','TikTok'],goal:'I have 28K on YouTube and 12K on Instagram but growth has flatlined. I know I\u2019m doing something wrong but I can\u2019t figure out what. Need fresh eyes.',serviceInterest:'Premium Social Media Audit',budget:'$500 \u2013 $1,500 / month',igHandle:'@jordanokafor',igUrl:'https://instagram.com/jordanokafor',otherHandle:'@jordanokafor',websiteUrl:'https://jordanokafor.com',additional:''}},
+    {id:uid(),first:'Ava',last:'Moreno',company:'Nightbloom Pictures',title:'Director or Producer',email:'ava@nightbloom.film',phone:'310-555-0399',website:'@nightbloompictures',cat:'prospects',service:'',formerReason:'',tags:['website-inquiry','warm'],lastContact:new Date(now-6*3600000).toISOString().slice(0,10),notes:'I\u2019ve been following your work with Filmmakers Academy and Legacy Grip for a while. I run a small production company and we\u2019re about to start pre-production on our second feature. I don\u2019t have a huge budget for marketing but I know I need to start building an audience now, not after the film is done. Would love to just talk about what\u2019s possible.',comments:[{author:'Kyra Sweeney',text:'This is exactly our ideal client \u2014 a filmmaker who gets that audience building starts in pre-production. Let\u2019s get her on a call this week.',ts:now-4*3600000,likes:['brendan','chrishaigh']},{author:'Brendan Sweeney',text:'Agreed. Ava clearly did her homework on us. This could be a great case study if we can build the audience alongside the film.',ts:now-3*3600000,likes:['kyra']}],created:now-6*3600000,inquiry:{formType:'Just Talk to Us',submitted:new Date(now-6*3600000).toISOString(),message:'I\u2019ve been following your work with Filmmakers Academy and Legacy Grip for a while. I run a small production company and we\u2019re about to start pre-production on our second feature. I don\u2019t have a huge budget for marketing but I know I need to start building an audience now, not after the film is done. Would love to just talk about what\u2019s possible.'}}
   ];
   ls.set(CK,contacts);
 }
@@ -1089,7 +1375,7 @@ function sendDMMsg(to,text){
   var dms=ls.get(DK)||{};var key=getDMKey(currentUser,to);if(!dms[key])dms[key]=[];
   var def=getUserDef(currentUser);
   dms[key].push({id:uid(),from:currentUser,fromName:def?def.displayName:currentUser,text:text,ts:Date.now(),read:false});
-  ls.set(DK,dms);addNotif(to,'<strong>'+(def?def.displayName:currentUser)+'</strong> sent you a message',null,'dm');updateDMBadge();
+  ls.set(DK,dms);addNotif(to,'<strong>'+(def?def.displayName:currentUser)+'</strong> sent you a message',null,'dm',currentUser);updateDMBadge();
 }
 function getUnreadDMCount(){var dms=ls.get(DK)||{};var c=0;Object.keys(dms).forEach(function(k){if(k.indexOf(currentUser)>-1)dms[k].forEach(function(m){if(m.from!==currentUser&&!m.read)c++;});});return c;}
 function markDMRead(w){var dms=ls.get(DK)||{};var key=getDMKey(currentUser,w);if(dms[key])dms[key].forEach(function(m){if(m.from!==currentUser)m.read=true;});ls.set(DK,dms);updateDMBadge();}
@@ -1148,7 +1434,7 @@ function togglePW(){pwOpen=!pwOpen;document.getElementById('pw-panel').classList
 function openDMWith(u){pwOpen=false;document.getElementById('pw-panel').classList.remove('open');openRail('dm');setTimeout(function(){openDMChat(u);},200);}
 
 // ═══ NOTIFICATIONS ═══════════════════════════════════════════════════════════
-function addNotif(to,text,cid,type){if(to===currentUser)return;var n=ls.get(NK)||{};if(!n[to])n[to]=[];n[to].unshift({id:uid(),text:text,contactId:cid,type:type||'mention',ts:Date.now(),read:false});if(n[to].length>50)n[to]=n[to].slice(0,50);ls.set(NK,n);}
+function addNotif(to,text,cid,type,fromUser){if(to===currentUser)return;var n=ls.get(NK)||{};if(!n[to])n[to]=[];var item={id:uid(),text:text,contactId:cid,type:type||'mention',ts:Date.now(),read:false};if(fromUser)item.fromUser=fromUser;n[to].unshift(item);if(n[to].length>50)n[to]=n[to].slice(0,50);ls.set(NK,n);}
 function getMyNotifs(){return(ls.get(NK)||{})[currentUser]||[];}
 function unreadNotifCnt(){return getMyNotifs().filter(function(n){return!n.read;}).length;}
 function markNotifsRead(){var n=ls.get(NK)||{};if(!n[currentUser])return;n[currentUser].forEach(function(i){i.read=true;});ls.set(NK,n);updateNotifBadge();}
@@ -1158,10 +1444,45 @@ function toggleNotifPanel(){var ov=document.getElementById('notif-ov');if(ov.cla
 function closeNotifPanel(){document.getElementById('notif-ov').classList.remove('open');}
 function renderNotifPanel(){
   var notifs=getMyNotifs();var list=document.getElementById('notif-list');
-  if(!notifs.length){list.innerHTML='<div class="notif-empty">You\'re all caught up ✓</div>';return;}
-  list.innerHTML=notifs.map(function(n){var c=contacts.find(function(x){return x.id===n.contactId;});var nm=c?c.first+' '+c.last:'';return '<div class="notif-item '+(n.read?'':'unread')+'" onclick="openDetFromNotif(\''+(n.contactId||'')+'\')"><div class="notif-dot '+(n.read?'read':'')+'"></div><div><div class="notif-text">'+n.text+'</div><div class="notif-meta">'+fmt(n.ts)+(nm?' &middot; '+esc(nm):'')+'</div></div></div>';}).join('');
+  if(!notifs.length){list.innerHTML='<div class="notif-empty">You\'re all caught up \u2713</div>';return;}
+  list.innerHTML=notifs.map(function(n,i){
+    var c=n.contactId?contacts.find(function(x){return x.id===n.contactId;}):null;
+    var nm=c?c.first+' '+c.last:'';
+    var icon=n.type==='dm'?'\u2709':n.type==='deletion'?'\uD83D\uDDD1':'\uD83D\uDCAC';
+    return '<div class="notif-item '+(n.read?'':'unread')+'" onclick="handleNotifClick('+i+')" style="cursor:pointer">'
+      +'<div class="notif-dot '+(n.read?'read':'')+'"></div>'
+      +'<div style="flex:1"><div class="notif-text">'+icon+' '+n.text+'</div>'
+      +'<div class="notif-meta">'+fmt(n.ts)+(nm?' \u00B7 '+esc(nm):'')+'</div></div>'
+      +'<div style="font-size:10px;color:var(--muted);flex-shrink:0">\u2192</div></div>';
+  }).join('');
 }
-function openDetFromNotif(cid){closeNotifPanel();if(cid)openDet(cid);}
+function handleNotifClick(idx){
+  var notifs=getMyNotifs();var n=notifs[idx];if(!n)return;
+  closeNotifPanel();
+  // DM notification → open DM
+  if(n.type==='dm'&&n.fromUser){
+    openRail('dm');
+    setTimeout(function(){openDMChat(n.fromUser);},150);
+    return;
+  }
+  // Deletion notification → switch to trash tab
+  if(n.type==='deletion'){
+    if(canDo('canDelete'))switchTab('trash');
+    return;
+  }
+  // Contact-related notification → open detail popout
+  if(n.contactId){
+    var c=contacts.find(function(x){return x.id===n.contactId;});
+    if(c){openDashEdit(n.contactId);return;}
+  }
+  // Fallback: try to find the contact by name from the notification text
+  var nameMatch=n.text.match(/on ([A-Z][a-z]+ [A-Z][a-z]+)/);
+  if(nameMatch){
+    var parts=nameMatch[1].split(' ');
+    var found=contacts.find(function(c){return c.first===parts[0]&&c.last===parts[1];});
+    if(found){openDashEdit(found.id);return;}
+  }
+}
 function detectMentions(text){var found=[];Object.keys(getAllUsers()).forEach(function(name){if(new RegExp('@'+name,'gi').test(text))found.push(name);});return found.filter(function(v,i,a){return a.indexOf(v)===i;});}
 function highlightMentions(text){return esc(text).replace(/@(\w+)/gi,function(m,name){var u=getAllUsers()[name.toLowerCase()];return u?'<span class="mention">'+m+'</span>':m;});}
 
@@ -1193,25 +1514,34 @@ function renderFavsRail(){
 function createBin(){var inp=document.getElementById('new-bin-inp');var name=inp.value.trim();if(!name)return;var bins=getBins();bins.push({id:uid(),name:name,ids:[]});saveBins(bins);inp.value='';renderFavsRail();updateCounts();toast('"'+name+'" created!');}
 
 // ═══ INIT / TABS ═════════════════════════════════════════════════════════════
-var currentTab='companies',activeFilters=new Set(),fddOpen=false,editingId=null,detailId=null,shareId=null;
-function init(){switchTab('companies');}
+var currentTab='feed',activeFilters=new Set(),fddOpen=false,editingId=null,detailId=null,shareId=null;
+function init(){seedFeed();seedChannel();seedDMs();seedNotifs();switchTab('feed');}
 function switchTab(tab){
   currentTab=tab;activeFilters.clear();closeFDD();
   document.querySelectorAll('.ntab').forEach(function(el){el.classList.toggle('active',el.dataset.tab===tab);});
+  // Hide toolbar on dashboard, show on other tabs
+  var tb=document.querySelector('.toolbar');if(tb)tb.style.display=tab==='feed'?'none':'';
   updateCounts();renderMain();renderStats();buildFDD();
 }
+function liveContacts(){return contacts.filter(function(c){return!c.deletion_requested;});}
+function trashedContacts(){return contacts.filter(function(c){return!!c.deletion_requested;});}
 function updateCounts(){
-  document.getElementById('cnt-all').textContent=contacts.length;
-  document.getElementById('cnt-companies').textContent=[...new Set(contacts.map(function(c){return c.company;}).filter(Boolean))].length;
-  ['contacts','active','prospects','former'].forEach(function(cat){document.getElementById('cnt-'+cat).textContent=contacts.filter(function(c){return c.cat===cat;}).length;});
-  document.getElementById('cnt-favorites').textContent=getFavIds().length;
+  var live=liveContacts();
+  document.getElementById('cnt-all').textContent=live.length;
+  document.getElementById('cnt-companies').textContent=[...new Set(live.map(function(c){return c.company;}).filter(Boolean))].length;
+  ['contacts','active','prospects','former'].forEach(function(cat){document.getElementById('cnt-'+cat).textContent=live.filter(function(c){return c.cat===cat;}).length;});
+  document.getElementById('cnt-favorites').textContent=getFavIds().filter(function(id){return live.some(function(c){return c.id===id;});}).length;
+  document.getElementById('cnt-trash').textContent=trashedContacts().length;
 }
-var CAT_LABELS={companies:'Companies',all:'All Contacts',contacts:'Contacts',active:'Active',prospects:'Prospects',former:'Former',favorites:'Favorites'};
+var CAT_LABELS={feed:'Dashboard',companies:'Companies',all:'All Contacts',contacts:'Contacts',active:'Active',prospects:'Prospects',former:'Former',favorites:'Favorites',trash:'Trash'};
 function renderStats(){
-  var sub=currentTab==='companies'?contacts:currentTab==='favorites'?contacts.filter(function(c){return isFav(c.id);}):currentTab==='all'?contacts:contacts.filter(function(c){return c.cat===currentTab;});
-  var coCount=[...new Set(contacts.map(function(c){return c.company;}).filter(Boolean))].length;
+  var live=liveContacts();
+  if(currentTab==='feed'){document.getElementById('stats-bar').innerHTML='';return;}
+  if(currentTab==='trash'){var tc=trashedContacts().length;document.getElementById('stats-bar').innerHTML='<div class="stat-card"><div class="stat-val">'+tc+'</div><div class="stat-lbl">In Trash</div></div>';return;}
+  var sub=currentTab==='companies'?live:currentTab==='favorites'?live.filter(function(c){return isFav(c.id);}):currentTab==='all'?live:live.filter(function(c){return c.cat===currentTab;});
+  var coCount=[...new Set(live.map(function(c){return c.company;}).filter(Boolean))].length;
   var h='<div class="stat-card"><div class="stat-val">'+(currentTab==='companies'?coCount:sub.length)+'</div><div class="stat-lbl">'+(CAT_LABELS[currentTab]||'')+'</div></div>';
-  var act=contacts.filter(function(c){return c.cat==='active';});
+  var act=live.filter(function(c){return c.cat==='active';});
   var sr=act.filter(function(c){return(c.tags||[]).indexOf('social-retainer')>-1;}).length;
   var mr=act.filter(function(c){return(c.tags||[]).indexOf('marketing-retainer')>-1;}).length;
   if(currentTab==='all'||currentTab==='companies')h+='<div class="stat-card"><div class="stat-val">'+act.length+'</div><div class="stat-lbl">Active Clients</div></div>';
@@ -1226,7 +1556,7 @@ var expandedCos=new Set(),openColorPop=null,dragContactId=null;
 function renderCompanies(){
   var q=document.getElementById('search-input').value.toLowerCase();
   var coMap={};
-  contacts.forEach(function(c){
+  liveContacts().forEach(function(c){
     if(!c.company)return;
     var searchable=[c.first,c.last,c.company,c.title,c.email].concat(c.tags||[]).concat([c.notes]).join(' ').toLowerCase();
     if(q&&searchable.indexOf(q)===-1)return;
@@ -1356,8 +1686,11 @@ function renderCards(sub,showPill){
 
 function renderMain(){
   var q=document.getElementById('search-input').value.toLowerCase();
+  if(currentTab==='feed'){renderFeed();return;}
+  if(currentTab==='trash'){renderTrash();return;}
   if(currentTab==='companies'){renderCompanies();return;}
-  var sub=currentTab==='favorites'?contacts.filter(function(c){return isFav(c.id);}):currentTab==='all'?contacts:contacts.filter(function(c){return c.cat===currentTab;});
+  var live=liveContacts();
+  var sub=currentTab==='favorites'?live.filter(function(c){return isFav(c.id);}):currentTab==='all'?live:live.filter(function(c){return c.cat===currentTab;});
   if(q)sub=sub.filter(function(c){return[c.first,c.last,c.company,c.title,c.email,c.service,c.website].concat(c.tags||[]).concat([c.notes]).join(' ').toLowerCase().indexOf(q)>-1;});
   if(activeFilters.size)sub=sub.filter(function(c){return[...activeFilters].some(function(f){return(c.tags||[]).indexOf(f)>-1;});});
   sub=sortContacts(sub);
@@ -1367,7 +1700,8 @@ function renderMain(){
 
 // ═══ FILTER ══════════════════════════════════════════════════════════════════
 function buildFDD(){
-  var sub=currentTab==='companies'?contacts:currentTab==='favorites'?contacts.filter(function(c){return isFav(c.id);}):currentTab==='all'?contacts:contacts.filter(function(c){return c.cat===currentTab;});
+  var live=liveContacts();
+  var sub=currentTab==='companies'?live:currentTab==='favorites'?live.filter(function(c){return isFav(c.id);}):currentTab==='all'?live:live.filter(function(c){return c.cat===currentTab;});
   var used=new Set(sub.reduce(function(a,c){return a.concat(c.tags||[]);},[]));
   var h='';TAG_GROUPS.forEach(function(g){var gt=g.tags.filter(function(t){return used.has(t.key);});if(!gt.length)return;h+='<div class="fg"><div class="fgl">'+g.label+'</div><div class="fgc">'+gt.map(function(t){return '<button class="fchip'+(activeFilters.has(t.key)?' on':'')+'" onclick="toggleFilter(\''+t.key+'\')">'+t.label+'</button>';}).join('')+'</div></div>';});
   if(!h)h='<div style="font-size:12px;color:var(--muted)">No tags here.</div>';
@@ -1378,6 +1712,507 @@ function clearFilters(){activeFilters.clear();buildFDD();renderMain();updateFBtn
 function updateFBtn(){var c=activeFilters.size;document.getElementById('ftog-btn').classList.toggle('active',c>0);var b=document.getElementById('fbadge');b.style.display=c>0?'':'none';b.textContent=c;}
 function toggleFDD(){fddOpen=!fddOpen;document.getElementById('fdd').classList.toggle('open',fddOpen);if(fddOpen)buildFDD();}
 function closeFDD(){fddOpen=false;document.getElementById('fdd').classList.remove('open');}
+
+// ═══ FEED & DASHBOARD ════════════════════════════════════════════════════════
+var FEED_KEY='lo-feed-v1',CH_KEY='lo-channel-v1';
+function getFeedItems(){return ls.get(FEED_KEY)||[];}
+function saveFeedItems(items){ls.set(FEED_KEY,items);}
+function addFeedItem(item){var items=getFeedItems();item.id=item.id||uid();item.ts=item.ts||Date.now();items.unshift(item);if(items.length>100)items=items.slice(0,100);saveFeedItems(items);}
+function getOverdueContacts(){
+  var live=liveContacts(),now=Date.now(),cutoff=72*3600000,overdue=[];
+  live.forEach(function(c){
+    if(c.cat!=='active'&&c.cat!=='prospects')return;if(!c.lastContact)return;
+    var last=new Date(c.lastContact).getTime();if(isNaN(last))return;var diff=now-last;if(diff<=cutoff)return;
+    var recentCmt=false;(c.comments||[]).forEach(function(cm){if(cm.ts&&(now-cm.ts)<cutoff)recentCmt=true;});
+    if(!recentCmt)overdue.push({contact:c,daysSince:Math.floor(diff/86400000)});
+  });
+  return overdue.sort(function(a,b){return b.daysSince-a.daysSince;});
+}
+function buildFeedItems(){
+  var items=getFeedItems();
+  var ov=getOverdueContacts().map(function(o){return{type:'overdue',contactId:o.contact.id,text:'Follow up needed \u2014 <strong>'+esc(o.contact.first)+' '+esc(o.contact.last)+'</strong>'+(o.contact.company?' at '+esc(o.contact.company):''),detail:'Last contact '+o.daysSince+' days ago',ts:Date.now(),_generated:true};});
+  return ov.concat(items.sort(function(a,b){return(b.ts||0)-(a.ts||0);}));
+}
+function feedIcon(type){return{intake:'\uD83D\uDCE8',overdue:'\u23F0',comment:'\uD83D\uDCAC',deletion:'\uD83D\uDDD1'}[type]||'\u26A1';}
+function feedIntake(c){addFeedItem({type:'intake',contactId:c.id,text:'New inquiry from <strong>'+esc(c.first)+' '+esc(c.last)+'</strong>',detail:(c.company?esc(c.company)+' \u00B7 ':'')+(c.service||'General inquiry')});}
+function feedComment(contactId,author,contactName,commentText){var p=commentText.length>60?commentText.slice(0,60)+'\u2026':commentText;addFeedItem({type:'comment',contactId:contactId,text:'<strong>'+esc(author)+'</strong> commented on '+esc(contactName),detail:'\u201C'+esc(p)+'\u201D'});}
+function feedDeletion(editorName,contactId,contactName){addFeedItem({type:'deletion',contactId:contactId,text:'<strong>'+esc(editorName)+'</strong> requested deletion of '+esc(contactName)});}
+function feedActivity(text,contactId){addFeedItem({type:'activity',contactId:contactId||'',text:text});}
+
+// ── DASHBOARD RENDERER ──────────────────────────────────────────────────────
+function renderFeed(){renderDashboard();}
+
+function renderDashboard(){
+  var live=liveContacts(),overdue=getOverdueContacts(),intakes=live.filter(function(c){return(c.tags||[]).indexOf('website-inquiry')>-1;}).sort(function(a,b){return(b.created||0)-(a.created||0);});
+  var stale=live.filter(function(c){return c.lastContact;}).sort(function(a,b){return new Date(a.lastContact)-new Date(b.lastContact);}).slice(0,15);
+  var feedItems=buildFeedItems().slice(0,20);
+  var h='<div class="dash">';
+  h+=renderWelcomeBar(overdue,intakes);
+  h+='<div class="dash-panel" style="grid-row:span 2"><div class="dash-panel-hdr"><span class="dp-title" style="color:#e07840">&#x26A0; Needs Attention</span><span class="dp-count urgent">'+(overdue.length+intakes.length)+'</span></div><div class="dash-panel-body dash-scroll">';
+  h+=renderOverduePanel(overdue);
+  h+=renderIntakePanel(intakes);
+  h+=renderStalePanel(stale);
+  h+='</div></div>';
+  h+='<div class="dash-panel" style="grid-row:span 2"><div class="dash-panel-hdr"><span class="dp-title">&#x26A1; Activity</span><span class="dp-count">'+feedItems.length+'</span></div><div class="dash-panel-body dash-scroll">';
+  h+=renderDashFeed(feedItems);
+  h+='</div></div>';
+  h+='<div class="dash-panel" style="grid-row:span 2"><div class="dash-panel-hdr" style="padding:0"><div class="tc-tabs"><button class="tc-tab active" onclick="switchCommsTab(\'channel\',this)">&#x1F4E2; Channel</button><button class="tc-tab" onclick="switchCommsTab(\'dms\',this)">&#x2709; DMs'+(getUnreadDMCount()>0?'<span class="tc-badge">'+getUnreadDMCount()+'</span>':'')+'</button></div></div><div class="dash-panel-body" style="display:flex;flex-direction:column" id="comms-body">';
+  h+=renderTeamChannel();
+  h+='</div></div>';
+  h+=renderQuickStats(live,overdue);
+  h+='</div>';
+  document.getElementById('main-content').innerHTML=h;
+  var chScroll=document.getElementById('ch-msgs');if(chScroll)chScroll.scrollTop=chScroll.scrollHeight;
+}
+
+function renderWelcomeBar(overdue,intakes){
+  var def=getUserDef(currentUser),name=def?def.displayName.split(' ')[0]:'there';
+  var hr=new Date().getHours(),greet=hr<12?'Good morning':hr<17?'Good afternoon':'Good evening';
+  var unreadDM=getUnreadDMCount();
+  var dateStr=new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
+  return '<div class="dash-welcome"><div class="dw-left"><div class="dw-greeting">'+greet+', <em>'+esc(name)+'</em></div><div class="dw-summary">'
+    +(overdue.length?'<span class="dw-chip"><span class="dot" style="background:#e07840"></span>'+overdue.length+' overdue</span>':'')
+    +(intakes.length?'<span class="dw-chip"><span class="dot" style="background:var(--pink)"></span>'+intakes.length+' new intake</span>':'')
+    +(unreadDM?'<span class="dw-chip"><span class="dot" style="background:var(--blue)"></span>'+unreadDM+' unread DM'+(unreadDM>1?'s':'')+'</span>':'')
+    +(!overdue.length&&!intakes.length&&!unreadDM?'<span style="color:var(--green)">&#x2713; All caught up</span>':'')
+    +'</div></div><div class="dw-date">'+dateStr+'</div></div>';
+}
+
+function renderOverduePanel(overdue){
+  var h='<div class="dp-sub"><span class="dp-sub-title red"><span class="overdue-dot"></span>Overdue Follow-ups</span><div class="dp-sub-line"></div></div>';
+  if(!overdue.length)return h+'<div style="padding:8px 14px;font-size:11px;color:var(--muted)">No overdue contacts</div>';
+  overdue.forEach(function(o){var c=o.contact;
+    h+='<div class="dash-row" onclick="openDashEdit(\''+c.id+'\')">'
+      +'<div class="dr-av" style="background:'+(AV_BG[c.cat]||'#444')+'">'+ini(c)+'</div>'
+      +'<div class="dr-body"><div class="dr-name">'+esc(c.first)+' '+esc(c.last)+'</div><div class="dr-meta">'+esc(c.company||c.title||'')+'</div></div>'
+      +'<span class="dr-badge overdue">'+o.daysSince+'d</span>'
+      +'<button class="dr-action" onclick="event.stopPropagation();markContacted(\''+c.id+'\')">&#x2713; Contacted</button>'
+      +'</div>';
+  });
+  return h;
+}
+
+function renderIntakePanel(intakes){
+  var h='<div class="dp-sub"><span class="dp-sub-title pink">&#x1F4E8; New Intake</span><div class="dp-sub-line"></div></div>';
+  if(!intakes.length)return h+'<div style="padding:8px 14px;font-size:11px;color:var(--muted)">No new inquiries</div>';
+  intakes.forEach(function(c){
+    h+='<div class="dash-row" onclick="openDashEdit(\''+c.id+'\')">'
+      +'<div class="dr-av" style="background:var(--pink)">'+ini(c)+'</div>'
+      +'<div class="dr-body"><div class="dr-name">'+esc(c.first)+' '+esc(c.last)+'</div><div class="dr-meta">'+esc(c.company||'')+(c.service?' \u00B7 '+esc(c.service):'')+'</div></div>'
+      +'<span class="dr-badge new">'+fmt(c.created)+'</span>'
+      +'</div>';
+  });
+  return h;
+}
+
+var dashStaleExpanded=false;
+function renderStalePanel(stale){
+  var h='<div class="dp-sub"><span class="dp-sub-title muted">&#x1F4C5; Oldest Contacts</span><div class="dp-sub-line"></div></div>';
+  if(!stale.length)return h+'<div style="padding:8px 14px;font-size:11px;color:var(--muted)">All contacts are fresh</div>';
+  var show=dashStaleExpanded?stale:stale.slice(0,8);
+  var now=Date.now();
+  show.forEach(function(c){
+    var days=Math.floor((now-new Date(c.lastContact).getTime())/86400000);
+    h+='<div class="dash-row" onclick="openDashEdit(\''+c.id+'\')">'
+      +'<div class="dr-av" style="background:'+(AV_BG[c.cat]||'#444')+'">'+ini(c)+'</div>'
+      +'<div class="dr-body"><div class="dr-name">'+esc(c.first)+' '+esc(c.last)+'</div><div class="dr-meta">'+esc(c.company||'')+'</div></div>'
+      +'<span class="dr-badge stale">'+days+'d ago</span>'
+      +'</div>';
+  });
+  if(stale.length>8&&!dashStaleExpanded)h+='<button class="dash-show-more" onclick="dashStaleExpanded=true;renderDashboard()">Show '+(stale.length-8)+' more \u2193</button>';
+  return h;
+}
+
+function renderDashFeed(items){
+  if(!items.length)return '<div class="feed-empty">No activity yet</div>';
+  var h='';
+  items.forEach(function(item){
+    var cid=item.contactId||'';
+    var click=cid?' onclick="openDashEdit(\''+cid+'\')"':'';
+    h+='<div class="feed-card type-'+(item.type||'activity')+'"'+click+'><div class="feed-top"><div class="feed-icon">'+feedIcon(item.type)+'</div><div class="feed-body"><div class="feed-hl">'+(item.type==='overdue'?'<span class="overdue-dot"></span>':'')+item.text+'</div>'+(item.detail?'<div class="feed-detail">'+item.detail+'</div>':'')+'</div><div class="feed-time">'+fmt(item.ts)+'</div></div></div>';
+  });
+  return h;
+}
+
+// ── TEAM CHANNEL ────────────────────────────────────────────────────────────
+function getChannelMsgs(){return ls.get(CH_KEY)||[];}
+function saveChannelMsgs(msgs){ls.set(CH_KEY,msgs);}
+function renderTeamChannel(){
+  var msgs=getChannelMsgs();
+  var h='<div id="ch-msgs" class="ch-msgs" style="flex:1;overflow-y:auto;max-height:calc(100vh - 340px)">';
+  if(!msgs.length)h+='<div style="text-align:center;color:var(--muted);font-size:12px;padding:20px">No messages yet</div>';
+  msgs.forEach(function(m){
+    var avCls=m.user==='kyra'?'kyra':'';
+    h+='<div class="ch-msg"><div class="ch-av '+avCls+'">'+esc((m.displayName||'?')[0])+'</div><div class="ch-bubble"><div class="ch-author">'+esc(m.displayName)+'<span>'+fmt(m.ts)+'</span></div><div class="ch-text">'+esc(m.text)+'</div></div></div>';
+  });
+  h+='</div>';
+  h+='<div class="ch-input-row"><textarea class="ch-input" id="ch-input" rows="1" placeholder="Message the team\u2026" onkeydown="if(event.key===\'Enter\'&&!event.shiftKey){event.preventDefault();sendChannelMsg();}"></textarea><button class="ch-send" onclick="sendChannelMsg()"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1 6h10M7.5 2l4 4-4 4" stroke="#fff" stroke-width="1.4" stroke-linecap="round"/></svg></button></div>';
+  return h;
+}
+function sendChannelMsg(){
+  var inp=document.getElementById('ch-input');if(!inp)return;var text=inp.value.trim();if(!text)return;
+  var def=getUserDef(currentUser);var msgs=getChannelMsgs();
+  msgs.push({id:uid(),user:currentUser,displayName:def?def.displayName:currentUser,text:text,ts:Date.now()});
+  saveChannelMsgs(msgs);inp.value='';
+  feedActivity('<strong>'+esc(def?def.displayName:currentUser)+'</strong> posted in Team Channel');
+  renderDashboard();
+}
+function switchCommsTab(tab,btn){
+  document.querySelectorAll('.tc-tab').forEach(function(t){t.classList.remove('active');});
+  btn.classList.add('active');
+  var body=document.getElementById('comms-body');
+  if(tab==='channel'){body.innerHTML=renderTeamChannel();var s=document.getElementById('ch-msgs');if(s)s.scrollTop=s.scrollHeight;}
+  else body.innerHTML=renderDashDMs();
+}
+
+// ── DASH DMs ────────────────────────────────────────────────────────────────
+var dashDMWith=null;
+function renderDashDMs(){
+  dashDMWith=null;
+  var users=getAllUsers(),online=getOnline(),others=Object.keys(users).filter(function(k){return k!==currentUser;});
+  var h='<div id="ddm-list">';
+  others.forEach(function(key){
+    var u=users[key],thread=getDMThread(key),last=thread[thread.length-1],unread=thread.filter(function(m){return m.from!==currentUser&&!m.read;}).length;
+    var av=u.emoji?u.emoji:u.displayName[0].toUpperCase();var avCls=u.emoji?'':(key==='kyra'?'kyra':'');
+    h+='<div class="ddm-thread" onclick="openDashDM(\''+key+'\')">'
+      +'<div class="ddm-av '+avCls+'" style="'+(u.emoji?'background:#222;font-size:14px;':'')+'">'+esc(av)+'</div>'
+      +'<div class="ddm-info"><div class="ddm-name">'+esc(u.displayName)+'</div><div class="ddm-prev">'+(last?esc(last.text.slice(0,40)):'No messages yet')+'</div></div>'
+      +(last?'<div class="ddm-time">'+fmt(last.ts)+'</div>':'')
+      +(unread?'<span class="ddm-unread">'+unread+'</span>':'')
+      +'</div>';
+  });
+  h+='</div>';
+  return h;
+}
+function openDashDM(w){
+  dashDMWith=w;markDMRead(w);var u=getUserDef(w);
+  var body=document.getElementById('comms-body');
+  var h='<div class="ddm-chat-hdr"><button class="ddm-back" onclick="switchBackToDMList()">\u2190</button><strong style="font-size:12px">'+esc(u?u.displayName:w)+'</strong></div>';
+  h+='<div class="ddm-msgs" id="ddm-msgs">';
+  var msgs=getDMThread(w);
+  if(!msgs.length)h+='<div style="text-align:center;color:var(--muted);font-size:12px;padding:20px">Start the conversation \uD83D\uDC4B</div>';
+  msgs.forEach(function(m){var mine=m.from===currentUser;h+='<div class="ddm-msg '+(mine?'mine':'theirs')+'"><div class="ddm-bub">'+esc(m.text)+'</div><div class="ddm-msg-meta">'+fmt(m.ts)+'</div></div>';});
+  h+='</div>';
+  h+='<div class="ch-input-row"><textarea class="ch-input" id="ddm-input" rows="1" placeholder="Message\u2026" onkeydown="if(event.key===\'Enter\'&&!event.shiftKey){event.preventDefault();sendDashDM();}"></textarea><button class="ch-send" onclick="sendDashDM()"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1 6h10M7.5 2l4 4-4 4" stroke="#fff" stroke-width="1.4" stroke-linecap="round"/></svg></button></div>';
+  body.innerHTML=h;
+  var s=document.getElementById('ddm-msgs');if(s)s.scrollTop=s.scrollHeight;
+}
+function switchBackToDMList(){document.getElementById('comms-body').innerHTML=renderDashDMs();}
+function sendDashDM(){
+  var inp=document.getElementById('ddm-input');if(!inp||!dashDMWith)return;var text=inp.value.trim();if(!text)return;
+  sendDMMsg(dashDMWith,text);openDashDM(dashDMWith);
+}
+
+// ── QUICK STATS ─────────────────────────────────────────────────────────────
+function renderQuickStats(live,overdue){
+  var act=live.filter(function(c){return c.cat==='active';}).length;
+  var pros=live.filter(function(c){return c.cat==='prospects';}).length;
+  var intake=live.filter(function(c){return(c.tags||[]).indexOf('website-inquiry')>-1;}).length;
+  return '<div class="dash-stats">'
+    +'<div class="ds-card"><div class="ds-val">'+act+'</div><div class="ds-lbl">Active Clients</div></div>'
+    +'<div class="ds-card"><div class="ds-val">'+pros+'</div><div class="ds-lbl">Prospects</div></div>'
+    +'<div class="ds-card"><div class="ds-val" style="color:#e07840">'+overdue.length+'</div><div class="ds-lbl">Overdue</div></div>'
+    +'<div class="ds-card"><div class="ds-val">'+intake+'</div><div class="ds-lbl">Website Inquiries</div></div>'
+    +'<div class="ds-card"><div class="ds-val">'+live.length+'</div><div class="ds-lbl">Total Contacts</div></div>'
+    +'</div>';
+}
+
+// ── MARK CONTACTED ──────────────────────────────────────────────────────────
+function markContacted(id){
+  var c=contacts.find(function(x){return x.id===id;});if(!c)return;
+  c.lastContact=new Date().toISOString().slice(0,10);
+  ls.set(CK,contacts);
+  var def=getUserDef(currentUser);
+  feedActivity('<strong>'+esc(def?def.displayName:currentUser)+'</strong> marked '+esc(c.first)+' '+esc(c.last)+' as contacted',c.id);
+  if(currentTab==='feed')renderDashboard();else{updateCounts();renderMain();renderStats();}
+  toast('Marked as contacted.');
+}
+
+// ── DASH EDIT POPOUT ────────────────────────────────────────────────────────
+var dashEditId=null;
+function openDashEdit(id){
+  var c=contacts.find(function(x){return x.id===id;});if(!c)return;dashEditId=id;
+  var avBg=c.company?getCoColor(c.company):(AV_BG[c.cat]||'#444');
+  document.getElementById('de-av').textContent=ini(c);document.getElementById('de-av').style.background=avBg;
+  document.getElementById('de-name').textContent=c.first+' '+c.last;
+  document.getElementById('de-co').textContent=(c.title?c.title+' \u00B7 ':'')+(c.company||'');
+  var tags=(c.tags||[]).map(function(t){return '<span class="de-tag">'+(TAG_MAP[t]||t)+'</span>';}).join('');
+  var h='';
+  // Contact info
+  if(c.email||c.phone||c.website){
+    h+='<div style="display:flex;flex-wrap:wrap;gap:10px;font-size:12px">';
+    if(c.email)h+='<span>&#x2709; '+esc(c.email)+'</span>';
+    if(c.phone)h+='<span>&#x260E; '+esc(c.phone)+'</span>';
+    if(c.website)h+='<span>&#x1F517; '+esc(c.website)+'</span>';
+    h+='</div>';
+  }
+  // Inquiry data
+  if(c.inquiry){
+    var inq=c.inquiry;
+    h+='<div style="background:var(--s2);border:1px solid var(--border);border-radius:var(--r);padding:8px 10px;font-size:11px;line-height:1.6">';
+    h+='<div style="font-size:9px;color:var(--pink);font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px">&#x1F4E8; '+esc(inq.formType||'Inquiry')+'</div>';
+    if(inq.presence)h+='<div><strong style="color:var(--muted)">Presence:</strong> '+esc(inq.presence)+'</div>';
+    if(inq.serviceInterest)h+='<div><strong style="color:var(--muted)">Service:</strong> '+esc(inq.serviceInterest)+'</div>';
+    if(inq.budget)h+='<div><strong style="color:var(--muted)">Budget:</strong> '+esc(inq.budget)+'</div>';
+    if(inq.goal)h+='<div><strong style="color:var(--muted)">Goal:</strong> '+esc(inq.goal)+'</div>';
+    if(inq.challenges&&inq.challenges.length)h+='<div><strong style="color:var(--muted)">Challenges:</strong> '+esc(inq.challenges.join(', '))+'</div>';
+    if(inq.message)h+='<div><strong style="color:var(--muted)">Message:</strong> '+esc(inq.message)+'</div>';
+    h+='</div>';
+  }
+  // Tags
+  if(tags)h+='<div class="de-field"><span class="de-label">Tags</span><div class="de-tags">'+tags+'</div></div>';
+  // Editable fields
+  h+='<div class="de-row">';
+  h+='<div class="de-field"><label class="de-label">Category</label><select class="de-input" id="de-cat"><option value="contacts"'+(c.cat==='contacts'?' selected':'')+'>Contact</option><option value="active"'+(c.cat==='active'?' selected':'')+'>Active</option><option value="prospects"'+(c.cat==='prospects'?' selected':'')+'>Prospect</option><option value="former"'+(c.cat==='former'?' selected':'')+'>Former</option></select></div>';
+  h+='<div class="de-field"><label class="de-label">Last Contact</label><input type="date" class="de-input" id="de-lastcontact" value="'+(c.lastContact||'')+'"/></div>';
+  h+='</div>';
+  h+='<div class="de-row">';
+  h+='<div class="de-field"><label class="de-label">Service</label><input type="text" class="de-input" id="de-service" value="'+esc(c.service||'')+'" placeholder="e.g. Marketing Retainer"/></div>';
+  h+='<div class="de-field"><label class="de-label">Website / Social</label><input type="text" class="de-input" id="de-website" value="'+esc(c.website||'')+'" placeholder="@handle or URL"/></div>';
+  h+='</div>';
+  h+='<div class="de-field"><label class="de-label">Notes</label><textarea class="de-input" id="de-notes" rows="3">'+esc(c.notes||'')+'</textarea></div>';
+  // Comments
+  var cmts=(c.comments||[]);
+  h+='<div class="de-field"><span class="de-label">Comments ('+cmts.length+')</span>';
+  if(cmts.length){
+    h+='<div style="max-height:150px;overflow-y:auto;display:flex;flex-direction:column;gap:6px;margin-top:4px">';
+    cmts.slice(-5).forEach(function(cm){
+      h+='<div style="font-size:11px;line-height:1.5;padding:6px 8px;background:var(--s2);border-radius:var(--r)"><strong style="color:var(--pink)">'+esc(cm.author)+'</strong> <span style="color:var(--muted);font-size:9px">'+fmt(cm.ts)+'</span><br>'+esc(cm.text)+'</div>';
+    });
+    h+='</div>';
+  }
+  if(canDo('canComment')){
+    h+='<div style="display:flex;gap:6px;margin-top:4px"><textarea class="de-input" id="de-comment" rows="1" placeholder="Add a comment\u2026" style="min-height:32px"></textarea><button class="btn-p" style="padding:6px 10px;font-size:9px" onclick="submitDashComment()">Post</button></div>';
+  }
+  h+='</div>';
+  document.getElementById('de-body').innerHTML=h;
+  document.getElementById('de-ov').classList.add('open');
+}
+function closeDashEdit(){document.getElementById('de-ov').classList.remove('open');dashEditId=null;}
+function saveDashEdit(){
+  if(!dashEditId)return;var c=contacts.find(function(x){return x.id===dashEditId;});if(!c)return;
+  c.cat=document.getElementById('de-cat').value;
+  c.lastContact=document.getElementById('de-lastcontact').value;
+  c.service=document.getElementById('de-service').value.trim();
+  c.website=document.getElementById('de-website').value.trim();
+  c.notes=document.getElementById('de-notes').value.trim();
+  ls.set(CK,contacts);
+  var def=getUserDef(currentUser);
+  feedActivity('<strong>'+esc(def?def.displayName:currentUser)+'</strong> updated '+esc(c.first)+' '+esc(c.last),c.id);
+  closeDashEdit();updateCounts();
+  if(currentTab==='feed')renderDashboard();else{renderMain();renderStats();}
+  toast('Saved.');
+}
+function submitDashComment(){
+  var inp=document.getElementById('de-comment');if(!inp)return;var text=inp.value.trim();if(!text)return;
+  var c=contacts.find(function(x){return x.id===dashEditId;});if(!c)return;
+  if(!c.comments)c.comments=[];
+  var def=getUserDef(currentUser),auth=def?def.displayName:currentUser;
+  c.comments.push({author:auth,text:text,ts:Date.now(),likes:[]});
+  feedComment(c.id,auth,c.first+' '+c.last,text);
+  ls.set(CK,contacts);openDashEdit(dashEditId);
+}
+
+// ── SEED DEMO DATA ──────────────────────────────────────────────────────────
+function seedFeed(){
+  if(getFeedItems().length)return;
+  var now=Date.now(),h=3600000,d=86400000,cList=liveContacts();
+  function findC(f,l){return cList.find(function(c){return c.first===f&&c.last===l;})||{};}
+  var jeff=findC('Jeff','Ellerby'),shane=findC('Shane','Hurlbut'),sofia=findC('Sofia','Mendez'),ted=findC('Ted','Sim'),lucas=findC('Lucas','Zhang'),amy=findC('Amy','Li'),marco=findC('Marco','Rossi'),ryan=findC('Ryan','Gallagher'),rachel=findC('Rachel','Chen'),greta=findC('Greta','Hoffman');
+  var daniel=findC('Daniel','Park'),maria=findC('Maria','Santos'),jordan=findC('Jordan','Okafor'),ava=findC('Ava','Moreno');
+  saveFeedItems([
+    {id:uid(),type:'intake',contactId:daniel.id||'',text:'New inquiry from <strong>Daniel Park</strong>',detail:'Moonrise Interactive \u00B7 Full Social Media Management',ts:now-2*h},
+    {id:uid(),type:'comment',contactId:jeff.id||'',text:'<strong>Brendan Sweeney</strong> commented on Jeff Ellerby',detail:'\u201CSolmen brand architecture deck is ready \u2014 scheduling review for Thursday\u201D',ts:now-4*h},
+    {id:uid(),type:'activity',contactId:sofia.id||'',text:'<strong>Kyra Sweeney</strong> moved Sofia Mendez to <strong>Prospects</strong>',ts:now-5*h},
+    {id:uid(),type:'intake',contactId:ava.id||'',text:'New inquiry from <strong>Ava Moreno</strong>',detail:'Nightbloom Pictures \u00B7 Just Talk to Us',ts:now-6*h},
+    {id:uid(),type:'comment',contactId:shane.id||'',text:'<strong>Chris Haigh</strong> commented on Shane Hurlbut',detail:'\u201CNAB booth layout confirmed. Quality of Light session locked for April 19th\u201D',ts:now-8*h},
+    {id:uid(),type:'comment',contactId:lucas.id||'',text:'<strong>Julia Roberts</strong> commented on Lucas Zhang',detail:'\u201CSmallRig posts performing above benchmark \u2014 product lifestyle shots driving 2x saves\u201D',ts:now-8*h},
+    {id:uid(),type:'activity',contactId:lucas.id||'',text:'<strong>Brendan Sweeney</strong> updated Lucas Zhang \u2014 monthly deliverables approved',ts:now-12*h},
+    {id:uid(),type:'comment',contactId:ryan.id||'',text:'<strong>Kyra Sweeney</strong> commented on Ryan Gallagher',detail:'\u201CAtmos sponsorship convo went well \u2014 they want to see a proposal\u201D',ts:now-18*h},
+    {id:uid(),type:'intake',contactId:maria.id||'',text:'New inquiry from <strong>Maria Santos</strong>',detail:'Estrella Theater Company \u00B7 Basic Social Media Strategy Session',ts:now-1*d},
+    {id:uid(),type:'activity',contactId:marco.id||'',text:'<strong>Brendan Sweeney</strong> added Marco Rossi \u2014 Nanlux speaking package',ts:now-1.5*d},
+    {id:uid(),type:'intake',contactId:jordan.id||'',text:'New inquiry from <strong>Jordan Okafor</strong>',detail:'Content Creator \u00B7 Premium Social Media Audit',ts:now-2*d},
+    {id:uid(),type:'comment',contactId:ted.id||'',text:'<strong>Chris Haigh</strong> commented on Ted Sim',detail:'\u201CBrand consulting deck drafted \u2014 review before sending?\u201D',ts:now-2*d},
+    {id:uid(),type:'activity',contactId:amy.id||'',text:'<strong>Kyra Sweeney</strong> updated Amy Li \u2014 creator program deliverables on track',ts:now-2*d},
+    {id:uid(),type:'comment',contactId:rachel.id||'',text:'<strong>Brendan Sweeney</strong> commented on Rachel Chen',detail:'\u201CFollowing up after Aputure marketing meeting \u2014 warm response\u201D',ts:now-2.5*d},
+    {id:uid(),type:'comment',contactId:jordan.id||'',text:'<strong>Julia Roberts</strong> commented on Jordan Okafor',detail:'\u201CStrong visual identity but posting cadence is inconsistent. An audit would give them a clear roadmap.\u201D',ts:now-30*h},
+    {id:uid(),type:'activity',contactId:greta.id||'',text:'<strong>Chris Haigh</strong> added Greta Hoffman to prospects \u2014 ARRI brand partnership lead',ts:now-3*d}
+  ]);
+}
+function seedChannel(){
+  if(getChannelMsgs().length)return;
+  var now=Date.now(),h=3600000;
+  saveChannelMsgs([
+    {id:uid(),user:'brendan',displayName:'Brendan Sweeney',text:'Morning team. NAB prep is the priority this week \u2014 let\u2019s make sure everything is locked by Thursday.',ts:now-26*h},
+    {id:uid(),user:'chrishaigh',displayName:'Chris Haigh',text:'Shane\u2019s deck is locked. I\u2019ll handle the social clips from the booth this week.',ts:now-25*h},
+    {id:uid(),user:'kyra',displayName:'Kyra Sweeney',text:'Jeff wants the Cine Gear content plan finalized by end of week. I\u2019ll send the shot list today.',ts:now-24*h},
+    {id:uid(),user:'brendan',displayName:'Brendan Sweeney',text:'Perfect. @kyra can you also follow up with Sofia at Teradek? She seemed ready after our last call.',ts:now-22*h},
+    {id:uid(),user:'kyra',displayName:'Kyra Sweeney',text:'Already sent. She replied \u2014 wants to talk right after NAB. Putting a meeting on the calendar.',ts:now-20*h},
+    {id:uid(),user:'juliaroberts',displayName:'Julia Roberts',text:'All the pre-NAB content for Shane and Filmmakers Academy is queued \u2014 reels, carousels, and stories. Ready to go live on schedule.',ts:now-18*h},
+    {id:uid(),user:'chrishaigh',displayName:'Chris Haigh',text:'Quick update \u2014 SmallRig April calendar is fully scheduled. All posts approved by Lucas.',ts:now-16*h},
+    {id:uid(),user:'juliaroberts',displayName:'Julia Roberts',text:'SmallRig analytics are looking great this month. The product lifestyle shots are getting 2x the saves vs. last month. Doubling down on that format.',ts:now-14*h},
+    {id:uid(),user:'brendan',displayName:'Brendan Sweeney',text:'Love it. Let\u2019s aim to get the Atomos proposal out this week too. Ryan seemed receptive.',ts:now-12*h},
+    {id:uid(),user:'kyra',displayName:'Kyra Sweeney',text:'On it. He mentioned they\u2019re unhappy with their current agency \u2014 good timing for us.',ts:now-10*h},
+    {id:uid(),user:'juliaroberts',displayName:'Julia Roberts',text:'If Atomos comes on I can start building out a content calendar by next week. Already have a few ideas from studying their current feed.',ts:now-8*h},
+    {id:uid(),user:'chrishaigh',displayName:'Chris Haigh',text:'Also \u2014 Greta at ARRI. Shane\u2019s making the intro this week. This could be huge.',ts:now-6*h},
+    {id:uid(),user:'brendan',displayName:'Brendan Sweeney',text:'That\u2019s the big one. Let\u2019s have a pitch deck ready before the intro happens. Don\u2019t want to fumble it.',ts:now-4*h},
+    {id:uid(),user:'juliaroberts',displayName:'Julia Roberts',text:'I can pull together a social media competitive analysis for ARRI vs. their peers. Might strengthen the pitch deck.',ts:now-3*h}
+  ]);
+}
+function seedDMs(){
+  var dms=ls.get(DK)||{};if(Object.keys(dms).length)return;
+  var now=Date.now(),h=3600000;
+  // Brendan <-> Kyra
+  dms[getDMKey('brendan','kyra')]=[
+    {id:uid(),from:'brendan',fromName:'Brendan Sweeney',text:'Hey \u2014 did you send the Teradek proposal to Sofia?',ts:now-8*h,read:true},
+    {id:uid(),from:'kyra',fromName:'Kyra Sweeney',text:'Yep, sent it yesterday. She said she\u2019ll review after NAB and get back to us.',ts:now-7*h,read:true},
+    {id:uid(),from:'brendan',fromName:'Brendan Sweeney',text:'Perfect. Let\u2019s set a reminder to follow up the Monday after NAB.',ts:now-6*h,read:true},
+    {id:uid(),from:'kyra',fromName:'Kyra Sweeney',text:'Already on my calendar \u2764\uFE0F',ts:now-5.5*h,read:false}
+  ];
+  // Brendan <-> Chris
+  dms[getDMKey('brendan','chrishaigh')]=[
+    {id:uid(),from:'chrishaigh',fromName:'Chris Haigh',text:'NAB booth content plan \u2014 are we doing all 3 days or focusing on day 1?',ts:now-14*h,read:true},
+    {id:uid(),from:'brendan',fromName:'Brendan Sweeney',text:'All 3. Day 1 is the big reveal, but I want BTS content from every session.',ts:now-13*h,read:true},
+    {id:uid(),from:'chrishaigh',fromName:'Chris Haigh',text:'Got it. I\u2019ll prep the shot list and content briefs for each day. Should have it by tomorrow.',ts:now-12*h,read:true},
+    {id:uid(),from:'brendan',fromName:'Brendan Sweeney',text:'You\u2019re a machine. Thanks Chris.',ts:now-11*h,read:true}
+  ];
+  // Kyra <-> Chris
+  dms[getDMKey('kyra','chrishaigh')]=[
+    {id:uid(),from:'kyra',fromName:'Kyra Sweeney',text:'Hey Chris \u2014 Dana from SmallRig pitched that Rig Builds collab series. What do you think?',ts:now-20*h,read:true},
+    {id:uid(),from:'chrishaigh',fromName:'Chris Haigh',text:'Love the concept. It\u2019s very YouTube-native which is exactly what SmallRig needs.',ts:now-19*h,read:true},
+    {id:uid(),from:'kyra',fromName:'Kyra Sweeney',text:'Agreed. I\u2019ll draft a pitch deck and we can run it by Lucas and Amy.',ts:now-18*h,read:true},
+    {id:uid(),from:'chrishaigh',fromName:'Chris Haigh',text:'Let me know if you need any production cost estimates \u2014 I can pull those together.',ts:now-16*h,read:false}
+  ];
+  // Brendan <-> Julia
+  dms[getDMKey('brendan','juliaroberts')]=[
+    {id:uid(),from:'brendan',fromName:'Brendan Sweeney',text:'Hey Julia \u2014 can you pull the March analytics for Blackout and SmallRig? Want to include them in the quarterly review.',ts:now-20*h,read:true},
+    {id:uid(),from:'juliaroberts',fromName:'Julia Roberts',text:'Already on it! Blackout is up 28% engagement, SmallRig up 34% in saves. Full report will be in your inbox by EOD.',ts:now-19*h,read:true},
+    {id:uid(),from:'brendan',fromName:'Brendan Sweeney',text:'You\u2019re incredible. Also \u2014 the new inquiry from Daniel Park (gaming studio). Can you take a look at their socials and give me a quick read?',ts:now-15*h,read:true},
+    {id:uid(),from:'juliaroberts',fromName:'Julia Roberts',text:'Looked at Moonrise Interactive \u2014 they have solid game art on IG but zero strategy. Huge opportunity. I\u2019d love to work on this one.',ts:now-14*h,read:false}
+  ];
+  // Kyra <-> Julia
+  dms[getDMKey('kyra','juliaroberts')]=[
+    {id:uid(),from:'kyra',fromName:'Kyra Sweeney',text:'Julia! The Estrella Theater inquiry is so exciting. A nonprofit theater company \u2014 this is exactly the kind of creative client I love.',ts:now-16*h,read:true},
+    {id:uid(),from:'juliaroberts',fromName:'Julia Roberts',text:'Right?? Their Instagram has such good raw material. Rehearsal photos, opening nights. They just need a content framework.',ts:now-15*h,read:true},
+    {id:uid(),from:'kyra',fromName:'Kyra Sweeney',text:'Exactly. I think a strategy session would change everything for them. Can you draft a few content pillar ideas before the call?',ts:now-12*h,read:true},
+    {id:uid(),from:'juliaroberts',fromName:'Julia Roberts',text:'Absolutely. I\u2019m thinking: Behind the Curtain (rehearsals), Opening Night (event energy), Meet the Cast (personality-driven). Will have it ready tomorrow.',ts:now-10*h,read:false}
+  ];
+  // Chris <-> Julia
+  dms[getDMKey('chrishaigh','juliaroberts')]=[
+    {id:uid(),from:'chrishaigh',fromName:'Chris Haigh',text:'Hey Julia \u2014 the NAB social clips. I\u2019m cutting 3 reels from Shane\u2019s talk. Want to coordinate on captions and posting schedule?',ts:now-8*h,read:true},
+    {id:uid(),from:'juliaroberts',fromName:'Julia Roberts',text:'Yes! I was going to reach out. I\u2019ll draft the captions tonight and share them with you for review. Thinking we stagger the posts over 5 days.',ts:now-7*h,read:true},
+    {id:uid(),from:'chrishaigh',fromName:'Chris Haigh',text:'Perfect cadence. Day 1: highlight reel. Day 2-3: individual topic clips. Day 4-5: BTS booth content. Sound good?',ts:now-5*h,read:true},
+    {id:uid(),from:'juliaroberts',fromName:'Julia Roberts',text:'Love that structure. I\u2019ll build the content calendar and share it in the channel.',ts:now-4*h,read:false}
+  ];
+  ls.set(DK,dms);
+}
+
+function seedNotifs(){
+  var n=ls.get(NK);if(n&&Object.keys(n).length)return;
+  var now=Date.now(),h=3600000,cList=liveContacts();n={};
+  function fid(f,l){var c=cList.find(function(x){return x.first===f&&x.last===l;});return c?c.id:null;}
+  // Brendan's notifications
+  n['brendan']=[
+    {id:uid(),text:'<strong>Julia Roberts</strong> commented on Jeff Ellerby',contactId:fid('Jeff','Ellerby'),type:'mention',ts:now-2*h,read:false},
+    {id:uid(),text:'<strong>Kyra Sweeney</strong> commented on Ryan Gallagher',contactId:fid('Ryan','Gallagher'),type:'mention',ts:now-18*h,read:false},
+    {id:uid(),text:'<strong>Chris Haigh</strong> commented on Shane Hurlbut',contactId:fid('Shane','Hurlbut'),type:'mention',ts:now-8*h,read:true},
+    {id:uid(),text:'<strong>Julia Roberts</strong> commented on Jordan Okafor',contactId:fid('Jordan','Okafor'),type:'mention',ts:now-30*h,read:true},
+    {id:uid(),text:'<strong>Kyra Sweeney</strong> moved Sofia Mendez to Prospects',contactId:fid('Sofia','Mendez'),type:'mention',ts:now-5*h,read:true},
+    {id:uid(),text:'<strong>Julia Roberts</strong> sent you a message',contactId:null,type:'dm',fromUser:'juliaroberts',ts:now-14*h,read:true}
+  ];
+  // Kyra's notifications
+  n['kyra']=[
+    {id:uid(),text:'<strong>Julia Roberts</strong> commented on Demi Chase',contactId:fid('Demi','Chase'),type:'mention',ts:now-1*86400000,read:false},
+    {id:uid(),text:'<strong>Brendan Sweeney</strong> commented on Jeff Ellerby',contactId:fid('Jeff','Ellerby'),type:'mention',ts:now-4*h,read:false},
+    {id:uid(),text:'<strong>Chris Haigh</strong> commented on Greta Hoffman',contactId:fid('Greta','Hoffman'),type:'mention',ts:now-3*86400000,read:true},
+    {id:uid(),text:'<strong>Julia Roberts</strong> commented on Lucas Zhang',contactId:fid('Lucas','Zhang'),type:'mention',ts:now-8*h,read:true},
+    {id:uid(),text:'<strong>Julia Roberts</strong> sent you a message',contactId:null,type:'dm',fromUser:'juliaroberts',ts:now-10*h,read:true}
+  ];
+  // Chris's notifications
+  n['chrishaigh']=[
+    {id:uid(),text:'<strong>Julia Roberts</strong> commented on Shane Hurlbut',contactId:fid('Shane','Hurlbut'),type:'mention',ts:now-6*h,read:false},
+    {id:uid(),text:'<strong>Brendan Sweeney</strong> commented on Jeff Ellerby',contactId:fid('Jeff','Ellerby'),type:'mention',ts:now-4*h,read:true},
+    {id:uid(),text:'<strong>Kyra Sweeney</strong> commented on Demi Chase',contactId:fid('Demi','Chase'),type:'mention',ts:now-3*86400000,read:true},
+    {id:uid(),text:'<strong>Julia Roberts</strong> sent you a message',contactId:null,type:'dm',fromUser:'juliaroberts',ts:now-4*h,read:false}
+  ];
+  // Julia's notifications
+  n['juliaroberts']=[
+    {id:uid(),text:'<strong>Brendan Sweeney</strong> commented on Jeff Ellerby',contactId:fid('Jeff','Ellerby'),type:'mention',ts:now-4*h,read:false},
+    {id:uid(),text:'<strong>Kyra Sweeney</strong> commented on Demi Chase',contactId:fid('Demi','Chase'),type:'mention',ts:now-3*86400000,read:false},
+    {id:uid(),text:'<strong>Chris Haigh</strong> commented on Marco Rossi',contactId:fid('Marco','Rossi'),type:'mention',ts:now-4*86400000,read:true},
+    {id:uid(),text:'<strong>Brendan Sweeney</strong> sent you a message',contactId:null,type:'dm',fromUser:'brendan',ts:now-15*h,read:true},
+    {id:uid(),text:'<strong>Kyra Sweeney</strong> sent you a message',contactId:null,type:'dm',fromUser:'kyra',ts:now-12*h,read:true},
+    {id:uid(),text:'<strong>Chris Haigh</strong> sent you a message',contactId:null,type:'dm',fromUser:'chrishaigh',ts:now-5*h,read:true}
+  ];
+  // Guest gets a welcome notification
+  n['guest']=[
+    {id:uid(),text:'Welcome to <strong>Lost Objects CRM</strong> \u2014 you have read-only access.',contactId:null,type:'mention',ts:now-1*h,read:false}
+  ];
+  ls.set(NK,n);
+}
+
+// ═══ TRASH / SOFT DELETE ═════════════════════════════════════════════════════
+function renderTrash(){
+  var trashed=trashedContacts();
+  if(!trashed.length){document.getElementById('main-content').innerHTML='<div class="empty-state"><p>Trash is empty</p></div>';return;}
+  var h=trashed.map(function(c){
+    var req=c.deletion_requested_by||{};var reqUser=getUserDef(req.user);var reqName=reqUser?reqUser.displayName:req.user||'Unknown';
+    var reqDate=req.ts?new Date(req.ts).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric',hour:'numeric',minute:'2-digit'}):'Unknown date';
+    var pill='<div class="cat-pill '+(PILL_CLS[c.cat]||'')+'">'+(PILL_LBL[c.cat]||'')+'</div>';
+    return '<div class="trash-card">'
+      +'<div class="trash-hdr"><div class="trash-av" style="background:'+(AV_BG[c.cat]||'#444')+'">'+ini(c)+'</div><div><div class="trash-name">'+esc(c.first)+' '+esc(c.last)+'</div><div class="trash-co">'+esc(c.title?c.title+' \u00B7 '+c.company:c.company||'')+'</div></div>'+pill+'</div>'
+      +'<div class="trash-meta">Requested by <strong>'+esc(reqName)+'</strong> on '+reqDate+'</div>'
+      +'<div class="trash-acts"><button class="trash-btn" onclick="restoreContact(\''+c.id+'\')">&#x21A9; Restore</button><button class="trash-btn danger" onclick="permanentlyDelete(\''+c.id+'\')">&#x2715; Delete Forever</button></div>'
+      +'</div>';
+  }).join('');
+  document.getElementById('main-content').innerHTML=h;
+}
+function requestDeletion(id){
+  if(!confirm('Request deletion of this contact? An owner will need to approve it.'))return;
+  var c=contacts.find(function(x){return x.id===id;});if(!c)return;
+  c.deletion_requested=true;
+  c.deletion_requested_by={user:currentUser,ts:Date.now()};
+  ls.set(CK,contacts);
+  var reqName=(getUserDef(currentUser)||{}).displayName||currentUser;
+  var cName=c.first+' '+c.last;
+  Object.keys(BASE_USERS).forEach(function(u){
+    if(BASE_USERS[u].role==='owner')addNotif(u,'<strong>'+esc(reqName)+'</strong> requested deletion of '+esc(cName),c.id,'deletion');
+  });
+  feedDeletion(reqName,c.id,cName);
+  closeDet();updateCounts();renderMain();renderStats();toast('Deletion requested.');
+}
+function restoreContact(id){
+  var c=contacts.find(function(x){return x.id===id;});if(!c)return;
+  delete c.deletion_requested;delete c.deletion_requested_by;
+  ls.set(CK,contacts);updateCounts();renderMain();renderStats();toast('Restored.');
+}
+function permanentlyDelete(id){
+  if(!confirm('Permanently delete this contact? This cannot be undone.'))return;
+  contacts=contacts.filter(function(c){return c.id!==id;});
+  ls.set(CK,contacts);updateCounts();renderMain();renderStats();toast('Permanently deleted.');
+}
+
+// ═══ WEBSITE INQUIRY RENDERER ════════════════════════════════════════════════
+function renderInquiry(c){
+  var inq=c.inquiry;if(!inq)return '';
+  var h='<div class="det-slbl" style="color:var(--pink)">&#x1F4E8; Website Inquiry</div>';
+  h+='<div class="det-inq" style="background:var(--s2);border:1px solid var(--border);border-radius:var(--r);padding:10px 12px;margin-bottom:10px;font-size:12px;line-height:1.7;">';
+  h+='<div style="font-size:10px;color:var(--muted);margin-bottom:6px;letter-spacing:.06em;text-transform:uppercase;">'+esc(inq.formType)+' &middot; '+new Date(inq.submitted).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})+'</div>';
+  if(inq.presence)h+='<div><strong style="color:var(--muted)">Social Presence:</strong> '+esc(inq.presence)+'</div>';
+  if(inq.challenges&&inq.challenges.length)h+='<div><strong style="color:var(--muted)">Challenges:</strong> '+esc(inq.challenges.join(', '))+'</div>';
+  if(inq.platforms&&inq.platforms.length)h+='<div><strong style="color:var(--muted)">Platforms:</strong> '+esc(inq.platforms.join(', '))+'</div>';
+  if(inq.serviceInterest)h+='<div><strong style="color:var(--muted)">Service Interest:</strong> '+esc(inq.serviceInterest)+'</div>';
+  if(inq.budget)h+='<div><strong style="color:var(--muted)">Budget:</strong> '+esc(inq.budget)+'</div>';
+  if(inq.goal)h+='<div style="margin-top:6px"><strong style="color:var(--muted)">Goal:</strong> '+esc(inq.goal)+'</div>';
+  if(inq.igHandle)h+='<div><strong style="color:var(--muted)">Instagram:</strong> '+esc(inq.igHandle)+'</div>';
+  if(inq.igUrl)h+='<div><strong style="color:var(--muted)">IG URL:</strong> '+esc(inq.igUrl)+'</div>';
+  if(inq.otherHandle)h+='<div><strong style="color:var(--muted)">Other Handle:</strong> '+esc(inq.otherHandle)+'</div>';
+  if(inq.websiteUrl)h+='<div><strong style="color:var(--muted)">Website:</strong> '+esc(inq.websiteUrl)+'</div>';
+  if(inq.message)h+='<div style="margin-top:6px"><strong style="color:var(--muted)">Message:</strong><br>'+esc(inq.message).replace(/\n/g,'<br>')+'</div>';
+  if(inq.additional)h+='<div style="margin-top:6px"><strong style="color:var(--muted)">Additional:</strong><br>'+esc(inq.additional).replace(/\n/g,'<br>')+'</div>';
+  h+='</div>';
+  return h;
+}
 
 // ═══ DETAIL PANEL ════════════════════════════════════════════════════════════
 function openDet(id){
@@ -1392,7 +2227,8 @@ function renderDetBody(c){
   var badge='';
   if(c.cat==='active'&&c.service)badge='<div class="svc-badge" style="margin-bottom:7px"><span class="pls"></span>'+esc(c.service)+'</div>';
   if(c.cat==='former')badge='<div class="old-badge" style="margin-bottom:7px">Former &mdash; '+esc(c.formerReason||'Inactive')+'</div>';
-  var editBtns=canDo('canEdit')?'<div class="det-acts"><button class="db" onclick="closeDet();openEditModal(\''+c.id+'\')">'+editSvg()+' Edit</button><button class="db" onclick="copyContactTxt(\''+c.id+'\')">'+copySvg()+' Copy</button><button class="db" onclick="openShare(\''+c.id+'\')">'+shareSvg()+' Share</button></div>':'<div class="det-acts"><button class="db" onclick="copyContactTxt(\''+c.id+'\')">'+copySvg()+' Copy Info</button></div>';
+  var reqDelBtn=(canDo('canEdit')&&!canDo('canDelete'))?'<button class="req-del-btn" onclick="requestDeletion(\''+c.id+'\')">&#x1F5D1; Request Deletion</button>':'';
+  var editBtns=canDo('canEdit')?'<div class="det-acts"><button class="db" onclick="closeDet();openEditModal(\''+c.id+'\')">'+editSvg()+' Edit</button><button class="db" onclick="copyContactTxt(\''+c.id+'\')">'+copySvg()+' Copy</button><button class="db" onclick="openShare(\''+c.id+'\')">'+shareSvg()+' Share</button></div>'+reqDelBtn:'<div class="det-acts"><button class="db" onclick="copyContactTxt(\''+c.id+'\')">'+copySvg()+' Copy Info</button></div>';
   document.getElementById('det-body').innerHTML=''
     +'<div class="det-av" style="background:'+avBg+'">'+ini(c)+'</div>'
     +'<div class="det-name">'+esc(c.first)+' '+esc(c.last)+'</div>'
@@ -1402,7 +2238,8 @@ function renderDetBody(c){
     +editBtns
     +((c.email||c.phone||c.website)?'<div class="det-slbl">Contact Info</div>'+(c.email?'<div class="det-info-row"><span>&#x2709;</span>'+esc(c.email)+'</div>':'')+(c.phone?'<div class="det-info-row"><span>&#x260E;</span>'+esc(c.phone)+'</div>':'')+(c.website?'<div class="det-info-row"><span>&#x1F517;</span>'+esc(c.website)+'</div>':''):'')
     +(tags?'<div class="det-slbl">Tags</div><div class="cc-tags" style="margin-bottom:0">'+tags+'</div>':'')
-    +(c.notes?'<div class="det-slbl">Notes</div><div class="det-notes">'+esc(c.notes)+'</div>':'')
+    +renderInquiry(c)
+    +(c.notes?'<div class="det-slbl">Notes</div><div class="det-notes">'+esc(c.notes).replace(/\n/g,'<br>')+'</div>':'')
     +(canDo('canComment')?'<div class="cmts"><div class="det-slbl">Comments</div><div id="cmts-list">'+renderCmts(c)+'</div><div class="ci-wrap"><div class="ment-pop" id="ment-pop"></div><textarea id="cmt-inp" placeholder="Comment\u2026 type @ to mention" rows="1" oninput="handleCmtInput(this)" onkeydown="handleCmtKD(event)"></textarea><button class="ci-send" onclick="submitCmt()"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M1 6h10M7.5 2l4 4-4 4" stroke="#fff" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div><div class="ci-hint">@ to mention &middot; Enter to post</div></div>':'');
 }
 function renderCmts(c){
@@ -1442,6 +2279,7 @@ function submitCmt(){
   c.comments.push({author:auth,text:text,ts:Date.now(),likes:[]});
   detectMentions(text).forEach(function(m){addNotif(m,'<strong>'+auth+'</strong> mentioned you on '+c.first+' '+c.last,c.id);});
   logAct({type:'comment',ts:Date.now(),text:'Commented on '+c.first+' '+c.last});
+  feedComment(c.id,auth,c.first+' '+c.last,text);
   ls.set(CK,contacts);inp.value='';document.getElementById('cmts-list').innerHTML=renderCmts(c);renderMain();updateNotifBadge();
 }
 function toggleLike(cid,idx){
@@ -1478,7 +2316,7 @@ function openAddModal(){
 }
 function openEditModal(id){
   if(!canDo('canEdit'))return;var c=contacts.find(function(x){return x.id===id;});if(!c)return;editingId=id;
-  document.getElementById('modal-title').textContent='Edit Contact';document.getElementById('del-btn').style.display='inline-flex';
+  document.getElementById('modal-title').textContent='Edit Contact';document.getElementById('del-btn').style.display=canDo('canDelete')?'inline-flex':'none';
   document.getElementById('f-first').value=c.first||'';document.getElementById('f-last').value=c.last||'';document.getElementById('f-company').value=c.company||'';document.getElementById('f-title').value=c.title||'';document.getElementById('f-email').value=c.email||'';document.getElementById('f-phone').value=c.phone||'';document.getElementById('f-website').value=c.website||'';document.getElementById('f-cat').value=c.cat||'contacts';document.getElementById('f-service').value=c.service||'';document.getElementById('f-former').value=c.formerReason||'';document.getElementById('f-lastcontact').value=c.lastContact||'';document.getElementById('f-notes').value=c.notes||'';
   toggleCatFields();buildTagSel(c.tags||[]);document.getElementById('modal-ov').classList.add('open');
 }
@@ -1490,7 +2328,15 @@ function saveContact(){
   var data={first:first,last:last,company:document.getElementById('f-company').value.trim(),title:document.getElementById('f-title').value.trim(),email:document.getElementById('f-email').value.trim(),phone:document.getElementById('f-phone').value.trim(),website:document.getElementById('f-website').value.trim(),cat:document.getElementById('f-cat').value,service:document.getElementById('f-service').value.trim(),formerReason:document.getElementById('f-former').value.trim(),lastContact:document.getElementById('f-lastcontact').value,tags:getSelTags(),notes:document.getElementById('f-notes').value.trim()};
   if(editingId){var idx=contacts.findIndex(function(c){return c.id===editingId;});if(idx>-1)Object.assign(contacts[idx],data);}
   else contacts.push({id:uid(),created:Date.now(),comments:[],...data});
+  var actorName=(getUserDef(currentUser)||{}).displayName||currentUser;
   logAct({type:editingId?'edit':'add',ts:Date.now(),text:(editingId?'Edited':'Added')+' '+data.first+' '+data.last});
+  if(!editingId){
+    var newC=contacts[contacts.length-1];
+    if((data.tags||[]).indexOf('website-inquiry')>-1)feedIntake(newC);
+    else feedActivity('<strong>'+esc(actorName)+'</strong> added '+esc(data.first)+' '+esc(data.last)+(data.company?' \u2014 '+esc(data.company):''),newC.id);
+  } else {
+    feedActivity('<strong>'+esc(actorName)+'</strong> updated '+esc(data.first)+' '+esc(data.last),editingId);
+  }
   ls.set(CK,contacts);closeModal();updateCounts();renderMain();renderStats();toast(editingId?'Updated.':'Added!');
   if(data.company)expandedCos.add(data.company);
 }
