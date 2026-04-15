@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Contact — Lost Objects</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  html{font-size:15px;-webkit-font-smoothing:antialiased;}
+  body{
+    font-family:'DM Sans',sans-serif;
+    background:#0A0A0A;
+    color:#F0F0F0;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    padding:24px;
+  }
+  .card{
+    background:#181818;
+    border:1px solid #2A2A2A;
+    border-radius:20px;
+    width:100%;
+    max-width:400px;
+    overflow:hidden;
+    animation:rise .4s ease;
+  }
+  @keyframes rise{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+
+  /* header band */
+  .card-band{
+    height:6px;
+    background:linear-gradient(90deg,#FF6666,#FFCF5A);
+  }
+
+  /* logo bar */
+  .card-logo-bar{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    padding:16px 24px 0;
+  }
+  .card-logo-mark{
+    font-family:'Space Mono',monospace;
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:.14em;
+    color:#FF6666;
+    text-transform:uppercase;
+    opacity:.6;
+  }
+
+  /* avatar */
+  .card-avatar-wrap{
+    display:flex;
+    justify-content:center;
+    padding:20px 24px 0;
+  }
+  .card-avatar{
+    width:72px;
+    height:72px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family:'Space Mono',monospace;
+    font-size:26px;
+    font-weight:700;
+    color:#fff;
+    border:3px solid #222;
+    font-size:28px;
+  }
+
+  /* name block */
+  .card-name-block{
+    text-align:center;
+    padding:14px 24px 0;
+  }
+  .card-name{
+    font-size:22px;
+    font-weight:600;
+    letter-spacing:-.02em;
+    margin-bottom:4px;
+  }
+  .card-company{
+    font-size:13px;
+    color:#888;
+    line-height:1.4;
+  }
+  .card-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:5px;
+    font-size:11px;
+    font-weight:600;
+    padding:3px 10px;
+    border-radius:20px;
+    background:rgba(255,102,102,.1);
+    color:#FF6666;
+    border:1px solid rgba(255,102,102,.25);
+    margin-top:8px;
+  }
+  .badge-dot{
+    width:5px;height:5px;border-radius:50%;
+    background:#FF6666;
+    animation:pulse 2s infinite;
+  }
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
+
+  /* info rows */
+  .card-info{
+    padding:18px 24px;
+    border-top:1px solid #222;
+    margin-top:18px;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+  .info-row{
+    display:flex;
+    align-items:center;
+    gap:12px;
+  }
+  .info-icon{
+    width:34px;
+    height:34px;
+    background:#222;
+    border-radius:10px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-shrink:0;
+    color:#888;
+    font-size:14px;
+  }
+  .info-content{flex:1;min-width:0;}
+  .info-label{font-size:10px;color:#666;letter-spacing:.06em;text-transform:uppercase;margin-bottom:2px;}
+  .info-value{
+    font-size:14px;
+    color:#F0F0F0;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+  .info-value a{color:#FF6666;text-decoration:none;}
+  .info-value a:hover{text-decoration:underline;}
+
+  /* tags */
+  .card-tags{
+    padding:0 24px 18px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px;
+  }
+  .tag{
+    font-size:11px;
+    font-weight:500;
+    padding:3px 10px;
+    border-radius:20px;
+    background:rgba(255,102,102,.1);
+    color:#FF6666;
+    border:1px solid rgba(255,102,102,.15);
+  }
+
+  /* action buttons */
+  .card-actions{
+    padding:0 24px 24px;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .btn-save{
+    width:100%;
+    background:#FF6666;
+    color:#fff;
+    border:none;
+    border-radius:12px;
+    font-family:'Space Mono',monospace;
+    font-size:12px;
+    font-weight:700;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    padding:14px;
+    cursor:pointer;
+    transition:background .2s,transform .1s;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+  }
+  .btn-save:hover{background:#ff5555;}
+  .btn-save:active{transform:scale(.98);}
+  .btn-copy{
+    width:100%;
+    background:transparent;
+    color:#888;
+    border:1px solid #2A2A2A;
+    border-radius:12px;
+    font-family:'DM Sans',sans-serif;
+    font-size:13px;
+    padding:12px;
+    cursor:pointer;
+    transition:all .2s;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+  }
+  .btn-copy:hover{border-color:#FF6666;color:#FF6666;}
+  .btn-copy.copied{border-color:#50b880;color:#50b880;}
+
+  /* footer */
+  .card-footer{
+    padding:14px 24px;
+    border-top:1px solid #222;
+    text-align:center;
+    font-size:11px;
+    color:#555;
+    letter-spacing:.04em;
+  }
+  .card-footer span{color:#FF6666;opacity:.7;}
+
+  /* not found state */
+  .not-found{
+    text-align:center;
+    color:#888;
+    padding:40px 20px;
+  }
+  .not-found h2{font-size:18px;color:#F0F0F0;margin-bottom:8px;}
+  .not-found p{font-size:13px;line-height:1.6;}
+
+  /* toast */
+  .toast{
+    position:fixed;bottom:20px;left:50%;
+    transform:translateX(-50%) translateY(48px);
+    background:#222;border:1px solid #333;border-radius:10px;
+    color:#F0F0F0;font-size:13px;padding:9px 16px;
+    transition:transform .25s;white-space:nowrap;
+    display:flex;align-items:center;gap:7px;
+    z-index:99;
+  }
+  .toast.show{transform:translateX(-50%) translateY(0);}
+  .toast-dot{width:6px;height:6px;border-radius:50%;background:#FF6666;flex-shrink:0;}
+</style>
+</head>
+<body>
+
+<div class="card" id="card">
+  <div class="card-band"></div>
+  <div class="card-logo-bar">
+    <span class="card-logo-mark">Lost Objects</span>
+  </div>
+  <div id="card-body">
+    <div class="not-found">
+      <h2>Loading…</h2>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"><span class="toast-dot"></span><span id="toast-msg"></span></div>
+
+<script>
+// Read contact ID from URL
+const params = new URLSearchParams(window.location.search);
+const contactId = params.get('id');
+
+// Load contacts from localStorage (same key as main app)
+let contacts = [];
+try { contacts = JSON.parse(localStorage.getItem('lo-contacts-v3')) || []; } catch {}
+
+const TAG_LABELS = {
+  'social-retainer':'Social Media Retainer','marketing-retainer':'Marketing Retainer',
+  'social-audit':'Social Media Audit','marketing-audit':'Marketing Audit',
+  'meta-ads':'Meta Ads','strategy-session':'Strategy Session',
+  'content-creation':'Content Creation','brand-consulting':'Brand Consulting',
+  'speaking':'Speaking Engagement','event':'Event',
+  'instagram':'Instagram','youtube':'YouTube','facebook':'Facebook',
+  'tiktok':'TikTok','threads':'Threads','x':'X / Twitter',
+  'linkedin':'LinkedIn','podcast':'Podcast',
+  'partner':'Partner','sponsor':'Sponsor','collab':'Collaborator',
+  'referral':'Referral','repeat':'Repeat Client','press':'Press / Media',
+  'met':'Met In Person','cold':'Cold Outreach','warm':'Warm Lead',
+  'proposal':'Proposal Sent','contract':'Contract Sent',
+  'negotiating':'In Negotiation','on-hold':'On Hold','wishlist':'Wishlist',
+};
+
+function ini(c){return((c.first||'?')[0]+(c.last||'?')[0]).toUpperCase();}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+function avatarBg(cat){
+  return {active:'#CC3333',prospects:'#A8892A',former:'#3A3A3A',contacts:'#444'}[cat]||'#444';
+}
+
+function render(c) {
+  // Check if avatar is an emoji (from profile settings)
+  const avatarContent = c.shareAvatar || ini(c);
+  const isEmoji = /\p{Emoji}/u.test(avatarContent) && avatarContent.length <= 4;
+
+  const tags = (c.tags||[]).filter(t=>TAG_LABELS[t]).map(t=>`<span class="tag">${TAG_LABELS[t]}</span>`).join('');
+  const badge = (c.cat==='active'&&c.service)
+    ? `<div class="card-badge"><span class="badge-dot"></span>${esc(c.service)}</div>` : '';
+
+  document.getElementById('card-body').innerHTML = `
+    <div class="card-avatar-wrap">
+      <div class="card-avatar" style="background:${isEmoji?'#222':avatarBg(c.cat)};${isEmoji?'font-size:38px;':''}">
+        ${esc(avatarContent)}
+      </div>
+    </div>
+    <div class="card-name-block">
+      <div class="card-name">${esc(c.first)} ${esc(c.last)}</div>
+      <div class="card-company">${esc(c.company||'')}</div>
+      ${badge}
+    </div>
+    <div class="card-info">
+      ${c.email ? `<div class="info-row">
+        <div class="info-icon">✉</div>
+        <div class="info-content">
+          <div class="info-label">Email</div>
+          <div class="info-value"><a href="mailto:${esc(c.email)}">${esc(c.email)}</a></div>
+        </div>
+      </div>` : ''}
+      ${c.phone ? `<div class="info-row">
+        <div class="info-icon">✆</div>
+        <div class="info-content">
+          <div class="info-label">Phone</div>
+          <div class="info-value"><a href="tel:${esc(c.phone)}">${esc(c.phone)}</a></div>
+        </div>
+      </div>` : ''}
+      ${c.website ? `<div class="info-row">
+        <div class="info-icon">🔗</div>
+        <div class="info-content">
+          <div class="info-label">Web / Social</div>
+          <div class="info-value">${esc(c.website)}</div>
+        </div>
+      </div>` : ''}
+    </div>
+    ${tags ? `<div class="card-tags">${tags}</div>` : ''}
+    <div class="card-actions">
+      <button class="btn-save" onclick="downloadVCard()">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M8 1v9M4 7l4 4 4-4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M2 12v2h12v-2" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        Save to Contacts
+      </button>
+      <button class="btn-copy" id="copy-btn" onclick="copyAll()">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <rect x="4" y=".5" width="9.5" height="9.5" rx="1.5" stroke="currentColor" stroke-width="1.2"/>
+          <path d="M.5 4.5v9h9" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+        </svg>
+        Copy Contact Info
+      </button>
+    </div>
+    <div class="card-footer">Shared via <span>Lost Objects</span></div>
+  `;
+}
+
+function downloadVCard() {
+  const c = contacts.find(x=>x.id===contactId);
+  if (!c) return;
+
+  // Build vCard 3.0 — universal format for iPhone & Android
+  const lines = [
+    'BEGIN:VCARD',
+    'VERSION:3.0',
+    `FN:${c.first||''} ${c.last||''}`.trim(),
+    `N:${c.last||''};${c.first||''};;;`,
+  ];
+  if (c.company) {
+    const parts = c.company.split(/[—\-–]/);
+    lines.push(`ORG:${parts[0].trim()}`);
+    if (parts[1]) lines.push(`TITLE:${parts[1].trim()}`);
+  }
+  if (c.email)   lines.push(`EMAIL;TYPE=INTERNET:${c.email}`);
+  if (c.phone)   lines.push(`TEL;TYPE=CELL:${c.phone}`);
+  if (c.website) {
+    const url = c.website.startsWith('http')?c.website:'https://'+c.website.replace(/^@/,'');
+    lines.push(`URL:${url}`);
+  }
+  lines.push('END:VCARD');
+
+  const blob = new Blob([lines.join('\r\n')], {type:'text/vcard;charset=utf-8'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `${(c.first||'contact').toLowerCase()}-${(c.last||'').toLowerCase()}.vcf`.replace(/\s+/g,'-');
+  a.click();
+  toast('Contact file downloaded — open it to save to your contacts.');
+}
+
+function copyAll() {
+  const c = contacts.find(x=>x.id===contactId);
+  if (!c) return;
+  const lines = [
+    `${c.first} ${c.last}`.trim(),
+    c.company||'',
+    c.email   ? `Email: ${c.email}` : '',
+    c.phone   ? `Phone: ${c.phone}` : '',
+    c.website ? `Web: ${c.website}` : '',
+  ].filter(Boolean).join('\n');
+  navigator.clipboard.writeText(lines).then(()=>{
+    const btn = document.getElementById('copy-btn');
+    btn.classList.add('copied');
+    btn.querySelector('span')||btn.insertAdjacentHTML('beforeend','');
+    toast('Copied to clipboard!');
+    setTimeout(()=>btn.classList.remove('copied'),2000);
+  }).catch(()=>toast('Copy failed — try manually.'));
+}
+
+function toast(msg) {
+  const t=document.getElementById('toast');
+  document.getElementById('toast-msg').textContent=msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3200);
+}
+
+// Main render
+if (!contactId) {
+  document.getElementById('card-body').innerHTML = `
+    <div class="not-found">
+      <h2>No contact specified</h2>
+      <p>This link is missing a contact ID.<br>Please ask for a fresh share link.</p>
+    </div>`;
+} else {
+  const c = contacts.find(x=>x.id===contactId);
+  if (!c) {
+    document.getElementById('card-body').innerHTML = `
+      <div class="not-found">
+        <h2>Contact not found</h2>
+        <p>This link may have expired or been removed.<br>Please ask for a fresh share link.</p>
+      </div>`;
+  } else {
+    document.title = `${c.first} ${c.last} — Lost Objects`;
+    render(c);
+  }
+}
+</script>
+</body>
+</html>
