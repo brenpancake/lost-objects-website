@@ -82,6 +82,8 @@
       height: 100%;
       display: flex;
       align-items: center;
+      justify-content: center;
+      position: relative;
     }
     .nav-logo {
       font-size: 13px;
@@ -89,6 +91,17 @@
       letter-spacing: 0.28em;
       text-transform: uppercase;
       color: var(--pink);
+    }
+    .nav-ig {
+      position: absolute;
+      right: var(--pad);
+      display: flex;
+      align-items: center;
+      opacity: 0.45;
+      transition: opacity 0.2s;
+    }
+    .nav-ig:hover {
+      opacity: 1;
     }
 
     /* HERO */
@@ -147,7 +160,7 @@
       animation: fadeUp 0.7s ease 0.15s forwards;
     }
     .eyebrow-line { width: 28px; height: 1px; background: var(--pink); opacity: 0.5; flex-shrink: 0; }
-    .eyebrow-text { font-size: 9px; letter-spacing: 0.28em; text-transform: uppercase; color: var(--pink); opacity: 0.7; }
+    .eyebrow-text { font-size: 11px; font-weight: 500; letter-spacing: 0.24em; text-transform: uppercase; color: var(--pink); opacity: 0.7; }
     .hero-hl {
       font-family: var(--serif);
       font-size: clamp(52px, 7.5vw, 108px);
@@ -172,7 +185,22 @@
       animation: fadeUp 0.7s ease 0.5s forwards;
       text-shadow: 0 1px 12px rgba(10,9,8,0.8);
     }
-    .hero-scroll {
+    .hero-cta {
+      opacity: 0;
+      animation: fadeUp 0.7s ease 0.65s forwards;
+    }
+    .hero-cta .btn-p {
+      display: inline-block;
+      background: var(--pink);
+      color: var(--bg);
+      font-size: 10px; font-weight: 600;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      padding: 13px 28px;
+      transition: opacity 0.2s;
+      white-space: nowrap;
+    }
+    .hero-cta .btn-p:hover { opacity: 0.82; }
+    .hero-scroll-hint {
       position: absolute;
       bottom: 28px; left: 50%;
       transform: translateX(-50%);
@@ -184,12 +212,11 @@
       opacity: 0;
       animation: fadeIn 1s ease 1.2s forwards;
     }
-    .hero-scroll span {
+    .hero-scroll-hint span {
       font-size: 9px;
       letter-spacing: 0.32em;
       text-transform: uppercase;
-      color: rgba(232,226,217,0.75);
-      animation: scrollLabelPulse 1.8s ease-in-out infinite;
+      color: rgba(232,226,217,0.45);
     }
     .scroll-line {
       position: relative;
@@ -215,10 +242,6 @@
       80%  { opacity: 1; }
       100% { top: 44px; opacity: 0; }
     }
-    @keyframes scrollLabelPulse {
-      0%,100% { opacity: 0.5; transform: translateY(0); }
-      50%     { opacity: 1;   transform: translateY(2px); }
-    }
 
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(18px); }
@@ -229,30 +252,34 @@
       to   { opacity: 1; }
     }
 
-    /* COLLAGE GRID */
-    .collage-section {
-      padding: 0 var(--pad) 80px;
-      max-width: var(--max);
-      margin: 0 auto;
-    }
-    .collage-head {
+    /* SECTION EYEBROW — shared pattern */
+    .section-eyebrow {
       display: flex;
       align-items: center;
       gap: 16px;
-      margin-bottom: 40px;
+      margin-bottom: clamp(32px, 5vh, 48px);
     }
-    .collage-head .eyebrow-line {
-      width: 40px;
+    .section-eyebrow-line {
+      width: 32px;
       height: 1px;
       background: var(--pink);
+      opacity: 0.5;
       flex-shrink: 0;
     }
-    .collage-head .eyebrow-text {
-      font-size: 10px;
+    .section-eyebrow-text {
+      font-size: 9px;
       font-weight: 500;
-      letter-spacing: 0.2em;
+      letter-spacing: 0.24em;
       text-transform: uppercase;
-      color: var(--fg3);
+      color: var(--pink);
+      opacity: 0.7;
+    }
+
+    /* COLLAGE GRID */
+    .collage-section {
+      padding: clamp(28px, 4vh, 48px) var(--pad) clamp(64px, 10vh, 100px);
+      max-width: var(--max);
+      margin: 0 auto;
     }
     .collage-grid {
       display: grid;
@@ -340,160 +367,395 @@
       color: var(--cream);
     }
 
-    /* CONTACT SECTION */
+    /* CONTACT — CONVERSATIONAL FORM */
     .contact-section {
-      padding: 100px var(--pad);
-      max-width: 600px;
+      border-top: 1px solid var(--fg4);
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: clamp(28px, 4vh, 48px) var(--pad) clamp(80px, 14vh, 160px);
+    }
+    .contact-section .section-eyebrow {
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .contact-section .section-eyebrow.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .convo-wrap {
+      width: 100%;
+      max-width: 580px;
       margin: 0 auto;
     }
-    .contact-head {
-      text-align: center;
-      margin-bottom: 48px;
-    }
-    .contact-head h2 {
-      font-family: var(--serif);
-      font-size: clamp(28px, 4vw, 44px);
-      font-weight: 400;
-      line-height: 1.15;
-      margin-bottom: 14px;
-    }
-    .contact-head h2 em {
-      font-style: italic;
-      color: var(--pink);
-    }
-    .contact-head p {
-      font-size: 14px;
-      font-weight: 300;
-      color: var(--fg2);
-      line-height: 1.6;
-    }
-    .contact-form {
+
+    /* Receipt lines — completed answers */
+    .convo-receipt {
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 0;
     }
-    .form-field {
+    .receipt-line {
       display: flex;
-      flex-direction: column;
-      gap: 6px;
+      align-items: baseline;
+      gap: 16px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--fg4);
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
     }
-    .form-field label {
-      font-size: 10px;
+    .receipt-line.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .receipt-label {
+      font-size: 9px;
       font-weight: 500;
-      letter-spacing: 0.18em;
+      letter-spacing: 0.22em;
       text-transform: uppercase;
       color: var(--fg3);
+      flex-shrink: 0;
+      min-width: 80px;
     }
-    .form-field input,
-    .form-field textarea {
-      background: var(--bg2);
-      border: 1px solid var(--fg4);
+    .receipt-value {
+      font-size: 14px;
+      font-weight: 300;
       color: var(--fg);
-      font-family: var(--sans);
-      font-size: 14px;
-      font-weight: 300;
-      padding: 14px 16px;
-      outline: none;
-      transition: border-color 0.25s;
-    }
-    .form-field input::placeholder,
-    .form-field textarea::placeholder {
-      color: var(--fg3);
-      opacity: 0.6;
-    }
-    .form-field input:focus,
-    .form-field textarea:focus {
-      border-color: var(--pink);
-    }
-    .form-field textarea {
-      resize: vertical;
-      min-height: 120px;
-    }
-    .submit-btn {
-      align-self: flex-start;
-      font-family: var(--sans);
-      font-size: 10px;
-      font-weight: 500;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--pink);
-      background: transparent;
-      border: 1px solid rgba(255,102,102,0.35);
-      padding: 14px 36px;
-      cursor: pointer;
-      transition: background 0.25s, color 0.25s;
-    }
-    .submit-btn:hover {
-      background: var(--pink);
-      color: var(--bg);
-    }
-    .submit-btn:disabled {
-      cursor: default;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
-    /* SUCCESS STATE */
-    .form-success {
+    /* Active step */
+    .convo-step {
       display: none;
-      text-align: center;
-      padding: 48px 0;
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+      margin-top: 40px;
     }
-    .form-success.visible {
+    .convo-step.active {
       display: block;
     }
-    .form-success h3 {
-      font-family: var(--serif);
-      font-size: clamp(24px, 3vw, 32px);
-      font-weight: 400;
-      margin-bottom: 12px;
+    .convo-step.visible {
+      opacity: 1;
+      transform: translateY(0);
     }
-    .form-success h3 em {
+    .convo-prompt {
+      font-family: var(--serif);
+      font-size: clamp(26px, 3.8vw, 40px);
+      font-weight: 400;
       font-style: italic;
+      color: var(--fg);
+      line-height: 1.2;
+      margin-bottom: 24px;
+    }
+
+    /* Text inputs */
+    .convo-input {
+      width: 100%;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid var(--fg4);
+      color: var(--fg);
+      font-family: var(--sans);
+      font-size: clamp(1.1rem, 1.6vw, 1.4rem);
+      font-weight: 300;
+      padding: 16px 0;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+    .convo-input:focus {
+      border-bottom-color: var(--pink);
+    }
+    .convo-input::placeholder {
+      color: var(--fg3);
+      opacity: 0.5;
+    }
+
+    /* Textarea */
+    .convo-textarea {
+      width: 100%;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid var(--fg4);
+      color: var(--fg);
+      font-family: var(--sans);
+      font-size: clamp(1.1rem, 1.6vw, 1.4rem);
+      font-weight: 300;
+      padding: 16px 0;
+      outline: none;
+      resize: none;
+      overflow: hidden;
+      min-height: 56px;
+      transition: border-color 0.3s;
+    }
+    .convo-textarea:focus {
+      border-bottom-color: var(--pink);
+    }
+    .convo-textarea::placeholder {
+      color: var(--fg3);
+      opacity: 0.5;
+    }
+
+    /* Pill selectors */
+    .pill-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .pill {
+      font-family: var(--sans);
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      color: var(--fg3);
+      background: transparent;
+      border: 1px solid var(--fg4);
+      padding: 13px 24px;
+      cursor: pointer;
+      transition: background 0.25s, border-color 0.25s, color 0.25s;
+      user-select: none;
+    }
+    .pill:hover {
+      border-color: rgba(255,102,102,0.4);
+      color: var(--fg2);
+    }
+    .pill.selected {
+      background: rgba(255,102,102,0.12);
+      border-color: var(--pink);
       color: var(--pink);
     }
-    .form-success p {
-      font-size: 14px;
+
+    /* Next / advance button for pill steps */
+    .convo-next {
+      display: inline-block;
+      margin-top: 24px;
+      font-family: var(--sans);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--fg3);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      transition: color 0.2s;
+    }
+    .convo-next:hover { color: var(--fg); }
+
+    /* Submit button */
+    .convo-submit {
+      width: 100%;
+      font-family: var(--sans);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--bg);
+      background: var(--pink);
+      border: none;
+      padding: 20px 28px;
+      cursor: pointer;
+      transition: opacity 0.25s;
+    }
+    .convo-submit:hover { opacity: 0.82; }
+    .convo-submit:disabled { opacity: 0.5; cursor: default; }
+
+    /* Success state */
+    .convo-success {
+      display: none;
+      text-align: center;
+      padding: 40px 0;
+    }
+    .convo-success.visible { display: block; }
+    .convo-success-hl {
+      font-family: var(--serif);
+      font-size: clamp(32px, 5vw, 56px);
+      font-weight: 400;
+      font-style: italic;
+      color: var(--pink);
+      margin-bottom: 18px;
+    }
+    .convo-success-sub {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--fg3);
+      letter-spacing: 0.02em;
+    }
+    .convo-success-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--pink);
+      animation: successPulse 2s ease-in-out infinite;
+    }
+    @keyframes successPulse {
+      0%, 100% { opacity: 0.3; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.3); }
+    }
+
+    /* DOSSIER — data label block */
+    .dossier {
+      border-top: 1px solid var(--fg4);
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: clamp(28px, 4vh, 48px) var(--pad) clamp(64px, 10vh, 100px);
+    }
+    .dossier-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1px;
+      background: var(--fg4);
+      border: 1px solid var(--fg4);
+    }
+    .dossier-cell {
+      background: var(--bg);
+      padding: clamp(20px, 3vh, 32px) clamp(16px, 2vw, 28px);
+    }
+    .dossier-cell.span-2 {
+      grid-column: span 2;
+    }
+    .dossier-cell.span-3 {
+      grid-column: span 3;
+    }
+    .dossier-key {
+      font-size: 8px;
+      font-weight: 500;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--pink);
+      opacity: 0.6;
+      margin-bottom: 8px;
+    }
+    .dossier-val {
+      font-size: 13px;
       font-weight: 300;
       color: var(--fg2);
-      line-height: 1.6;
+      line-height: 1.65;
+    }
+    .dossier-val-lg {
+      font-family: var(--serif);
+      font-size: clamp(18px, 2.2vw, 26px);
+      font-weight: 400;
+      font-style: italic;
+      color: var(--fg);
+      line-height: 1.3;
+    }
+    .dossier-val strong {
+      color: var(--fg);
+      font-weight: 400;
+    }
+    .dossier-val a {
+      color: var(--fg2);
+      border-bottom: 1px solid var(--fg4);
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .dossier-val a:hover {
+      color: var(--pink);
+      border-color: var(--pink);
+    }
+    .dossier-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 4px;
+    }
+    .dossier-tag {
+      font-size: 9px;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      color: var(--fg3);
+      border: 1px solid var(--fg4);
+      padding: 5px 12px;
+    }
+    .dossier-founders {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+    .dossier-person-name {
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--fg);
+      margin-bottom: 4px;
+    }
+    .dossier-person-role {
+      font-size: 11px;
+      font-weight: 300;
+      color: var(--fg3);
+      line-height: 1.5;
+    }
+    .dossier-status-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .dossier-status-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--pink);
+      animation: successPulse 2s ease-in-out infinite;
+    }
+    .dossier-status-text {
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--fg2);
+      letter-spacing: 0.04em;
+    }
+
+    @media (max-width: 700px) {
+      .dossier-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      .dossier-cell.span-3 {
+        grid-column: span 2;
+      }
+      .dossier-cell.span-2 {
+        grid-column: span 2;
+      }
+      .dossier-founders {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .dossier-grid {
+        grid-template-columns: 1fr;
+      }
+      .dossier-cell.span-2,
+      .dossier-cell.span-3 {
+        grid-column: span 1;
+      }
     }
 
     /* FOOTER */
-    footer {
-      border-top: 1px solid var(--fg4);
-      padding: 32px var(--pad);
-    }
-    .foot-inner {
-      max-width: var(--max);
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .foot-copy {
-      font-size: 11px;
-      font-weight: 300;
-      color: var(--fg3);
-      letter-spacing: 0.04em;
-    }
+    footer { border-top: 1px solid var(--fg4); }
+    .foot-inner { max-width: var(--max); margin: 0 auto; padding: 26px var(--pad); display: flex; flex-direction: column; gap: 20px; }
+    .foot-top { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+    .foot-logo { font-size: 10px; font-weight: 600; letter-spacing: 0.24em; text-transform: uppercase; color: rgba(255,102,102,0.48); }
     .foot-ig {
       display: flex;
       align-items: center;
-      gap: 8px;
-      font-size: 11px;
-      font-weight: 400;
-      color: var(--fg3);
-      letter-spacing: 0.06em;
-      transition: color 0.2s;
+      opacity: 0.45;
+      transition: opacity 0.2s;
     }
-    .foot-ig:hover {
-      color: var(--pink);
-    }
-    .foot-ig svg {
-      transition: transform 0.3s;
-    }
-    .foot-ig:hover svg {
-      transform: rotate(8deg) scale(1.1);
-    }
+    .foot-ig:hover { opacity: 1; }
+    .foot-divider { height: 1px; background: var(--fg4); opacity: 0.5; }
+    .foot-bot { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+    .foot-email { font-size: 9px; letter-spacing: 0.1em; color: var(--fg3); }
+    .foot-mail-lnk { color: var(--fg2); border-bottom: 1px solid var(--fg4); transition: color 0.2s, border-color 0.2s; }
+    .foot-mail-lnk:hover { color: var(--pink); border-color: var(--pink); }
+    .foot-legal { display: flex; gap: 22px; flex-wrap: wrap; }
+    .foot-lnk { font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--fg3); transition: color 0.2s; }
+    .foot-lnk:hover { color: var(--fg2); }
+    .foot-copy { font-size: 9px; letter-spacing: 0.1em; color: var(--fg3); }
 
     /* REVEAL ANIMATION */
     .reveal {
@@ -512,9 +774,9 @@
         grid-template-columns: repeat(2, 1fr);
         gap: 8px;
       }
-      .foot-inner {
+      .foot-top, .foot-bot {
         flex-direction: column;
-        gap: 16px;
+        gap: 12px;
         text-align: center;
       }
     }
@@ -529,6 +791,13 @@
 <nav>
   <div class="nav-inner">
     <span class="nav-logo">Lost Objects</span>
+    <a href="https://www.instagram.com/wearelostobjects/" target="_blank" rel="noopener" class="nav-ig" aria-label="Instagram">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="2" y="2" width="20" height="20" rx="5" stroke="#FF6666" stroke-width="1.5"/>
+        <circle cx="12" cy="12" r="5" stroke="#FF6666" stroke-width="1.5"/>
+        <circle cx="17.5" cy="6.5" r="1.2" fill="#FF6666"/>
+      </svg>
+    </a>
   </div>
 </nav>
 
@@ -549,24 +818,25 @@
 
   <div class="hero-content">
     <div class="hero-eyebrow">
-      <div class="eyebrow-line"></div>
       <span class="eyebrow-text">Social strategy for the creative industry</span>
     </div>
     <h1 class="hero-hl">We tell the stories<br>behind the <em>stories.</em></h1>
     <p class="hero-desc">We're building something new. A home for the work, the process, and the people behind it. Stay close.</p>
+    <div class="hero-cta">
+      <a href="#contact" class="btn-p">Let's talk</a>
+    </div>
   </div>
 
-  <div class="hero-scroll">
+  <div class="hero-scroll-hint">
     <div class="scroll-line"></div>
-    <span>Scroll</span>
   </div>
 </section>
 
 <!-- COLLAGE GRID -->
 <section class="collage-section reveal">
-  <div class="collage-head">
-    <div class="eyebrow-line"></div>
-    <span class="eyebrow-text">From the feed</span>
+  <div class="section-eyebrow">
+    <div class="section-eyebrow-line"></div>
+    <span class="section-eyebrow-text">From the feed</span>
   </div>
   <!--
     HOW TO ADD INSTAGRAM POSTS:
@@ -641,45 +911,209 @@
   <p class="collage-caption">Follow our work <a href="https://www.instagram.com/wearelostobjects/" target="_blank" rel="noopener">@wearelostobjects</a></p>
 </section>
 
-<!-- CONTACT -->
-<section class="contact-section reveal">
-  <div class="contact-head">
-    <h2>Say <em>hello.</em></h2>
-    <p>We're not far. Drop a line and we'll be in touch.</p>
+<!-- CONTACT — CONVERSATIONAL FORM -->
+<section class="contact-section" id="contact">
+  <div class="section-eyebrow" id="convoHeader">
+    <div class="section-eyebrow-line"></div>
+    <span class="section-eyebrow-text">Stop feeling lost</span>
   </div>
-  <form class="contact-form" id="comingSoonForm" action="https://formspree.io/f/YOUR_FORMSPREE_ID" method="POST">
-    <div class="form-field">
-      <label for="cs-name">Name</label>
-      <input type="text" id="cs-name" name="name" placeholder="Your name" required />
+  <div class="convo-wrap">
+
+    <!-- Receipt of completed answers -->
+    <div class="convo-receipt" id="convoReceipt"></div>
+
+    <!-- Step 1: Name -->
+    <div class="convo-step active" data-step="1">
+      <div class="convo-prompt">What's your name?</div>
+      <input class="convo-input" type="text" id="cs-name" placeholder="First and last name" autocomplete="name" />
     </div>
-    <div class="form-field">
-      <label for="cs-email">Email</label>
-      <input type="email" id="cs-email" name="email" placeholder="you@example.com" required />
+
+    <!-- Step 2: Email -->
+    <div class="convo-step" data-step="2">
+      <div class="convo-prompt">Where can we reach you?</div>
+      <input class="convo-input" type="email" id="cs-email" placeholder="your@email.com" autocomplete="email" />
     </div>
-    <div class="form-field">
-      <label for="cs-message">Message</label>
-      <textarea id="cs-message" name="message" placeholder="What's on your mind?" required></textarea>
+
+    <!-- Step 3: Subject -->
+    <div class="convo-step" data-step="3">
+      <div class="convo-prompt">Give us a subject line.</div>
+      <input class="convo-input" type="text" id="cs-subject" placeholder="e.g. Ready to grow my Instagram, Need a strategy partner..." />
     </div>
-    <button type="submit" class="submit-btn">Send it</button>
-  </form>
-  <div class="form-success" id="formSuccess">
-    <h3>Message <em>sent.</em></h3>
-    <p>We'll get back to you soon. In the meantime, keep creating.</p>
+
+    <!-- Step 4: Role (single select pills) -->
+    <div class="convo-step" data-step="4">
+      <div class="convo-prompt">How would you describe yourself?</div>
+      <div class="pill-group" id="roleGroup">
+        <button type="button" class="pill" data-value="Cinematographer">Cinematographer</button>
+        <button type="button" class="pill" data-value="Grip or Lighting Tech">Grip or Lighting Tech</button>
+        <button type="button" class="pill" data-value="Key Grip or Gaffer">Key Grip or Gaffer</button>
+        <button type="button" class="pill" data-value="Director or Producer">Director or Producer</button>
+        <button type="button" class="pill" data-value="Film Tech Brand">Film Tech Brand</button>
+        <button type="button" class="pill" data-value="Production House">Production House</button>
+        <button type="button" class="pill" data-value="Creative Entrepreneur">Creative Entrepreneur</button>
+        <button type="button" class="pill" data-value="Other">Other</button>
+      </div>
+      <div id="roleOtherWrap" style="display:none; margin-top:20px;">
+        <input class="convo-input" type="text" id="cs-role-other" placeholder="Tell us what you do..." />
+      </div>
+    </div>
+
+    <!-- Step 5: Platforms (multi-select pills) -->
+    <div class="convo-step" data-step="5">
+      <div class="convo-prompt">Which platforms are you on?</div>
+      <div class="pill-group" id="platformGroup">
+        <button type="button" class="pill" data-value="Instagram">Instagram</button>
+        <button type="button" class="pill" data-value="TikTok">TikTok</button>
+        <button type="button" class="pill" data-value="YouTube">YouTube</button>
+        <button type="button" class="pill" data-value="Facebook">Facebook</button>
+        <button type="button" class="pill" data-value="LinkedIn">LinkedIn</button>
+        <button type="button" class="pill" data-value="None yet">None yet</button>
+      </div>
+      <button type="button" class="convo-next" id="platformNext">Continue &rarr;</button>
+    </div>
+
+    <!-- Step 6: Looking for (multi-select pills) -->
+    <div class="convo-step" data-step="6">
+      <div class="convo-prompt">What are you looking for?</div>
+      <div class="pill-group" id="lookingGroup">
+        <button type="button" class="pill" data-value="Social Audit">Social Audit</button>
+        <button type="button" class="pill" data-value="Strategy Session">Strategy Session</button>
+        <button type="button" class="pill" data-value="Full Management">Full Management</button>
+        <button type="button" class="pill" data-value="Not sure yet">Not sure yet</button>
+        <button type="button" class="pill" data-value="Custom Services" id="lookingCustomPill">Custom Services</button>
+      </div>
+      <div id="lookingCustomWrap" style="display:none; margin-top:20px;">
+        <input class="convo-input" type="text" id="cs-looking-custom" placeholder="Tell us what you're looking for..." />
+      </div>
+      <button type="button" class="convo-next" id="lookingNext">Continue &rarr;</button>
+    </div>
+
+    <!-- Step 7: Message -->
+    <div class="convo-step" data-step="7">
+      <div class="convo-prompt">Tell us a little more.</div>
+      <textarea class="convo-textarea" id="cs-message" placeholder="Context, goals, where you are right now..." rows="1"></textarea>
+      <button type="button" class="convo-next" id="messageNext" style="display:none">Continue &rarr;</button>
+    </div>
+
+    <!-- Step 8: Send -->
+    <div class="convo-step" data-step="8">
+      <button type="button" class="convo-submit" id="convoSend">Send it.</button>
+    </div>
+
+    <!-- Success -->
+    <div class="convo-success" id="convoSuccess">
+      <div class="convo-success-hl">You've been found.</div>
+      <div class="convo-success-sub">
+        <span class="convo-success-dot"></span>
+        We'll be in touch within 48 hours.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DOSSIER — data label -->
+<section class="dossier reveal">
+  <div class="section-eyebrow">
+    <div class="section-eyebrow-line"></div>
+    <span class="section-eyebrow-text">The dossier</span>
+  </div>
+
+  <div class="dossier-grid">
+
+    <div class="dossier-cell span-3">
+      <div class="dossier-key">What is Lost Objects</div>
+      <div class="dossier-val-lg">Social media strategy and full management for filmmakers, creators, and entertainment brands who are extraordinary at their craft — and nearly invisible online.</div>
+    </div>
+
+    <div class="dossier-cell">
+      <div class="dossier-key">Entity</div>
+      <div class="dossier-val"><strong>Lost Objects LLC</strong></div>
+    </div>
+    <div class="dossier-cell">
+      <div class="dossier-key">Based</div>
+      <div class="dossier-val"><strong>West Hollywood</strong>, Los Angeles</div>
+    </div>
+    <div class="dossier-cell">
+      <div class="dossier-key">Status</div>
+      <div class="dossier-status-row">
+        <span class="dossier-status-dot"></span>
+        <span class="dossier-status-text">Accepting clients</span>
+      </div>
+    </div>
+
+    <div class="dossier-cell span-2">
+      <div class="dossier-key">Founded by</div>
+      <div class="dossier-founders">
+        <div>
+          <div class="dossier-person-name">Brendan Sweeney</div>
+          <div class="dossier-person-role">Director · Producer · CEO, Filmmakers Academy</div>
+        </div>
+        <div>
+          <div class="dossier-person-name">Kyra Sweeney</div>
+          <div class="dossier-person-role">SAG-AFTRA Actor · Social Media Strategist</div>
+        </div>
+      </div>
+    </div>
+    <div class="dossier-cell">
+      <div class="dossier-key">Origin</div>
+      <div class="dossier-val">Built to close the gap between brilliant creative work and the audience it deserves.</div>
+    </div>
+
+    <div class="dossier-cell">
+      <div class="dossier-key">Industries</div>
+      <div class="dossier-tags">
+        <span class="dossier-tag">Film</span>
+        <span class="dossier-tag">Cinematography</span>
+        <span class="dossier-tag">Grip & Lighting</span>
+        <span class="dossier-tag">Production</span>
+        <span class="dossier-tag">Entertainment</span>
+      </div>
+    </div>
+    <div class="dossier-cell">
+      <div class="dossier-key">Services</div>
+      <div class="dossier-tags">
+        <span class="dossier-tag">Strategy</span>
+        <span class="dossier-tag">Full Management</span>
+        <span class="dossier-tag">Content</span>
+        <span class="dossier-tag">Brand Identity</span>
+        <span class="dossier-tag">Audit</span>
+      </div>
+    </div>
+    <div class="dossier-cell">
+      <div class="dossier-key">Partnerships</div>
+      <div class="dossier-val"><strong>Kodak</strong> · <strong>B&H Photo</strong> · <strong>Nanlux</strong> · <strong>Hollyland</strong></div>
+    </div>
+
+    <div class="dossier-cell span-3">
+      <div class="dossier-key">The name</div>
+      <div class="dossier-val">We are all lost objects at some point — people, brands, ideas that haven't been found yet. The work we do is about finding them. Making them visible. Getting them in front of the rooms they deserve to be in.</div>
+    </div>
+
   </div>
 </section>
 
 <!-- FOOTER -->
 <footer>
   <div class="foot-inner">
-    <div class="foot-copy">&copy; 2026 Lost Objects LLC</div>
-    <a href="https://www.instagram.com/wearelostobjects/" target="_blank" rel="noopener" class="foot-ig">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" stroke-width="1.5"/>
-        <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="1.5"/>
-        <circle cx="17.5" cy="6.5" r="1.2" fill="currentColor"/>
-      </svg>
-      Instagram
-    </a>
+    <div class="foot-top">
+      <div class="foot-logo">Lost Objects</div>
+      <a href="https://www.instagram.com/wearelostobjects/" target="_blank" rel="noopener" class="foot-ig" aria-label="Instagram">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="2" width="20" height="20" rx="5" stroke="#FF6666" stroke-width="1.5"/>
+          <circle cx="12" cy="12" r="5" stroke="#FF6666" stroke-width="1.5"/>
+          <circle cx="17.5" cy="6.5" r="1.2" fill="#FF6666"/>
+        </svg>
+      </a>
+    </div>
+    <div class="foot-divider"></div>
+    <div class="foot-bot">
+      <div class="foot-email">Email us at <a href="mailto:contact@wearelostobjects.com" class="foot-mail-lnk">contact@wearelostobjects.com</a></div>
+      <div class="foot-legal">
+        <a href="privacy.html" class="foot-lnk">Privacy</a>
+        <a href="terms.html" class="foot-lnk">Terms &amp; Conditions</a>
+      </div>
+      <div class="foot-copy">&copy; 2026 Lost Objects</div>
+    </div>
   </div>
 </footer>
 
@@ -746,46 +1180,232 @@
   // Uncomment when you have real URLs and an access token:
   // loadInstagramEmbeds();
 
-  /* FORM SUBMIT */
-  const form = document.getElementById('comingSoonForm');
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const btn = form.querySelector('.submit-btn');
-    const originalText = btn.innerHTML;
+  /* ═══════════════════════════════════════════
+     CONVERSATIONAL FORM ENGINE
+     ═══════════════════════════════════════════ */
+  (function() {
+    const FORMSPREE = 'https://formspree.io/f/YOUR_FORMSPREE_ID';
+    const receipt = document.getElementById('convoReceipt');
+    const steps = document.querySelectorAll('.convo-step');
+    const header = document.getElementById('convoHeader');
+    let current = 1;
 
-    btn.innerHTML = 'Sending...';
-    btn.style.opacity = '0.6';
-    btn.disabled = true;
+    // Collected data
+    const data = { name:'', email:'', subject:'', role:'', platforms:[], looking_for:[], message:'' };
 
-    try {
-      const res = await fetch(form.action, {
-        method: 'POST',
-        body: new FormData(form),
-        headers: { 'Accept': 'application/json' }
+    // Show header on scroll into view
+    const secObs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { header.classList.add('visible'); secObs.unobserve(e.target); } });
+    }, { threshold: 0.15 });
+    secObs.observe(document.getElementById('contact'));
+
+    // Reveal step 1
+    requestAnimationFrame(() => {
+      const s1 = steps[0];
+      s1.classList.add('active');
+      requestAnimationFrame(() => s1.classList.add('visible'));
+    });
+
+    // Auto-focus first input when hero CTA scrolls here
+    document.querySelector('a[href="#contact"]').addEventListener('click', () => {
+      setTimeout(() => {
+        document.getElementById('cs-name').focus();
+        header.classList.add('visible');
+      }, 600);
+    });
+
+    // ─── Helpers ───
+    function addReceipt(label, value) {
+      const line = document.createElement('div');
+      line.className = 'receipt-line';
+      line.innerHTML = '<span class="receipt-label">' + label + '</span><span class="receipt-value">' + escHtml(value) + '</span>';
+      receipt.appendChild(line);
+      requestAnimationFrame(() => line.classList.add('visible'));
+    }
+
+    function escHtml(s) {
+      const d = document.createElement('div');
+      d.textContent = s;
+      return d.innerHTML;
+    }
+
+    function showStep(n) {
+      steps.forEach(s => { s.classList.remove('active','visible'); });
+      const next = document.querySelector('.convo-step[data-step="' + n + '"]');
+      if (!next) return;
+      next.classList.add('active');
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          next.classList.add('visible');
+          const input = next.querySelector('.convo-input, .convo-textarea');
+          if (input) input.focus();
+        });
       });
+      current = n;
+    }
 
-      if (res.ok) {
-        form.style.display = 'none';
-        const successEl = document.getElementById('formSuccess');
-        successEl.classList.add('visible');
-        successEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      } else {
-        btn.innerHTML = 'Something went wrong — try again';
-        btn.style.opacity = '1';
+    function advance(label, value) {
+      addReceipt(label, value);
+      showStep(current + 1);
+    }
+
+    // ─── Step 1–3: text inputs (Enter / Tab to advance) ───
+    const textSteps = [
+      { id: 'cs-name',    key: 'name',    label: 'Name',    step: 1 },
+      { id: 'cs-email',   key: 'email',   label: 'Email',   step: 2 },
+      { id: 'cs-subject', key: 'subject', label: 'Subject', step: 3 }
+    ];
+
+    textSteps.forEach(cfg => {
+      const el = document.getElementById(cfg.id);
+      el.addEventListener('keydown', e => {
+        if ((e.key === 'Enter' || e.key === 'Tab') && current === cfg.step) {
+          e.preventDefault();
+          const val = el.value.trim();
+          if (!val) return;
+          if (cfg.key === 'email' && !el.checkValidity()) return;
+          data[cfg.key] = val;
+          advance(cfg.label, val);
+        }
+      });
+    });
+
+    // ─── Step 4: role (single select — click to advance, "Other" shows text field) ───
+    const roleOtherWrap = document.getElementById('roleOtherWrap');
+    const roleOtherInput = document.getElementById('cs-role-other');
+
+    document.querySelectorAll('#roleGroup .pill').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('#roleGroup .pill').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+
+        if (btn.dataset.value === 'Other') {
+          roleOtherWrap.style.display = 'block';
+          roleOtherInput.focus();
+        } else {
+          roleOtherWrap.style.display = 'none';
+          data.role = btn.dataset.value;
+          setTimeout(() => advance('Role', data.role), 250);
+        }
+      });
+    });
+
+    roleOtherInput.addEventListener('keydown', e => {
+      if ((e.key === 'Enter' || e.key === 'Tab') && current === 4) {
+        e.preventDefault();
+        const val = roleOtherInput.value.trim();
+        if (!val) return;
+        data.role = val;
+        advance('Role', data.role);
+      }
+    });
+
+    // ─── Step 5: platforms (multi-select pills) ───
+    document.querySelectorAll('#platformGroup .pill').forEach(btn => {
+      btn.addEventListener('click', () => btn.classList.toggle('selected'));
+    });
+    document.getElementById('platformNext').addEventListener('click', () => {
+      const selected = Array.from(document.querySelectorAll('#platformGroup .pill.selected')).map(b => b.dataset.value);
+      data.platforms = selected;
+      advance('Platforms', selected.length ? selected.join(', ') : 'None selected');
+    });
+
+    // ─── Step 6: looking for (multi-select pills + Custom Services text field) ───
+    const lookingCustomWrap = document.getElementById('lookingCustomWrap');
+    const lookingCustomInput = document.getElementById('cs-looking-custom');
+
+    document.querySelectorAll('#lookingGroup .pill').forEach(btn => {
+      btn.addEventListener('click', () => {
+        btn.classList.toggle('selected');
+        // Show/hide custom field when Custom Services is toggled
+        if (btn.id === 'lookingCustomPill') {
+          const isOn = btn.classList.contains('selected');
+          lookingCustomWrap.style.display = isOn ? 'block' : 'none';
+          if (isOn) lookingCustomInput.focus();
+        }
+      });
+    });
+    document.getElementById('lookingNext').addEventListener('click', () => {
+      const selected = Array.from(document.querySelectorAll('#lookingGroup .pill.selected')).map(b => b.dataset.value);
+      // If Custom Services is selected, replace its label with what they typed
+      const customVal = lookingCustomInput.value.trim();
+      if (customVal) {
+        const idx = selected.indexOf('Custom Services');
+        if (idx !== -1) selected[idx] = customVal;
+      }
+      data.looking_for = selected;
+      advance('Looking for', selected.length ? selected.join(', ') : 'None selected');
+    });
+
+    // ─── Step 7: textarea with Continue button ───
+    const ta = document.getElementById('cs-message');
+    const messageNext = document.getElementById('messageNext');
+
+    // Auto-expand textarea as user types
+    ta.addEventListener('input', () => {
+      ta.style.height = 'auto';
+      ta.style.height = ta.scrollHeight + 'px';
+      // Show/hide the Continue button based on content
+      messageNext.style.display = ta.value.trim() ? 'inline-block' : 'none';
+    });
+
+    // Continue button advances to Step 8
+    messageNext.addEventListener('click', () => {
+      data.message = ta.value.trim();
+      advance('Message', data.message || '(none)');
+    });
+
+    // ─── Step 8: send ───
+    document.getElementById('convoSend').addEventListener('click', async function() {
+      const btn = this;
+      // Capture message if user typed but didn't click Continue
+      if (!data.message && ta.value.trim()) data.message = ta.value.trim();
+
+      btn.textContent = 'Sending...';
+      btn.disabled = true;
+
+      const formData = new FormData();
+      formData.append('name', data.name);
+      formData.append('email', data.email);
+      formData.append('subject', data.subject);
+      formData.append('role', data.role);
+      formData.append('platforms', data.platforms.join(', '));
+      formData.append('looking_for', data.looking_for.join(', '));
+      formData.append('message', data.message);
+
+      try {
+        const res = await fetch(FORMSPREE, {
+          method: 'POST',
+          body: formData,
+          headers: { 'Accept': 'application/json' }
+        });
+
+        if (res.ok) {
+          // Hide everything, show success
+          receipt.style.display = 'none';
+          steps.forEach(s => { s.classList.remove('active','visible'); });
+          header.style.display = 'none';
+          const success = document.getElementById('convoSuccess');
+          success.classList.add('visible');
+          success.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } else {
+          btn.textContent = 'Something went wrong — try again';
+          btn.disabled = false;
+        }
+      } catch (err) {
+        btn.textContent = 'Send it.';
         btn.disabled = false;
       }
-    } catch (err) {
-      btn.innerHTML = originalText;
-      btn.style.opacity = '1';
-      btn.disabled = false;
-    }
-  });
+    });
+  })();
 </script>
 
 <script src="https://player.vimeo.com/api/player.js"></script>
 
 <!-- Instagram embed script (load when ready) -->
 <!-- <script async src="//www.instagram.com/embed.js"></script> -->
+
+<script src="lead-popup.js"></script>
 
 </body>
 </html>
