@@ -9,8 +9,8 @@
 (function () {
   'use strict';
 
-  const KIT_FORM_ID = 'YOUR_KIT_FORM_ID';
-  const KIT_API_KEY = 'YOUR_KIT_API_KEY';
+  const KIT_FORM_ID = '9497290';
+  const KIT_API_KEY = '2kX3wQFp_oPESdqb_Vi6RQ';
 
   /* Don't show the button if already signed up */
   let signedUp = false;
@@ -493,7 +493,21 @@
       font-family: 'Inter', system-ui, sans-serif;
       font-size: 12px; font-weight: 300;
       color: rgba(232,226,217,0.45); line-height: 1.75;
+      margin-bottom: 18px;
     }
+
+    .lo-success-btn {
+      display: inline-block;
+      background: #FF6666;
+      color: #0f0e0d;
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 10px; font-weight: 600;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      padding: 12px 24px;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+    .lo-success-btn:hover { opacity: 0.82; }
 
     @media (max-width: 480px) {
       #lo-launcher { bottom: 16px; }
@@ -596,6 +610,7 @@
           </div>
           <h3 class="lo-success-hl">You're <em>found.</em></h3>
           <p class="lo-success-sub">Check your inbox — the seminar is on its way.<br>If you don't see it, check your spam folder.</p>
+          <a href="https://watch.filmmakersacademy.com/programs/instagram-for-filmmakers-your-blueprint-for-success" target="_blank" rel="noopener" class="lo-success-btn">Watch the free seminar &rarr;</a>
         </div>
 
       </div>
