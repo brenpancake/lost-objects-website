@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <!-- Film grain filter -->
+    <filter id="grain" x="-20%" y="-20%" width="140%" height="140%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="4" stitchTiles="stitch" result="noise"/>
+      <feColorMatrix type="saturate" values="0" in="noise" result="mono"/>
+      <feBlend in="SourceGraphic" in2="mono" mode="multiply" result="blend"/>
+      <feComponentTransfer in="blend">
+        <feFuncA type="linear" slope="1"/>
+      </feComponentTransfer>
+    </filter>
+    <!-- Subtle grain overlay -->
+    <filter id="grainOverlay" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch" result="noise"/>
+      <feColorMatrix type="saturate" values="0" in="noise" result="mono"/>
+      <feComponentTransfer in="mono" result="faded">
+        <feFuncA type="linear" slope="0.06"/>
+      </feComponentTransfer>
+      <feBlend in="SourceGraphic" in2="faded" mode="screen"/>
+    </filter>
+    <!-- Radial pink glow -->
+    <radialGradient id="pinkGlow" cx="35%" cy="50%" r="45%" fx="35%" fy="50%">
+      <stop offset="0%" stop-color="#FF6666" stop-opacity="0.12"/>
+      <stop offset="60%" stop-color="#FF6666" stop-opacity="0.04"/>
+      <stop offset="100%" stop-color="#FF6666" stop-opacity="0"/>
+    </radialGradient>
+    <!-- Edge vignette -->
+    <radialGradient id="vignette" cx="50%" cy="50%" r="60%">
+      <stop offset="0%" stop-color="#0f0e0d" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#0f0e0d" stop-opacity="0.55"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="#0f0e0d"/>
+
+  <!-- Pink glow -->
+  <rect width="1200" height="630" fill="url(#pinkGlow)"/>
+
+  <!-- Vignette -->
+  <rect width="1200" height="630" fill="url(#vignette)"/>
+
+  <!-- Grain overlay -->
+  <rect width="1200" height="630" fill="#0f0e0d" opacity="0.05" filter="url(#grainOverlay)"/>
+
+  <!-- Viewfinder corner brackets — top left -->
+  <path d="M 48 48 L 48 88" stroke="#FF6666" stroke-width="1" fill="none" opacity="0.2"/>
+  <path d="M 48 48 L 88 48" stroke="#FF6666" stroke-width="1" fill="none" opacity="0.2"/>
+
+  <!-- Viewfinder corner brackets — top right -->
+  <path d="M 1152 48 L 1152 88" stroke="#FF6666" stroke-width="1" fill="none" opacity="0.2"/>
+  <path d="M 1152 48 L 1112 48" stroke="#FF6666" stroke-width="1" fill="none" opacity="0.2"/>
+
+  <!-- Viewfinder corner brackets — bottom left -->
+  <path d="M 48 582 L 48 542" stroke="#FF6666" stroke-width="1" fill="none" opacity="0.2"/>
+  <path d="M 48 582 L 88 582" stroke="#FF6666" stroke-width="1" fill="none" opacity="0.2"/>
+
+  <!-- Viewfinder corner brackets — bottom right -->
+  <path d="M 1152 582 L 1152 542" stroke="#FF6666" stroke-width="1" fill="none" opacity="0.2"/>
+  <path d="M 1152 582 L 1112 582" stroke="#FF6666" stroke-width="1" fill="none" opacity="0.2"/>
+
+  <!-- Lost Objects wordmark — top left -->
+  <text x="72" y="100" font-family="'DM Serif Display', Georgia, serif" font-size="14" font-weight="400" letter-spacing="6" fill="#FF6666" text-transform="uppercase">LOST OBJECTS</text>
+
+  <!-- Thin pink horizontal rule -->
+  <line x1="72" y1="120" x2="1128" y2="120" stroke="#FF6666" stroke-width="0.5" opacity="0.25"/>
+
+  <!-- Main headline -->
+  <text x="600" y="290" font-family="'DM Serif Display', Georgia, serif" font-size="62" font-weight="400" font-style="italic" fill="#e8e2d9" text-anchor="middle" letter-spacing="-0.5">Your work deserves</text>
+  <text x="600" y="362" font-family="'DM Serif Display', Georgia, serif" font-size="62" font-weight="400" font-style="italic" fill="#e8e2d9" text-anchor="middle" letter-spacing="-0.5">to be <tspan fill="#FF6666">found.</tspan></text>
+
+  <!-- Subtitle -->
+  <text x="600" y="420" font-family="'Inter', system-ui, sans-serif" font-size="11" font-weight="400" letter-spacing="3.5" fill="#e8e2d9" fill-opacity="0.4" text-anchor="middle" text-transform="uppercase">A BOUTIQUE SOCIAL MEDIA AGENCY BUILT FROM INSIDE THE FILM INDUSTRY.</text>
+
+  <!-- Bottom left — location -->
+  <text x="72" y="572" font-family="'Inter', system-ui, sans-serif" font-size="9" font-weight="400" letter-spacing="2.5" fill="#e8e2d9" fill-opacity="0.22">WEST HOLLYWOOD, LOS ANGELES</text>
+
+  <!-- Bottom right — URL -->
+  <text x="1128" y="572" font-family="'Inter', system-ui, sans-serif" font-size="9" font-weight="400" letter-spacing="2.5" fill="#FF6666" fill-opacity="0.5" text-anchor="end">WEARELOSTOBJECTS.COM</text>
+</svg>

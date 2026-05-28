@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=1200" />
+  <title>OG Image — Lost Objects (screenshot at 1200×630)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      font-family: 'Inter', system-ui, sans-serif;
+    }
+    .og-frame {
+      width: 1200px;
+      height: 630px;
+      position: relative;
+      background: #0f0e0d;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    /* Pink glow */
+    .og-glow {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 35% 50%, rgba(255,102,102,0.12) 0%, rgba(255,102,102,0.04) 40%, transparent 70%);
+    }
+
+    /* Vignette */
+    .og-vignette {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 50%, transparent 30%, rgba(15,14,13,0.55) 100%);
+    }
+
+    /* Grain */
+    .og-grain {
+      position: absolute;
+      inset: -50px;
+      width: calc(100% + 100px);
+      height: calc(100% + 100px);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+      opacity: 0.05;
+      pointer-events: none;
+    }
+
+    /* Wordmark */
+    .og-wordmark {
+      position: absolute;
+      top: 48px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: #FF6666;
+    }
+
+    /* Headline */
+    .og-headline {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -55%);
+      text-align: center;
+      white-space: nowrap;
+    }
+    .og-headline h1 {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: 62px;
+      font-weight: 400;
+      font-style: italic;
+      color: #e8e2d9;
+      line-height: 1.15;
+      letter-spacing: -0.5px;
+    }
+    .og-headline h1 em {
+      font-style: italic;
+      color: #FF6666;
+    }
+
+    /* Subtitle */
+    .og-subtitle {
+      position: absolute;
+      top: 415px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 3.5px;
+      text-transform: uppercase;
+      color: rgba(232,226,217,0.4);
+      white-space: nowrap;
+    }
+
+    /* Bottom center — location + URL */
+    .og-bottom {
+      position: absolute;
+      bottom: 48px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 10px;
+      font-weight: 400;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: rgba(232,226,217,0.3);
+      white-space: nowrap;
+    }
+  </style>
+</head>
+<body>
+  <div class="og-frame">
+    <div class="og-glow"></div>
+    <div class="og-vignette"></div>
+    <div class="og-grain"></div>
+
+    <div class="og-wordmark">Lost Objects</div>
+
+    <div class="og-headline">
+      <h1>Your work deserves<br>to be <em>found.</em></h1>
+    </div>
+
+    <div class="og-subtitle">A boutique social media agency built from inside the film industry.</div>
+
+    <div class="og-bottom">West Hollywood, Los Angeles · wearelostobjects.com</div>
+  </div>
+</body>
+</html>
