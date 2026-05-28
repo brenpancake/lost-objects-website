@@ -175,7 +175,7 @@
     }
     .hero-hl em { font-style: italic; color: var(--pink); }
     .hero-desc {
-      font-size: clamp(12px, 1.1vw, 15px);
+      font-size: clamp(14px, 1.1vw, 15px);
       font-weight: 400;
       color: rgba(232,226,217,0.72);
       line-height: 1.8;
@@ -252,6 +252,20 @@
       to   { opacity: 1; }
     }
 
+    /* SCROLL-DRIVEN FOCUS — sections fade in/out as scenes */
+    .scene {
+      opacity: 0.15;
+      transform: scale(0.98);
+      transition: opacity 0.6s ease, transform 0.7s ease;
+      will-change: opacity, transform;
+    }
+    .scene.in-focus {
+      opacity: 1;
+      transform: scale(1);
+    }
+    /* Hero is always in focus (it has its own intro animations) */
+    .hero.scene { opacity: 1; transform: scale(1); }
+
     /* SECTION EYEBROW — shared pattern */
     .section-eyebrow {
       display: flex;
@@ -272,12 +286,12 @@
       letter-spacing: 0.22em;
       text-transform: uppercase;
       color: var(--pink);
-      opacity: 0.7;
+      opacity: 0.85;
     }
 
     /* COLLAGE GRID */
     .collage-section {
-      padding: clamp(28px, 4vh, 48px) var(--pad) clamp(64px, 10vh, 100px);
+      padding: clamp(52px, 8vh, 80px) var(--pad) clamp(64px, 10vh, 100px);
       max-width: var(--max);
       margin: 0 auto;
     }
@@ -285,12 +299,28 @@
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 12px;
+      overflow: visible;
+      padding: 16px;
+      margin: -16px;
+    }
+    /* When any card is hovered, dim siblings */
+    .collage-grid:hover .collage-card {
+      transform: scale(0.94);
+      opacity: 0.65;
+    }
+    .collage-grid:hover .collage-card:hover {
+      transform: scale(1.06);
+      opacity: 1;
+      z-index: 10;
     }
     .collage-card {
       position: relative;
       overflow: hidden;
       background: var(--bg2);
       border: 1px solid var(--fg4);
+      cursor: pointer;
+      transition: transform 0.35s ease, opacity 0.35s ease;
+      transform-origin: center center;
     }
     .collage-card::before {
       content: '';
@@ -319,38 +349,73 @@
       height: 100%;
       object-fit: cover;
     }
+
+    /* Hover overlay — cinematic vignette + pink glow + IG icon + label */
     .collage-card-overlay {
       position: absolute;
       inset: 0;
-      background: linear-gradient(180deg, transparent 50%, rgba(15,14,13,0.5) 100%);
+      z-index: 2;
       opacity: 0;
       transition: opacity 0.35s ease;
+      pointer-events: none;
+      /* Dark vignette from edges */
+      background:
+        radial-gradient(ellipse at center, transparent 30%, rgba(10,9,8,0.7) 100%),
+        linear-gradient(to top, rgba(10,9,8,0.8) 0%, transparent 40%);
     }
     .collage-card:hover .collage-card-overlay {
       opacity: 1;
     }
-    .collage-card-placeholder {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-      color: var(--fg4);
+
+    /* Pink bottom glow */
+    .collage-card-overlay::before {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 10%; right: 10%;
+      height: 2px;
+      background: var(--pink);
+      box-shadow: 0 0 20px rgba(255,102,102,0.5), 0 0 40px rgba(255,102,102,0.25);
+      opacity: 0.7;
+      animation: pinkPulse 2s ease-in-out infinite;
     }
-    .collage-card-placeholder svg {
-      opacity: 0.3;
+    @keyframes pinkPulse {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 1; }
     }
-    .collage-card-placeholder span {
-      font-size: 9px;
-      letter-spacing: 0.15em;
+
+    /* Instagram icon — top right */
+    .collage-card-ig {
+      position: absolute;
+      top: 12px; right: 12px;
+      z-index: 3;
+      opacity: 0;
+      transform: translateY(4px);
+      transition: opacity 0.35s ease, transform 0.35s ease;
+    }
+    .collage-card:hover .collage-card-ig {
+      opacity: 0.85;
+      transform: translateY(0);
+    }
+
+    /* "View on Instagram" label — bottom */
+    .collage-card-label {
+      position: absolute;
+      bottom: 14px; left: 0; right: 0;
+      z-index: 3;
+      text-align: center;
+      font-size: 8px;
+      font-weight: 500;
+      letter-spacing: 0.22em;
       text-transform: uppercase;
-      opacity: 0.4;
+      color: rgba(255,255,255,0.85);
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity 0.35s ease, transform 0.35s ease;
     }
-    /* Instagram embed container */
-    .ig-embed-wrap {
-      width: 100%;
-      display: none;
+    .collage-card:hover .collage-card-label {
+      opacity: 1;
+      transform: translateY(0);
     }
-    .ig-embed-wrap.loaded { display: block; }
     .collage-caption {
       text-align: center;
       margin-top: 32px;
@@ -371,7 +436,7 @@
     .contact-section {
       max-width: var(--max);
       margin: 0 auto;
-      padding: clamp(28px, 4vh, 48px) var(--pad) clamp(80px, 14vh, 160px);
+      padding: clamp(52px, 8vh, 80px) var(--pad) clamp(80px, 14vh, 160px);
     }
     .contact-section .section-eyebrow {
       opacity: 0;
@@ -513,6 +578,7 @@
       background: transparent;
       border: 1px solid var(--fg4);
       padding: 13px 24px;
+      min-height: 44px;
       cursor: pointer;
       transition: background 0.25s, border-color 0.25s, color 0.25s;
       user-select: none;
@@ -603,7 +669,7 @@
     .dossier {
       max-width: var(--max);
       margin: 0 auto;
-      padding: clamp(28px, 4vh, 48px) var(--pad) clamp(64px, 10vh, 100px);
+      padding: clamp(52px, 8vh, 80px) var(--pad) clamp(64px, 10vh, 100px);
     }
     .dossier-grid {
       display: grid;
@@ -623,18 +689,18 @@
       grid-column: span 3;
     }
     .dossier-key {
-      font-size: 8px;
+      font-size: 9px;
       font-weight: 500;
-      letter-spacing: 0.3em;
+      letter-spacing: 0.28em;
       text-transform: uppercase;
       color: var(--pink);
-      opacity: 0.6;
+      opacity: 0.8;
       margin-bottom: 8px;
     }
     .dossier-val {
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 300;
-      color: var(--fg2);
+      color: var(--fg);
       line-height: 1.65;
     }
     .dossier-val-lg {
@@ -656,12 +722,12 @@
       margin-top: 4px;
     }
     .dossier-tag {
-      font-size: 9px;
+      font-size: 10px;
       font-weight: 400;
-      letter-spacing: 0.1em;
-      color: var(--fg3);
+      letter-spacing: 0.08em;
+      color: var(--fg2);
       border: 1px solid var(--fg4);
-      padding: 5px 12px;
+      padding: 6px 14px;
     }
     .dossier-founders {
       display: grid;
@@ -669,15 +735,15 @@
       gap: 24px;
     }
     .dossier-person-name {
-      font-size: 14px;
+      font-size: 15px;
       font-weight: 400;
       color: var(--fg);
       margin-bottom: 4px;
     }
     .dossier-person-role {
-      font-size: 11px;
+      font-size: 12px;
       font-weight: 300;
-      color: var(--fg3);
+      color: var(--fg2);
       line-height: 1.5;
     }
     .dossier-person-links {
@@ -688,11 +754,11 @@
     .dossier-person-link {
       display: flex;
       align-items: center;
-      gap: 5px;
-      font-size: 9px;
+      gap: 6px;
+      font-size: 10px;
       font-weight: 400;
-      letter-spacing: 0.1em;
-      color: var(--fg3);
+      letter-spacing: 0.08em;
+      color: var(--fg2);
       transition: color 0.2s;
     }
     .dossier-person-link:hover {
@@ -721,9 +787,9 @@
       50% { opacity: 1; transform: scale(1.3); }
     }
     .dossier-status-text {
-      font-size: 12px;
+      font-size: 13px;
       font-weight: 400;
-      color: var(--fg2);
+      color: var(--fg);
       letter-spacing: 0.04em;
     }
 
@@ -786,17 +852,50 @@
       transform: translateY(0);
     }
 
-    /* RESPONSIVE */
-    @media (max-width: 700px) {
+    /* RESPONSIVE — tablet */
+    @media (max-width: 900px) {
+      .collage-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+      }
+    }
+
+    /* RESPONSIVE — mobile */
+    @media (max-width: 768px) {
+      /* Disable fade-out on mobile — only fade-in */
+      .scene { opacity: 1; transform: scale(1); }
+      .scene.reveal { opacity: 0; transform: translateY(24px); }
+      .scene.reveal.visible { opacity: 1; transform: translateY(0); }
+
+      .hero-hl { font-size: clamp(36px, 10vw, 52px); }
+      .hero-content { padding: calc(var(--nav-h) + 4vh) var(--pad) 0; }
+      .hero-cta .btn-p {
+        display: block;
+        width: 100%;
+        text-align: center;
+        padding: 16px 28px;
+      }
+
       .collage-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 8px;
       }
+
+      .convo-wrap { max-width: 100%; }
+      .pill { min-height: 44px; }
+      .convo-submit { padding: 18px 28px; }
+
       .foot-top, .foot-bot {
         flex-direction: column;
         gap: 12px;
         text-align: center;
       }
+    }
+
+    @media (max-width: 480px) {
+      .hero-hl { font-size: clamp(32px, 9vw, 40px); }
+      .pill-group { gap: 8px; }
+      .pill { padding: 12px 18px; font-size: 12px; }
     }
   </style>
 </head>
@@ -820,7 +919,7 @@
 </nav>
 
 <!-- HERO -->
-<section class="hero">
+<section class="hero scene" data-scene-label="Lost Objects">
   <div class="hero-video-wrap">
     <iframe
       src="https://player.vimeo.com/video/1182148229?h=acf06f1fbe&badge=0&autopause=0&autoplay=1&muted=1&loop=1&background=1&quality=auto"
@@ -838,7 +937,7 @@
     <div class="hero-eyebrow">
       <span class="eyebrow-text">Social strategy for the creative industry</span>
     </div>
-    <h1 class="hero-hl">We tell the stories<br>behind the <em>stories.</em></h1>
+    <h1 class="hero-hl">Your work deserves<br>to be <em>found.</em></h1>
     <p class="hero-desc">We're building something new. A home for the work, the process, and the people behind it. Stay close.</p>
     <div class="hero-cta">
       <a href="#contact" class="btn-p">Let's talk</a>
@@ -851,10 +950,10 @@
 </section>
 
 <!-- COLLAGE GRID -->
-<section class="collage-section reveal">
+<section class="collage-section scene" data-scene-label="Selected Work">
   <div class="section-eyebrow">
     <div class="section-eyebrow-line"></div>
-    <span class="section-eyebrow-text">From the feed</span>
+    <span class="section-eyebrow-text">Selected Work</span>
   </div>
   <!--
     HOW TO ADD INSTAGRAM POSTS:
@@ -865,72 +964,148 @@
     4. The placeholder will hide and the embed will display automatically
   -->
   <div class="collage-grid">
-    <div class="collage-card ratio-4x5" data-url="https://www.instagram.com/p/DFa-HggS_AN/?img_index=1">
+    <a class="collage-card ratio-4x5" href="https://www.instagram.com/p/DFa-HggS_AN/?img_index=1" target="_blank" rel="noopener">
       <div class="collage-card-inner">
-        <div class="collage-card-placeholder">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FF6666" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="#FF6666"/></svg>
-          <span>Instagram post</span>
-        </div>
-        <div class="ig-embed-wrap" id="embed-1"></div>
+        <img src="images/475715696_18343415827198483_5935573091955911007_n.jpg" alt="Lost Objects — Instagram post" />
       </div>
       <div class="collage-card-overlay"></div>
-    </div>
-    <div class="collage-card ratio-1x1" data-url="https://www.instagram.com/p/DRhsrdEiYm1/">
+      <div class="collage-card-ig"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="#fff" stroke-width="1.5"/><circle cx="12" cy="12" r="5" stroke="#fff" stroke-width="1.5"/><circle cx="17.5" cy="6.5" r="1.2" fill="#fff"/></svg></div>
+      <div class="collage-card-label">View on Instagram &rarr;</div>
+    </a>
+    <a class="collage-card ratio-1x1" href="https://www.instagram.com/p/DRhsrdEiYm1/" target="_blank" rel="noopener">
       <div class="collage-card-inner">
-        <div class="collage-card-placeholder">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FF6666" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="#FF6666"/></svg>
-          <span>Instagram post</span>
-        </div>
-        <div class="ig-embed-wrap" id="embed-2"></div>
+        <img src="images/589102708_18382413772198483_6004977522962831426_n.jpg" alt="Lost Objects — Instagram post" />
       </div>
       <div class="collage-card-overlay"></div>
-    </div>
-    <div class="collage-card ratio-4x5" data-url="https://www.instagram.com/p/DWy91VEFCxG/?img_index=1">
+      <div class="collage-card-ig"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="#fff" stroke-width="1.5"/><circle cx="12" cy="12" r="5" stroke="#fff" stroke-width="1.5"/><circle cx="17.5" cy="6.5" r="1.2" fill="#fff"/></svg></div>
+      <div class="collage-card-label">View on Instagram &rarr;</div>
+    </a>
+    <a class="collage-card ratio-4x5" href="https://www.instagram.com/p/DWy91VEFCxG/?img_index=1" target="_blank" rel="noopener">
       <div class="collage-card-inner">
-        <div class="collage-card-placeholder">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FF6666" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="#FF6666"/></svg>
-          <span>Instagram post</span>
-        </div>
-        <div class="ig-embed-wrap" id="embed-3"></div>
+        <img src="images/659033416_18050557670720790_7937693999032787166_n.jpg" alt="Lost Objects — Instagram post" />
       </div>
       <div class="collage-card-overlay"></div>
-    </div>
-    <div class="collage-card ratio-1x1" data-url="https://www.instagram.com/p/DVtWaeUDyJV/">
+      <div class="collage-card-ig"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="#fff" stroke-width="1.5"/><circle cx="12" cy="12" r="5" stroke="#fff" stroke-width="1.5"/><circle cx="17.5" cy="6.5" r="1.2" fill="#fff"/></svg></div>
+      <div class="collage-card-label">View on Instagram &rarr;</div>
+    </a>
+    <a class="collage-card ratio-1x1" href="https://www.instagram.com/p/DVtWaeUDyJV/" target="_blank" rel="noopener">
       <div class="collage-card-inner">
-        <div class="collage-card-placeholder">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FF6666" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="#FF6666"/></svg>
-          <span>Instagram post</span>
-        </div>
-        <div class="ig-embed-wrap" id="embed-4"></div>
+        <img src="images/701700692_18031508729803568_5676187629427121799_n.jpg" alt="Lost Objects — Instagram post" />
       </div>
       <div class="collage-card-overlay"></div>
-    </div>
-    <div class="collage-card ratio-4x5" data-url="https://www.instagram.com/p/DOjClddEbzW/">
+      <div class="collage-card-ig"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="#fff" stroke-width="1.5"/><circle cx="12" cy="12" r="5" stroke="#fff" stroke-width="1.5"/><circle cx="17.5" cy="6.5" r="1.2" fill="#fff"/></svg></div>
+      <div class="collage-card-label">View on Instagram &rarr;</div>
+    </a>
+    <a class="collage-card ratio-4x5" href="https://www.instagram.com/p/DOjClddEbzW/" target="_blank" rel="noopener">
       <div class="collage-card-inner">
-        <div class="collage-card-placeholder">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FF6666" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="#FF6666"/></svg>
-          <span>Instagram post</span>
-        </div>
-        <div class="ig-embed-wrap" id="embed-5"></div>
+        <img src="images/708653059_18057003821720790_6212212797853852108_n.jpg" alt="Lost Objects — Instagram post" />
       </div>
       <div class="collage-card-overlay"></div>
-    </div>
-    <div class="collage-card ratio-1x1" data-url="https://www.instagram.com/p/DIyyLh2Mivm/?img_index=1">
+      <div class="collage-card-ig"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="#fff" stroke-width="1.5"/><circle cx="12" cy="12" r="5" stroke="#fff" stroke-width="1.5"/><circle cx="17.5" cy="6.5" r="1.2" fill="#fff"/></svg></div>
+      <div class="collage-card-label">View on Instagram &rarr;</div>
+    </a>
+    <a class="collage-card ratio-1x1" href="https://www.instagram.com/p/DIyyLh2Mivm/?img_index=1" target="_blank" rel="noopener">
       <div class="collage-card-inner">
-        <div class="collage-card-placeholder">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FF6666" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="#FF6666"/></svg>
-          <span>Instagram post</span>
-        </div>
-        <div class="ig-embed-wrap" id="embed-6"></div>
+        <img src="images/702637885_18056050304720790_485156073056251602_n.jpg" alt="Lost Objects — Instagram post" />
       </div>
       <div class="collage-card-overlay"></div>
-    </div>
+      <div class="collage-card-ig"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="#fff" stroke-width="1.5"/><circle cx="12" cy="12" r="5" stroke="#fff" stroke-width="1.5"/><circle cx="17.5" cy="6.5" r="1.2" fill="#fff"/></svg></div>
+      <div class="collage-card-label">View on Instagram &rarr;</div>
+    </a>
   </div>
   <p class="collage-caption">Follow our work <a href="https://www.instagram.com/wearelostobjects/" target="_blank" rel="noopener">@wearelostobjects</a></p>
 </section>
 
+<!-- DOSSIER — data label -->
+<section class="dossier scene" data-scene-label="The Dossier">
+  <div class="section-eyebrow">
+    <div class="section-eyebrow-line"></div>
+    <span class="section-eyebrow-text">The dossier</span>
+  </div>
+
+  <div class="dossier-grid">
+
+    <div class="dossier-cell span-3">
+      <div class="dossier-key">What is Lost Objects</div>
+      <div class="dossier-val-lg">A boutique social media agency built from inside the film industry. We help filmmakers, creative brands, and entertainment businesses show up online with strategy, clarity, and a point of view.</div>
+    </div>
+
+    <div class="dossier-cell">
+      <div class="dossier-key">Entity</div>
+      <div class="dossier-val"><strong>Lost Objects</strong></div>
+    </div>
+    <div class="dossier-cell">
+      <div class="dossier-key">Based</div>
+      <div class="dossier-val"><strong>West Hollywood</strong>, Los Angeles</div>
+    </div>
+    <div class="dossier-cell">
+      <div class="dossier-key">Status</div>
+      <div class="dossier-status-row">
+        <span class="dossier-status-dot"></span>
+        <span class="dossier-status-text">Accepting Clients</span>
+      </div>
+    </div>
+
+    <div class="dossier-cell span-2">
+      <div class="dossier-key">Founded by</div>
+      <div class="dossier-founders">
+        <div>
+          <div class="dossier-person-name">Kyra Sweeney</div>
+          <div class="dossier-person-role">Actor · Social Media Strategist</div>
+          <div class="dossier-person-links">
+            <a href="https://www.instagram.com/kyragracee" target="_blank" rel="noopener" class="dossier-person-link">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="#FF6666" stroke-width="1.5"/><circle cx="12" cy="12" r="4" stroke="#FF6666" stroke-width="1.5"/><circle cx="17.5" cy="6.5" r="1" fill="#FF6666"/></svg>
+              @kyragracee
+            </a>
+          </div>
+        </div>
+        <div>
+          <div class="dossier-person-name">Brendan Sweeney</div>
+          <div class="dossier-person-role">Director · Producer · Business Relations</div>
+          <div class="dossier-person-links">
+            <a href="https://www.instagram.com/brenpancake" target="_blank" rel="noopener" class="dossier-person-link">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="#FF6666" stroke-width="1.5"/><circle cx="12" cy="12" r="4" stroke="#FF6666" stroke-width="1.5"/><circle cx="17.5" cy="6.5" r="1" fill="#FF6666"/></svg>
+              @brenpancake
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="dossier-cell">
+      <div class="dossier-key">Origin</div>
+      <div class="dossier-val">Founded in West Hollywood in 2023, Lost Objects grew from a simple observation: the most talented people in the film industry were going unseen online. Kyra and Brendan Sweeney built this to change that.</div>
+    </div>
+
+    <div class="dossier-cell">
+      <div class="dossier-key">Industries</div>
+      <div class="dossier-tags">
+        <span class="dossier-tag">Film</span>
+        <span class="dossier-tag">Cinematography</span>
+        <span class="dossier-tag">Grip & Lighting</span>
+        <span class="dossier-tag">Production</span>
+        <span class="dossier-tag">Entertainment</span>
+      </div>
+    </div>
+    <div class="dossier-cell">
+      <div class="dossier-key">Services</div>
+      <div class="dossier-tags">
+        <span class="dossier-tag">Strategy</span>
+        <span class="dossier-tag">Full Management</span>
+        <span class="dossier-tag">Content</span>
+        <span class="dossier-tag">Brand Identity</span>
+        <span class="dossier-tag">Audit</span>
+      </div>
+    </div>
+    <div class="dossier-cell">
+      <div class="dossier-key">The name</div>
+      <div class="dossier-val">The name is personal. Kyra and Brendan both felt it — that specific feeling of being lost in your creative career, unseen in an industry you care deeply about. Lost Objects came from that. The belief that even when you feel like a lost object, you can still be found. And that finding others is worth building a company around.</div>
+    </div>
+
+  </div>
+</section>
+
 <!-- CONTACT — CONVERSATIONAL FORM -->
-<section class="contact-section" id="contact">
+<section class="contact-section scene" id="contact" data-scene-label="Stop Feeling Lost">
   <div class="section-eyebrow" id="convoHeader">
     <div class="section-eyebrow-line"></div>
     <span class="section-eyebrow-text">Stop feeling lost</span>
@@ -1029,94 +1204,6 @@
   </div>
 </section>
 
-<!-- DOSSIER — data label -->
-<section class="dossier reveal">
-  <div class="section-eyebrow">
-    <div class="section-eyebrow-line"></div>
-    <span class="section-eyebrow-text">The dossier</span>
-  </div>
-
-  <div class="dossier-grid">
-
-    <div class="dossier-cell span-3">
-      <div class="dossier-key">What is Lost Objects</div>
-      <div class="dossier-val-lg">Social media strategy and full management for filmmakers, creators, and entertainment brands who are extraordinary at their craft — and nearly invisible online.</div>
-    </div>
-
-    <div class="dossier-cell">
-      <div class="dossier-key">Entity</div>
-      <div class="dossier-val"><strong>Lost Objects</strong></div>
-    </div>
-    <div class="dossier-cell">
-      <div class="dossier-key">Based</div>
-      <div class="dossier-val"><strong>West Hollywood</strong>, Los Angeles</div>
-    </div>
-    <div class="dossier-cell">
-      <div class="dossier-key">Status</div>
-      <div class="dossier-status-row">
-        <span class="dossier-status-dot"></span>
-        <span class="dossier-status-text">Accepting clients</span>
-      </div>
-    </div>
-
-    <div class="dossier-cell span-2">
-      <div class="dossier-key">Founded by</div>
-      <div class="dossier-founders">
-        <div>
-          <div class="dossier-person-name">Kyra Sweeney</div>
-          <div class="dossier-person-role">SAG-AFTRA Actor · Social Media Strategist</div>
-          <div class="dossier-person-links">
-            <a href="https://www.instagram.com/kyragracee" target="_blank" rel="noopener" class="dossier-person-link">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="#FF6666" stroke-width="1.5"/><circle cx="12" cy="12" r="4" stroke="#FF6666" stroke-width="1.5"/><circle cx="17.5" cy="6.5" r="1" fill="#FF6666"/></svg>
-              @kyragracee
-            </a>
-          </div>
-        </div>
-        <div>
-          <div class="dossier-person-name">Brendan Sweeney</div>
-          <div class="dossier-person-role">Director · Producer · Business Relations</div>
-          <div class="dossier-person-links">
-            <a href="https://www.instagram.com/brenpancake" target="_blank" rel="noopener" class="dossier-person-link">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="#FF6666" stroke-width="1.5"/><circle cx="12" cy="12" r="4" stroke="#FF6666" stroke-width="1.5"/><circle cx="17.5" cy="6.5" r="1" fill="#FF6666"/></svg>
-              @brenpancake
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="dossier-cell">
-      <div class="dossier-key">Origin</div>
-      <div class="dossier-val">Built to close the gap between brilliant creative work and the audience it deserves.</div>
-    </div>
-
-    <div class="dossier-cell">
-      <div class="dossier-key">Industries</div>
-      <div class="dossier-tags">
-        <span class="dossier-tag">Film</span>
-        <span class="dossier-tag">Cinematography</span>
-        <span class="dossier-tag">Grip & Lighting</span>
-        <span class="dossier-tag">Production</span>
-        <span class="dossier-tag">Entertainment</span>
-      </div>
-    </div>
-    <div class="dossier-cell">
-      <div class="dossier-key">Services</div>
-      <div class="dossier-tags">
-        <span class="dossier-tag">Strategy</span>
-        <span class="dossier-tag">Full Management</span>
-        <span class="dossier-tag">Content</span>
-        <span class="dossier-tag">Brand Identity</span>
-        <span class="dossier-tag">Audit</span>
-      </div>
-    </div>
-    <div class="dossier-cell">
-      <div class="dossier-key">The name</div>
-      <div class="dossier-val">We are all lost objects at some point — people, brands, ideas that haven't been found yet. The work we do is about finding them. Making them visible. Getting them in front of the rooms they deserve to be in.</div>
-    </div>
-
-  </div>
-</section>
-
 <!-- FOOTER -->
 <footer>
   <div class="foot-inner">
@@ -1149,13 +1236,32 @@
     navEl.classList.toggle('scrolled', window.scrollY > 40);
   });
 
-  /* REVEAL ON SCROLL */
-  const obs = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+  /* SCROLL-DRIVEN SECTION FOCUS */
+  const isMobile = window.matchMedia('(max-width: 768px)').matches;
+  const scenes = document.querySelectorAll('.scene');
+
+  if (!isMobile) {
+    const sceneObs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        e.target.classList.toggle('in-focus', e.isIntersecting);
+      });
+    }, { threshold: 0.4 });
+    scenes.forEach(s => {
+      if (s.classList.contains('hero')) { s.classList.add('in-focus'); }
+      sceneObs.observe(s);
     });
-  }, { threshold: 0.12 });
-  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+  } else {
+    const revealObs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); revealObs.unobserve(e.target); }
+      });
+    }, { threshold: 0.12 });
+    scenes.forEach(s => {
+      if (s.classList.contains('hero')) { s.classList.add('visible'); return; }
+      s.classList.add('reveal');
+      revealObs.observe(s);
+    });
+  }
 
   /*
     ═══════════════════════════════════════════════════════
@@ -1209,7 +1315,7 @@
      CONVERSATIONAL FORM ENGINE
      ═══════════════════════════════════════════ */
   (function() {
-    const FORMSPREE = 'https://formspree.io/f/YOUR_FORMSPREE_ID';
+    const FORMSPREE = 'https://formspree.io/f/xgoqdyyd';
     const receipt = document.getElementById('convoReceipt');
     const steps = document.querySelectorAll('.convo-step');
     const header = document.getElementById('convoHeader');
