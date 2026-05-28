@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Lost Objects — Social Strategy for the Creative Industry</title>
-  <meta name="description" content="Kyra and Brendan Sweeney. Social media strategy and full management for filmmakers, creators, and entertainment brands." />
+  <title>Lost Objects — Coming Soon</title>
+  <meta name="description" content="Lost Objects. Social media strategy and full management for filmmakers, creators, and entertainment brands. Something new is coming." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet" />
@@ -19,6 +19,7 @@
       --cream: #F0E8DC;
       --bg:    #0f0e0d;
       --bg2:   #161514;
+      --bg3:   #1c1a19;
       --fg:    #f2ece1;
       --fg2:   rgba(232,226,217,0.72);
       --fg3:   rgba(232,226,217,0.44);
@@ -41,44 +42,29 @@
 
     /* GRAIN */
     .grain {
-      position: fixed;
-      inset: -100px;
-      width: calc(100% + 200px);
-      height: calc(100% + 200px);
+      position: fixed; inset: -100px;
+      width: calc(100% + 200px); height: calc(100% + 200px);
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.78' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)'/%3E%3C/svg%3E");
-      opacity: 0.048;
-      pointer-events: none;
-      z-index: 9999;
+      opacity: 0.048; pointer-events: none; z-index: 9999;
       animation: grain 0.6s steps(1) infinite;
     }
     @keyframes grain {
-      0%   { transform: translate(0,0); }
-      10%  { transform: translate(-3%,-4%); }
-      20%  { transform: translate(4%,2%); }
-      30%  { transform: translate(-1%,5%); }
-      40%  { transform: translate(3%,-3%); }
-      50%  { transform: translate(-4%,1%); }
-      60%  { transform: translate(2%,4%); }
-      70%  { transform: translate(-3%,-1%); }
-      80%  { transform: translate(1%,3%); }
-      90%  { transform: translate(-2%,-4%); }
-      100% { transform: translate(3%,0); }
+      0%{transform:translate(0,0)}10%{transform:translate(-3%,-4%)}20%{transform:translate(4%,2%)}
+      30%{transform:translate(-1%,5%)}40%{transform:translate(3%,-3%)}50%{transform:translate(-4%,1%)}
+      60%{transform:translate(2%,4%)}70%{transform:translate(-3%,-1%)}80%{transform:translate(1%,3%)}
+      90%{transform:translate(-2%,-4%)}100%{transform:translate(3%,0)}
     }
 
     .vignette {
-      position: fixed;
-      inset: 0;
+      position: fixed; inset: 0;
       background: radial-gradient(ellipse at 50% 0%, transparent 45%, rgba(10,9,8,0.6) 100%);
-      pointer-events: none;
-      z-index: 9998;
+      pointer-events: none; z-index: 9998;
     }
 
     /* NAV */
     nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 200;
-      height: var(--nav-h);
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 200; height: var(--nav-h);
       background: transparent;
       border-bottom: 1px solid transparent;
       transition: background 0.4s, border-color 0.4s, backdrop-filter 0.4s;
@@ -96,7 +82,8 @@
       height: 100%;
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: center;
+      position: relative;
     }
     .nav-logo {
       font-size: 13px;
@@ -104,66 +91,18 @@
       letter-spacing: 0.28em;
       text-transform: uppercase;
       color: var(--pink);
-      transition: color 0.25s ease, font-weight 0.25s ease;
     }
-    .nav-logo:hover {
-      color: var(--cream);
-      font-weight: 700;
-    }
-    .nav-links {
+    .nav-ig {
+      position: absolute;
+      right: var(--pad);
       display: flex;
       align-items: center;
-      gap: clamp(20px, 3vw, 40px);
-    }
-    .nav-links a {
-      font-size: 10px;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: rgba(232,226,217,0.55);
-      transition: color 0.2s;
-    }
-    .nav-links a:hover { color: var(--fg); }
-    .lo-icon {
-      cursor: pointer;
       opacity: 0.45;
-      transition: opacity 0.2s, transform 0.3s;
-      display: flex;
-      align-items: center;
-      margin-left: 2px;
+      transition: opacity 0.2s;
     }
-    .lo-icon:hover { opacity: 1; transform: rotate(15deg) scale(1.1); }
-    .nav-cta {
-      font-size: 10px;
-      font-weight: 500;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--pink);
-      border: 1px solid rgba(255,102,102,0.35);
-      padding: 8px 20px;
-      transition: background 0.2s, color 0.2s;
+    .nav-ig:hover {
+      opacity: 1;
     }
-    .nav-cta:hover { background: var(--pink); color: var(--bg); }
-    .hamburger {
-      display: none;
-      flex-direction: column;
-      gap: 5px;
-      cursor: pointer;
-    }
-    .hamburger span { display: block; width: 22px; height: 1px; background: rgba(232,226,217,0.6); }
-    .mobile-menu {
-      display: none;
-      position: fixed;
-      top: var(--nav-h);
-      left: 0; right: 0;
-      background: rgba(15,14,13,0.97);
-      z-index: 199;
-      padding: 28px var(--pad) 36px;
-      border-bottom: 1px solid var(--fg4);
-      flex-direction: column;
-      gap: 24px;
-    }
-    .mobile-menu.open { display: flex; }
-    .mobile-menu a { font-size: 13px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--fg2); }
 
     /* HERO */
     .hero {
@@ -221,7 +160,7 @@
       animation: fadeUp 0.7s ease 0.15s forwards;
     }
     .eyebrow-line { width: 28px; height: 1px; background: var(--pink); opacity: 0.5; flex-shrink: 0; }
-    .eyebrow-text { font-size: 9px; letter-spacing: 0.28em; text-transform: uppercase; color: var(--pink); opacity: 0.7; }
+    .eyebrow-text { font-size: 11px; font-weight: 500; letter-spacing: 0.24em; text-transform: uppercase; color: var(--pink); opacity: 0.7; }
     .hero-hl {
       font-family: var(--serif);
       font-size: clamp(52px, 7.5vw, 108px);
@@ -236,7 +175,7 @@
     }
     .hero-hl em { font-style: italic; color: var(--pink); }
     .hero-desc {
-      font-size: clamp(12px, 1.1vw, 15px);
+      font-size: clamp(14px, 1.1vw, 15px);
       font-weight: 400;
       color: rgba(232,226,217,0.72);
       line-height: 1.8;
@@ -246,17 +185,22 @@
       animation: fadeUp 0.7s ease 0.5s forwards;
       text-shadow: 0 1px 12px rgba(10,9,8,0.8);
     }
-    .hero-desc strong { color: var(--fg); font-weight: 400; }
-    .hero-actions {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-      flex-wrap: wrap;
-      justify-content: center;
+    .hero-cta {
       opacity: 0;
       animation: fadeUp 0.7s ease 0.65s forwards;
     }
-    .hero-scroll {
+    .hero-cta .btn-p {
+      display: inline-block;
+      background: var(--pink);
+      color: var(--bg);
+      font-size: 10px; font-weight: 600;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      padding: 13px 28px;
+      transition: opacity 0.2s;
+      white-space: nowrap;
+    }
+    .hero-cta .btn-p:hover { opacity: 0.82; }
+    .hero-scroll-hint {
       position: absolute;
       bottom: 28px; left: 50%;
       transform: translateX(-50%);
@@ -268,12 +212,11 @@
       opacity: 0;
       animation: fadeIn 1s ease 1.2s forwards;
     }
-    .hero-scroll span {
+    .hero-scroll-hint span {
       font-size: 9px;
       letter-spacing: 0.32em;
       text-transform: uppercase;
-      color: rgba(232,226,217,0.75);
-      animation: scrollLabelPulse 1.8s ease-in-out infinite;
+      color: rgba(232,226,217,0.45);
     }
     .scroll-line {
       position: relative;
@@ -299,191 +242,660 @@
       80%  { opacity: 1; }
       100% { top: 44px; opacity: 0; }
     }
-    @keyframes scrollLabelPulse {
-      0%,100% { opacity: 0.5; transform: translateY(0); }
-      50%     { opacity: 1;   transform: translateY(2px); }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
-    .hero-meta-strip {
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      z-index: 10;
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    /* SCROLL-DRIVEN FOCUS — sections fade in/out as scenes */
+    .scene {
+      opacity: 0.15;
+      transform: scale(0.98);
+      transition: opacity 0.6s ease, transform 0.7s ease;
+      will-change: opacity, transform;
+    }
+    .scene.in-focus {
+      opacity: 1;
+      transform: scale(1);
+    }
+    /* Hero is always in focus (it has its own intro animations) */
+    .hero.scene { opacity: 1; transform: scale(1); }
+
+    /* SECTION EYEBROW — shared pattern */
+    .section-eyebrow {
       display: flex;
-      justify-content: space-between;
-      padding: 0 var(--pad) 28px;
-      pointer-events: none;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: clamp(32px, 5vh, 48px);
     }
-    .hero-meta-lbl { font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(232,226,217,0.25); }
-    .hero-meta-right { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--cream); opacity: 0.45; }
-
-    /* BUTTONS */
-    .btn-p {
-      display: inline-block;
+    .section-eyebrow-line {
+      width: 32px;
+      height: 1px;
       background: var(--pink);
-      color: var(--bg);
-      font-size: 10px; font-weight: 600;
-      letter-spacing: 0.2em; text-transform: uppercase;
-      padding: 13px 28px;
-      transition: opacity 0.2s;
-      white-space: nowrap;
+      opacity: 0.5;
+      flex-shrink: 0;
     }
-    .btn-p:hover { opacity: 0.82; }
-    .btn-g {
-      font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
-      color: rgba(232,226,217,0.6);
-      border-bottom: 1px solid rgba(232,226,217,0.22);
-      padding-bottom: 2px;
-      transition: color 0.2s, border-color 0.2s;
-      white-space: nowrap;
+    .section-eyebrow-text {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--pink);
+      opacity: 0.85;
     }
-    .btn-g:hover { color: var(--fg); border-color: rgba(232,226,217,0.5); }
 
-    /* SECTION SHELL */
-    .sec { border-top: 1px solid var(--fg4); }
-    .sec-head {
-      display: grid;
-      grid-template-columns: 66px 1fr;
-      border-bottom: 1px solid var(--fg4);
+    /* COLLAGE GRID */
+    .collage-section {
+      padding: clamp(52px, 8vh, 80px) var(--pad) clamp(64px, 10vh, 100px);
       max-width: var(--max);
       margin: 0 auto;
     }
-    .sec-gut {
-      border-right: 1px solid var(--fg4);
-      display: flex; align-items: center; justify-content: center;
+    .collage-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      overflow: visible;
       padding: 16px;
+      margin: -16px;
     }
-    .sec-gut span {
-      font-size: 8px; letter-spacing: 0.24em; text-transform: uppercase;
-      color: var(--fg3); writing-mode: vertical-rl; transform: rotate(180deg);
+    /* When any card is hovered, dim siblings */
+    .collage-grid:hover .collage-card {
+      transform: scale(0.94);
+      opacity: 0.65;
     }
-    .sec-hc {
-      padding: 16px var(--pad);
-      display: flex; justify-content: space-between; align-items: center;
+    .collage-grid:hover .collage-card:hover {
+      transform: scale(1.06);
+      opacity: 1;
+      z-index: 10;
     }
-    .sec-lbl { font-size: 9px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--fg3); }
-
-    /* TAGLINE */
-    .tagline { border-top: 1px solid var(--fg4); }
-    .tagline-inner {
-      max-width: var(--max); margin: 0 auto;
-      padding: clamp(40px, 7vh, 80px) var(--pad);
-      display: flex; gap: clamp(32px, 6vw, 100px); align-items: flex-start;
-    }
-    .tagline-idx { font-size: 9px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--fg3); padding-top: 5px; flex-shrink: 0; }
-    .tagline-txt { font-family: var(--serif); font-size: clamp(17px, 1.9vw, 28px); font-style: italic; color: var(--fg2); line-height: 1.45; letter-spacing: -0.01em; }
-    .tagline-txt em { font-style: normal; color: var(--fg); }
-
-    /* SERVICES */
-    .svc-grid { max-width: var(--max); margin: 0 auto; display: grid; grid-template-columns: 66px repeat(3,1fr); }
-    .svc-gut { border-right: 1px solid var(--fg4); }
-    .svc {
-      padding: clamp(28px, 4vw, 48px) clamp(20px, 2.5vw, 36px);
-      border-right: 1px solid var(--fg4);
-      position: relative; transition: background 0.3s;
-    }
-    .svc:last-child { border-right: none; }
-    .svc::before { content: ''; position: absolute; top: 0; left: 0; width: 2px; height: 0; background: var(--pink); transition: height 0.4s ease; }
-    .svc:hover { background: rgba(255,102,102,0.022); }
-    .svc:hover::before { height: 100%; }
-    .svc-num { font-size: 9px; letter-spacing: 0.22em; color: var(--pink); opacity: 0.36; margin-bottom: clamp(18px, 2.5vw, 28px); }
-    .svc-name { font-family: var(--serif); font-size: clamp(19px, 1.7vw, 26px); color: var(--fg); line-height: 1.15; margin-bottom: 16px; letter-spacing: -0.01em; }
-    .svc-rule { width: 22px; height: 1px; background: var(--pink); opacity: 0.28; margin-bottom: 16px; }
-    .svc-desc { font-size: clamp(11px, 0.85vw, 13px); font-weight: 400; color: var(--fg2); line-height: 1.85; }
-    .svc-lnk { display: inline-block; margin-top: 20px; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--pink); opacity: 0.4; border-bottom: 1px solid rgba(255,102,102,0.15); padding-bottom: 2px; transition: opacity 0.2s; }
-    .svc:hover .svc-lnk { opacity: 1; }
-
-    /* WORK */
-    .work-grid { max-width: var(--max); margin: 0 auto; display: grid; grid-template-columns: repeat(2,1fr); gap: 1px; background: var(--fg4); }
-    .wcard { background: var(--bg); padding: clamp(22px, 3vw, 44px); display: block; transition: background 0.3s; }
-    .wcard:hover { background: var(--bg2); }
-    .wimg { aspect-ratio: 16/9; background: var(--bg2); margin-bottom: clamp(18px, 2.5vw, 28px); overflow: hidden; }
-    .wimg img { width: 100%; height: 100%; object-fit: cover; opacity: 0.7; filter: grayscale(18%); transition: transform 0.6s, opacity 0.3s; }
-    .wcard:hover .wimg img { transform: scale(1.03); opacity: 0.86; }
-    .wimg-ph { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
-    .pp-lbl { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(232,226,217,0.14); }
-    .wtag { font-size: 8px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--pink); opacity: 0.48; margin-bottom: 9px; }
-    .wtitle { font-family: var(--serif); font-size: clamp(17px, 1.5vw, 22px); color: var(--fg); line-height: 1.2; margin-bottom: 11px; letter-spacing: -0.01em; }
-    .wdesc { font-size: clamp(11px, 0.82vw, 13px); font-weight: 400; color: var(--fg2); line-height: 1.8; }
-    .wresult { display: inline-block; margin-top: 16px; font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--cream); opacity: 0.55; }
-
-    /* TESTIMONIAL */
-    .testi { border-top: 1px solid var(--fg4); }
-    .testi-inner {
-      max-width: var(--max); margin: 0 auto;
-      padding: clamp(52px, 9vh, 100px) var(--pad) clamp(52px, 9vh, 100px) clamp(60px, 11vw, 160px);
+    .collage-card {
       position: relative;
+      overflow: hidden;
+      background: var(--bg2);
+      border: 1px solid var(--fg4);
+      cursor: pointer;
+      transition: transform 0.35s ease, opacity 0.35s ease;
+      transform-origin: center center;
     }
-    .tq-mark { position: absolute; left: var(--pad); top: clamp(44px, 7vh, 80px); font-family: var(--serif); font-size: clamp(60px, 7.5vw, 108px); font-style: italic; color: var(--pink); opacity: 0.12; line-height: 1; user-select: none; }
-    .tq-txt { font-family: var(--serif); font-size: clamp(17px, 1.7vw, 25px); font-style: italic; color: var(--fg2); line-height: 1.5; max-width: 680px; }
-    .tq-txt em { font-style: normal; color: var(--fg); }
-    .tq-attr { margin-top: 22px; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--fg3); }
-    .tq-attr span { color: var(--cream); opacity: 0.6; }
-    .tq-dots { display: flex; gap: 10px; margin-top: 26px; }
-    .tdot { height: 1px; width: 18px; background: var(--fg3); cursor: pointer; transition: background 0.2s, width 0.2s; }
-    .tdot.active { background: var(--pink); width: 30px; }
+    .collage-card::before {
+      content: '';
+      display: block;
+    }
+    /* 4x5 aspect ratio cards */
+    .collage-card.ratio-4x5::before {
+      padding-top: 125%;
+    }
+    /* 1x1 aspect ratio cards */
+    .collage-card.ratio-1x1::before {
+      padding-top: 100%;
+    }
+    .collage-card-inner {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, var(--bg2) 0%, var(--bg3) 100%);
+    }
+    .collage-card-inner img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
 
-    /* CLIENTS */
-    .clients { border-top: 1px solid var(--fg4); border-bottom: 1px solid var(--fg4); display: flex; overflow: hidden; }
-    .clients-lbl-block { padding: 17px 22px; border-right: 1px solid var(--fg4); flex-shrink: 0; display: flex; align-items: center; }
-    .clients-lbl { font-size: 8px; letter-spacing: 0.26em; text-transform: uppercase; color: var(--fg3); white-space: nowrap; }
-    .clients-scroll { overflow: hidden; flex: 1; }
-    .clients-track { display: flex; animation: ticker 24s linear infinite; }
-    @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-    .chip { padding: 17px 30px; border-right: 1px solid var(--fg4); font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(232,226,217,0.19); font-weight: 500; white-space: nowrap; transition: color 0.2s; }
-    .chip:hover { color: var(--fg2); }
+    /* Hover overlay — cinematic vignette + pink glow + IG icon + label */
+    .collage-card-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      opacity: 0;
+      transition: opacity 0.35s ease;
+      pointer-events: none;
+      /* Dark vignette from edges */
+      background:
+        radial-gradient(ellipse at center, transparent 30%, rgba(10,9,8,0.7) 100%),
+        linear-gradient(to top, rgba(10,9,8,0.8) 0%, transparent 40%);
+    }
+    .collage-card:hover .collage-card-overlay {
+      opacity: 1;
+    }
 
-    /* CTA */
-    .cta-band { border-top: 1px solid var(--fg4); }
-    .cta-inner { max-width: var(--max); margin: 0 auto; padding: clamp(64px, 11vh, 120px) var(--pad); text-align: center; }
-    .cta-eye { font-size: 9px; letter-spacing: 0.26em; text-transform: uppercase; color: var(--pink); opacity: 0.55; margin-bottom: 22px; }
-    .cta-hl { font-family: var(--serif); font-size: clamp(32px, 4.2vw, 64px); font-style: italic; color: var(--fg); line-height: 1.08; letter-spacing: -0.02em; margin-bottom: 28px; }
-    .cta-hl em { font-style: normal; color: var(--pink); }
-    .cta-sub { font-size: clamp(12px, 0.95vw, 14px); font-weight: 400; color: var(--fg2); line-height: 1.75; max-width: 460px; margin: 0 auto 36px; }
+    /* Pink bottom glow */
+    .collage-card-overlay::before {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 10%; right: 10%;
+      height: 2px;
+      background: var(--pink);
+      box-shadow: 0 0 20px rgba(255,102,102,0.5), 0 0 40px rgba(255,102,102,0.25);
+      opacity: 0.7;
+      animation: pinkPulse 2s ease-in-out infinite;
+    }
+    @keyframes pinkPulse {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 1; }
+    }
+
+    /* Instagram icon — top right */
+    .collage-card-ig {
+      position: absolute;
+      top: 12px; right: 12px;
+      z-index: 3;
+      opacity: 0;
+      transform: translateY(4px);
+      transition: opacity 0.35s ease, transform 0.35s ease;
+    }
+    .collage-card:hover .collage-card-ig {
+      opacity: 0.85;
+      transform: translateY(0);
+    }
+
+    /* "View on Instagram" label — bottom */
+    .collage-card-label {
+      position: absolute;
+      bottom: 14px; left: 0; right: 0;
+      z-index: 3;
+      text-align: center;
+      font-size: 8px;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.85);
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity 0.35s ease, transform 0.35s ease;
+    }
+    .collage-card:hover .collage-card-label {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .collage-caption {
+      text-align: center;
+      margin-top: 32px;
+      font-size: clamp(13px, 1.4vw, 15px);
+      font-weight: 300;
+      color: var(--fg3);
+      letter-spacing: 0.02em;
+    }
+    .collage-caption a {
+      color: var(--pink);
+      transition: color 0.2s;
+    }
+    .collage-caption a:hover {
+      color: var(--cream);
+    }
+
+    /* CONTACT — CONVERSATIONAL FORM */
+    .contact-section {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: clamp(52px, 8vh, 80px) var(--pad) clamp(80px, 14vh, 160px);
+    }
+    .contact-section .section-eyebrow {
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .contact-section .section-eyebrow.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .convo-wrap {
+      width: 100%;
+      max-width: 580px;
+      margin: 0 auto;
+    }
+
+    /* Receipt lines — completed answers */
+    .convo-receipt {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .receipt-line {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--fg4);
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+    .receipt-line.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .receipt-label {
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--fg3);
+      flex-shrink: 0;
+      min-width: 80px;
+    }
+    .receipt-value {
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--fg);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Active step */
+    .convo-step {
+      display: none;
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+      margin-top: 40px;
+    }
+    .convo-step.active {
+      display: block;
+    }
+    .convo-step.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .convo-prompt {
+      font-family: var(--serif);
+      font-size: clamp(26px, 3.8vw, 40px);
+      font-weight: 400;
+      font-style: italic;
+      color: var(--fg);
+      line-height: 1.2;
+      margin-bottom: 24px;
+    }
+
+    /* Text inputs */
+    .convo-input {
+      width: 100%;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid var(--fg4);
+      color: var(--fg);
+      font-family: var(--sans);
+      font-size: clamp(1.1rem, 1.6vw, 1.4rem);
+      font-weight: 300;
+      padding: 16px 0;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+    .convo-input:focus {
+      border-bottom-color: var(--pink);
+    }
+    .convo-input::placeholder {
+      color: var(--fg3);
+      opacity: 0.5;
+    }
+
+    /* Textarea */
+    .convo-textarea {
+      width: 100%;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid var(--fg4);
+      color: var(--fg);
+      font-family: var(--sans);
+      font-size: clamp(1.1rem, 1.6vw, 1.4rem);
+      font-weight: 300;
+      padding: 16px 0;
+      outline: none;
+      resize: none;
+      overflow: hidden;
+      min-height: 56px;
+      transition: border-color 0.3s;
+    }
+    .convo-textarea:focus {
+      border-bottom-color: var(--pink);
+    }
+    .convo-textarea::placeholder {
+      color: var(--fg3);
+      opacity: 0.5;
+    }
+
+    /* Pill selectors */
+    .pill-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .pill {
+      font-family: var(--sans);
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      color: var(--fg3);
+      background: transparent;
+      border: 1px solid var(--fg4);
+      padding: 13px 24px;
+      min-height: 44px;
+      cursor: pointer;
+      transition: background 0.25s, border-color 0.25s, color 0.25s;
+      user-select: none;
+    }
+    .pill:hover {
+      border-color: rgba(255,102,102,0.4);
+      color: var(--fg2);
+    }
+    .pill.selected {
+      background: rgba(255,102,102,0.12);
+      border-color: var(--pink);
+      color: var(--pink);
+    }
+
+    /* Next / advance button for pill steps */
+    .convo-next {
+      display: inline-block;
+      margin-top: 24px;
+      font-family: var(--sans);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--fg3);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      transition: color 0.2s;
+    }
+    .convo-next:hover { color: var(--fg); }
+
+    /* Submit button */
+    .convo-submit {
+      width: 100%;
+      font-family: var(--sans);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--bg);
+      background: var(--pink);
+      border: none;
+      padding: 20px 28px;
+      cursor: pointer;
+      transition: opacity 0.25s;
+    }
+    .convo-submit:hover { opacity: 0.82; }
+    .convo-submit:disabled { opacity: 0.5; cursor: default; }
+
+    /* Success state */
+    .convo-success {
+      display: none;
+      text-align: center;
+      padding: 40px 0;
+    }
+    .convo-success.visible { display: block; }
+    .convo-success-hl {
+      font-family: var(--serif);
+      font-size: clamp(32px, 5vw, 56px);
+      font-weight: 400;
+      font-style: italic;
+      color: var(--pink);
+      margin-bottom: 18px;
+    }
+    .convo-success-sub {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--fg3);
+      letter-spacing: 0.02em;
+    }
+    .convo-success-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--pink);
+      animation: successPulse 2s ease-in-out infinite;
+    }
+    @keyframes successPulse {
+      0%, 100% { opacity: 0.3; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.3); }
+    }
+
+    /* DOSSIER — data label block */
+    .dossier {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: clamp(52px, 8vh, 80px) var(--pad) clamp(64px, 10vh, 100px);
+    }
+    .dossier-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1px;
+      background: var(--fg4);
+      border: 1px solid var(--fg4);
+    }
+    .dossier-cell {
+      background: var(--bg);
+      padding: clamp(20px, 3vh, 32px) clamp(16px, 2vw, 28px);
+    }
+    .dossier-cell.span-2 {
+      grid-column: span 2;
+    }
+    .dossier-cell.span-3 {
+      grid-column: span 3;
+    }
+    .dossier-key {
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--pink);
+      opacity: 0.8;
+      margin-bottom: 8px;
+    }
+    .dossier-val {
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--fg);
+      line-height: 1.65;
+    }
+    .dossier-val-lg {
+      font-family: var(--serif);
+      font-size: clamp(18px, 2.2vw, 26px);
+      font-weight: 400;
+      font-style: italic;
+      color: var(--fg);
+      line-height: 1.3;
+    }
+    .dossier-val strong {
+      color: var(--fg);
+      font-weight: 400;
+    }
+    .dossier-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 4px;
+    }
+    .dossier-tag {
+      font-size: 10px;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      color: var(--fg2);
+      border: 1px solid var(--fg4);
+      padding: 6px 14px;
+    }
+    .dossier-founders {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+    .dossier-person-name {
+      font-size: 15px;
+      font-weight: 400;
+      color: var(--fg);
+      margin-bottom: 4px;
+    }
+    .dossier-person-role {
+      font-size: 12px;
+      font-weight: 300;
+      color: var(--fg2);
+      line-height: 1.5;
+    }
+    .dossier-person-links {
+      display: flex;
+      gap: 10px;
+      margin-top: 8px;
+    }
+    .dossier-person-link {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 10px;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      color: var(--fg2);
+      transition: color 0.2s;
+    }
+    .dossier-person-link:hover {
+      color: var(--pink);
+    }
+    .dossier-person-link svg {
+      opacity: 0.5;
+      transition: opacity 0.2s;
+    }
+    .dossier-person-link:hover svg {
+      opacity: 1;
+    }
+    .dossier-status-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .dossier-status-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #34d399;
+      animation: statusPulse 2s ease-in-out infinite;
+    }
+    @keyframes statusPulse {
+      0%, 100% { opacity: 0.4; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.3); }
+    }
+    .dossier-status-text {
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--fg);
+      letter-spacing: 0.04em;
+    }
+
+    @media (max-width: 700px) {
+      .dossier-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      .dossier-cell.span-3 {
+        grid-column: span 2;
+      }
+      .dossier-cell.span-2 {
+        grid-column: span 2;
+      }
+      .dossier-founders {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .dossier-grid {
+        grid-template-columns: 1fr;
+      }
+      .dossier-cell.span-2,
+      .dossier-cell.span-3 {
+        grid-column: span 1;
+      }
+    }
 
     /* FOOTER */
-    footer { border-top: 1px solid var(--fg4); }
+    footer { }
     .foot-inner { max-width: var(--max); margin: 0 auto; padding: 26px var(--pad); display: flex; flex-direction: column; gap: 20px; }
     .foot-top { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+    .foot-logo { font-size: 10px; font-weight: 600; letter-spacing: 0.24em; text-transform: uppercase; color: rgba(255,102,102,0.48); }
+    .foot-ig {
+      display: flex;
+      align-items: center;
+      opacity: 0.45;
+      transition: opacity 0.2s;
+    }
+    .foot-ig:hover { opacity: 1; }
     .foot-divider { height: 1px; background: var(--fg4); opacity: 0.5; }
     .foot-bot { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
-    .foot-logo { font-size: 10px; font-weight: 600; letter-spacing: 0.24em; text-transform: uppercase; color: rgba(255,102,102,0.48); }
-    .foot-links, .foot-legal { display: flex; gap: 22px; flex-wrap: wrap; }
-    .foot-lnk { font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--fg3); transition: color 0.2s; }
-    .foot-lnk:hover { color: var(--fg2); }
     .foot-email { font-size: 9px; letter-spacing: 0.1em; color: var(--fg3); }
     .foot-mail-lnk { color: var(--fg2); border-bottom: 1px solid var(--fg4); transition: color 0.2s, border-color 0.2s; }
     .foot-mail-lnk:hover { color: var(--pink); border-color: var(--pink); }
+    .foot-legal { display: flex; gap: 22px; flex-wrap: wrap; }
+    .foot-lnk { font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--fg3); transition: color 0.2s; }
+    .foot-lnk:hover { color: var(--fg2); }
     .foot-copy { font-size: 9px; letter-spacing: 0.1em; color: var(--fg3); }
 
-
-    /* REVEAL */
-    .reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.6s ease, transform 0.6s ease; }
-    .reveal.visible { opacity: 1; transform: translateY(0); }
-
-    @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
-    @keyframes fadeIn  { from { opacity: 0; } to { opacity: 1; } }
-
-    /* RESPONSIVE */
-    @media (max-width: 768px) {
-      :root { --nav-h: 56px; }
-      .nav-links { display: none; }
-      .hamburger { display: flex; }
-      .hero-hl { font-size: clamp(44px, 10vw, 72px); }
-      .tagline-inner { flex-direction: column; gap: 14px; }
-      .sec-head { grid-template-columns: 1fr; }
-      .sec-gut { display: none; }
-      .sec-hc { padding: 14px var(--pad); }
-      .svc-grid { grid-template-columns: 1fr; }
-      .svc-gut { display: none; }
-      .svc { border-right: none; border-bottom: 1px solid var(--fg4); }
-      .work-grid { grid-template-columns: 1fr; }
-      .testi-inner { padding-left: var(--pad); }
-      .tq-mark { display: none; }
-      .foot-top, .foot-bot { flex-direction: column; align-items: flex-start; }
+    /* REVEAL ANIMATION */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
     }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* RESPONSIVE — tablet */
+    @media (max-width: 900px) {
+      .collage-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+      }
+    }
+
+    /* RESPONSIVE — mobile */
+    @media (max-width: 768px) {
+      /* Disable fade-out on mobile — only fade-in */
+      .scene { opacity: 1; transform: scale(1); }
+      .scene.reveal { opacity: 0; transform: translateY(24px); }
+      .scene.reveal.visible { opacity: 1; transform: translateY(0); }
+
+      .hero-hl { font-size: clamp(36px, 10vw, 52px); }
+      .hero-content { padding: calc(var(--nav-h) + 4vh) var(--pad) 0; }
+      .hero-cta .btn-p {
+        display: block;
+        width: 100%;
+        text-align: center;
+        padding: 16px 28px;
+      }
+
+      .collage-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+      }
+
+      .convo-wrap { max-width: 100%; }
+      .pill { min-height: 44px; }
+      .convo-submit { padding: 18px 28px; }
+
+      .foot-top, .foot-bot {
+        flex-direction: column;
+        gap: 12px;
+        text-align: center;
+      }
+    }
+
     @media (max-width: 480px) {
-      .hero-actions { flex-direction: column; gap: 14px; }
-      .wcard { padding: 18px; }
-      .hero-meta-strip { display: none; }
+      .hero-hl { font-size: clamp(32px, 9vw, 40px); }
+      .pill-group { gap: 8px; }
+      .pill { padding: 12px 18px; font-size: 12px; }
     }
   </style>
 </head>
@@ -493,54 +905,21 @@
 <div class="vignette"></div>
 
 <!-- NAV -->
-<nav id="mainNav">
+<nav>
   <div class="nav-inner">
-    <a href="index.html" class="nav-logo">Lost Objects</a>
-    <div class="nav-links">
-      <a href="work.html">Work</a>
-      <a href="services.html">Services</a>
-      <a href="about.html">About</a>
-      <div class="lo-icon" title="You found something...">
-        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M11 2C7 2 3.5 5 3 8.5C2.5 12 4 13.5 3.5 16C3 18.5 5 20 8 19.5C9.5 19.2 10 18 11 18C12 18 12.5 19.2 14 19.5C17 20 19 18.5 18.5 16C18 13.5 19.5 12 19 8.5C18.5 5 15 2 11 2Z" stroke="#FF6666" stroke-width="1" fill="none" opacity="0.5"/>
-          <path d="M11 6C9 6 7.5 7.5 7.5 9C7.5 10.5 8.5 11.5 8.5 13C8.5 14 9.5 15 11 15C12.5 15 13.5 14 13.5 13C13.5 11.5 14.5 10.5 14.5 9C14.5 7.5 13 6 11 6Z" stroke="#FF6666" stroke-width="0.75" fill="none" opacity="0.35"/>
-          <circle cx="11" cy="10" r="1.2" fill="#FF6666" opacity="0.6"/>
-        </svg>
-      </div>
-    </div>
-    <div style="display:flex;align-items:center;gap:14px;">
-      <a href="contact.html" class="nav-cta">Feeling Lost?</a>
-      <a href="https://www.instagram.com/wearelostobjects/" target="_blank" rel="noopener" aria-label="Instagram" style="display:flex;align-items:center;opacity:0.5;transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="2" y="2" width="20" height="20" rx="5" stroke="#FF6666" stroke-width="1.5"/>
-          <circle cx="12" cy="12" r="5" stroke="#FF6666" stroke-width="1.5"/>
-          <circle cx="17.5" cy="6.5" r="1.2" fill="#FF6666"/>
-        </svg>
-      </a>
-      <div class="hamburger" onclick="toggleMenu()">
-        <span></span><span></span>
-      </div>
-    </div>
+    <span class="nav-logo">Lost Objects</span>
+    <a href="https://www.instagram.com/wearelostobjects/" target="_blank" rel="noopener" class="nav-ig" aria-label="Instagram">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="2" y="2" width="20" height="20" rx="5" stroke="#FF6666" stroke-width="1.5"/>
+        <circle cx="12" cy="12" r="5" stroke="#FF6666" stroke-width="1.5"/>
+        <circle cx="17.5" cy="6.5" r="1.2" fill="#FF6666"/>
+      </svg>
+    </a>
   </div>
 </nav>
 
-<div class="mobile-menu" id="mobileMenu">
-  <a href="work.html"     onclick="toggleMenu()">Work</a>
-  <a href="services.html" onclick="toggleMenu()">Services</a>
-  <a href="about.html"    onclick="toggleMenu()">About</a>
-  <a href="contact.html"  onclick="toggleMenu()">Feeling Lost?</a>
-  <a href="https://www.instagram.com/wearelostobjects/" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:10px;">
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <rect x="2" y="2" width="20" height="20" rx="5" stroke="#FF6666" stroke-width="1.5"/>
-      <circle cx="12" cy="12" r="5" stroke="#FF6666" stroke-width="1.5"/>
-      <circle cx="17.5" cy="6.5" r="1.2" fill="#FF6666"/>
-    </svg>
-    Instagram
-  </a>
-</div>
-
 <!-- HERO -->
-<section class="hero">
+<section class="hero scene" data-scene-label="Lost Objects">
   <div class="hero-video-wrap">
     <iframe
       src="https://player.vimeo.com/video/1182148229?h=acf06f1fbe&badge=0&autopause=0&autoplay=1&muted=1&loop=1&background=1&quality=auto"
@@ -555,156 +934,273 @@
   <div class="hero-overlay-vignette"></div>
 
   <div class="hero-content">
-    <h1 class="hero-hl">We speak the language of<br><em>creative.</em></h1>
-    <p class="hero-desc">
-      <strong>We come from the entertainment industry.</strong> That's not a selling point — it's the whole thing. We built Lost Objects because filmmakers, creators, and entertainment brands deserve social media that actually speaks their language.
-    </p>
-    <div class="hero-actions">
-      <a href="services.html" class="btn-p">Work with us</a>
-      <a href="work.html"     class="btn-g">See our work ↗</a>
+    <div class="hero-eyebrow">
+      <span class="eyebrow-text">Social strategy for the creative industry</span>
+    </div>
+    <h1 class="hero-hl">Your work deserves<br>to be <em>found.</em></h1>
+    <p class="hero-desc">We're building something new. A home for the work, the process, and the people behind it. Stay close.</p>
+    <div class="hero-cta">
+      <a href="#contact" class="btn-p">Let's talk</a>
     </div>
   </div>
 
-  <div class="hero-scroll">
+  <div class="hero-scroll-hint">
     <div class="scroll-line"></div>
-    <span>Scroll</span>
-  </div>
-  <div class="hero-meta-strip">
-    <span class="hero-meta-lbl">Brand storytelling — Creative industry</span>
-    <span class="hero-meta-right">West Hollywood, CA</span>
   </div>
 </section>
 
-<!-- TAGLINE -->
-<div class="tagline reveal">
-  <div class="tagline-inner">
-    <span class="tagline-idx">— About</span>
-    <p class="tagline-txt">We started Lost Objects because we kept seeing the same thing: <em>creatives and brands with real stories to tell, showing up online like everyone else.</em> We're here to fix that.</p>
+<!-- COLLAGE GRID -->
+<section class="collage-section scene" data-scene-label="Selected Work">
+  <div class="section-eyebrow">
+    <div class="section-eyebrow-line"></div>
+    <span class="section-eyebrow-text">Selected Work</span>
   </div>
-</div>
-
-<!-- SERVICES -->
-<section class="sec" id="services">
-  <div class="sec-head">
-    <div class="sec-gut"><span>Services</span></div>
-    <div class="sec-hc">
-      <span class="sec-lbl">What we do</span>
-      <span class="sec-lbl">Three offerings. One philosophy.</span>
-    </div>
-  </div>
-  <div class="svc-grid">
-    <div class="svc-gut"></div>
-    <div class="svc reveal">
-      <div class="svc-num">01</div>
-      <div class="svc-name">Social Media<br>Audit</div>
-      <div class="svc-rule"></div>
-      <p class="svc-desc">A deep look at where you are and a clear map to where you need to be. Real feedback, real strategy, no filler. You walk away knowing exactly what to fix and why.</p>
-      <a href="services.html" class="svc-lnk">Learn more ↗</a>
-    </div>
-    <div class="svc reveal" style="transition-delay:.1s">
-      <div class="svc-num">02</div>
-      <div class="svc-name">Strategy<br>Session</div>
-      <div class="svc-rule"></div>
-      <p class="svc-desc">The tools, direction, and confidence to build or revamp your online presence. Built for creatives serious about showing up with intention and a real point of view.</p>
-      <a href="services.html" class="svc-lnk">Learn more ↗</a>
-    </div>
-    <div class="svc reveal" style="transition-delay:.2s">
-      <div class="svc-num">03</div>
-      <div class="svc-name">Full<br>Management</div>
-      <div class="svc-rule"></div>
-      <p class="svc-desc">We run your social so you can stay on set, on brand, and ahead of the curve. Content, scheduling, analytics, trend integration — completely handled.</p>
-      <a href="services.html" class="svc-lnk">Learn more ↗</a>
-    </div>
-  </div>
-</section>
-
-<!-- WORK -->
-<section class="sec" id="work">
-  <div class="sec-head">
-    <div class="sec-gut"><span>Work</span></div>
-    <div class="sec-hc">
-      <span class="sec-lbl">Selected projects</span>
-      <a href="work.html" class="sec-lbl" style="color:var(--pink);opacity:.55;cursor:pointer;">View all ↗</a>
-    </div>
-  </div>
-  <div class="work-grid">
-    <a href="work.html" class="wcard reveal">
-      <div class="wimg"><div class="wimg-ph"><span class="pp-lbl">Case study image</span></div></div>
-      <div class="wtag">Full Management — Grip &amp; Lighting</div>
-      <div class="wtitle">Legacy Grip — From obscurity to 15,000 followers</div>
-      <p class="wdesc">A Local 80 Key Grip with a great reputation and zero social presence. We built the strategy, voice, and community from scratch.</p>
-      <span class="wresult">↑ 400 → 15,000 followers in under 12 months</span>
-    </a>
-    <a href="work.html" class="wcard reveal" style="transition-delay:.1s">
-      <div class="wimg"><div class="wimg-ph"><span class="pp-lbl">Case study image</span></div></div>
-      <div class="wtag">Full Management — Educational Platform</div>
-      <div class="wtitle">Filmmakers Academy — Content strategy at scale</div>
-      <p class="wdesc">Managing social across platforms for one of the most respected cinematography education platforms in the world, including live events and brand partnerships.</p>
-      <span class="wresult">Ongoing — Multi-platform strategy</span>
-    </a>
-    <a href="work.html" class="wcard reveal" style="transition-delay:.2s">
-      <div class="wimg"><div class="wimg-ph"><span class="pp-lbl">Case study image</span></div></div>
-      <div class="wtag">Strategy — Cinematographer</div>
-      <div class="wtitle">Building a cohesive brand for a working cinematographer</div>
-      <p class="wdesc">A clear roadmap, a cohesive visual identity, and a strategy tailored to how the entertainment industry actually works and hires.</p>
-      <span class="wresult">↑ Immediate profile clarity and audience growth</span>
-    </a>
-    <a href="contact.html" class="wcard reveal" style="transition-delay:.3s;outline:1px dashed rgba(255,102,102,0.1)">
-      <div class="wimg" style="outline:1px dashed rgba(255,102,102,0.1)">
-        <div class="wimg-ph"><span class="pp-lbl" style="color:rgba(255,102,102,0.18)">Your project</span></div>
+  <!--
+    HOW TO ADD INSTAGRAM POSTS:
+    1. Replace data-url="INSTAGRAM_POST_URL" with the real post URL
+       e.g. data-url="https://www.instagram.com/p/ABC123/"
+    2. Uncomment the loadInstagramEmbeds() call in the script below
+    3. Replace YOUR_ACCESS_TOKEN with a Facebook app access token
+    4. The placeholder will hide and the embed will display automatically
+  -->
+  <div class="collage-grid">
+    <a class="collage-card ratio-4x5" href="https://www.instagram.com/p/DFa-HggS_AN/?img_index=1" target="_blank" rel="noopener">
+      <div class="collage-card-inner">
+        <img src="images/475715696_18343415827198483_5935573091955911007_n.jpg" alt="Lost Objects — Instagram post" />
       </div>
-      <div class="wtag" style="color:var(--fg3)">Your industry — Your format</div>
-      <div class="wtitle" style="color:var(--fg2)">This could be your story.</div>
-      <p class="wdesc">We work with filmmakers, production companies, gaming studios, theater companies, creators, and entertainment brands. If you're in the creative industry, we speak your language.</p>
-      <span class="wresult" style="color:var(--fg3)">→ Start the conversation</span>
+      <div class="collage-card-overlay"></div>
+      <div class="collage-card-ig"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="#fff" stroke-width="1.5"/><circle cx="12" cy="12" r="5" stroke="#fff" stroke-width="1.5"/><circle cx="17.5" cy="6.5" r="1.2" fill="#fff"/></svg></div>
+      <div class="collage-card-label">View on Instagram &rarr;</div>
+    </a>
+    <a class="collage-card ratio-1x1" href="https://www.instagram.com/p/DRhsrdEiYm1/" target="_blank" rel="noopener">
+      <div class="collage-card-inner">
+        <img src="images/589102708_18382413772198483_6004977522962831426_n.jpg" alt="Lost Objects — Instagram post" />
+      </div>
+      <div class="collage-card-overlay"></div>
+      <div class="collage-card-ig"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="#fff" stroke-width="1.5"/><circle cx="12" cy="12" r="5" stroke="#fff" stroke-width="1.5"/><circle cx="17.5" cy="6.5" r="1.2" fill="#fff"/></svg></div>
+      <div class="collage-card-label">View on Instagram &rarr;</div>
+    </a>
+    <a class="collage-card ratio-4x5" href="https://www.instagram.com/p/DWy91VEFCxG/?img_index=1" target="_blank" rel="noopener">
+      <div class="collage-card-inner">
+        <img src="images/659033416_18050557670720790_7937693999032787166_n.jpg" alt="Lost Objects — Instagram post" />
+      </div>
+      <div class="collage-card-overlay"></div>
+      <div class="collage-card-ig"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="#fff" stroke-width="1.5"/><circle cx="12" cy="12" r="5" stroke="#fff" stroke-width="1.5"/><circle cx="17.5" cy="6.5" r="1.2" fill="#fff"/></svg></div>
+      <div class="collage-card-label">View on Instagram &rarr;</div>
+    </a>
+    <a class="collage-card ratio-1x1" href="https://www.instagram.com/p/DVtWaeUDyJV/" target="_blank" rel="noopener">
+      <div class="collage-card-inner">
+        <img src="images/701700692_18031508729803568_5676187629427121799_n.jpg" alt="Lost Objects — Instagram post" />
+      </div>
+      <div class="collage-card-overlay"></div>
+      <div class="collage-card-ig"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="#fff" stroke-width="1.5"/><circle cx="12" cy="12" r="5" stroke="#fff" stroke-width="1.5"/><circle cx="17.5" cy="6.5" r="1.2" fill="#fff"/></svg></div>
+      <div class="collage-card-label">View on Instagram &rarr;</div>
+    </a>
+    <a class="collage-card ratio-4x5" href="https://www.instagram.com/p/DOjClddEbzW/" target="_blank" rel="noopener">
+      <div class="collage-card-inner">
+        <img src="images/708653059_18057003821720790_6212212797853852108_n.jpg" alt="Lost Objects — Instagram post" />
+      </div>
+      <div class="collage-card-overlay"></div>
+      <div class="collage-card-ig"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="#fff" stroke-width="1.5"/><circle cx="12" cy="12" r="5" stroke="#fff" stroke-width="1.5"/><circle cx="17.5" cy="6.5" r="1.2" fill="#fff"/></svg></div>
+      <div class="collage-card-label">View on Instagram &rarr;</div>
+    </a>
+    <a class="collage-card ratio-1x1" href="https://www.instagram.com/p/DIyyLh2Mivm/?img_index=1" target="_blank" rel="noopener">
+      <div class="collage-card-inner">
+        <img src="images/702637885_18056050304720790_485156073056251602_n.jpg" alt="Lost Objects — Instagram post" />
+      </div>
+      <div class="collage-card-overlay"></div>
+      <div class="collage-card-ig"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="#fff" stroke-width="1.5"/><circle cx="12" cy="12" r="5" stroke="#fff" stroke-width="1.5"/><circle cx="17.5" cy="6.5" r="1.2" fill="#fff"/></svg></div>
+      <div class="collage-card-label">View on Instagram &rarr;</div>
     </a>
   </div>
+  <p class="collage-caption">Follow our work <a href="https://www.instagram.com/wearelostobjects/" target="_blank" rel="noopener">@wearelostobjects</a></p>
 </section>
 
-<!-- TESTIMONIAL -->
-<section class="testi reveal" id="about">
-  <div class="testi-inner">
-    <div class="tq-mark">"</div>
-    <p class="tq-txt">Lost Objects grew my Instagram from <em>400 to over 15,000 followers</em> in less than a year — completely organically. Their personalized strategy and attention to detail have been the foundation for building my brand online.</p>
-    <div class="tq-attr">Brendan Riel — <span>Local 80 Key Grip &amp; Owner, Legacy Grip</span></div>
-    <div class="tq-dots">
-      <div class="tdot active"></div>
-      <div class="tdot"></div>
-      <div class="tdot"></div>
+<!-- DOSSIER — data label -->
+<section class="dossier scene" data-scene-label="The Dossier">
+  <div class="section-eyebrow">
+    <div class="section-eyebrow-line"></div>
+    <span class="section-eyebrow-text">The dossier</span>
+  </div>
+
+  <div class="dossier-grid">
+
+    <div class="dossier-cell span-3">
+      <div class="dossier-key">What is Lost Objects</div>
+      <div class="dossier-val-lg">A boutique social media agency built from inside the film industry. We help filmmakers, creative brands, and entertainment businesses show up online with strategy, clarity, and a point of view.</div>
     </div>
+
+    <div class="dossier-cell">
+      <div class="dossier-key">Entity</div>
+      <div class="dossier-val"><strong>Lost Objects</strong></div>
+    </div>
+    <div class="dossier-cell">
+      <div class="dossier-key">Based</div>
+      <div class="dossier-val"><strong>West Hollywood</strong>, Los Angeles</div>
+    </div>
+    <div class="dossier-cell">
+      <div class="dossier-key">Status</div>
+      <div class="dossier-status-row">
+        <span class="dossier-status-dot"></span>
+        <span class="dossier-status-text">Accepting Clients</span>
+      </div>
+    </div>
+
+    <div class="dossier-cell span-2">
+      <div class="dossier-key">Founded by</div>
+      <div class="dossier-founders">
+        <div>
+          <div class="dossier-person-name">Kyra Sweeney</div>
+          <div class="dossier-person-role">Actor · Social Media Strategist</div>
+          <div class="dossier-person-links">
+            <a href="https://www.instagram.com/kyragracee" target="_blank" rel="noopener" class="dossier-person-link">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="#FF6666" stroke-width="1.5"/><circle cx="12" cy="12" r="4" stroke="#FF6666" stroke-width="1.5"/><circle cx="17.5" cy="6.5" r="1" fill="#FF6666"/></svg>
+              @kyragracee
+            </a>
+          </div>
+        </div>
+        <div>
+          <div class="dossier-person-name">Brendan Sweeney</div>
+          <div class="dossier-person-role">Director · Producer · Business Relations</div>
+          <div class="dossier-person-links">
+            <a href="https://www.instagram.com/brenpancake" target="_blank" rel="noopener" class="dossier-person-link">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="#FF6666" stroke-width="1.5"/><circle cx="12" cy="12" r="4" stroke="#FF6666" stroke-width="1.5"/><circle cx="17.5" cy="6.5" r="1" fill="#FF6666"/></svg>
+              @brenpancake
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="dossier-cell">
+      <div class="dossier-key">Origin</div>
+      <div class="dossier-val">Founded in West Hollywood in 2023, Lost Objects grew from a simple observation: the most talented people in the film industry were going unseen online. Kyra and Brendan Sweeney built this to change that.</div>
+    </div>
+
+    <div class="dossier-cell">
+      <div class="dossier-key">Industries</div>
+      <div class="dossier-tags">
+        <span class="dossier-tag">Film</span>
+        <span class="dossier-tag">Cinematography</span>
+        <span class="dossier-tag">Grip & Lighting</span>
+        <span class="dossier-tag">Production</span>
+        <span class="dossier-tag">Entertainment</span>
+      </div>
+    </div>
+    <div class="dossier-cell">
+      <div class="dossier-key">Services</div>
+      <div class="dossier-tags">
+        <span class="dossier-tag">Strategy</span>
+        <span class="dossier-tag">Full Management</span>
+        <span class="dossier-tag">Content</span>
+        <span class="dossier-tag">Brand Identity</span>
+        <span class="dossier-tag">Audit</span>
+      </div>
+    </div>
+    <div class="dossier-cell">
+      <div class="dossier-key">The name</div>
+      <div class="dossier-val">The name is personal. Kyra and Brendan both felt it — that specific feeling of being lost in your creative career, unseen in an industry you care deeply about. Lost Objects came from that. The belief that even when you feel like a lost object, you can still be found. And that finding others is worth building a company around.</div>
+    </div>
+
   </div>
 </section>
 
-<!-- CLIENTS -->
-<div class="clients">
-  <div class="clients-lbl-block"><span class="clients-lbl">Trusted by</span></div>
-  <div class="clients-scroll">
-    <div class="clients-track">
-      <div class="chip">Filmmakers Academy</div>
-      <div class="chip">Blackout</div>
-      <div class="chip">Nanlux / Nanlite</div>
-      <div class="chip">B&amp;H Photo</div>
-      <div class="chip">Kodak</div>
-      <div class="chip">Hollyland</div>
-      <div class="chip">Legacy Grip</div>
-      <div class="chip">Filmmakers Academy</div>
-      <div class="chip">Blackout</div>
-      <div class="chip">Nanlux / Nanlite</div>
-      <div class="chip">B&amp;H Photo</div>
-      <div class="chip">Kodak</div>
-      <div class="chip">Hollyland</div>
-      <div class="chip">Legacy Grip</div>
-    </div>
+<!-- CONTACT — CONVERSATIONAL FORM -->
+<section class="contact-section scene" id="contact" data-scene-label="Stop Feeling Lost">
+  <div class="section-eyebrow" id="convoHeader">
+    <div class="section-eyebrow-line"></div>
+    <span class="section-eyebrow-text">Stop feeling lost</span>
   </div>
-</div>
+  <div class="convo-wrap">
 
-<!-- CTA -->
-<section class="cta-band reveal">
-  <div class="cta-inner">
-    <div class="cta-eye">Ready to show up?</div>
-    <h2 class="cta-hl">Let's make the creative industry<br><em>impossible to ignore.</em></h2>
-    <p class="cta-sub">No templates. No borrowed strategy. Just social media that actually speaks the language of your world.</p>
-    <a href="contact.html" class="btn-p">Start the conversation</a>
+    <!-- Receipt of completed answers -->
+    <div class="convo-receipt" id="convoReceipt"></div>
+
+    <!-- Step 1: Name -->
+    <div class="convo-step active" data-step="1">
+      <div class="convo-prompt">What's your name?</div>
+      <input class="convo-input" type="text" id="cs-name" placeholder="First and last name" autocomplete="name" />
+    </div>
+
+    <!-- Step 2: Email -->
+    <div class="convo-step" data-step="2">
+      <div class="convo-prompt">Where can we reach you?</div>
+      <input class="convo-input" type="email" id="cs-email" placeholder="your@email.com" autocomplete="email" />
+    </div>
+
+    <!-- Step 3: Subject -->
+    <div class="convo-step" data-step="3">
+      <div class="convo-prompt">Give us a subject line.</div>
+      <input class="convo-input" type="text" id="cs-subject" placeholder="e.g. Ready to grow my Instagram, Need a strategy partner..." />
+    </div>
+
+    <!-- Step 4: Role (single select pills) -->
+    <div class="convo-step" data-step="4">
+      <div class="convo-prompt">How would you describe yourself?</div>
+      <div class="pill-group" id="roleGroup">
+        <button type="button" class="pill" data-value="Cinematographer">Cinematographer</button>
+        <button type="button" class="pill" data-value="Grip or Lighting Tech">Grip or Lighting Tech</button>
+        <button type="button" class="pill" data-value="Key Grip or Gaffer">Key Grip or Gaffer</button>
+        <button type="button" class="pill" data-value="Director or Producer">Director or Producer</button>
+        <button type="button" class="pill" data-value="Film Tech Brand">Film Tech Brand</button>
+        <button type="button" class="pill" data-value="Production House">Production House</button>
+        <button type="button" class="pill" data-value="Creative Entrepreneur">Creative Entrepreneur</button>
+        <button type="button" class="pill" data-value="Other">Other</button>
+      </div>
+      <div id="roleOtherWrap" style="display:none; margin-top:20px;">
+        <input class="convo-input" type="text" id="cs-role-other" placeholder="Tell us what you do..." />
+      </div>
+    </div>
+
+    <!-- Step 5: Platforms (multi-select pills) -->
+    <div class="convo-step" data-step="5">
+      <div class="convo-prompt">Which platforms are you on?</div>
+      <div class="pill-group" id="platformGroup">
+        <button type="button" class="pill" data-value="Instagram">Instagram</button>
+        <button type="button" class="pill" data-value="TikTok">TikTok</button>
+        <button type="button" class="pill" data-value="YouTube">YouTube</button>
+        <button type="button" class="pill" data-value="Facebook">Facebook</button>
+        <button type="button" class="pill" data-value="LinkedIn">LinkedIn</button>
+        <button type="button" class="pill" data-value="None yet">None yet</button>
+      </div>
+      <button type="button" class="convo-next" id="platformNext">Continue &rarr;</button>
+    </div>
+
+    <!-- Step 6: Looking for (multi-select pills) -->
+    <div class="convo-step" data-step="6">
+      <div class="convo-prompt">What are you looking for?</div>
+      <div class="pill-group" id="lookingGroup">
+        <button type="button" class="pill" data-value="Social Audit">Social Audit</button>
+        <button type="button" class="pill" data-value="Strategy Session">Strategy Session</button>
+        <button type="button" class="pill" data-value="Full Management">Full Management</button>
+        <button type="button" class="pill" data-value="Not sure yet">Not sure yet</button>
+        <button type="button" class="pill" data-value="Custom Services" id="lookingCustomPill">Custom Services</button>
+      </div>
+      <div id="lookingCustomWrap" style="display:none; margin-top:20px;">
+        <input class="convo-input" type="text" id="cs-looking-custom" placeholder="Tell us what you're looking for..." />
+      </div>
+      <button type="button" class="convo-next" id="lookingNext">Continue &rarr;</button>
+    </div>
+
+    <!-- Step 7: Message -->
+    <div class="convo-step" data-step="7">
+      <div class="convo-prompt">Tell us a little more.</div>
+      <textarea class="convo-textarea" id="cs-message" placeholder="Context, goals, where you are right now..." rows="1"></textarea>
+      <button type="button" class="convo-next" id="messageNext" style="display:none">Continue &rarr;</button>
+    </div>
+
+    <!-- Step 8: Send -->
+    <div class="convo-step" data-step="8">
+      <button type="button" class="convo-submit" id="convoSend">Send it.</button>
+    </div>
+
+    <!-- Success -->
+    <div class="convo-success" id="convoSuccess">
+      <div class="convo-success-hl">You've been found.</div>
+      <div class="convo-success-sub">
+        <span class="convo-success-dot"></span>
+        We'll be in touch within 48 hours.
+      </div>
+    </div>
   </div>
 </section>
 
@@ -713,12 +1209,13 @@
   <div class="foot-inner">
     <div class="foot-top">
       <div class="foot-logo">Lost Objects</div>
-      <div class="foot-links">
-        <a href="crm/index.html" class="foot-lnk" style="opacity:.35" onmouseenter="this.style.opacity='1';this.style.color='var(--pink)'" onmouseleave="this.style.opacity='.35';this.style.color=''">Login</a>
-        <a href="work.html"     class="foot-lnk">Work</a>
-        <a href="services.html" class="foot-lnk">Services</a>
-        <a href="contact.html"  class="foot-lnk">Contact</a>
-      </div>
+      <a href="https://www.instagram.com/wearelostobjects/" target="_blank" rel="noopener" class="foot-ig" aria-label="Instagram">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="2" width="20" height="20" rx="5" stroke="#FF6666" stroke-width="1.5"/>
+          <circle cx="12" cy="12" r="5" stroke="#FF6666" stroke-width="1.5"/>
+          <circle cx="17.5" cy="6.5" r="1.2" fill="#FF6666"/>
+        </svg>
+      </a>
     </div>
     <div class="foot-divider"></div>
     <div class="foot-bot">
@@ -727,28 +1224,319 @@
         <a href="privacy.html" class="foot-lnk">Privacy</a>
         <a href="terms.html" class="foot-lnk">Terms &amp; Conditions</a>
       </div>
-      <div class="foot-copy">© 2026 Lost Objects LLC</div>
+      <div class="foot-copy">&copy; 2026 Lost Objects</div>
     </div>
   </div>
 </footer>
 
-<script src="https://player.vimeo.com/api/player.js"></script>
 <script>
-  /* ---------- SITE UTILITIES ---------- */
-  const obs = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
-  }, { threshold: 0.1 });
-  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+  /* NAV SCROLL */
+  const navEl = document.querySelector('nav');
+  window.addEventListener('scroll', () => {
+    navEl.classList.toggle('scrolled', window.scrollY > 40);
+  });
 
-  const mainNav = document.getElementById('mainNav');
-  window.addEventListener('scroll', () => { mainNav.classList.toggle('scrolled', window.scrollY > 60); }, { passive: true });
+  /* SCROLL-DRIVEN SECTION FOCUS */
+  const isMobile = window.matchMedia('(max-width: 768px)').matches;
+  const scenes = document.querySelectorAll('.scene');
 
-  function toggleMenu() { document.getElementById('mobileMenu').classList.toggle('open'); }
+  if (!isMobile) {
+    const sceneObs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        e.target.classList.toggle('in-focus', e.isIntersecting);
+      });
+    }, { threshold: 0.4 });
+    scenes.forEach(s => {
+      if (s.classList.contains('hero')) { s.classList.add('in-focus'); }
+      sceneObs.observe(s);
+    });
+  } else {
+    const revealObs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); revealObs.unobserve(e.target); }
+      });
+    }, { threshold: 0.12 });
+    scenes.forEach(s => {
+      if (s.classList.contains('hero')) { s.classList.add('visible'); return; }
+      s.classList.add('reveal');
+      revealObs.observe(s);
+    });
+  }
 
+  /*
+    ═══════════════════════════════════════════════════════
+    INSTAGRAM EMBED LOADER
+
+    When you're ready to add real Instagram posts:
+    1. Set data-url="https://www.instagram.com/p/YOUR_POST_ID/"
+       on each .collage-card element above
+    2. Uncomment the loadInstagramEmbeds() call below
+    3. Make sure your site is served over HTTPS (Vercel handles this)
+
+    Note: Instagram embeds require the viewer to be logged in
+    to Instagram to see the full post. The placeholder will show
+    for logged-out visitors, which is fine for a portfolio page.
+    ═══════════════════════════════════════════════════════
+  */
+
+  async function loadInstagramEmbeds() {
+    const cards = document.querySelectorAll('.collage-card[data-url]');
+    for (const card of cards) {
+      const url = card.dataset.url;
+      if (!url || url === 'INSTAGRAM_POST_URL') continue;
+
+      try {
+        const res = await fetch(
+          `https://graph.facebook.com/v18.0/instagram_oembed?url=${encodeURIComponent(url)}&omitscript=true&maxwidth=480`,
+          { headers: { 'Authorization': 'Bearer YOUR_ACCESS_TOKEN' } }
+          // Replace YOUR_ACCESS_TOKEN with a Facebook app access token
+          // Free to get at: developers.facebook.com → create app → Instagram Basic Display
+        );
+        const data = await res.json();
+        if (data.html) {
+          const embedWrap = card.querySelector('.ig-embed-wrap');
+          const placeholder = card.querySelector('.collage-card-placeholder');
+          embedWrap.innerHTML = data.html;
+          embedWrap.classList.add('loaded');
+          if (placeholder) placeholder.style.display = 'none';
+        }
+      } catch (err) {
+        console.log('Embed load skipped for:', url);
+      }
+    }
+    // Process any embeds Instagram injected
+    if (window.instgrm) window.instgrm.Embeds.process();
+  }
+
+  // Uncomment when you have real URLs and an access token:
+  // loadInstagramEmbeds();
+
+  /* ═══════════════════════════════════════════
+     CONVERSATIONAL FORM ENGINE
+     ═══════════════════════════════════════════ */
+  (function() {
+    const FORMSPREE = 'https://formspree.io/f/xgoqdyyd';
+    const receipt = document.getElementById('convoReceipt');
+    const steps = document.querySelectorAll('.convo-step');
+    const header = document.getElementById('convoHeader');
+    let current = 1;
+
+    // Collected data
+    const data = { name:'', email:'', subject:'', role:'', platforms:[], looking_for:[], message:'' };
+
+    // Show header on scroll into view
+    const secObs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { header.classList.add('visible'); secObs.unobserve(e.target); } });
+    }, { threshold: 0.15 });
+    secObs.observe(document.getElementById('contact'));
+
+    // Reveal step 1
+    requestAnimationFrame(() => {
+      const s1 = steps[0];
+      s1.classList.add('active');
+      requestAnimationFrame(() => s1.classList.add('visible'));
+    });
+
+    // Auto-focus first input when hero CTA scrolls here
+    document.querySelector('a[href="#contact"]').addEventListener('click', () => {
+      setTimeout(() => {
+        document.getElementById('cs-name').focus();
+        header.classList.add('visible');
+      }, 600);
+    });
+
+    // ─── Helpers ───
+    function addReceipt(label, value) {
+      const line = document.createElement('div');
+      line.className = 'receipt-line';
+      line.innerHTML = '<span class="receipt-label">' + label + '</span><span class="receipt-value">' + escHtml(value) + '</span>';
+      receipt.appendChild(line);
+      requestAnimationFrame(() => line.classList.add('visible'));
+    }
+
+    function escHtml(s) {
+      const d = document.createElement('div');
+      d.textContent = s;
+      return d.innerHTML;
+    }
+
+    function showStep(n) {
+      steps.forEach(s => { s.classList.remove('active','visible'); });
+      const next = document.querySelector('.convo-step[data-step="' + n + '"]');
+      if (!next) return;
+      next.classList.add('active');
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          next.classList.add('visible');
+          const input = next.querySelector('.convo-input, .convo-textarea');
+          if (input) input.focus();
+        });
+      });
+      current = n;
+    }
+
+    function advance(label, value) {
+      addReceipt(label, value);
+      showStep(current + 1);
+    }
+
+    // ─── Step 1–3: text inputs (Enter / Tab to advance) ───
+    const textSteps = [
+      { id: 'cs-name',    key: 'name',    label: 'Name',    step: 1 },
+      { id: 'cs-email',   key: 'email',   label: 'Email',   step: 2 },
+      { id: 'cs-subject', key: 'subject', label: 'Subject', step: 3 }
+    ];
+
+    textSteps.forEach(cfg => {
+      const el = document.getElementById(cfg.id);
+      el.addEventListener('keydown', e => {
+        if ((e.key === 'Enter' || e.key === 'Tab') && current === cfg.step) {
+          e.preventDefault();
+          const val = el.value.trim();
+          if (!val) return;
+          if (cfg.key === 'email' && !el.checkValidity()) return;
+          data[cfg.key] = val;
+          advance(cfg.label, val);
+        }
+      });
+    });
+
+    // ─── Step 4: role (single select — click to advance, "Other" shows text field) ───
+    const roleOtherWrap = document.getElementById('roleOtherWrap');
+    const roleOtherInput = document.getElementById('cs-role-other');
+
+    document.querySelectorAll('#roleGroup .pill').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('#roleGroup .pill').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+
+        if (btn.dataset.value === 'Other') {
+          roleOtherWrap.style.display = 'block';
+          roleOtherInput.focus();
+        } else {
+          roleOtherWrap.style.display = 'none';
+          data.role = btn.dataset.value;
+          setTimeout(() => advance('Role', data.role), 250);
+        }
+      });
+    });
+
+    roleOtherInput.addEventListener('keydown', e => {
+      if ((e.key === 'Enter' || e.key === 'Tab') && current === 4) {
+        e.preventDefault();
+        const val = roleOtherInput.value.trim();
+        if (!val) return;
+        data.role = val;
+        advance('Role', data.role);
+      }
+    });
+
+    // ─── Step 5: platforms (multi-select pills) ───
+    document.querySelectorAll('#platformGroup .pill').forEach(btn => {
+      btn.addEventListener('click', () => btn.classList.toggle('selected'));
+    });
+    document.getElementById('platformNext').addEventListener('click', () => {
+      const selected = Array.from(document.querySelectorAll('#platformGroup .pill.selected')).map(b => b.dataset.value);
+      data.platforms = selected;
+      advance('Platforms', selected.length ? selected.join(', ') : 'None selected');
+    });
+
+    // ─── Step 6: looking for (multi-select pills + Custom Services text field) ───
+    const lookingCustomWrap = document.getElementById('lookingCustomWrap');
+    const lookingCustomInput = document.getElementById('cs-looking-custom');
+
+    document.querySelectorAll('#lookingGroup .pill').forEach(btn => {
+      btn.addEventListener('click', () => {
+        btn.classList.toggle('selected');
+        // Show/hide custom field when Custom Services is toggled
+        if (btn.id === 'lookingCustomPill') {
+          const isOn = btn.classList.contains('selected');
+          lookingCustomWrap.style.display = isOn ? 'block' : 'none';
+          if (isOn) lookingCustomInput.focus();
+        }
+      });
+    });
+    document.getElementById('lookingNext').addEventListener('click', () => {
+      const selected = Array.from(document.querySelectorAll('#lookingGroup .pill.selected')).map(b => b.dataset.value);
+      // If Custom Services is selected, replace its label with what they typed
+      const customVal = lookingCustomInput.value.trim();
+      if (customVal) {
+        const idx = selected.indexOf('Custom Services');
+        if (idx !== -1) selected[idx] = customVal;
+      }
+      data.looking_for = selected;
+      advance('Looking for', selected.length ? selected.join(', ') : 'None selected');
+    });
+
+    // ─── Step 7: textarea with Continue button ───
+    const ta = document.getElementById('cs-message');
+    const messageNext = document.getElementById('messageNext');
+
+    // Auto-expand textarea as user types
+    ta.addEventListener('input', () => {
+      ta.style.height = 'auto';
+      ta.style.height = ta.scrollHeight + 'px';
+      // Show/hide the Continue button based on content
+      messageNext.style.display = ta.value.trim() ? 'inline-block' : 'none';
+    });
+
+    // Continue button advances to Step 8
+    messageNext.addEventListener('click', () => {
+      data.message = ta.value.trim();
+      advance('Message', data.message || '(none)');
+    });
+
+    // ─── Step 8: send ───
+    document.getElementById('convoSend').addEventListener('click', async function() {
+      const btn = this;
+      // Capture message if user typed but didn't click Continue
+      if (!data.message && ta.value.trim()) data.message = ta.value.trim();
+
+      btn.textContent = 'Sending...';
+      btn.disabled = true;
+
+      const formData = new FormData();
+      formData.append('name', data.name);
+      formData.append('email', data.email);
+      formData.append('subject', data.subject);
+      formData.append('role', data.role);
+      formData.append('platforms', data.platforms.join(', '));
+      formData.append('looking_for', data.looking_for.join(', '));
+      formData.append('message', data.message);
+
+      try {
+        const res = await fetch(FORMSPREE, {
+          method: 'POST',
+          body: formData,
+          headers: { 'Accept': 'application/json' }
+        });
+
+        if (res.ok) {
+          // Hide everything, show success
+          receipt.style.display = 'none';
+          steps.forEach(s => { s.classList.remove('active','visible'); });
+          header.style.display = 'none';
+          const success = document.getElementById('convoSuccess');
+          success.classList.add('visible');
+          success.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } else {
+          btn.textContent = 'Something went wrong — try again';
+          btn.disabled = false;
+        }
+      } catch (err) {
+        btn.textContent = 'Send it.';
+        btn.disabled = false;
+      }
+    });
+  })();
 </script>
 
-<script src="lo-game.js"></script>
-<script src="cookie-notice.js"></script>
+<script src="https://player.vimeo.com/api/player.js"></script>
+
+<!-- Instagram embed script (load when ready) -->
+<!-- <script async src="//www.instagram.com/embed.js"></script> -->
+
 <script src="lead-popup.js"></script>
+
 </body>
 </html>
