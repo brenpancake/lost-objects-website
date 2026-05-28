@@ -267,9 +267,9 @@
       flex-shrink: 0;
     }
     .section-eyebrow-text {
-      font-size: 9px;
+      font-size: 11px;
       font-weight: 500;
-      letter-spacing: 0.24em;
+      letter-spacing: 0.22em;
       text-transform: uppercase;
       color: var(--pink);
       opacity: 0.7;
@@ -369,7 +369,6 @@
 
     /* CONTACT — CONVERSATIONAL FORM */
     .contact-section {
-      border-top: 1px solid var(--fg4);
       max-width: var(--max);
       margin: 0 auto;
       padding: clamp(28px, 4vh, 48px) var(--pad) clamp(80px, 14vh, 160px);
@@ -602,7 +601,6 @@
 
     /* DOSSIER — data label block */
     .dossier {
-      border-top: 1px solid var(--fg4);
       max-width: var(--max);
       margin: 0 auto;
       padding: clamp(28px, 4vh, 48px) var(--pad) clamp(64px, 10vh, 100px);
@@ -651,15 +649,6 @@
       color: var(--fg);
       font-weight: 400;
     }
-    .dossier-val a {
-      color: var(--fg2);
-      border-bottom: 1px solid var(--fg4);
-      transition: color 0.2s, border-color 0.2s;
-    }
-    .dossier-val a:hover {
-      color: var(--pink);
-      border-color: var(--pink);
-    }
     .dossier-tags {
       display: flex;
       flex-wrap: wrap;
@@ -691,6 +680,31 @@
       color: var(--fg3);
       line-height: 1.5;
     }
+    .dossier-person-links {
+      display: flex;
+      gap: 10px;
+      margin-top: 8px;
+    }
+    .dossier-person-link {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 9px;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      color: var(--fg3);
+      transition: color 0.2s;
+    }
+    .dossier-person-link:hover {
+      color: var(--pink);
+    }
+    .dossier-person-link svg {
+      opacity: 0.5;
+      transition: opacity 0.2s;
+    }
+    .dossier-person-link:hover svg {
+      opacity: 1;
+    }
     .dossier-status-row {
       display: flex;
       align-items: center;
@@ -699,8 +713,12 @@
     .dossier-status-dot {
       width: 6px; height: 6px;
       border-radius: 50%;
-      background: var(--pink);
-      animation: successPulse 2s ease-in-out infinite;
+      background: #34d399;
+      animation: statusPulse 2s ease-in-out infinite;
+    }
+    @keyframes statusPulse {
+      0%, 100% { opacity: 0.4; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.3); }
     }
     .dossier-status-text {
       font-size: 12px;
@@ -736,7 +754,7 @@
     }
 
     /* FOOTER */
-    footer { border-top: 1px solid var(--fg4); }
+    footer { }
     .foot-inner { max-width: var(--max); margin: 0 auto; padding: 26px var(--pad); display: flex; flex-direction: column; gap: 20px; }
     .foot-top { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
     .foot-logo { font-size: 10px; font-weight: 600; letter-spacing: 0.24em; text-transform: uppercase; color: rgba(255,102,102,0.48); }
@@ -1027,7 +1045,7 @@
 
     <div class="dossier-cell">
       <div class="dossier-key">Entity</div>
-      <div class="dossier-val"><strong>Lost Objects LLC</strong></div>
+      <div class="dossier-val"><strong>Lost Objects</strong></div>
     </div>
     <div class="dossier-cell">
       <div class="dossier-key">Based</div>
@@ -1045,12 +1063,24 @@
       <div class="dossier-key">Founded by</div>
       <div class="dossier-founders">
         <div>
-          <div class="dossier-person-name">Brendan Sweeney</div>
-          <div class="dossier-person-role">Director · Producer · CEO, Filmmakers Academy</div>
-        </div>
-        <div>
           <div class="dossier-person-name">Kyra Sweeney</div>
           <div class="dossier-person-role">SAG-AFTRA Actor · Social Media Strategist</div>
+          <div class="dossier-person-links">
+            <a href="https://www.instagram.com/kyragracee" target="_blank" rel="noopener" class="dossier-person-link">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="#FF6666" stroke-width="1.5"/><circle cx="12" cy="12" r="4" stroke="#FF6666" stroke-width="1.5"/><circle cx="17.5" cy="6.5" r="1" fill="#FF6666"/></svg>
+              @kyragracee
+            </a>
+          </div>
+        </div>
+        <div>
+          <div class="dossier-person-name">Brendan Sweeney</div>
+          <div class="dossier-person-role">Director · Producer · Business Relations</div>
+          <div class="dossier-person-links">
+            <a href="https://www.instagram.com/brenpancake" target="_blank" rel="noopener" class="dossier-person-link">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="#FF6666" stroke-width="1.5"/><circle cx="12" cy="12" r="4" stroke="#FF6666" stroke-width="1.5"/><circle cx="17.5" cy="6.5" r="1" fill="#FF6666"/></svg>
+              @brenpancake
+            </a>
+          </div>
         </div>
       </div>
     </div>
@@ -1080,11 +1110,6 @@
       </div>
     </div>
     <div class="dossier-cell">
-      <div class="dossier-key">Partnerships</div>
-      <div class="dossier-val"><strong>Kodak</strong> · <strong>B&H Photo</strong> · <strong>Nanlux</strong> · <strong>Hollyland</strong></div>
-    </div>
-
-    <div class="dossier-cell span-3">
       <div class="dossier-key">The name</div>
       <div class="dossier-val">We are all lost objects at some point — people, brands, ideas that haven't been found yet. The work we do is about finding them. Making them visible. Getting them in front of the rooms they deserve to be in.</div>
     </div>
