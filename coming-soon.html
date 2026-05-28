@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lost Objects — Coming Soon</title>
+  <meta name="description" content="Lost Objects. Social media strategy and full management for filmmakers, creators, and entertainment brands. Something new is coming." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    img { display: block; max-width: 100%; }
+    a { text-decoration: none; color: inherit; }
+
+    :root {
+      --pink:  #FF6666;
+      --cream: #F0E8DC;
+      --bg:    #0f0e0d;
+      --bg2:   #161514;
+      --bg3:   #1c1a19;
+      --fg:    #f2ece1;
+      --fg2:   rgba(232,226,217,0.72);
+      --fg3:   rgba(232,226,217,0.44);
+      --fg4:   rgba(232,226,217,0.14);
+      --serif: 'DM Serif Display', Georgia, serif;
+      --sans:  'Inter', system-ui, sans-serif;
+      --max:   1380px;
+      --pad:   clamp(20px, 4vw, 60px);
+      --nav-h: 62px;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--sans);
+      font-weight: 400;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* GRAIN */
+    .grain {
+      position: fixed; inset: -100px;
+      width: calc(100% + 200px); height: calc(100% + 200px);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.78' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)'/%3E%3C/svg%3E");
+      opacity: 0.048; pointer-events: none; z-index: 9999;
+      animation: grain 0.6s steps(1) infinite;
+    }
+    @keyframes grain {
+      0%{transform:translate(0,0)}10%{transform:translate(-3%,-4%)}20%{transform:translate(4%,2%)}
+      30%{transform:translate(-1%,5%)}40%{transform:translate(3%,-3%)}50%{transform:translate(-4%,1%)}
+      60%{transform:translate(2%,4%)}70%{transform:translate(-3%,-1%)}80%{transform:translate(1%,3%)}
+      90%{transform:translate(-2%,-4%)}100%{transform:translate(3%,0)}
+    }
+
+    .vignette {
+      position: fixed; inset: 0;
+      background: radial-gradient(ellipse at 50% 0%, transparent 45%, rgba(10,9,8,0.6) 100%);
+      pointer-events: none; z-index: 9998;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 200; height: var(--nav-h);
+      background: transparent;
+      border-bottom: 1px solid transparent;
+      transition: background 0.4s, border-color 0.4s, backdrop-filter 0.4s;
+    }
+    nav.scrolled {
+      background: rgba(15,14,13,0.9);
+      border-bottom-color: var(--fg4);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+    .nav-inner {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0 var(--pad);
+      height: 100%;
+      display: flex;
+      align-items: center;
+    }
+    .nav-logo {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--pink);
+    }
+
+    /* HERO */
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 100svh;
+      min-height: 600px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .hero-video-wrap {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background: var(--bg);
+    }
+    .hero-video-wrap iframe {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 177.78vh;
+      height: 133.33vw;
+      min-width: 100vw;
+      min-height: 100vh;
+      border: none;
+      pointer-events: none;
+    }
+    .hero-overlay-base     { position: absolute; inset: 0; background: rgba(10,9,8,0.52); z-index: 2; }
+    .hero-overlay-gradient {
+      position: absolute; inset: 0; z-index: 3;
+      background: linear-gradient(to bottom, rgba(15,14,13,0.45) 0%, transparent 35%, transparent 65%, rgba(15,14,13,0.72) 100%);
+    }
+    .hero-overlay-vignette {
+      position: absolute; inset: 0; z-index: 4;
+      background: radial-gradient(ellipse at center, transparent 40%, rgba(10,9,8,0.55) 100%);
+    }
+    .hero-content {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: calc(var(--nav-h) + 8vh) var(--pad) 0;
+      max-width: min(860px, 90vw);
+    }
+    .hero-eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: clamp(20px, 3.5vh, 36px);
+      opacity: 0;
+      animation: fadeUp 0.7s ease 0.15s forwards;
+    }
+    .eyebrow-line { width: 28px; height: 1px; background: var(--pink); opacity: 0.5; flex-shrink: 0; }
+    .eyebrow-text { font-size: 9px; letter-spacing: 0.28em; text-transform: uppercase; color: var(--pink); opacity: 0.7; }
+    .hero-hl {
+      font-family: var(--serif);
+      font-size: clamp(52px, 7.5vw, 108px);
+      font-weight: 400;
+      line-height: 0.95;
+      letter-spacing: -0.025em;
+      color: var(--fg);
+      margin-bottom: clamp(20px, 3.5vh, 36px);
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.3s forwards;
+      text-shadow: 0 2px 40px rgba(10,9,8,0.6);
+    }
+    .hero-hl em { font-style: italic; color: var(--pink); }
+    .hero-desc {
+      font-size: clamp(12px, 1.1vw, 15px);
+      font-weight: 400;
+      color: rgba(232,226,217,0.72);
+      line-height: 1.8;
+      max-width: 480px;
+      margin-bottom: clamp(28px, 4.5vh, 48px);
+      opacity: 0;
+      animation: fadeUp 0.7s ease 0.5s forwards;
+      text-shadow: 0 1px 12px rgba(10,9,8,0.8);
+    }
+    .hero-scroll {
+      position: absolute;
+      bottom: 28px; left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      opacity: 0;
+      animation: fadeIn 1s ease 1.2s forwards;
+    }
+    .hero-scroll span {
+      font-size: 9px;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: rgba(232,226,217,0.75);
+      animation: scrollLabelPulse 1.8s ease-in-out infinite;
+    }
+    .scroll-line {
+      position: relative;
+      width: 1px; height: 44px;
+      background: linear-gradient(to bottom, rgba(232,226,217,0.15), rgba(232,226,217,0.5) 50%, rgba(232,226,217,0.15));
+      overflow: hidden;
+    }
+    .scroll-line::after {
+      content: "";
+      position: absolute;
+      left: -1px;
+      top: 0;
+      width: 3px;
+      height: 10px;
+      border-radius: 2px;
+      background: var(--pink, #f4b9c3);
+      box-shadow: 0 0 8px rgba(244,185,195,0.9), 0 0 16px rgba(244,185,195,0.5);
+      animation: scrollDot 1.8s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+    }
+    @keyframes scrollDot {
+      0%   { top: -10px; opacity: 0; }
+      15%  { opacity: 1; }
+      80%  { opacity: 1; }
+      100% { top: 44px; opacity: 0; }
+    }
+    @keyframes scrollLabelPulse {
+      0%,100% { opacity: 0.5; transform: translateY(0); }
+      50%     { opacity: 1;   transform: translateY(2px); }
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    /* COLLAGE GRID */
+    .collage-section {
+      padding: 0 var(--pad) 80px;
+      max-width: var(--max);
+      margin: 0 auto;
+    }
+    .collage-head {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 40px;
+    }
+    .collage-head .eyebrow-line {
+      width: 40px;
+      height: 1px;
+      background: var(--pink);
+      flex-shrink: 0;
+    }
+    .collage-head .eyebrow-text {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--fg3);
+    }
+    .collage-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+    .collage-card {
+      position: relative;
+      overflow: hidden;
+      background: var(--bg2);
+      border: 1px solid var(--fg4);
+    }
+    .collage-card::before {
+      content: '';
+      display: block;
+    }
+    /* 4x5 aspect ratio cards */
+    .collage-card.ratio-4x5::before {
+      padding-top: 125%;
+    }
+    /* 1x1 aspect ratio cards */
+    .collage-card.ratio-1x1::before {
+      padding-top: 100%;
+    }
+    .collage-card-inner {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, var(--bg2) 0%, var(--bg3) 100%);
+    }
+    .collage-card-inner img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .collage-card-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 50%, rgba(15,14,13,0.5) 100%);
+      opacity: 0;
+      transition: opacity 0.35s ease;
+    }
+    .collage-card:hover .collage-card-overlay {
+      opacity: 1;
+    }
+    .collage-card-placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      color: var(--fg4);
+    }
+    .collage-card-placeholder svg {
+      opacity: 0.3;
+    }
+    .collage-card-placeholder span {
+      font-size: 9px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      opacity: 0.4;
+    }
+    /* Instagram embed container */
+    .ig-embed-wrap {
+      width: 100%;
+      display: none;
+    }
+    .ig-embed-wrap.loaded { display: block; }
+    .collage-caption {
+      text-align: center;
+      margin-top: 32px;
+      font-size: clamp(13px, 1.4vw, 15px);
+      font-weight: 300;
+      color: var(--fg3);
+      letter-spacing: 0.02em;
+    }
+    .collage-caption a {
+      color: var(--pink);
+      transition: color 0.2s;
+    }
+    .collage-caption a:hover {
+      color: var(--cream);
+    }
+
+    /* CONTACT SECTION */
+    .contact-section {
+      padding: 100px var(--pad);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .contact-head {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+    .contact-head h2 {
+      font-family: var(--serif);
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 400;
+      line-height: 1.15;
+      margin-bottom: 14px;
+    }
+    .contact-head h2 em {
+      font-style: italic;
+      color: var(--pink);
+    }
+    .contact-head p {
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--fg2);
+      line-height: 1.6;
+    }
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .form-field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .form-field label {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--fg3);
+    }
+    .form-field input,
+    .form-field textarea {
+      background: var(--bg2);
+      border: 1px solid var(--fg4);
+      color: var(--fg);
+      font-family: var(--sans);
+      font-size: 14px;
+      font-weight: 300;
+      padding: 14px 16px;
+      outline: none;
+      transition: border-color 0.25s;
+    }
+    .form-field input::placeholder,
+    .form-field textarea::placeholder {
+      color: var(--fg3);
+      opacity: 0.6;
+    }
+    .form-field input:focus,
+    .form-field textarea:focus {
+      border-color: var(--pink);
+    }
+    .form-field textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+    .submit-btn {
+      align-self: flex-start;
+      font-family: var(--sans);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--pink);
+      background: transparent;
+      border: 1px solid rgba(255,102,102,0.35);
+      padding: 14px 36px;
+      cursor: pointer;
+      transition: background 0.25s, color 0.25s;
+    }
+    .submit-btn:hover {
+      background: var(--pink);
+      color: var(--bg);
+    }
+    .submit-btn:disabled {
+      cursor: default;
+    }
+
+    /* SUCCESS STATE */
+    .form-success {
+      display: none;
+      text-align: center;
+      padding: 48px 0;
+    }
+    .form-success.visible {
+      display: block;
+    }
+    .form-success h3 {
+      font-family: var(--serif);
+      font-size: clamp(24px, 3vw, 32px);
+      font-weight: 400;
+      margin-bottom: 12px;
+    }
+    .form-success h3 em {
+      font-style: italic;
+      color: var(--pink);
+    }
+    .form-success p {
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--fg2);
+      line-height: 1.6;
+    }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--fg4);
+      padding: 32px var(--pad);
+    }
+    .foot-inner {
+      max-width: var(--max);
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .foot-copy {
+      font-size: 11px;
+      font-weight: 300;
+      color: var(--fg3);
+      letter-spacing: 0.04em;
+    }
+    .foot-ig {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      font-weight: 400;
+      color: var(--fg3);
+      letter-spacing: 0.06em;
+      transition: color 0.2s;
+    }
+    .foot-ig:hover {
+      color: var(--pink);
+    }
+    .foot-ig svg {
+      transition: transform 0.3s;
+    }
+    .foot-ig:hover svg {
+      transform: rotate(8deg) scale(1.1);
+    }
+
+    /* REVEAL ANIMATION */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 700px) {
+      .collage-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+      }
+      .foot-inner {
+        flex-direction: column;
+        gap: 16px;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="grain"></div>
+<div class="vignette"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <span class="nav-logo">Lost Objects</span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-video-wrap">
+    <iframe
+      src="https://player.vimeo.com/video/1182148229?h=acf06f1fbe&badge=0&autopause=0&autoplay=1&muted=1&loop=1&background=1&quality=auto"
+      frameborder="0"
+      allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+      referrerpolicy="strict-origin-when-cross-origin"
+      title="Lost Objects reel"
+    ></iframe>
+  </div>
+  <div class="hero-overlay-base"></div>
+  <div class="hero-overlay-gradient"></div>
+  <div class="hero-overlay-vignette"></div>
+
+  <div class="hero-content">
+    <div class="hero-eyebrow">
+      <div class="eyebrow-line"></div>
+      <span class="eyebrow-text">Social strategy for the creative industry</span>
+    </div>
+    <h1 class="hero-hl">We tell the stories<br>behind the <em>stories.</em></h1>
+    <p class="hero-desc">We're building something new. A home for the work, the process, and the people behind it. Stay close.</p>
+  </div>
+
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- COLLAGE GRID -->
+<section class="collage-section reveal">
+  <div class="collage-head">
+    <div class="eyebrow-line"></div>
+    <span class="eyebrow-text">From the feed</span>
+  </div>
+  <!--
+    HOW TO ADD INSTAGRAM POSTS:
+    1. Replace data-url="INSTAGRAM_POST_URL" with the real post URL
+       e.g. data-url="https://www.instagram.com/p/ABC123/"
+    2. Uncomment the loadInstagramEmbeds() call in the script below
+    3. Replace YOUR_ACCESS_TOKEN with a Facebook app access token
+    4. The placeholder will hide and the embed will display automatically
+  -->
+  <div class="collage-grid">
+    <div class="collage-card ratio-4x5" data-url="https://www.instagram.com/p/DFa-HggS_AN/?img_index=1">
+      <div class="collage-card-inner">
+        <div class="collage-card-placeholder">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FF6666" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="#FF6666"/></svg>
+          <span>Instagram post</span>
+        </div>
+        <div class="ig-embed-wrap" id="embed-1"></div>
+      </div>
+      <div class="collage-card-overlay"></div>
+    </div>
+    <div class="collage-card ratio-1x1" data-url="https://www.instagram.com/p/DRhsrdEiYm1/">
+      <div class="collage-card-inner">
+        <div class="collage-card-placeholder">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FF6666" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="#FF6666"/></svg>
+          <span>Instagram post</span>
+        </div>
+        <div class="ig-embed-wrap" id="embed-2"></div>
+      </div>
+      <div class="collage-card-overlay"></div>
+    </div>
+    <div class="collage-card ratio-4x5" data-url="https://www.instagram.com/p/DWy91VEFCxG/?img_index=1">
+      <div class="collage-card-inner">
+        <div class="collage-card-placeholder">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FF6666" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="#FF6666"/></svg>
+          <span>Instagram post</span>
+        </div>
+        <div class="ig-embed-wrap" id="embed-3"></div>
+      </div>
+      <div class="collage-card-overlay"></div>
+    </div>
+    <div class="collage-card ratio-1x1" data-url="https://www.instagram.com/p/DVtWaeUDyJV/">
+      <div class="collage-card-inner">
+        <div class="collage-card-placeholder">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FF6666" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="#FF6666"/></svg>
+          <span>Instagram post</span>
+        </div>
+        <div class="ig-embed-wrap" id="embed-4"></div>
+      </div>
+      <div class="collage-card-overlay"></div>
+    </div>
+    <div class="collage-card ratio-4x5" data-url="https://www.instagram.com/p/DOjClddEbzW/">
+      <div class="collage-card-inner">
+        <div class="collage-card-placeholder">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FF6666" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="#FF6666"/></svg>
+          <span>Instagram post</span>
+        </div>
+        <div class="ig-embed-wrap" id="embed-5"></div>
+      </div>
+      <div class="collage-card-overlay"></div>
+    </div>
+    <div class="collage-card ratio-1x1" data-url="https://www.instagram.com/p/DIyyLh2Mivm/?img_index=1">
+      <div class="collage-card-inner">
+        <div class="collage-card-placeholder">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FF6666" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="#FF6666"/></svg>
+          <span>Instagram post</span>
+        </div>
+        <div class="ig-embed-wrap" id="embed-6"></div>
+      </div>
+      <div class="collage-card-overlay"></div>
+    </div>
+  </div>
+  <p class="collage-caption">Follow our work <a href="https://www.instagram.com/wearelostobjects/" target="_blank" rel="noopener">@wearelostobjects</a></p>
+</section>
+
+<!-- CONTACT -->
+<section class="contact-section reveal">
+  <div class="contact-head">
+    <h2>Say <em>hello.</em></h2>
+    <p>We're not far. Drop a line and we'll be in touch.</p>
+  </div>
+  <form class="contact-form" id="comingSoonForm" action="https://formspree.io/f/YOUR_FORMSPREE_ID" method="POST">
+    <div class="form-field">
+      <label for="cs-name">Name</label>
+      <input type="text" id="cs-name" name="name" placeholder="Your name" required />
+    </div>
+    <div class="form-field">
+      <label for="cs-email">Email</label>
+      <input type="email" id="cs-email" name="email" placeholder="you@example.com" required />
+    </div>
+    <div class="form-field">
+      <label for="cs-message">Message</label>
+      <textarea id="cs-message" name="message" placeholder="What's on your mind?" required></textarea>
+    </div>
+    <button type="submit" class="submit-btn">Send it</button>
+  </form>
+  <div class="form-success" id="formSuccess">
+    <h3>Message <em>sent.</em></h3>
+    <p>We'll get back to you soon. In the meantime, keep creating.</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="foot-inner">
+    <div class="foot-copy">&copy; 2026 Lost Objects LLC</div>
+    <a href="https://www.instagram.com/wearelostobjects/" target="_blank" rel="noopener" class="foot-ig">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" stroke-width="1.5"/>
+        <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="1.5"/>
+        <circle cx="17.5" cy="6.5" r="1.2" fill="currentColor"/>
+      </svg>
+      Instagram
+    </a>
+  </div>
+</footer>
+
+<script>
+  /* NAV SCROLL */
+  const navEl = document.querySelector('nav');
+  window.addEventListener('scroll', () => {
+    navEl.classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  /* REVEAL ON SCROLL */
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+  /*
+    ═══════════════════════════════════════════════════════
+    INSTAGRAM EMBED LOADER
+
+    When you're ready to add real Instagram posts:
+    1. Set data-url="https://www.instagram.com/p/YOUR_POST_ID/"
+       on each .collage-card element above
+    2. Uncomment the loadInstagramEmbeds() call below
+    3. Make sure your site is served over HTTPS (Vercel handles this)
+
+    Note: Instagram embeds require the viewer to be logged in
+    to Instagram to see the full post. The placeholder will show
+    for logged-out visitors, which is fine for a portfolio page.
+    ═══════════════════════════════════════════════════════
+  */
+
+  async function loadInstagramEmbeds() {
+    const cards = document.querySelectorAll('.collage-card[data-url]');
+    for (const card of cards) {
+      const url = card.dataset.url;
+      if (!url || url === 'INSTAGRAM_POST_URL') continue;
+
+      try {
+        const res = await fetch(
+          `https://graph.facebook.com/v18.0/instagram_oembed?url=${encodeURIComponent(url)}&omitscript=true&maxwidth=480`,
+          { headers: { 'Authorization': 'Bearer YOUR_ACCESS_TOKEN' } }
+          // Replace YOUR_ACCESS_TOKEN with a Facebook app access token
+          // Free to get at: developers.facebook.com → create app → Instagram Basic Display
+        );
+        const data = await res.json();
+        if (data.html) {
+          const embedWrap = card.querySelector('.ig-embed-wrap');
+          const placeholder = card.querySelector('.collage-card-placeholder');
+          embedWrap.innerHTML = data.html;
+          embedWrap.classList.add('loaded');
+          if (placeholder) placeholder.style.display = 'none';
+        }
+      } catch (err) {
+        console.log('Embed load skipped for:', url);
+      }
+    }
+    // Process any embeds Instagram injected
+    if (window.instgrm) window.instgrm.Embeds.process();
+  }
+
+  // Uncomment when you have real URLs and an access token:
+  // loadInstagramEmbeds();
+
+  /* FORM SUBMIT */
+  const form = document.getElementById('comingSoonForm');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = form.querySelector('.submit-btn');
+    const originalText = btn.innerHTML;
+
+    btn.innerHTML = 'Sending...';
+    btn.style.opacity = '0.6';
+    btn.disabled = true;
+
+    try {
+      const res = await fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { 'Accept': 'application/json' }
+      });
+
+      if (res.ok) {
+        form.style.display = 'none';
+        const successEl = document.getElementById('formSuccess');
+        successEl.classList.add('visible');
+        successEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      } else {
+        btn.innerHTML = 'Something went wrong — try again';
+        btn.style.opacity = '1';
+        btn.disabled = false;
+      }
+    } catch (err) {
+      btn.innerHTML = originalText;
+      btn.style.opacity = '1';
+      btn.disabled = false;
+    }
+  });
+</script>
+
+<script src="https://player.vimeo.com/api/player.js"></script>
+
+<!-- Instagram embed script (load when ready) -->
+<!-- <script async src="//www.instagram.com/embed.js"></script> -->
+
+</body>
+</html>
