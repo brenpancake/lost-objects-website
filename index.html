@@ -467,6 +467,7 @@
       width: 100%;
       max-width: 580px;
       margin: 0 auto;
+      text-align: center;
     }
 
     /* Receipt lines — completed answers */
@@ -545,6 +546,7 @@
       padding: 16px 0;
       outline: none;
       transition: border-color 0.3s;
+      text-align: center;
     }
     .convo-input:focus {
       border-bottom-color: var(--pink);
@@ -570,6 +572,7 @@
       overflow: hidden;
       min-height: 56px;
       transition: border-color 0.3s;
+      text-align: center;
     }
     .convo-textarea:focus {
       border-bottom-color: var(--pink);
@@ -599,6 +602,23 @@
       transition: background 0.25s, border-color 0.25s, color 0.25s;
       user-select: none;
     }
+    /* Service picker — uniform grid */
+    #svcPickerGroup {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+    #svcPickerGroup .pill {
+      width: 100%;
+      min-height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-size: 12px;
+      padding: 14px 12px;
+    }
+
     .pill:hover {
       border-color: rgba(255,102,102,0.4);
       color: var(--fg2);
@@ -835,6 +855,391 @@
       }
     }
 
+    /* STATS BAR */
+    .stats-bar {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--fg4);
+      border: 1px solid var(--fg4);
+      margin-top: clamp(32px, 5vh, 48px);
+    }
+    .stat-item {
+      background: var(--bg);
+      padding: clamp(18px, 3vh, 28px) clamp(14px, 2vw, 24px);
+      text-align: center;
+    }
+    .stat-num {
+      font-family: var(--serif);
+      font-size: clamp(28px, 3.5vw, 40px);
+      font-weight: 400;
+      color: var(--pink);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .stat-label {
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--fg3);
+    }
+
+    /* SERVICES — WHAT WE DO */
+    .services-section {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: clamp(52px, 8vh, 80px) var(--pad) clamp(64px, 10vh, 100px);
+    }
+    .services-intro {
+      margin-bottom: clamp(32px, 5vh, 48px);
+      text-align: center;
+    }
+    .services-intro-hl {
+      font-family: var(--serif);
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 400;
+      font-style: italic;
+      color: var(--fg);
+      margin-bottom: 10px;
+    }
+    .services-intro-sub {
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--fg2);
+    }
+    .svc-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+    }
+    .svc-card {
+      background: var(--bg);
+      padding: 36px;
+      border: 1px solid var(--fg4);
+      margin-top: -1px;
+      margin-left: -1px;
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+      position: relative;
+      transition: transform 0.35s ease, opacity 0.35s ease, background 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+      transform-origin: center center;
+    }
+    /* Selected dot */
+    .svc-card.selected::after {
+      content: '';
+      position: absolute;
+      top: 16px; right: 16px;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--pink);
+    }
+    .svc-card.selected {
+      border-color: rgba(255,102,102,0.5);
+      background: var(--bg2);
+      z-index: 2;
+    }
+    /* Desktop hover: dim siblings, brighten hovered */
+    @media (min-width: 769px) {
+      .svc-grid:hover .svc-card { opacity: 0.45; transform: scale(0.98); }
+      .svc-grid:hover .svc-card:hover,
+      .svc-grid:hover .svc-card.selected {
+        opacity: 1;
+        transform: scale(1.02);
+        background: var(--bg2);
+        box-shadow: 0 0 32px rgba(255,102,102,0.08);
+        z-index: 2;
+      }
+      .svc-card:hover { border-color: rgba(255,102,102,0.4); }
+      /* Auto-expand details on hover (desktop) */
+      .svc-card:hover .svc-details { max-height: 300px; }
+      .svc-card:hover .svc-expand-icon { transform: rotate(45deg); border-color: rgba(255,102,102,0.35); }
+      .svc-card:hover .svc-cta-btn button { opacity: 1; }
+    }
+
+    .svc-type {
+      display: inline-block;
+      align-self: flex-start;
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--fg3);
+      margin-bottom: 14px;
+      background: rgba(255,102,102,0.06);
+      border: 1px solid rgba(255,102,102,0.15);
+      border-radius: 20px;
+      padding: 3px 10px;
+    }
+    .svc-type-dot { color: var(--pink); margin: 0 4px; }
+    .svc-name {
+      font-family: var(--serif);
+      font-size: 26px;
+      font-weight: 400;
+      color: var(--fg);
+      margin-bottom: 12px;
+    }
+    .svc-desc {
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--fg2);
+      line-height: 1.75;
+      margin-bottom: 18px;
+    }
+    .svc-expand-hint {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--fg3);
+      margin-bottom: 4px;
+    }
+    .svc-expand-icon {
+      width: 18px; height: 18px;
+      border: 1px solid var(--fg4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--pink);
+      transition: transform 0.3s ease, border-color 0.3s;
+      flex-shrink: 0;
+    }
+    .svc-card.expanded .svc-expand-icon {
+      transform: rotate(45deg);
+      border-color: rgba(255,102,102,0.35);
+    }
+    .svc-details {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease;
+    }
+    .svc-details.open { max-height: 300px; }
+    .svc-details-inner {
+      padding-top: 14px;
+    }
+    .svc-details-inner li {
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--fg2);
+      line-height: 1.8;
+      padding-left: 20px;
+      position: relative;
+      list-style: none;
+    }
+    .svc-details-inner li::before {
+      content: '→';
+      position: absolute;
+      left: 0; top: 0;
+      color: var(--pink);
+      font-size: 11px;
+      opacity: 0.6;
+    }
+    .svc-cta-btn {
+      margin-top: auto;
+      padding-top: 24px;
+    }
+    .svc-cta-btn button {
+      font-family: var(--sans);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--pink);
+      opacity: 0.6;
+      background: none;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      transition: opacity 0.25s;
+      border-bottom: 1px solid transparent;
+    }
+    .svc-cta-btn button:hover {
+      opacity: 1;
+      border-bottom-color: var(--pink);
+    }
+    .svc-card.selected .svc-cta-btn button { opacity: 1; }
+
+    /* Pill pre-select pulse */
+    @keyframes pillPulse {
+      0% { box-shadow: 0 0 0 0 rgba(255,102,102,0.5); }
+      50% { box-shadow: 0 0 0 8px rgba(255,102,102,0); }
+      100% { box-shadow: 0 0 0 0 rgba(255,102,102,0); }
+    }
+    .pill.pulse {
+      animation: pillPulse 0.8s ease 2;
+    }
+
+    /* Full management callout */
+    .svc-callout {
+      background: var(--bg2);
+      border-top: 1px solid var(--fg4);
+      border-bottom: 1px solid var(--fg4);
+      padding: clamp(20px, 3vh, 28px) clamp(20px, 3vw, 36px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-top: clamp(24px, 4vh, 40px);
+    }
+    .svc-callout-text {
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--fg2);
+    }
+    .svc-callout-btn {
+      display: inline-block;
+      font-family: var(--sans);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--pink);
+      background: transparent;
+      border: 1px solid rgba(255,102,102,0.35);
+      padding: 12px 24px;
+      transition: opacity 0.2s;
+      white-space: nowrap;
+    }
+    .svc-callout-btn:hover { background: var(--pink); color: var(--bg); }
+    .svc-quiz {
+      text-align: center;
+      margin-top: 28px;
+      font-size: 12px;
+      font-weight: 300;
+      color: var(--fg3);
+    }
+    .svc-quiz a {
+      color: var(--pink);
+      border-bottom: 1px solid rgba(255,102,102,0.3);
+      transition: border-color 0.2s;
+    }
+    .svc-quiz a:hover { border-color: var(--pink); }
+
+    /* CONTACT CARD */
+    .vcard-section {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: clamp(64px, 10vh, 100px) var(--pad);
+      position: relative;
+    }
+    .vcard-glow {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at center, rgba(255,102,102,0.11) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .vcard-content {
+      position: relative;
+      text-align: center;
+    }
+    .vcard-cards {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      margin-bottom: 36px;
+      flex-wrap: wrap;
+    }
+    .vcard-card {
+      background: var(--bg2);
+      border: 1px solid var(--fg4);
+      border-radius: 2px;
+      padding: 32px;
+      width: clamp(220px, 28vw, 320px);
+      box-shadow: 0 4px 32px rgba(0,0,0,0.3);
+      transition: border-color 0.3s, transform 0.3s;
+      text-align: left;
+    }
+    .vcard-card:hover {
+      border-color: rgba(255,102,102,0.25);
+      transform: translateY(-2px);
+    }
+    .vcard-avatar {
+      width: 52px; height: 52px;
+      border-radius: 50%;
+      background: var(--pink);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--serif);
+      font-size: 22px;
+      color: #fff;
+      margin-bottom: 16px;
+    }
+    .vcard-name {
+      font-family: var(--serif);
+      font-size: 22px;
+      font-weight: 400;
+      color: var(--fg);
+      margin-bottom: 4px;
+    }
+    .vcard-title {
+      font-size: 11px;
+      font-weight: 300;
+      color: var(--fg3);
+      margin-bottom: 16px;
+    }
+    .vcard-divider {
+      height: 1px;
+      background: var(--fg4);
+      margin-bottom: 16px;
+    }
+    .vcard-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 12px;
+      font-weight: 300;
+      color: var(--fg2);
+      margin-bottom: 10px;
+    }
+    .vcard-row:last-child { margin-bottom: 0; }
+    .vcard-row svg { flex-shrink: 0; opacity: 0.5; }
+    .vcard-row a { color: var(--fg2); transition: color 0.2s; }
+    .vcard-row a:hover { color: var(--pink); }
+    .vcard-row.ig { color: var(--pink); opacity: 0.6; }
+    .vcard-row.ig a { color: var(--pink); }
+    .vcard-row.ig svg { opacity: 0.7; }
+    .vcard-tagline {
+      font-family: var(--serif);
+      font-size: clamp(14px, 1.6vw, 17px);
+      font-style: italic;
+      font-weight: 400;
+      color: var(--fg3);
+      margin-bottom: 24px;
+    }
+    .vcard-btn {
+      display: inline-block;
+      font-family: var(--sans);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--pink);
+      background: transparent;
+      border: 1px solid rgba(255,102,102,0.4);
+      padding: 12px 28px;
+      transition: background 0.25s, border-color 0.25s;
+    }
+    .vcard-btn:hover {
+      background: rgba(255,102,102,0.06);
+      border-color: var(--pink);
+    }
+    .vcard-note {
+      font-size: 10px;
+      font-weight: 300;
+      color: var(--fg3);
+      margin-top: 16px;
+      letter-spacing: 0.02em;
+      opacity: 0.7;
+    }
+
     /* FOOTER */
     footer { }
     .foot-inner { max-width: var(--max); margin: 0 auto; padding: 26px var(--pad); display: flex; flex-direction: column; gap: 20px; }
@@ -897,6 +1302,16 @@
         gap: 8px;
       }
 
+      .stats-bar { grid-template-columns: 1fr 1fr; }
+      .svc-grid { grid-template-columns: 1fr; }
+      .svc-card { padding: 24px; }
+      .svc-name { font-size: 22px; }
+      .svc-cta-btn button { font-size: 14px; min-height: 44px; padding: 12px 0; }
+      .vcard-cards { flex-direction: column; align-items: center; }
+      .vcard-card { width: 100%; max-width: 400px; }
+      .vcard-btn { display: block; width: 100%; text-align: center; }
+      .svc-callout { flex-direction: column; text-align: center; }
+      #svcPickerGroup { grid-template-columns: repeat(2, 1fr); }
       .convo-wrap { max-width: 100%; }
       .pill { min-height: 44px; }
       .convo-submit { padding: 18px 28px; }
@@ -1032,11 +1447,11 @@
   <p class="collage-caption">Follow our work <a href="https://www.instagram.com/wearelostobjects/" target="_blank" rel="noopener">@wearelostobjects</a></p>
 </section>
 
-<!-- DOSSIER — data label -->
-<section class="dossier scene" data-scene-label="The Dossier">
+<!-- DOSSIER A — WHO WE ARE -->
+<section class="dossier scene" data-scene-label="Who We Are">
   <div class="section-eyebrow">
     <div class="section-eyebrow-line"></div>
-    <span class="section-eyebrow-text">The dossier</span>
+    <span class="section-eyebrow-text">Who we are</span>
   </div>
 
   <div class="dossier-grid">
@@ -1092,7 +1507,7 @@
       <div class="dossier-val">Founded in West Hollywood in 2023, Lost Objects grew from a simple observation: the most talented people in the film industry were going unseen online. Kyra and Brendan Sweeney built this to change that.</div>
     </div>
 
-    <div class="dossier-cell">
+    <div class="dossier-cell span-2">
       <div class="dossier-key">Industries</div>
       <div class="dossier-tags">
         <span class="dossier-tag">Film</span>
@@ -1103,36 +1518,159 @@
       </div>
     </div>
     <div class="dossier-cell">
-      <div class="dossier-key">Services</div>
-      <div class="dossier-tags">
-        <span class="dossier-tag">Strategy</span>
-        <span class="dossier-tag">Full Management</span>
-        <span class="dossier-tag">Content</span>
-        <span class="dossier-tag">Brand Identity</span>
-        <span class="dossier-tag">Audit</span>
-      </div>
-    </div>
-    <div class="dossier-cell">
       <div class="dossier-key">The name</div>
       <div class="dossier-val">The name is personal. Kyra and Brendan both felt it — that specific feeling of being lost in your creative career, unseen in an industry you care deeply about. Lost Objects came from that. The belief that even when you feel like a lost object, you can still be found. And that finding others is worth building a company around.</div>
     </div>
 
   </div>
+
+  <!-- Stats bar -->
+  <div class="stats-bar">
+    <div class="stat-item">
+      <div class="stat-num">800K+</div>
+      <div class="stat-label">Followers grown organically</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">8+</div>
+      <div class="stat-label">Brand partnerships</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">2023</div>
+      <div class="stat-label">Established in West Hollywood</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">5</div>
+      <div class="stat-label">Key service tiers</div>
+    </div>
+  </div>
 </section>
 
-<!-- CONTACT — CONVERSATIONAL FORM -->
-<section class="contact-section scene" id="contact" data-scene-label="Stop Feeling Lost">
+<!-- DOSSIER B — WHAT WE DO -->
+<section class="services-section scene" data-scene-label="What We Do">
+  <div class="section-eyebrow">
+    <div class="section-eyebrow-line"></div>
+    <span class="section-eyebrow-text">Services</span>
+  </div>
+
+  <div class="services-intro">
+    <h2 class="services-intro-hl">Find the right fit.</h2>
+    <p class="services-intro-sub">Every engagement starts where you are right now.</p>
+  </div>
+
+  <div class="svc-grid">
+    <!-- Card 01 -->
+    <div class="svc-card" data-service="Social Media Audit">
+      <div class="svc-type">Audit <span class="svc-type-dot">·</span> 2 hrs</div>
+      <h3 class="svc-name">Social Media Audit</h3>
+      <p class="svc-desc">A clear-eyed look at where you stand. Real feedback, no filler.</p>
+      <div class="svc-expand-hint"><span class="svc-expand-icon">+</span> What's included</div>
+      <div class="svc-details">
+        <ul class="svc-details-inner">
+          <li>Profile review</li>
+          <li>Content audit</li>
+          <li>Engagement analysis</li>
+          <li>Competitor review</li>
+          <li>Top 5 recommendations</li>
+        </ul>
+      </div>
+      <div class="svc-cta-btn"><button type="button" data-service="Social Media Audit">Start with this &rarr;</button></div>
+    </div>
+
+    <!-- Card 02 -->
+    <div class="svc-card" data-service="Premium Audit">
+      <div class="svc-type">Audit <span class="svc-type-dot">·</span> 3.5 hrs</div>
+      <h3 class="svc-name">Premium Social Media Audit</h3>
+      <p class="svc-desc">A deep dive across two profiles with a written report and follow-up support.</p>
+      <div class="svc-expand-hint"><span class="svc-expand-icon">+</span> What's included</div>
+      <div class="svc-details">
+        <ul class="svc-details-inner">
+          <li>Everything in Basic</li>
+          <li>Cross-platform review</li>
+          <li>Written report</li>
+          <li>Follow-up email support</li>
+        </ul>
+      </div>
+      <div class="svc-cta-btn"><button type="button" data-service="Premium Audit">Start with this &rarr;</button></div>
+    </div>
+
+    <!-- Card 03 -->
+    <div class="svc-card" data-service="Social Media Strategy">
+      <div class="svc-type">Strategy <span class="svc-type-dot">·</span> 90 min</div>
+      <h3 class="svc-name">Social Media Strategy</h3>
+      <p class="svc-desc">The tools and direction to build or revamp your presence with intention.</p>
+      <div class="svc-expand-hint"><span class="svc-expand-icon">+</span> What's included</div>
+      <div class="svc-details">
+        <ul class="svc-details-inner">
+          <li>Goal setting</li>
+          <li>Content calendar</li>
+          <li>Audience identification</li>
+          <li>Growth strategies</li>
+          <li>Platform tools</li>
+        </ul>
+      </div>
+      <div class="svc-cta-btn"><button type="button" data-service="Social Media Strategy">Start with this &rarr;</button></div>
+    </div>
+
+    <!-- Card 04 -->
+    <div class="svc-card" data-service="Premium Strategy">
+      <div class="svc-type">Strategy <span class="svc-type-dot">·</span> 4 hrs</div>
+      <h3 class="svc-name">Premium Social Media Strategy</h3>
+      <p class="svc-desc">A comprehensive strategy PDF, 3-6 month content plan, and follow-up session.</p>
+      <div class="svc-expand-hint"><span class="svc-expand-icon">+</span> What's included</div>
+      <div class="svc-details">
+        <ul class="svc-details-inner">
+          <li>Full audit</li>
+          <li>Brand voice doc</li>
+          <li>Content strategy</li>
+          <li>KPIs</li>
+          <li>Follow-up session</li>
+          <li>Ongoing support</li>
+        </ul>
+      </div>
+      <div class="svc-cta-btn"><button type="button" data-service="Premium Strategy">Start with this &rarr;</button></div>
+    </div>
+  </div>
+
+  <!-- Full management callout -->
+  <div class="svc-callout">
+    <div class="svc-callout-text">Need the full picture? Full Management is our most selective offering.</div>
+    <button type="button" class="svc-callout-btn" data-service="Full Management">Apply for Full Management</button>
+  </div>
+</section>
+
+<!-- CONTACT — SERVICE-AWARE CONVERSATIONAL FORM -->
+<section class="contact-section scene" id="contact" data-scene-label="Let's Talk">
   <div class="section-eyebrow" id="convoHeader">
     <div class="section-eyebrow-line"></div>
-    <span class="section-eyebrow-text">Stop feeling lost</span>
+    <span class="section-eyebrow-text">Let's talk</span>
   </div>
   <div class="convo-wrap">
+
+    <!-- Service confirmation (shown when pre-selected) -->
+    <div id="svcConfirm" style="display:none; margin-bottom:32px;">
+      <div style="font-size:9px; font-weight:500; letter-spacing:0.22em; text-transform:uppercase; color:var(--fg3); margin-bottom:8px;">You're interested in</div>
+      <div id="svcConfirmName" style="font-family:var(--serif); font-size:clamp(22px,3vw,32px); font-style:italic; color:var(--pink); margin-bottom:8px;"></div>
+      <button type="button" id="svcChangeBtn" style="font-family:var(--sans); font-size:9px; font-weight:400; letter-spacing:0.14em; text-transform:uppercase; color:var(--fg3); background:none; border:none; cursor:pointer; padding:0; transition:color 0.2s;" onmouseover="this.style.color='var(--fg)'" onmouseout="this.style.color='var(--fg3)'">Change selection</button>
+    </div>
+
+    <!-- Step 0: Service selection (organic entry) -->
+    <div class="convo-step" data-step="0">
+      <div class="convo-prompt">What are you looking for?</div>
+      <div class="pill-group" id="svcPickerGroup">
+        <button type="button" class="pill" data-value="Social Media Audit">Social Media Audit</button>
+        <button type="button" class="pill" data-value="Premium Audit">Premium Audit</button>
+        <button type="button" class="pill" data-value="Social Media Strategy">Social Media Strategy</button>
+        <button type="button" class="pill" data-value="Premium Strategy">Premium Strategy</button>
+        <button type="button" class="pill" data-value="Full Management">Full Management</button>
+        <button type="button" class="pill" data-value="Not sure yet">Not sure yet</button>
+      </div>
+    </div>
 
     <!-- Receipt of completed answers -->
     <div class="convo-receipt" id="convoReceipt"></div>
 
     <!-- Step 1: Name -->
-    <div class="convo-step active" data-step="1">
+    <div class="convo-step" data-step="1">
       <div class="convo-prompt">What's your name?</div>
       <input class="convo-input" type="text" id="cs-name" placeholder="First and last name" autocomplete="name" />
     </div>
@@ -1143,32 +1681,8 @@
       <input class="convo-input" type="email" id="cs-email" placeholder="your@email.com" autocomplete="email" />
     </div>
 
-    <!-- Step 3: Subject -->
+    <!-- Step 3: Platforms -->
     <div class="convo-step" data-step="3">
-      <div class="convo-prompt">Give us a subject line.</div>
-      <input class="convo-input" type="text" id="cs-subject" placeholder="e.g. Ready to grow my Instagram, Need a strategy partner..." />
-    </div>
-
-    <!-- Step 4: Role (single select pills) -->
-    <div class="convo-step" data-step="4">
-      <div class="convo-prompt">How would you describe yourself?</div>
-      <div class="pill-group" id="roleGroup">
-        <button type="button" class="pill" data-value="Cinematographer">Cinematographer</button>
-        <button type="button" class="pill" data-value="Grip or Lighting Tech">Grip or Lighting Tech</button>
-        <button type="button" class="pill" data-value="Key Grip or Gaffer">Key Grip or Gaffer</button>
-        <button type="button" class="pill" data-value="Director or Producer">Director or Producer</button>
-        <button type="button" class="pill" data-value="Film Tech Brand">Film Tech Brand</button>
-        <button type="button" class="pill" data-value="Production House">Production House</button>
-        <button type="button" class="pill" data-value="Creative Entrepreneur">Creative Entrepreneur</button>
-        <button type="button" class="pill" data-value="Other">Other</button>
-      </div>
-      <div id="roleOtherWrap" style="display:none; margin-top:20px;">
-        <input class="convo-input" type="text" id="cs-role-other" placeholder="Tell us what you do..." />
-      </div>
-    </div>
-
-    <!-- Step 5: Platforms (multi-select pills) -->
-    <div class="convo-step" data-step="5">
       <div class="convo-prompt">Which platforms are you on?</div>
       <div class="pill-group" id="platformGroup">
         <button type="button" class="pill" data-value="Instagram">Instagram</button>
@@ -1181,31 +1695,44 @@
       <button type="button" class="convo-next" id="platformNext">Continue &rarr;</button>
     </div>
 
-    <!-- Step 6: Looking for (multi-select pills) -->
-    <div class="convo-step" data-step="6">
-      <div class="convo-prompt">What are you looking for?</div>
-      <div class="pill-group" id="lookingGroup">
-        <button type="button" class="pill" data-value="Social Audit">Social Audit</button>
-        <button type="button" class="pill" data-value="Strategy Session">Strategy Session</button>
-        <button type="button" class="pill" data-value="Full Management">Full Management</button>
-        <button type="button" class="pill" data-value="Not sure yet">Not sure yet</button>
-        <button type="button" class="pill" data-value="Custom Services" id="lookingCustomPill">Custom Services</button>
+    <!-- Step 4: Service-specific question (content swapped by JS) -->
+    <div class="convo-step" data-step="4">
+      <div class="convo-prompt" id="step4Prompt"></div>
+      <!-- Audit variant -->
+      <div id="step4Audit" style="display:none;">
+        <input class="convo-input" type="text" id="cs-profile" placeholder="@handle or profile URL" />
       </div>
-      <div id="lookingCustomWrap" style="display:none; margin-top:20px;">
-        <input class="convo-input" type="text" id="cs-looking-custom" placeholder="Tell us what you're looking for..." />
+      <!-- Strategy variant -->
+      <div id="step4Strategy" style="display:none;">
+        <div class="pill-group" id="challengeGroup">
+          <button type="button" class="pill" data-value="I don't know what to post">I don't know what to post</button>
+          <button type="button" class="pill" data-value="I have no strategy">I have no strategy</button>
+          <button type="button" class="pill" data-value="I don't have time">I don't have time</button>
+          <button type="button" class="pill" data-value="I'm not growing">I'm not growing</button>
+        </div>
+        <button type="button" class="convo-next" id="challengeNext">Continue &rarr;</button>
       </div>
-      <button type="button" class="convo-next" id="lookingNext">Continue &rarr;</button>
+      <!-- Full Management variant -->
+      <div id="step4Mgmt" style="display:none;">
+        <div class="pill-group" id="presenceGroup">
+          <button type="button" class="pill" data-value="Just starting out">Just starting out</button>
+          <button type="button" class="pill" data-value="Active but stuck">Active but stuck</button>
+          <button type="button" class="pill" data-value="Ready to hand it off">Ready to hand it off</button>
+          <button type="button" class="pill" data-value="Growing and need to scale">Growing and need to scale</button>
+        </div>
+        <button type="button" class="convo-next" id="presenceNext">Continue &rarr;</button>
+      </div>
     </div>
 
-    <!-- Step 7: Message -->
-    <div class="convo-step" data-step="7">
+    <!-- Step 5: Message -->
+    <div class="convo-step" data-step="5">
       <div class="convo-prompt">Tell us a little more.</div>
       <textarea class="convo-textarea" id="cs-message" placeholder="Context, goals, where you are right now..." rows="1"></textarea>
       <button type="button" class="convo-next" id="messageNext" style="display:none">Continue &rarr;</button>
     </div>
 
-    <!-- Step 8: Send -->
-    <div class="convo-step" data-step="8">
+    <!-- Step 6: Send -->
+    <div class="convo-step" data-step="6">
       <button type="button" class="convo-submit" id="convoSend">Send it.</button>
     </div>
 
@@ -1214,9 +1741,66 @@
       <div class="convo-success-hl">You've been found.</div>
       <div class="convo-success-sub">
         <span class="convo-success-dot"></span>
-        We'll be in touch within 48 hours.
+        <span id="successMsg">We'll be in touch within 48 hours.</span>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- CONTACT CARD DOWNLOAD -->
+<section class="vcard-section scene">
+  <div class="vcard-glow"></div>
+  <div class="vcard-content">
+    <div class="section-eyebrow">
+      <div class="section-eyebrow-line"></div>
+      <span class="section-eyebrow-text">Stay connected</span>
+    </div>
+
+    <div class="vcard-cards">
+      <!-- Kyra -->
+      <div class="vcard-card">
+        <div class="vcard-avatar">K</div>
+        <div class="vcard-name">Kyra Sweeney</div>
+        <div class="vcard-title">Co-Founder, Lost Objects</div>
+        <div class="vcard-divider"></div>
+        <div class="vcard-row">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 4l10 9 10-9"/></svg>
+          <a href="mailto:kyra@wearelostobjects.com">kyra@wearelostobjects.com</a>
+        </div>
+        <div class="vcard-row">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+          <a href="tel:+18055018055">805-501-8055</a>
+        </div>
+        <div class="vcard-row ig">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="#FF6666" stroke-width="1.5"/><circle cx="12" cy="12" r="4" stroke="#FF6666" stroke-width="1.5"/><circle cx="17.5" cy="6.5" r="1" fill="#FF6666"/></svg>
+          <a href="https://www.instagram.com/kyragracee" target="_blank" rel="noopener">@kyragracee</a>
+        </div>
+      </div>
+
+      <!-- Brendan -->
+      <div class="vcard-card">
+        <div class="vcard-avatar">B</div>
+        <div class="vcard-name">Brendan Sweeney</div>
+        <div class="vcard-title">Co-Founder, Lost Objects</div>
+        <div class="vcard-divider"></div>
+        <div class="vcard-row">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 4l10 9 10-9"/></svg>
+          <a href="mailto:brendan@wearelostobjects.com">brendan@wearelostobjects.com</a>
+        </div>
+        <div class="vcard-row">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+          <a href="tel:+17325971841">732-597-1841</a>
+        </div>
+        <div class="vcard-row ig">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="#FF6666" stroke-width="1.5"/><circle cx="12" cy="12" r="4" stroke="#FF6666" stroke-width="1.5"/><circle cx="17.5" cy="6.5" r="1" fill="#FF6666"/></svg>
+          <a href="https://www.instagram.com/brenpancake" target="_blank" rel="noopener">@brenpancake</a>
+        </div>
+      </div>
+    </div>
+
+    <p class="vcard-tagline">Save us to your phone. We'll be there when you're ready.</p>
+    <a href="lost-objects-team.vcf" download class="vcard-btn">Add Lost Objects</a>
+    <p class="vcard-note">Adds Kyra &amp; Brendan as separate contacts &middot; Works on iPhone, Android, and desktop</p>
   </div>
 </section>
 
@@ -1328,38 +1912,33 @@
   // loadInstagramEmbeds();
 
   /* ═══════════════════════════════════════════
-     CONVERSATIONAL FORM ENGINE
+     SERVICE-AWARE CONVERSATIONAL FORM ENGINE
      ═══════════════════════════════════════════ */
   (function() {
     const FORMSPREE = 'https://formspree.io/f/xgoqdyyd';
     const receipt = document.getElementById('convoReceipt');
     const steps = document.querySelectorAll('.convo-step');
     const header = document.getElementById('convoHeader');
-    let current = 1;
+    const svcConfirm = document.getElementById('svcConfirm');
+    const svcConfirmName = document.getElementById('svcConfirmName');
+    let current = 0;
 
     // Collected data
-    const data = { name:'', email:'', subject:'', role:'', platforms:[], looking_for:[], message:'' };
+    const data = { service:'', name:'', email:'', platforms:[], specific:'', message:'' };
+
+    // Service category helpers
+    function svcCategory(svc) {
+      if (/audit/i.test(svc)) return 'audit';
+      if (/strategy/i.test(svc)) return 'strategy';
+      if (/management/i.test(svc)) return 'management';
+      return 'none';
+    }
 
     // Show header on scroll into view
     const secObs = new IntersectionObserver(entries => {
       entries.forEach(e => { if (e.isIntersecting) { header.classList.add('visible'); secObs.unobserve(e.target); } });
     }, { threshold: 0.15 });
     secObs.observe(document.getElementById('contact'));
-
-    // Reveal step 1
-    requestAnimationFrame(() => {
-      const s1 = steps[0];
-      s1.classList.add('active');
-      requestAnimationFrame(() => s1.classList.add('visible'));
-    });
-
-    // Auto-focus first input when hero CTA scrolls here
-    document.querySelector('a[href="#contact"]').addEventListener('click', () => {
-      setTimeout(() => {
-        document.getElementById('cs-name').focus();
-        header.classList.add('visible');
-      }, 600);
-    });
 
     // ─── Helpers ───
     function addReceipt(label, value) {
@@ -1378,14 +1957,39 @@
 
     function showStep(n) {
       steps.forEach(s => { s.classList.remove('active','visible'); });
+
+      // Step 4 is service-specific — configure it before showing
+      if (n === 4) {
+        const cat = svcCategory(data.service);
+        document.getElementById('step4Audit').style.display = 'none';
+        document.getElementById('step4Strategy').style.display = 'none';
+        document.getElementById('step4Mgmt').style.display = 'none';
+        const prompt = document.getElementById('step4Prompt');
+
+        if (cat === 'audit') {
+          prompt.textContent = 'Which profile do you want us to look at?';
+          document.getElementById('step4Audit').style.display = 'block';
+        } else if (cat === 'strategy') {
+          prompt.textContent = "What's your biggest challenge right now?";
+          document.getElementById('step4Strategy').style.display = 'block';
+        } else if (cat === 'management') {
+          prompt.textContent = 'Tell us about your current presence.';
+          document.getElementById('step4Mgmt').style.display = 'block';
+        } else {
+          // "Not sure yet" — skip step 4, go to 5
+          showStep(5);
+          return;
+        }
+      }
+
       const next = document.querySelector('.convo-step[data-step="' + n + '"]');
       if (!next) return;
       next.classList.add('active');
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
           next.classList.add('visible');
-          const input = next.querySelector('.convo-input, .convo-textarea');
-          if (input) input.focus();
+          const input = next.querySelector('.convo-input:not([style*="display: none"] .convo-input), .convo-textarea');
+          if (input && input.offsetParent !== null) input.focus();
         });
       });
       current = n;
@@ -1396,13 +2000,75 @@
       showStep(current + 1);
     }
 
-    // ─── Step 1–3: text inputs (Enter / Tab to advance) ───
-    const textSteps = [
-      { id: 'cs-name',    key: 'name',    label: 'Name',    step: 1 },
-      { id: 'cs-email',   key: 'email',   label: 'Email',   step: 2 },
-      { id: 'cs-subject', key: 'subject', label: 'Subject', step: 3 }
-    ];
+    // ─── Service selection ───
+    function confirmService(svc) {
+      data.service = svc;
+      svcConfirmName.textContent = svc;
+      svcConfirm.style.display = 'block';
+      // Hide step 0
+      steps.forEach(s => { s.classList.remove('active','visible'); });
+      // Add service to receipt
+      addReceipt('Service', svc);
+      // Show step 1
+      showStep(1);
+    }
 
+    // Entry A: pre-selected from service card
+    window.__loSelectService = function(svc) {
+      document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+      setTimeout(() => {
+        header.classList.add('visible');
+        confirmService(svc);
+        setTimeout(() => {
+          const nameInput = document.getElementById('cs-name');
+          if (nameInput) nameInput.focus();
+        }, 300);
+      }, 600);
+    };
+
+    // Entry B: organic — show step 0 (service picker)
+    requestAnimationFrame(() => {
+      const s0 = document.querySelector('.convo-step[data-step="0"]');
+      s0.classList.add('active');
+      requestAnimationFrame(() => s0.classList.add('visible'));
+    });
+
+    // Step 0 pill clicks
+    document.querySelectorAll('#svcPickerGroup .pill').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('#svcPickerGroup .pill').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        setTimeout(() => confirmService(btn.dataset.value), 250);
+      });
+    });
+
+    // Change selection — reset everything
+    document.getElementById('svcChangeBtn').addEventListener('click', () => {
+      data.service = '';
+      data.name = '';
+      data.email = '';
+      data.platforms = [];
+      data.specific = '';
+      data.message = '';
+      svcConfirm.style.display = 'none';
+      receipt.innerHTML = '';
+      document.querySelectorAll('#svcPickerGroup .pill').forEach(b => b.classList.remove('selected'));
+      document.querySelectorAll('#platformGroup .pill').forEach(b => b.classList.remove('selected'));
+      document.querySelectorAll('#challengeGroup .pill').forEach(b => b.classList.remove('selected'));
+      document.querySelectorAll('#presenceGroup .pill').forEach(b => b.classList.remove('selected'));
+      showStep(0);
+    });
+
+    // Hero CTA scrolls to form
+    document.querySelector('a[href="#contact"]').addEventListener('click', () => {
+      setTimeout(() => { header.classList.add('visible'); }, 600);
+    });
+
+    // ─── Step 1-2: text inputs (Enter/Tab to advance) ───
+    const textSteps = [
+      { id: 'cs-name',  key: 'name',  label: 'Name',  step: 1 },
+      { id: 'cs-email', key: 'email', label: 'Email', step: 2 }
+    ];
     textSteps.forEach(cfg => {
       const el = document.getElementById(cfg.id);
       el.addEventListener('keydown', e => {
@@ -1417,37 +2083,7 @@
       });
     });
 
-    // ─── Step 4: role (single select — click to advance, "Other" shows text field) ───
-    const roleOtherWrap = document.getElementById('roleOtherWrap');
-    const roleOtherInput = document.getElementById('cs-role-other');
-
-    document.querySelectorAll('#roleGroup .pill').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('#roleGroup .pill').forEach(b => b.classList.remove('selected'));
-        btn.classList.add('selected');
-
-        if (btn.dataset.value === 'Other') {
-          roleOtherWrap.style.display = 'block';
-          roleOtherInput.focus();
-        } else {
-          roleOtherWrap.style.display = 'none';
-          data.role = btn.dataset.value;
-          setTimeout(() => advance('Role', data.role), 250);
-        }
-      });
-    });
-
-    roleOtherInput.addEventListener('keydown', e => {
-      if ((e.key === 'Enter' || e.key === 'Tab') && current === 4) {
-        e.preventDefault();
-        const val = roleOtherInput.value.trim();
-        if (!val) return;
-        data.role = val;
-        advance('Role', data.role);
-      }
-    });
-
-    // ─── Step 5: platforms (multi-select pills) ───
+    // ─── Step 3: platforms (multi-select) ───
     document.querySelectorAll('#platformGroup .pill').forEach(btn => {
       btn.addEventListener('click', () => btn.classList.toggle('selected'));
     });
@@ -1457,67 +2093,72 @@
       advance('Platforms', selected.length ? selected.join(', ') : 'None selected');
     });
 
-    // ─── Step 6: looking for (multi-select pills + Custom Services text field) ───
-    const lookingCustomWrap = document.getElementById('lookingCustomWrap');
-    const lookingCustomInput = document.getElementById('cs-looking-custom');
+    // ─── Step 4: service-specific ───
+    // Audit: text input
+    document.getElementById('cs-profile').addEventListener('keydown', e => {
+      if ((e.key === 'Enter' || e.key === 'Tab') && current === 4) {
+        e.preventDefault();
+        const val = document.getElementById('cs-profile').value.trim();
+        if (!val) return;
+        data.specific = val;
+        advance('Profile', val);
+      }
+    });
 
-    document.querySelectorAll('#lookingGroup .pill').forEach(btn => {
+    // Strategy: challenge pills
+    document.querySelectorAll('#challengeGroup .pill').forEach(btn => {
+      btn.addEventListener('click', () => btn.classList.toggle('selected'));
+    });
+    document.getElementById('challengeNext').addEventListener('click', () => {
+      const selected = Array.from(document.querySelectorAll('#challengeGroup .pill.selected')).map(b => b.dataset.value);
+      data.specific = selected.join(', ');
+      advance('Challenge', data.specific || 'None selected');
+    });
+
+    // Management: presence pills
+    document.querySelectorAll('#presenceGroup .pill').forEach(btn => {
       btn.addEventListener('click', () => {
-        btn.classList.toggle('selected');
-        // Show/hide custom field when Custom Services is toggled
-        if (btn.id === 'lookingCustomPill') {
-          const isOn = btn.classList.contains('selected');
-          lookingCustomWrap.style.display = isOn ? 'block' : 'none';
-          if (isOn) lookingCustomInput.focus();
-        }
+        document.querySelectorAll('#presenceGroup .pill').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        data.specific = btn.dataset.value;
+        setTimeout(() => advance('Presence', data.specific), 250);
       });
     });
-    document.getElementById('lookingNext').addEventListener('click', () => {
-      const selected = Array.from(document.querySelectorAll('#lookingGroup .pill.selected')).map(b => b.dataset.value);
-      // If Custom Services is selected, replace its label with what they typed
-      const customVal = lookingCustomInput.value.trim();
-      if (customVal) {
-        const idx = selected.indexOf('Custom Services');
-        if (idx !== -1) selected[idx] = customVal;
+    document.getElementById('presenceNext').addEventListener('click', () => {
+      if (!data.specific) {
+        const sel = document.querySelector('#presenceGroup .pill.selected');
+        data.specific = sel ? sel.dataset.value : 'Not specified';
       }
-      data.looking_for = selected;
-      advance('Looking for', selected.length ? selected.join(', ') : 'None selected');
+      advance('Presence', data.specific);
     });
 
-    // ─── Step 7: textarea with Continue button ───
+    // ─── Step 5: message ───
     const ta = document.getElementById('cs-message');
     const messageNext = document.getElementById('messageNext');
-
-    // Auto-expand textarea as user types
     ta.addEventListener('input', () => {
       ta.style.height = 'auto';
       ta.style.height = ta.scrollHeight + 'px';
-      // Show/hide the Continue button based on content
       messageNext.style.display = ta.value.trim() ? 'inline-block' : 'none';
     });
-
-    // Continue button advances to Step 8
     messageNext.addEventListener('click', () => {
       data.message = ta.value.trim();
       advance('Message', data.message || '(none)');
     });
 
-    // ─── Step 8: send ───
+    // ─── Step 6: send ───
     document.getElementById('convoSend').addEventListener('click', async function() {
       const btn = this;
-      // Capture message if user typed but didn't click Continue
       if (!data.message && ta.value.trim()) data.message = ta.value.trim();
 
       btn.textContent = 'Sending...';
       btn.disabled = true;
 
       const formData = new FormData();
+      formData.append('service', data.service);
       formData.append('name', data.name);
       formData.append('email', data.email);
-      formData.append('subject', data.subject);
-      formData.append('role', data.role);
       formData.append('platforms', data.platforms.join(', '));
-      formData.append('looking_for', data.looking_for.join(', '));
+      formData.append('service_detail', data.specific);
       formData.append('message', data.message);
 
       try {
@@ -1528,11 +2169,12 @@
         });
 
         if (res.ok) {
-          // Hide everything, show success
           receipt.style.display = 'none';
+          svcConfirm.style.display = 'none';
           steps.forEach(s => { s.classList.remove('active','visible'); });
           header.style.display = 'none';
           const success = document.getElementById('convoSuccess');
+          document.getElementById('successMsg').textContent = "We'll be in touch about your " + data.service + ' within 48 hours.';
           success.classList.add('visible');
           success.scrollIntoView({ behavior: 'smooth', block: 'center' });
         } else {
@@ -1545,6 +2187,33 @@
       }
     });
   })();
+
+  /* ═══════════════════════════════════════════
+     SERVICE CARD INTERACTIONS
+     ═══════════════════════════════════════════ */
+
+  // Card body click toggles details expand/collapse + selected state
+  document.querySelectorAll('.svc-card').forEach(card => {
+    card.addEventListener('click', function(e) {
+      if (e.target.closest('.svc-cta-btn')) return;
+      const details = this.querySelector('.svc-details');
+      if (details) {
+        details.classList.toggle('open');
+        this.classList.toggle('expanded');
+      }
+      // Set selected state
+      document.querySelectorAll('.svc-card').forEach(c => c.classList.remove('selected'));
+      this.classList.add('selected');
+    });
+  });
+
+  // "Start with this" buttons and "Apply for Full Management"
+  document.querySelectorAll('.svc-cta-btn button, .svc-callout-btn').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      if (window.__loSelectService) window.__loSelectService(this.dataset.service);
+    });
+  });
 </script>
 
 <script src="https://player.vimeo.com/api/player.js"></script>
