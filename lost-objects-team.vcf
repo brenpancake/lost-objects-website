@@ -3,18 +3,20 @@ VERSION:3.0
 FN:Kyra Sweeney
 N:Sweeney;Kyra;;;
 TITLE:Co-Founder, Lost Objects
-TEL;TYPE=CELL:+18055018055
+TEL;TYPE=WORK:+12134379488
 EMAIL:kyra@wearelostobjects.com
 URL:https://wearelostobjects.com
 ORG:Lost Objects
+X-SOCIALPROFILE;TYPE=instagram:https://www.instagram.com/kyragracee
 END:VCARD
 BEGIN:VCARD
 VERSION:3.0
 FN:Brendan Sweeney
 N:Sweeney;Brendan;;;
 TITLE:Co-Founder, Lost Objects
-TEL;TYPE=CELL:+17325971841
+TEL;TYPE=WORK:+12134379488
 EMAIL:brendan@wearelostobjects.com
 URL:https://wearelostobjects.com
 ORG:Lost Objects
+X-SOCIALPROFILE;TYPE=instagram:https://www.instagram.com/brenpancake
 END:VCARD
