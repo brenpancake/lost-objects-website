@@ -1,22 +1,12 @@
 BEGIN:VCARD
 VERSION:3.0
-FN:Kyra Sweeney
-N:Sweeney;Kyra;;;
-TITLE:Co-Founder, Lost Objects
-TEL;TYPE=WORK:+12134379488
-EMAIL:kyra@wearelostobjects.com
-URL:https://wearelostobjects.com
+FN:Lost Objects
+N:Objects;Lost;;;
 ORG:Lost Objects
-X-SOCIALPROFILE;TYPE=instagram:https://www.instagram.com/kyragracee
-END:VCARD
-BEGIN:VCARD
-VERSION:3.0
-FN:Brendan Sweeney
-N:Sweeney;Brendan;;;
-TITLE:Co-Founder, Lost Objects
+TITLE:Social Media Agency
+EMAIL;TYPE=WORK:kyra@wearelostobjects.com
+EMAIL;TYPE=WORK:brendan@wearelostobjects.com
 TEL;TYPE=WORK:+12134379488
-EMAIL:brendan@wearelostobjects.com
 URL:https://wearelostobjects.com
-ORG:Lost Objects
-X-SOCIALPROFILE;TYPE=instagram:https://www.instagram.com/brenpancake
+ADR;TYPE=WORK:;;West Hollywood;CA;;90046;USA
 END:VCARD

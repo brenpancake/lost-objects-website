@@ -27,7 +27,7 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; scroll-snap-type: y proximity; }
     img { display: block; max-width: 100%; }
     a { text-decoration: none; color: inherit; }
 
@@ -241,6 +241,8 @@
       transform: scale(0.98);
       transition: opacity 0.6s ease, transform 0.7s ease;
       will-change: opacity, transform;
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
     }
     .scene.in-focus {
       opacity: 1;
@@ -397,7 +399,7 @@
       bottom: 14px; left: 0; right: 0;
       z-index: 3;
       text-align: center;
-      font-size: 10px;
+      font-size: 9px;
       font-weight: 500;
       letter-spacing: 0.2em;
       text-transform: uppercase;
@@ -425,7 +427,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 40px;
+      gap: 28px;
       opacity: 0;
       transition: opacity 0.35s ease;
       pointer-events: none;
@@ -438,18 +440,16 @@
       flex-direction: column;
       align-items: center;
     }
-    /* Short pink dash centered above each number */
-    .cstat::before {
-      content: '';
-      width: 32px;
-      height: 1px;
-      background: rgba(255,102,102,0.5);
-      margin-bottom: 12px;
+    /* Minimal pink outline icon centered above each number */
+    .cstat-ic {
+      width: 16px;
+      height: 16px;
+      margin-bottom: 8px;
     }
     .cstat-num {
       font-family: var(--sans);
       font-weight: 400;
-      font-size: 32px;
+      font-size: 24px;
       line-height: 1;
       color: rgba(255,255,255,1.0);
       text-shadow: 0 2px 12px rgba(0,0,0,0.6);
@@ -457,7 +457,7 @@
     .cstat-label {
       margin-top: 6px;
       font-family: var(--sans);
-      font-size: 10px;
+      font-size: 8px;
       font-weight: 500;
       text-transform: uppercase;
       letter-spacing: 0.2em;
@@ -495,13 +495,46 @@
       color: var(--cream);
     }
 
-    /* CONTACT — CONVERSATIONAL FORM */
+    /* CONTACT — CONVERSATIONAL FORM (FOCUS MODE) */
+    /* Full-screen dark overlay — fades in when the form takes focus.
+       Sits above other page sections (z 50) but below the form (z 60). */
+    #focusOverlay {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      background: rgba(10,9,8,0.92);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.5s ease;          /* fade-out pacing */
+    }
+    body.focus-mode #focusOverlay {
+      opacity: 1;
+      pointer-events: auto;
+      transition: opacity 0.6s ease;          /* fade-in pacing */
+    }
+
     .contact-section {
+      position: relative;                      /* keep: focus-mode stacking context */
+      z-index: 60;                             /* keep: form floats above the overlay */
+      height: 100vh;                           /* exactly one screen — content centered */
+      display: flex;
+      flex-direction: column;                  /* stack eyebrow + form, center the group */
+      align-items: center;
+      justify-content: center;
       max-width: var(--max);
       margin: 0 auto;
-      padding: clamp(52px, 8vh, 80px) var(--pad) clamp(80px, 14vh, 160px);
+      padding: 0 var(--pad);
+      scroll-snap-align: none;        /* free scrolling through the form */
     }
+    /* Eyebrow pinned top-left — matches every other section's label position
+       (var(--pad) from the left edge, same top offset as the other sections).
+       Absolute so it leaves the flex flow and the form stays centered. */
     .contact-section .section-eyebrow {
+      position: absolute;
+      top: clamp(52px, 8vh, 80px);
+      left: var(--pad);
+      z-index: 2;
+      margin-bottom: 0;
       opacity: 0;
       transform: translateY(10px);
       transition: opacity 0.6s ease, transform 0.6s ease;
@@ -511,13 +544,28 @@
       transform: translateY(0);
     }
     .convo-wrap {
+      position: relative;        /* keep: anchors the spotlight + focus stacking */
+      z-index: 1;
       width: 100%;
-      max-width: 580px;
+      max-width: 600px;
       margin: 0 auto;
       text-align: center;
     }
+    /* Warm pink focus light behind the active step */
+    .convo-spotlight {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 500px;
+      height: 300px;
+      max-width: 92vw;
+      z-index: -1;
+      background: radial-gradient(ellipse at center, rgba(255,102,102,0.06) 0%, transparent 65%);
+      pointer-events: none;
+    }
 
-    /* Receipt lines — completed answers */
+    /* Receipt lines — completed answers, flow naturally above the active step */
     .convo-receipt {
       display: flex;
       flex-direction: column;
@@ -527,7 +575,7 @@
       display: flex;
       align-items: baseline;
       gap: 16px;
-      padding: 14px 0;
+      padding: 6px 0;
       border-bottom: 1px solid var(--fg4);
       opacity: 0;
       transform: translateY(8px);
@@ -547,7 +595,7 @@
       min-width: 80px;
     }
     .receipt-value {
-      font-size: 14px;
+      font-size: 11px;
       font-weight: 300;
       color: var(--fg);
       white-space: nowrap;
@@ -555,12 +603,12 @@
       text-overflow: ellipsis;
     }
 
-    /* Active step */
+    /* Active step — slow, deliberate fade-in + slide-up */
     .convo-step {
       display: none;
       opacity: 0;
-      transform: translateY(16px);
-      transition: opacity 0.5s ease, transform 0.5s ease;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
       margin-top: 40px;
     }
     .convo-step.active {
@@ -572,12 +620,12 @@
     }
     .convo-prompt {
       font-family: var(--serif);
-      font-size: clamp(26px, 3.8vw, 40px);
+      font-size: clamp(22px, 3vw, 32px);
       font-weight: 400;
       font-style: italic;
       color: var(--fg);
       line-height: 1.2;
-      margin-bottom: 24px;
+      margin-bottom: 28px;
     }
 
     /* Text inputs */
@@ -588,7 +636,7 @@
       border-bottom: 1px solid var(--fg4);
       color: var(--fg);
       font-family: var(--sans);
-      font-size: clamp(1.1rem, 1.6vw, 1.4rem);
+      font-size: 16px;
       font-weight: 300;
       padding: 16px 0;
       outline: none;
@@ -596,7 +644,7 @@
       text-align: center;
     }
     .convo-input:focus {
-      border-bottom-color: var(--pink);
+      border-bottom: 2px solid rgba(255,102,102,0.6);
     }
     .convo-input::placeholder {
       color: var(--fg3);
@@ -611,7 +659,7 @@
       border-bottom: 1px solid var(--fg4);
       color: var(--fg);
       font-family: var(--sans);
-      font-size: clamp(1.1rem, 1.6vw, 1.4rem);
+      font-size: 16px;
       font-weight: 300;
       padding: 16px 0;
       outline: none;
@@ -622,7 +670,7 @@
       text-align: center;
     }
     .convo-textarea:focus {
-      border-bottom-color: var(--pink);
+      border-bottom: 2px solid rgba(255,102,102,0.6);
     }
     .convo-textarea::placeholder {
       color: var(--fg3);
@@ -657,13 +705,13 @@
     }
     #svcPickerGroup .pill {
       width: 100%;
-      min-height: 56px;
+      min-height: 52px;
       display: flex;
       align-items: center;
       justify-content: center;
       text-align: center;
-      font-size: 12px;
-      padding: 14px 12px;
+      font-size: 13px;
+      padding: 12px 12px;
     }
 
     .pill:hover {
@@ -676,27 +724,12 @@
       color: var(--pink);
     }
 
-    /* Next / advance button for pill steps */
+    /* Continue / advance button — prominent full-width pink action */
     .convo-next {
-      display: inline-block;
-      margin-top: 24px;
-      font-family: var(--sans);
-      font-size: 10px;
-      font-weight: 500;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--fg3);
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 0;
-      transition: color 0.2s;
-    }
-    .convo-next:hover { color: var(--fg); }
-
-    /* Submit button */
-    .convo-submit {
+      display: block;
       width: 100%;
+      height: 44px;
+      margin: 28px auto 0;
       font-family: var(--sans);
       font-size: 11px;
       font-weight: 600;
@@ -705,7 +738,39 @@
       color: var(--bg);
       background: var(--pink);
       border: none;
-      padding: 20px 28px;
+      cursor: pointer;
+      padding: 0 28px;
+      transition: opacity 0.25s ease;
+    }
+    .convo-next:hover { opacity: 0.85; color: var(--bg); }
+
+    /* Continue / Send appearance — fade in (0.3s) + one subtle pulse (1s) */
+    .convo-step .convo-next,
+    .convo-step .convo-submit { opacity: 0; }
+    .convo-step.visible .convo-next,
+    .convo-step.visible .convo-submit {
+      opacity: 1;
+      transition: opacity 0.3s ease 0.15s;
+      animation: continuePulse 1s ease 0.2s 1;
+    }
+    @keyframes continuePulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.02); }
+    }
+
+    /* Submit button */
+    .convo-submit {
+      width: 100%;
+      height: 52px;
+      font-family: var(--sans);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--bg);
+      background: var(--pink);
+      border: none;
+      padding: 0 28px;
       cursor: pointer;
       transition: opacity 0.25s;
     }
@@ -1359,7 +1424,6 @@
       .collage-card.is-open .collage-card-rule { opacity: 0.6; transform: translateX(-50%) scaleX(1); }
       /* Simplified, smaller stats on mobile */
       .collage-card-stats { gap: 28px; }
-      .cstat::before { width: 28px; margin-bottom: 10px; }
       .cstat-num { font-size: 28px; }
       .cstat-label { font-size: 8px; letter-spacing: 0.16em; }
       .collage-card-rule { bottom: 34px; }
@@ -1373,9 +1437,10 @@
       .vcard-card { width: 100%; max-width: 400px; }
       .vcard-btn { display: block; width: 100%; text-align: center; }
       .svc-callout { flex-direction: column; text-align: center; }
+      .convo-prompt { font-size: clamp(20px, 5vw, 26px); }
       #svcPickerGroup { grid-template-columns: repeat(2, 1fr); }
+      #svcPickerGroup .pill { min-height: 44px; }
       .convo-wrap { max-width: 100%; }
-      .convo-submit { padding: 18px 28px; }
 
       .foot-top, .foot-bot {
         flex-direction: column;
@@ -1453,10 +1518,12 @@
       <div class="collage-card-overlay"></div>
       <div class="collage-card-stats">
         <div class="cstat cstat-likes">
+          <svg class="cstat-ic" viewBox="0 0 24 24" fill="none" stroke="rgba(255,102,102,0.8)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
           <span class="cstat-num">51.4K</span>
           <span class="cstat-label">Likes</span>
         </div>
         <div class="cstat cstat-comments">
+          <svg class="cstat-ic" viewBox="0 0 24 24" fill="none" stroke="rgba(255,102,102,0.8)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
           <span class="cstat-num">132</span>
           <span class="cstat-label">Comments</span>
         </div>
@@ -1472,10 +1539,12 @@
       <div class="collage-card-overlay"></div>
       <div class="collage-card-stats">
         <div class="cstat cstat-likes">
+          <svg class="cstat-ic" viewBox="0 0 24 24" fill="none" stroke="rgba(255,102,102,0.8)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
           <span class="cstat-num">19.6K</span>
           <span class="cstat-label">Likes</span>
         </div>
         <div class="cstat cstat-comments">
+          <svg class="cstat-ic" viewBox="0 0 24 24" fill="none" stroke="rgba(255,102,102,0.8)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
           <span class="cstat-num">143</span>
           <span class="cstat-label">Comments</span>
         </div>
@@ -1491,10 +1560,12 @@
       <div class="collage-card-overlay"></div>
       <div class="collage-card-stats">
         <div class="cstat cstat-likes">
+          <svg class="cstat-ic" viewBox="0 0 24 24" fill="none" stroke="rgba(255,102,102,0.8)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
           <span class="cstat-num">12.2K</span>
           <span class="cstat-label">Likes</span>
         </div>
         <div class="cstat cstat-comments">
+          <svg class="cstat-ic" viewBox="0 0 24 24" fill="none" stroke="rgba(255,102,102,0.8)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
           <span class="cstat-num">50</span>
           <span class="cstat-label">Comments</span>
         </div>
@@ -1510,10 +1581,12 @@
       <div class="collage-card-overlay"></div>
       <div class="collage-card-stats">
         <div class="cstat cstat-likes">
+          <svg class="cstat-ic" viewBox="0 0 24 24" fill="none" stroke="rgba(255,102,102,0.8)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
           <span class="cstat-num">300K</span>
           <span class="cstat-label">Likes</span>
         </div>
         <div class="cstat cstat-comments">
+          <svg class="cstat-ic" viewBox="0 0 24 24" fill="none" stroke="rgba(255,102,102,0.8)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
           <span class="cstat-num">3.1K</span>
           <span class="cstat-label">Comments</span>
         </div>
@@ -1529,10 +1602,12 @@
       <div class="collage-card-overlay"></div>
       <div class="collage-card-stats">
         <div class="cstat cstat-likes">
+          <svg class="cstat-ic" viewBox="0 0 24 24" fill="none" stroke="rgba(255,102,102,0.8)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
           <span class="cstat-num">56.6K</span>
           <span class="cstat-label">Likes</span>
         </div>
         <div class="cstat cstat-comments">
+          <svg class="cstat-ic" viewBox="0 0 24 24" fill="none" stroke="rgba(255,102,102,0.8)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
           <span class="cstat-num">138</span>
           <span class="cstat-label">Comments</span>
         </div>
@@ -1548,10 +1623,12 @@
       <div class="collage-card-overlay"></div>
       <div class="collage-card-stats">
         <div class="cstat cstat-likes">
+          <svg class="cstat-ic" viewBox="0 0 24 24" fill="none" stroke="rgba(255,102,102,0.8)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
           <span class="cstat-num">18.5K</span>
           <span class="cstat-label">Likes</span>
         </div>
         <div class="cstat cstat-comments">
+          <svg class="cstat-ic" viewBox="0 0 24 24" fill="none" stroke="rgba(255,102,102,0.8)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
           <span class="cstat-num">74</span>
           <span class="cstat-label">Comments</span>
         </div>
@@ -1761,7 +1838,9 @@
     <div class="section-eyebrow-line"></div>
     <span class="section-eyebrow-text">Let's talk</span>
   </div>
+
   <div class="convo-wrap">
+    <div class="convo-spotlight" aria-hidden="true"></div>
 
     <!-- Service confirmation (shown when pre-selected) -->
     <div id="svcConfirm" style="display:none; margin-bottom:32px;">
@@ -2000,6 +2079,49 @@
     }, { threshold: 0.15 });
     secObs.observe(document.getElementById('contact'));
 
+    // ─── Focus mode ───
+    // Dark overlay + body.focus-mode toggled as the section snaps into view.
+    // While the form is in progress we lock page scroll so the user can't
+    // accidentally drift away mid-form; we release it on Send / Change Selection.
+    const contactEl = document.getElementById('contact');
+    const isMobileFm = window.matchMedia('(max-width: 768px)').matches;
+    let formStarted = false, formDone = false, scrollLocked = false;
+
+    const focusOverlay = document.createElement('div');
+    focusOverlay.id = 'focusOverlay';
+    document.body.appendChild(focusOverlay);
+
+    function lockScroll() {
+      if (scrollLocked) return;
+      const sbw = window.innerWidth - document.documentElement.clientWidth;
+      document.body.style.overflow = 'hidden';
+      if (sbw > 0) document.body.style.paddingRight = sbw + 'px';  // avoid layout shift
+      scrollLocked = true;
+    }
+    function unlockScroll() {
+      if (!scrollLocked) return;
+      document.body.style.overflow = '';
+      document.body.style.paddingRight = '';
+      scrollLocked = false;
+    }
+    function updateScrollLock() {
+      const active = document.body.classList.contains('focus-mode');
+      if (active && formStarted && !formDone && !isMobileFm) lockScroll();
+      else unlockScroll();
+    }
+
+    const focusObs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (formDone) { document.body.classList.remove('focus-mode'); updateScrollLock(); return; }
+        // Only while the contact section is the primary section in view —
+        // using the ratio (not bare isIntersecting) so the overlay cleanly
+        // drops as soon as an adjacent section takes over the viewport.
+        document.body.classList.toggle('focus-mode', e.isIntersecting && e.intersectionRatio >= 0.4);
+        updateScrollLock();
+      });
+    }, { threshold: [0, 0.4, 1] });
+    focusObs.observe(contactEl);
+
     // ─── Helpers ───
     function addReceipt(label, value) {
       const line = document.createElement('div');
@@ -2069,6 +2191,9 @@
       steps.forEach(s => { s.classList.remove('active','visible'); });
       // Add service to receipt
       addReceipt('Service', svc);
+      // Form is now in progress — engage the scroll lock
+      formStarted = true;
+      updateScrollLock();
       // Show step 1
       showStep(1);
     }
@@ -2116,6 +2241,9 @@
       document.querySelectorAll('#platformGroup .pill').forEach(b => b.classList.remove('selected'));
       document.querySelectorAll('#challengeGroup .pill').forEach(b => b.classList.remove('selected'));
       document.querySelectorAll('#presenceGroup .pill').forEach(b => b.classList.remove('selected'));
+      // Back to square one — release the scroll lock
+      formStarted = false;
+      updateScrollLock();
       showStep(0);
     });
 
@@ -2229,6 +2357,10 @@
         });
 
         if (res.ok) {
+          // Exit focus mode — fade the overlay out and release the scroll lock
+          formDone = true;
+          document.body.classList.remove('focus-mode');
+          unlockScroll();
           receipt.style.display = 'none';
           svcConfirm.style.display = 'none';
           steps.forEach(s => { s.classList.remove('active','visible'); });
