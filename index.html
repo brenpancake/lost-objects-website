@@ -351,10 +351,11 @@
       opacity: 0;
       transition: opacity 0.35s ease;
       pointer-events: none;
-      /* Dark vignette from edges */
+      /* Dark vignette from edges over a flat dark wash so white stats pop */
       background:
         radial-gradient(ellipse at center, transparent 30%, rgba(10,9,8,0.7) 100%),
-        linear-gradient(to top, rgba(10,9,8,0.8) 0%, transparent 40%);
+        linear-gradient(to top, rgba(10,9,8,0.8) 0%, transparent 40%),
+        rgba(0,0,0,0.65);
     }
     .collage-card:hover .collage-card-overlay {
       opacity: 1;
@@ -396,18 +397,87 @@
       bottom: 14px; left: 0; right: 0;
       z-index: 3;
       text-align: center;
-      font-size: 8px;
+      font-size: 10px;
       font-weight: 500;
-      letter-spacing: 0.22em;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.85);
+      color: rgba(255,255,255,0.75);
       opacity: 0;
       transform: translateY(6px);
-      transition: opacity 0.35s ease, transform 0.35s ease;
+      transition: opacity 0.35s ease, transform 0.35s ease, color 0.2s ease;
     }
     .collage-card:hover .collage-card-label {
       opacity: 1;
       transform: translateY(0);
+    }
+    .collage-card-label:hover {
+      color: var(--pink);
+    }
+
+    /* Engagement stats — clean text on the dark overlay, no backdrop box.
+       Dead-centered in the card, fades in with the overlay. */
+    .collage-card-stats {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 40px;
+      opacity: 0;
+      transition: opacity 0.35s ease;
+      pointer-events: none;
+    }
+    .collage-card:hover .collage-card-stats {
+      opacity: 1;
+    }
+    .cstat {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    /* Short pink dash centered above each number */
+    .cstat::before {
+      content: '';
+      width: 32px;
+      height: 1px;
+      background: rgba(255,102,102,0.5);
+      margin-bottom: 12px;
+    }
+    .cstat-num {
+      font-family: var(--sans);
+      font-weight: 400;
+      font-size: 32px;
+      line-height: 1;
+      color: rgba(255,255,255,1.0);
+      text-shadow: 0 2px 12px rgba(0,0,0,0.6);
+    }
+    .cstat-label {
+      margin-top: 6px;
+      font-family: var(--sans);
+      font-size: 10px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: rgba(255,255,255,0.65);
+    }
+    /* Short pink dash between the stats and the View on Instagram link */
+    .collage-card-rule {
+      position: absolute;
+      left: 50%; bottom: 40px;
+      z-index: 3;
+      width: 32px; height: 1px;
+      background: rgba(255,102,102,0.5);
+      opacity: 0;
+      transform: translateX(-50%) scaleX(0.5);
+      transition: opacity 0.35s ease, transform 0.35s ease;
+      pointer-events: none;
+    }
+    .collage-card:hover .collage-card-rule {
+      opacity: 1;
+      transform: translateX(-50%) scaleX(1);
     }
     .collage-caption {
       text-align: center;
@@ -1281,6 +1351,19 @@
         gap: 8px;
       }
 
+      /* Mobile: tap-to-toggle the stats overlay (no hover) */
+      .collage-card.is-open .collage-card-overlay { opacity: 1; }
+      .collage-card.is-open .collage-card-stats { opacity: 1; }
+      .collage-card.is-open .collage-card-ig { opacity: 0.85; transform: translateY(0); }
+      .collage-card.is-open .collage-card-label { opacity: 1; transform: translateY(0); }
+      .collage-card.is-open .collage-card-rule { opacity: 0.6; transform: translateX(-50%) scaleX(1); }
+      /* Simplified, smaller stats on mobile */
+      .collage-card-stats { gap: 28px; }
+      .cstat::before { width: 28px; margin-bottom: 10px; }
+      .cstat-num { font-size: 28px; }
+      .cstat-label { font-size: 8px; letter-spacing: 0.16em; }
+      .collage-card-rule { bottom: 34px; }
+
       .stats-bar { grid-template-columns: 1fr 1fr; }
       .svc-grid { grid-template-columns: 1fr; }
       .svc-card { padding: 24px; }
@@ -1363,51 +1446,117 @@
     <span class="section-eyebrow-text">Selected Work</span>
   </div>
   <div class="collage-grid">
-    <a class="collage-card ratio-4x5" href="https://www.instagram.com/p/DFa-HggS_AN/?img_index=1" target="_blank" rel="noopener noreferrer">
+    <a class="collage-card ratio-4x5" href="https://www.instagram.com/p/DFa-HggS_AN/?img_index=1" target="_blank" rel="noopener noreferrer" data-likes="51.4K" data-comments="132">
       <div class="collage-card-inner">
         <img src="images/475715696_18343415827198483_5935573091955911007_n.jpg" alt="Lost Objects — Instagram post" loading="lazy" decoding="async" />
       </div>
       <div class="collage-card-overlay"></div>
+      <div class="collage-card-stats">
+        <div class="cstat cstat-likes">
+          <span class="cstat-num">51.4K</span>
+          <span class="cstat-label">Likes</span>
+        </div>
+        <div class="cstat cstat-comments">
+          <span class="cstat-num">132</span>
+          <span class="cstat-label">Comments</span>
+        </div>
+      </div>
+      <div class="collage-card-rule"></div>
       <div class="collage-card-ig"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="#fff" stroke-width="1.5"/><circle cx="12" cy="12" r="5" stroke="#fff" stroke-width="1.5"/><circle cx="17.5" cy="6.5" r="1.2" fill="#fff"/></svg></div>
       <div class="collage-card-label">View on Instagram &rarr;</div>
     </a>
-    <a class="collage-card ratio-1x1" href="https://www.instagram.com/p/DRhsrdEiYm1/" target="_blank" rel="noopener noreferrer">
+    <a class="collage-card ratio-1x1" href="https://www.instagram.com/p/DRhsrdEiYm1/" target="_blank" rel="noopener noreferrer" data-likes="19.6K" data-comments="143">
       <div class="collage-card-inner">
         <img src="images/589102708_18382413772198483_6004977522962831426_n.jpg" alt="Lost Objects — Instagram post" loading="lazy" decoding="async" />
       </div>
       <div class="collage-card-overlay"></div>
+      <div class="collage-card-stats">
+        <div class="cstat cstat-likes">
+          <span class="cstat-num">19.6K</span>
+          <span class="cstat-label">Likes</span>
+        </div>
+        <div class="cstat cstat-comments">
+          <span class="cstat-num">143</span>
+          <span class="cstat-label">Comments</span>
+        </div>
+      </div>
+      <div class="collage-card-rule"></div>
       <div class="collage-card-ig"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="#fff" stroke-width="1.5"/><circle cx="12" cy="12" r="5" stroke="#fff" stroke-width="1.5"/><circle cx="17.5" cy="6.5" r="1.2" fill="#fff"/></svg></div>
       <div class="collage-card-label">View on Instagram &rarr;</div>
     </a>
-    <a class="collage-card ratio-4x5" href="https://www.instagram.com/p/DWy91VEFCxG/?img_index=1" target="_blank" rel="noopener noreferrer">
+    <a class="collage-card ratio-4x5" href="https://www.instagram.com/p/DWy91VEFCxG/?img_index=1" target="_blank" rel="noopener noreferrer" data-likes="12.2K" data-comments="50">
       <div class="collage-card-inner">
         <img src="images/659033416_18050557670720790_7937693999032787166_n.jpg" alt="Lost Objects — Instagram post" loading="lazy" decoding="async" />
       </div>
       <div class="collage-card-overlay"></div>
+      <div class="collage-card-stats">
+        <div class="cstat cstat-likes">
+          <span class="cstat-num">12.2K</span>
+          <span class="cstat-label">Likes</span>
+        </div>
+        <div class="cstat cstat-comments">
+          <span class="cstat-num">50</span>
+          <span class="cstat-label">Comments</span>
+        </div>
+      </div>
+      <div class="collage-card-rule"></div>
       <div class="collage-card-ig"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="#fff" stroke-width="1.5"/><circle cx="12" cy="12" r="5" stroke="#fff" stroke-width="1.5"/><circle cx="17.5" cy="6.5" r="1.2" fill="#fff"/></svg></div>
       <div class="collage-card-label">View on Instagram &rarr;</div>
     </a>
-    <a class="collage-card ratio-1x1" href="https://www.instagram.com/p/DVtWaeUDyJV/" target="_blank" rel="noopener noreferrer">
+    <a class="collage-card ratio-1x1 standout" href="https://www.instagram.com/p/DVtWaeUDyJV/" target="_blank" rel="noopener noreferrer" data-likes="300K" data-comments="3.1K">
       <div class="collage-card-inner">
         <img src="images/701700692_18031508729803568_5676187629427121799_n.jpg" alt="Lost Objects — Instagram post" loading="lazy" decoding="async" />
       </div>
       <div class="collage-card-overlay"></div>
+      <div class="collage-card-stats">
+        <div class="cstat cstat-likes">
+          <span class="cstat-num">300K</span>
+          <span class="cstat-label">Likes</span>
+        </div>
+        <div class="cstat cstat-comments">
+          <span class="cstat-num">3.1K</span>
+          <span class="cstat-label">Comments</span>
+        </div>
+      </div>
+      <div class="collage-card-rule"></div>
       <div class="collage-card-ig"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="#fff" stroke-width="1.5"/><circle cx="12" cy="12" r="5" stroke="#fff" stroke-width="1.5"/><circle cx="17.5" cy="6.5" r="1.2" fill="#fff"/></svg></div>
       <div class="collage-card-label">View on Instagram &rarr;</div>
     </a>
-    <a class="collage-card ratio-4x5" href="https://www.instagram.com/p/DOjClddEbzW/" target="_blank" rel="noopener noreferrer">
+    <a class="collage-card ratio-4x5" href="https://www.instagram.com/p/DOjClddEbzW/" target="_blank" rel="noopener noreferrer" data-likes="56.6K" data-comments="138">
       <div class="collage-card-inner">
         <img src="images/708653059_18057003821720790_6212212797853852108_n.jpg" alt="Lost Objects — Instagram post" loading="lazy" decoding="async" />
       </div>
       <div class="collage-card-overlay"></div>
+      <div class="collage-card-stats">
+        <div class="cstat cstat-likes">
+          <span class="cstat-num">56.6K</span>
+          <span class="cstat-label">Likes</span>
+        </div>
+        <div class="cstat cstat-comments">
+          <span class="cstat-num">138</span>
+          <span class="cstat-label">Comments</span>
+        </div>
+      </div>
+      <div class="collage-card-rule"></div>
       <div class="collage-card-ig"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="#fff" stroke-width="1.5"/><circle cx="12" cy="12" r="5" stroke="#fff" stroke-width="1.5"/><circle cx="17.5" cy="6.5" r="1.2" fill="#fff"/></svg></div>
       <div class="collage-card-label">View on Instagram &rarr;</div>
     </a>
-    <a class="collage-card ratio-1x1" href="https://www.instagram.com/p/DIyyLh2Mivm/?img_index=1" target="_blank" rel="noopener noreferrer">
+    <a class="collage-card ratio-1x1" href="https://www.instagram.com/p/DIyyLh2Mivm/?img_index=1" target="_blank" rel="noopener noreferrer" data-likes="18.5K" data-comments="74">
       <div class="collage-card-inner">
         <img src="images/702637885_18056050304720790_485156073056251602_n.jpg" alt="Lost Objects — Instagram post" loading="lazy" decoding="async" />
       </div>
       <div class="collage-card-overlay"></div>
+      <div class="collage-card-stats">
+        <div class="cstat cstat-likes">
+          <span class="cstat-num">18.5K</span>
+          <span class="cstat-label">Likes</span>
+        </div>
+        <div class="cstat cstat-comments">
+          <span class="cstat-num">74</span>
+          <span class="cstat-label">Comments</span>
+        </div>
+      </div>
+      <div class="collage-card-rule"></div>
       <div class="collage-card-ig"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="#fff" stroke-width="1.5"/><circle cx="12" cy="12" r="5" stroke="#fff" stroke-width="1.5"/><circle cx="17.5" cy="6.5" r="1.2" fill="#fff"/></svg></div>
       <div class="collage-card-label">View on Instagram &rarr;</div>
     </a>
@@ -2125,6 +2274,31 @@
       if (window.__loSelectService) window.__loSelectService(this.dataset.service);
     });
   });
+
+  // Collage cards — tap to toggle the stats overlay on mobile (no hover available)
+  (function() {
+    var mq = window.matchMedia('(max-width: 768px)');
+    var cards = document.querySelectorAll('.collage-card');
+    cards.forEach(function(card) {
+      card.addEventListener('click', function(e) {
+        if (!mq.matches) return; // desktop keeps hover + direct navigation
+        if (!card.classList.contains('is-open')) {
+          // First tap: reveal the stats overlay instead of navigating
+          e.preventDefault();
+          cards.forEach(function(c) { if (c !== card) c.classList.remove('is-open'); });
+          card.classList.add('is-open');
+        }
+        // Second tap on an open card falls through to the Instagram link
+      });
+    });
+    // Tapping outside any card closes the open overlay
+    document.addEventListener('click', function(e) {
+      if (!mq.matches) return;
+      if (!e.target.closest('.collage-card')) {
+        cards.forEach(function(c) { c.classList.remove('is-open'); });
+      }
+    });
+  })();
 </script>
 
 <script src="https://player.vimeo.com/api/player.js"></script>
