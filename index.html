@@ -27,7 +27,7 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-    html { scroll-behavior: smooth; scroll-snap-type: y proximity; }
+    html { scroll-behavior: smooth; }
     img { display: block; max-width: 100%; }
     a { text-decoration: none; color: inherit; }
 
@@ -241,8 +241,6 @@
       transform: scale(0.98);
       transition: opacity 0.6s ease, transform 0.7s ease;
       will-change: opacity, transform;
-      scroll-snap-align: start;
-      scroll-snap-stop: always;
     }
     .scene.in-focus {
       opacity: 1;
@@ -495,46 +493,65 @@
       color: var(--cream);
     }
 
-    /* CONTACT — CONVERSATIONAL FORM (FOCUS MODE) */
-    /* Full-screen dark overlay — fades in when the form takes focus.
-       Sits above other page sections (z 50) but below the form (z 60). */
-    #focusOverlay {
+    /* CONTACT — STICKY SCROLL EXPANSION */
+    /* Tall wrapper the sticky section travels through. The form pins to the
+       viewport while scroll progress (computed in JS) drives the scale/fade. */
+    .contact-scroll-container {
+      position: relative;
+      height: 300vh;
+    }
+    /* Dark backdrop — opacity driven by scroll progress in JS (0 → 0.92 → 0) */
+    #contactOverlay {
       position: fixed;
       inset: 0;
       z-index: 50;
-      background: rgba(10,9,8,0.92);
+      background: #0a0908;
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.5s ease;          /* fade-out pacing */
     }
-    body.focus-mode #focusOverlay {
-      opacity: 1;
-      pointer-events: auto;
-      transition: opacity 0.6s ease;          /* fade-in pacing */
-    }
-
     .contact-section {
-      position: relative;                      /* keep: focus-mode stacking context */
-      z-index: 60;                             /* keep: form floats above the overlay */
-      height: 100vh;                           /* exactly one screen — content centered */
+      position: sticky;
+      top: 0;
+      z-index: 60;                 /* form floats above the dark overlay */
+      height: 100vh;
+      overflow: hidden;            /* clip the oversized stage — no page scrollbars */
+      border: none;
+      outline: none;
+      box-shadow: none;
+    }
+    /* The scaling block — JS drives scale / opacity / colour on THIS, not the
+       section, so the eyebrow (a sibling) stays static. Background is
+       transparent by default; JS fades a pink fill (alpha 0→1) so the dark
+       page shows through at entry/exit and the edges soften as it fills in. */
+    .contact-stage {
+      position: absolute;
+      top: -10%;
+      left: -10%;
+      width: 120%;
+      height: 120%;                /* 20% larger so it always bleeds past the edges */
+      z-index: 1;
       display: flex;
-      flex-direction: column;                  /* stack eyebrow + form, center the group */
+      flex-direction: column;
       align-items: center;
       justify-content: center;
-      max-width: var(--max);
-      margin: 0 auto;
+      overflow: hidden;
       padding: 0 var(--pad);
-      scroll-snap-align: none;        /* free scrolling through the form */
+      background: transparent;
+      border: none !important;
+      outline: none !important;
+      box-shadow: none !important;
+      transform-origin: center center;
+      will-change: transform, opacity;
     }
-    /* Eyebrow pinned top-left — matches every other section's label position
-       (var(--pad) from the left edge, same top offset as the other sections).
-       Absolute so it leaves the flex flow and the form stays centered. */
+    /* Eyebrow — fixed chapter marker, top-left of the viewport, never scales.
+       Sat just below the nav (62px) so it reads over the section, not the nav bar. */
     .contact-section .section-eyebrow {
-      position: absolute;
-      top: clamp(52px, 8vh, 80px);
+      position: fixed;
+      top: calc(var(--nav-h) + 16px);
       left: var(--pad);
-      z-index: 2;
+      z-index: 70;
       margin-bottom: 0;
+      pointer-events: none;
       opacity: 0;
       transform: translateY(10px);
       transition: opacity 0.6s ease, transform 0.6s ease;
@@ -544,25 +561,16 @@
       transform: translateY(0);
     }
     .convo-wrap {
-      position: relative;        /* keep: anchors the spotlight + focus stacking */
+      position: relative;
       z-index: 1;
       width: 100%;
       max-width: 600px;
       margin: 0 auto;
       text-align: center;
     }
-    /* Warm pink focus light behind the active step */
-    .convo-spotlight {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 500px;
-      height: 300px;
-      max-width: 92vw;
-      z-index: -1;
-      background: radial-gradient(ellipse at center, rgba(255,102,102,0.06) 0%, transparent 65%);
-      pointer-events: none;
+    /* Mobile — shorter travel; the scale step is skipped in JS (opacity only) */
+    @media (max-width: 768px) {
+      .contact-scroll-container { height: 200vh; }
     }
 
     /* Receipt lines — completed answers, flow naturally above the active step */
@@ -1232,6 +1240,7 @@
     /* CONTACT CARD */
     .vcard-section {
       padding: clamp(64px, 10vh, 100px) var(--pad);
+      padding-bottom: clamp(80px, 12vh, 120px);
       position: relative;
     }
     .vcard-glow {
@@ -1832,15 +1841,16 @@
   </div>
 </section>
 
-<!-- CONTACT — SERVICE-AWARE CONVERSATIONAL FORM -->
-<section class="contact-section scene" id="contact" data-scene-label="Let's Talk">
+<!-- CONTACT — SERVICE-AWARE CONVERSATIONAL FORM (sticky scroll expansion) -->
+<div class="contact-scroll-container">
+<section class="contact-section" id="contact" data-scene-label="Let's Talk">
   <div class="section-eyebrow" id="convoHeader">
     <div class="section-eyebrow-line"></div>
     <span class="section-eyebrow-text">Let's talk</span>
   </div>
 
+  <div class="contact-stage">
   <div class="convo-wrap">
-    <div class="convo-spotlight" aria-hidden="true"></div>
 
     <!-- Service confirmation (shown when pre-selected) -->
     <div id="svcConfirm" style="display:none; margin-bottom:32px;">
@@ -1941,7 +1951,9 @@
       </div>
     </div>
   </div>
+  </div>
 </section>
+</div>
 
 <!-- CONTACT CARD DOWNLOAD -->
 <section class="vcard-section scene">
@@ -2051,6 +2063,127 @@
   }
 
   /* ═══════════════════════════════════════════
+     LET'S TALK — STICKY SCROLL EXPANSION
+     The form pins to the viewport while the user scrolls through the tall
+     container; scroll progress (0→1) drives scale, opacity, and the dark
+     backdrop. No permanent layout change beyond the container's height.
+     ═══════════════════════════════════════════ */
+  (function() {
+    const container = document.querySelector('.contact-scroll-container');
+    const section = document.getElementById('contact');
+    const stage = section ? section.querySelector('.contact-stage') : null;
+    if (!container || !section || !stage) return;
+
+    const overlay = document.createElement('div');
+    overlay.id = 'contactOverlay';
+    document.body.appendChild(overlay);
+
+    const mqMobile = window.matchMedia('(max-width: 768px)');
+    let ticking = false;
+
+    // Cached targets + colour stops for the scroll-driven colour transform
+    const pills    = section.querySelectorAll('.pill');
+    const ebHeader = section.querySelector('.section-eyebrow');
+    const ebLine   = section.querySelector('.section-eyebrow-line');
+    const ebText   = section.querySelector('.section-eyebrow-text');
+    const prompts = section.querySelectorAll('.convo-prompt');
+    const fields  = section.querySelectorAll('.convo-input, .convo-textarea');
+    const buttons = section.querySelectorAll('.convo-next, .convo-submit');
+    const DARK = [15,14,13], PINK = [255,102,102], LIGHT = [232,226,217], FG = [242,236,225];
+    // mix(from, to, t) → rgba string; optional alpha endpoints a0→a1 (default 1→1)
+    function mix(a, b, t, a0, a1) {
+      a0 = (a0 === undefined ? 1 : a0); a1 = (a1 === undefined ? 1 : a1);
+      const al = a0 + (a1 - a0) * t;
+      return 'rgba(' + Math.round(a[0]+(b[0]-a[0])*t) + ',' +
+                       Math.round(a[1]+(b[1]-a[1])*t) + ',' +
+                       Math.round(a[2]+(b[2]-a[2])*t) + ',' + al.toFixed(3) + ')';
+    }
+
+    function render() {
+      ticking = false;
+      const range = container.offsetHeight - window.innerHeight;   // sticky travel distance
+      let p = range > 0 ? (-container.getBoundingClientRect().top) / range : 0;
+      p = p < 0 ? 0 : (p > 1 ? 1 : p);
+
+      let scale = 1, opacity = 1, overlayOp = 0.92;
+      if (p < 0.33) {                       // 0–33%: expand in + darken
+        const t = p / 0.33;
+        scale = 0.9 + 0.1 * t;
+        opacity = 0.3 + 0.7 * t;
+        overlayOp = 0.92 * t;
+      } else if (p < 0.66) {                // 33–66%: hold — form dominant
+        scale = 1; opacity = 1; overlayOp = 0.92;
+      } else {                              // 66–100%: shrink + fade out
+        const t = (p - 0.66) / 0.34;
+        scale = 1 - 0.15 * t;
+        opacity = 1 - 0.7 * t;
+        overlayOp = 0.92 * (1 - t);
+      }
+
+      // Scale / opacity drive the STAGE (the eyebrow is a static sibling)
+      stage.style.opacity = opacity.toFixed(3);
+      overlay.style.opacity = overlayOp.toFixed(3);
+      // Mobile skips the scale — opacity fade only
+      stage.style.transform = mqMobile.matches ? 'none' : ('scale(' + scale.toFixed(4) + ')');
+
+      // ── Background fill — transparent → solid LO pink (alpha fade = soft edge) ──
+      //  0–15%: transparent · 15–40%: fade in · 40–66%: solid · 66–85%: fade out · 85–100%: transparent
+      let bgA;
+      if (p < 0.15)      bgA = 0;
+      else if (p < 0.40) bgA = (p - 0.15) / 0.25;
+      else if (p < 0.66) bgA = 1;
+      else if (p < 0.85) bgA = 1 - (p - 0.66) / 0.19;
+      else               bgA = 0;
+      stage.style.backgroundColor = 'rgba(255,102,102,' + bgA.toFixed(3) + ')';
+
+      // ── Text/foreground — only darkens once there's enough pink behind it ──
+      //  <25%: light · 25–40%: light→dark · 40–66%: dark · 66–81%: dark→light · >81%: light
+      let td;
+      if (p < 0.25)      td = 0;
+      else if (p < 0.40) td = (p - 0.25) / 0.15;
+      else if (p < 0.66) td = 1;
+      else if (p < 0.81) td = 1 - (p - 0.66) / 0.15;
+      else               td = 0;
+
+      stage.style.color = mix(LIGHT, DARK, td);                  // light → dark text
+      // Eyebrow — only visible while travelling through the section (0.05–0.95);
+      // line/text invert pink → dark with td (own alphas, so element opacity = 1)
+      if (ebHeader) ebHeader.style.opacity = (p > 0.05 && p < 0.95) ? '1' : '0';
+      if (ebLine) { ebLine.style.opacity = '1'; ebLine.style.backgroundColor = mix(PINK, DARK, td, 0.5, 0.5); }
+      if (ebText) { ebText.style.opacity = '1'; ebText.style.color = mix(PINK, DARK, td, 0.85, 0.7); }
+      prompts.forEach(el => { el.style.color = mix(FG, DARK, td); });
+      fields.forEach(el => {
+        if (el === document.activeElement) return;              // keep the focus underline
+        el.style.borderBottomColor = mix(LIGHT, DARK, td, 0.35, 0.4);
+      });
+      pills.forEach(el => {
+        if (el.classList.contains('selected')) return;          // keep the selection highlight
+        el.style.borderColor = mix(LIGHT, DARK, td, 0.15, 0.3);
+        el.style.color = mix(LIGHT, DARK, td, 0.6, 1);
+      });
+      buttons.forEach(el => {                                    // invert at peak
+        el.style.backgroundColor = mix(PINK, DARK, td);
+        el.style.color = mix(DARK, PINK, td);
+      });
+    }
+
+    function onScroll() {
+      if (!ticking) { ticking = true; requestAnimationFrame(render); }
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+
+    // Entry points (hero CTA, service pre-select) land mid-expansion (form dominant)
+    window.__loScrollToForm = function() {
+      const top = container.getBoundingClientRect().top + window.scrollY;
+      const y = top + (container.offsetHeight - window.innerHeight) * 0.45;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    };
+
+    render();
+  })();
+
+  /* ═══════════════════════════════════════════
      SERVICE-AWARE CONVERSATIONAL FORM ENGINE
      ═══════════════════════════════════════════ */
   (function() {
@@ -2078,49 +2211,6 @@
       entries.forEach(e => { if (e.isIntersecting) { header.classList.add('visible'); secObs.unobserve(e.target); } });
     }, { threshold: 0.15 });
     secObs.observe(document.getElementById('contact'));
-
-    // ─── Focus mode ───
-    // Dark overlay + body.focus-mode toggled as the section snaps into view.
-    // While the form is in progress we lock page scroll so the user can't
-    // accidentally drift away mid-form; we release it on Send / Change Selection.
-    const contactEl = document.getElementById('contact');
-    const isMobileFm = window.matchMedia('(max-width: 768px)').matches;
-    let formStarted = false, formDone = false, scrollLocked = false;
-
-    const focusOverlay = document.createElement('div');
-    focusOverlay.id = 'focusOverlay';
-    document.body.appendChild(focusOverlay);
-
-    function lockScroll() {
-      if (scrollLocked) return;
-      const sbw = window.innerWidth - document.documentElement.clientWidth;
-      document.body.style.overflow = 'hidden';
-      if (sbw > 0) document.body.style.paddingRight = sbw + 'px';  // avoid layout shift
-      scrollLocked = true;
-    }
-    function unlockScroll() {
-      if (!scrollLocked) return;
-      document.body.style.overflow = '';
-      document.body.style.paddingRight = '';
-      scrollLocked = false;
-    }
-    function updateScrollLock() {
-      const active = document.body.classList.contains('focus-mode');
-      if (active && formStarted && !formDone && !isMobileFm) lockScroll();
-      else unlockScroll();
-    }
-
-    const focusObs = new IntersectionObserver(entries => {
-      entries.forEach(e => {
-        if (formDone) { document.body.classList.remove('focus-mode'); updateScrollLock(); return; }
-        // Only while the contact section is the primary section in view —
-        // using the ratio (not bare isIntersecting) so the overlay cleanly
-        // drops as soon as an adjacent section takes over the viewport.
-        document.body.classList.toggle('focus-mode', e.isIntersecting && e.intersectionRatio >= 0.4);
-        updateScrollLock();
-      });
-    }, { threshold: [0, 0.4, 1] });
-    focusObs.observe(contactEl);
 
     // ─── Helpers ───
     function addReceipt(label, value) {
@@ -2191,16 +2281,14 @@
       steps.forEach(s => { s.classList.remove('active','visible'); });
       // Add service to receipt
       addReceipt('Service', svc);
-      // Form is now in progress — engage the scroll lock
-      formStarted = true;
-      updateScrollLock();
       // Show step 1
       showStep(1);
     }
 
     // Entry A: pre-selected from service card
     window.__loSelectService = function(svc) {
-      document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+      if (window.__loScrollToForm) window.__loScrollToForm();
+      else document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
       setTimeout(() => {
         header.classList.add('visible');
         confirmService(svc);
@@ -2241,14 +2329,12 @@
       document.querySelectorAll('#platformGroup .pill').forEach(b => b.classList.remove('selected'));
       document.querySelectorAll('#challengeGroup .pill').forEach(b => b.classList.remove('selected'));
       document.querySelectorAll('#presenceGroup .pill').forEach(b => b.classList.remove('selected'));
-      // Back to square one — release the scroll lock
-      formStarted = false;
-      updateScrollLock();
       showStep(0);
     });
 
     // Hero CTA scrolls to form
-    document.querySelector('a[href="#contact"]').addEventListener('click', () => {
+    document.querySelector('a[href="#contact"]').addEventListener('click', (e) => {
+      if (window.__loScrollToForm) { e.preventDefault(); window.__loScrollToForm(); }
       setTimeout(() => { header.classList.add('visible'); }, 600);
     });
 
@@ -2357,10 +2443,6 @@
         });
 
         if (res.ok) {
-          // Exit focus mode — fade the overlay out and release the scroll lock
-          formDone = true;
-          document.body.classList.remove('focus-mode');
-          unlockScroll();
           receipt.style.display = 'none';
           svcConfirm.style.display = 'none';
           steps.forEach(s => { s.classList.remove('active','visible'); });
