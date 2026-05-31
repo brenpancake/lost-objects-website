@@ -509,6 +509,29 @@
     }
     .lo-success-btn:hover { opacity: 0.82; }
 
+    /* ── MOBILE — coexist cleanly with the cookie banner ── */
+    @media (max-width: 768px) {
+      /* Normal resting position when no cookie banner is showing */
+      #lo-launcher {
+        bottom: 16px;
+        z-index: 8500;
+        transition: bottom 0.35s ease;
+      }
+      /* While the cookie banner is active, lift the tab to sit directly
+         above it: banner height (published by cookie-notice.js) + 8px gap. */
+      body.cookie-active #lo-launcher {
+        bottom: calc(var(--lo-cookie-h, 0px) + 8px);
+      }
+      /* Expanded modal stacks below the cookie banner (9000) and is
+         capped so it never runs under the bottom-anchored banner. */
+      #lo-overlay { z-index: 8500; }
+      #lo-modal {
+        max-height: 60vh;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+    }
+
     @media (max-width: 480px) {
       #lo-launcher { bottom: 16px; }
       #lo-launcher.lo-collapsed #lo-trigger {

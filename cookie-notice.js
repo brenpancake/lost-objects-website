@@ -138,9 +138,38 @@
       background: #FF6666;
       border-color: #FF6666;
     }
+    /* ── MOBILE — compact, bottom-anchored bar ─────── */
+    @media (max-width: 768px) {
+      .lo-privacy-notice {
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100%;
+        max-width: 100%;
+        transform: translateY(20px);
+        padding: 16px;
+        max-height: 45vh;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        z-index: 9000;
+        border-left: none;
+        border-right: none;
+        border-bottom: none;
+      }
+      .lo-privacy-notice.visible { transform: translateY(0); }
+      .lo-privacy-notice.hiding { transform: translateY(16px); }
+      .lo-privacy-head { margin-bottom: 8px; }
+      .lo-privacy-body { font-size: 13px; margin-bottom: 12px; }
+      .lo-privacy-btn {
+        min-height: 40px;
+        padding: 0 18px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
     @media (max-width: 520px) {
-      .lo-privacy-notice { padding: 16px 18px; bottom: 16px; }
-      .lo-privacy-body { font-size: 11px; }
+      .lo-privacy-body { font-size: 12px; }
       .lo-privacy-actions { justify-content: stretch; }
       .lo-privacy-btn-primary { flex: 1; text-align: center; }
     }
@@ -186,11 +215,28 @@
 
   let notice = null;
 
+  /* Flag the page + publish the banner's height so other fixed-position
+     UI (the Free Seminar tab in lead-popup.js) can lift itself clear of
+     the banner on mobile via `body.cookie-active` + the --lo-cookie-h var. */
+  function syncCookieMetrics() {
+    if (!notice) return;
+    document.body.classList.add('cookie-active');
+    document.documentElement.style.setProperty('--lo-cookie-h', notice.offsetHeight + 'px');
+  }
+
+  function clearCookieMetrics() {
+    document.body.classList.remove('cookie-active');
+    document.documentElement.style.removeProperty('--lo-cookie-h');
+  }
+
   function dismiss() {
     try { localStorage.setItem(STORAGE_KEY, '1'); } catch (e) { /* ignore */ }
     if (!notice) return;
     notice.classList.remove('visible');
     notice.classList.add('hiding');
+    /* Drop the flag immediately so the Free Seminar tab eases back to its
+       normal bottom position as the banner fades out. */
+    clearCookieMetrics();
     /* Give the fade-out transition (0.45s) time to finish, then strip from DOM */
     setTimeout(function () {
       if (notice && notice.parentNode) notice.parentNode.removeChild(notice);
@@ -200,6 +246,10 @@
 
   function init() {
     notice = build();
+    syncCookieMetrics();
+    /* Banner height shifts across breakpoints / orientation — keep the
+       published value in sync while the banner is on screen. */
+    window.addEventListener('resize', syncCookieMetrics);
   }
 
   if (document.readyState === 'loading') {
