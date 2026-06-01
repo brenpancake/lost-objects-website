@@ -492,6 +492,15 @@
     .collage-caption a:hover {
       color: var(--cream);
     }
+    /* Mobile — tighter, smaller engagement stats so they stay inside the card */
+    @media (max-width: 768px) {
+      .collage-card-stats {
+        gap: 20px;
+        max-width: calc(100% - 24px);
+        flex-wrap: nowrap;
+      }
+      .cstat-num { font-size: 18px; }
+    }
 
     /* CONTACT — STICKY SCROLL EXPANSION */
     /* Tall wrapper the sticky section travels through. The form pins to the
@@ -499,6 +508,7 @@
     .contact-scroll-container {
       position: relative;
       height: 300vh;
+      overflow-x: clip;   /* clip the oversized stage's horizontal bleed without breaking sticky */
     }
     /* Dark backdrop — opacity driven by scroll progress in JS (0 → 0.92 → 0) */
     #contactOverlay {
@@ -543,18 +553,20 @@
       transform-origin: center center;
       will-change: transform, opacity;
     }
-    /* Eyebrow — fixed chapter marker, top-left of the viewport, never scales.
-       Sat just below the nav (62px) so it reads over the section, not the nav bar. */
+    /* Eyebrow — absolute inside the sticky section so it lives in the same scene
+       as the stage and animates with scroll progress (opacity + translateY driven
+       by render(), not CSS). Top clears the fixed nav (62px, z-index 200, opaque
+       once scrolled): the section pins at viewport top, so a smaller top would sit
+       the eyebrow *behind* the nav bar and hide it. */
     .contact-section .section-eyebrow {
-      position: fixed;
+      position: absolute;
       top: calc(var(--nav-h) + 16px);
       left: var(--pad);
       z-index: 70;
       margin-bottom: 0;
       pointer-events: none;
       opacity: 0;
-      transform: translateY(10px);
-      transition: opacity 0.6s ease, transform 0.6s ease;
+      transform: translateY(-20px);
     }
     .contact-section .section-eyebrow.visible {
       opacity: 1;
@@ -568,9 +580,34 @@
       margin: 0 auto;
       text-align: center;
     }
-    /* Mobile — shorter travel; the scale step is skipped in JS (opacity only) */
+    /* Mobile — sticky scroll expansion fully disabled. The section behaves as a
+       normal scrolling block: dark background, light text, no pink transform,
+       no scaling (the JS render() also early-returns on mobile). */
     @media (max-width: 768px) {
-      .contact-scroll-container { height: 200vh; }
+      .contact-scroll-container { height: auto; overflow: hidden; }
+      .contact-section {
+        position: relative;   /* positioning context for the absolute eyebrow below */
+        height: auto;
+        padding: clamp(80px, 12vh, 110px) var(--pad) clamp(56px, 9vh, 80px);
+      }
+      .contact-stage {
+        position: static;
+        top: 0; left: 0;
+        width: 100%;
+        height: 100%;
+        transform: none !important;
+        background: transparent !important;
+        padding: 0;
+      }
+      /* Eyebrow — absolute, top-left of the section, always visible, no scroll
+         animation (render() forces opacity:1 / no transform on mobile). */
+      .contact-section .section-eyebrow {
+        position: absolute;
+        top: 32px;
+        left: var(--pad);
+        opacity: 1;
+        transform: none;
+      }
     }
 
     /* Receipt lines — completed answers, flow naturally above the active step */
@@ -730,6 +767,36 @@
       background: rgba(255,102,102,0.12);
       border-color: var(--pink);
       color: var(--pink);
+    }
+
+    /* ── CONTACT — PINK PHASE (toggled by render() when td > 0.5) ──
+       On the pink fill, every element that normally renders in pink or light
+       would vanish, so swap to dark ink. Pseudo-elements (::placeholder) and
+       pseudo-classes (:hover) can't be set inline, hence these class rules. */
+    .contact-section.contact-on-pink .convo-input::placeholder,
+    .contact-section.contact-on-pink .convo-textarea::placeholder {
+      color: rgba(15,14,13,0.5);
+    }
+    .contact-section.contact-on-pink .receipt-label { color: rgba(15,14,13,0.6) !important; }
+    .contact-section.contact-on-pink .receipt-value { color: rgba(15,14,13,0.9) !important; }
+    .contact-section.contact-on-pink .receipt-line { border-bottom-color: rgba(15,14,13,0.25) !important; }
+    .contact-section.contact-on-pink #svcConfirm > div:first-child,
+    .contact-section.contact-on-pink #svcChangeBtn { color: rgba(15,14,13,0.6) !important; }
+    .contact-section.contact-on-pink #svcConfirmName { color: rgba(15,14,13,0.85) !important; }
+    /* Pill buttons on pink */
+    .contact-section.contact-on-pink .pill {
+      background: transparent !important;
+      border: 1.5px solid rgba(15,14,13,0.4) !important;
+      color: rgba(15,14,13,0.8) !important;
+    }
+    .contact-section.contact-on-pink .pill:hover {
+      background: rgba(15,14,13,0.12) !important;
+      border-color: rgba(15,14,13,0.7) !important;
+    }
+    .contact-section.contact-on-pink .pill.selected {
+      background: rgba(15,14,13,0.2) !important;
+      border-color: rgba(15,14,13,0.9) !important;
+      color: rgba(15,14,13,1) !important;
     }
 
     /* Continue / advance button — prominent full-width pink action */
@@ -2101,6 +2168,28 @@
 
     function render() {
       ticking = false;
+
+      // ── Mobile: sticky expansion disabled — reset every scroll-driven style
+      //    back to its CSS default so the section is a plain dark block. ──
+      if (mqMobile.matches) {
+        stage.style.transform = 'none';
+        stage.style.opacity = '1';
+        stage.style.backgroundColor = 'transparent';
+        stage.style.color = '';
+        overlay.style.opacity = '0';
+        section.classList.remove('contact-on-pink');
+        const launcher = document.getElementById('lo-launcher');
+        if (launcher) launcher.style.zIndex = '';
+        if (ebLine) ebLine.style.backgroundColor = '';
+        if (ebText) ebText.style.color = '';
+        if (ebHeader) { ebHeader.classList.add('visible'); ebHeader.style.opacity = '1'; ebHeader.style.transform = 'none'; }
+        prompts.forEach(el => { el.style.color = ''; });
+        fields.forEach(el => { el.style.borderBottomColor = ''; });
+        pills.forEach(el => { el.style.background = ''; el.style.borderColor = ''; el.style.color = ''; });
+        buttons.forEach(el => { el.style.backgroundColor = ''; el.style.color = ''; });
+        return;
+      }
+
       const range = container.offsetHeight - window.innerHeight;   // sticky travel distance
       let p = range > 0 ? (-container.getBoundingClientRect().top) / range : 0;
       p = p < 0 ? 0 : (p > 1 ? 1 : p);
@@ -2145,10 +2234,30 @@
       else if (p < 0.81) td = 1 - (p - 0.66) / 0.15;
       else               td = 0;
 
+      // Pink phase — once past the midpoint the fill is solid pink, so flip
+      // pink/light text + controls to dark ink via CSS (placeholders, pill
+      // hover/selected states can't be set inline). Driven entirely by td.
+      const onPink = td > 0.5;
+      section.classList.toggle('contact-on-pink', onPink);
+      // Keep the Free Seminar launcher above the pink fill (contact layers max z 70)
+      const launcher = document.getElementById('lo-launcher');
+      if (launcher) launcher.style.zIndex = onPink ? '9000' : '';
+
       stage.style.color = mix(LIGHT, DARK, td);                  // light → dark text
-      // Eyebrow — only visible while travelling through the section (0.05–0.95);
+      // Eyebrow — scroll-driven fade + slide, in sync with the stage scene:
+      //  0–0.1 hidden · 0.1–0.33 fade/slide in · 0.33–0.66 hold · 0.66–0.9 fade/slide out · >0.9 hidden
+      if (ebHeader) {
+        let eo, ey;
+        if (p < 0.1)       { eo = 0; ey = -20; }
+        else if (p < 0.33) { const t = (p - 0.1) / 0.23; eo = t; ey = -20 + 20 * t; }
+        else if (p < 0.66) { eo = 1; ey = 0; }
+        else if (p < 0.9)  { const t = (p - 0.66) / 0.24; eo = 1 - t; ey = -20 * t; }
+        else               { eo = 0; ey = -20; }
+        ebHeader.classList.toggle('visible', p > 0.05);   // keep class in sync with render-driven state
+        ebHeader.style.opacity = eo.toFixed(3);
+        ebHeader.style.transform = 'translateY(' + ey.toFixed(1) + 'px)';
+      }
       // line/text invert pink → dark with td (own alphas, so element opacity = 1)
-      if (ebHeader) ebHeader.style.opacity = (p > 0.05 && p < 0.95) ? '1' : '0';
       if (ebLine) { ebLine.style.opacity = '1'; ebLine.style.backgroundColor = mix(PINK, DARK, td, 0.5, 0.5); }
       if (ebText) { ebText.style.opacity = '1'; ebText.style.color = mix(PINK, DARK, td, 0.85, 0.7); }
       prompts.forEach(el => { el.style.color = mix(FG, DARK, td); });
