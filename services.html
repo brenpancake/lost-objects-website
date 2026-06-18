@@ -23,7 +23,7 @@
   <meta name="twitter:image" content="https://wearelostobjects.com/images/og-image.jpg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
     html { scroll-behavior: smooth; }
@@ -39,7 +39,7 @@
       --fg2:   rgba(232,226,217,0.72);
       --fg3:   rgba(232,226,217,0.44);
       --fg4:   rgba(232,226,217,0.14);
-      --serif: 'DM Serif Display', Georgia, serif;
+      --display: 'Fraunces', Georgia, serif;
       --sans:  'Inter', system-ui, sans-serif;
       --max:   1380px;
       --pad:   clamp(20px, 4vw, 60px);
@@ -51,6 +51,7 @@
       color: var(--fg);
       font-family: var(--sans);
       font-weight: 400;
+      font-optical-sizing: auto;
       -webkit-font-smoothing: antialiased;
       overflow-x: hidden;
     }
@@ -87,7 +88,8 @@
     .nav-links a.active { color: var(--fg2); text-decoration: underline; text-decoration-color: var(--pink); text-decoration-thickness: 1.5px; text-underline-offset: 5px; }
     .lo-icon { cursor: pointer; opacity: 0.45; transition: opacity 0.2s, transform 0.3s; display: flex; align-items: center; margin-left: 2px; }
     .lo-icon:hover { opacity: 1; transform: rotate(15deg) scale(1.1); }
-    .nav-cta { font-size: 10px; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--pink); border: 1px solid rgba(255,102,102,0.35); padding: 8px 20px; transition: background 0.2s, color 0.2s; }
+    .nav-cta { font-size: 10px; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--pink); border: 1px solid rgba(255,102,102,0.35); border-radius: 0; padding: 8px 20px; transition: background 0.2s, color 0.2s; }
+    .pill-label { display:inline-block; font-family: var(--sans); font-size:9px; font-weight:500; letter-spacing:0.2em; text-transform:uppercase; color: var(--pink); border:1px solid rgba(255,102,102,0.4); border-radius:0; padding:5px 14px; }
     .nav-cta:hover { background: var(--pink); color: var(--bg); }
     .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
     .hamburger span { display: block; width: 22px; height: 1px; background: rgba(232,226,217,0.6); }
@@ -119,11 +121,11 @@
     .eyebrow-text { font-size: 9px; letter-spacing: 0.26em; text-transform: uppercase; color: var(--pink); opacity: 0.65; }
 
     .opener-hl {
-      font-family: var(--serif);
+      font-family: var(--display);
       font-size: clamp(52px, 7.5vw, 110px);
-      font-weight: 400;
+      font-weight: 500;
       line-height: 0.95;
-      letter-spacing: -0.025em;
+      letter-spacing: -0.01em;
       color: var(--fg);
       margin-bottom: clamp(20px,3vh,32px);
       opacity: 0; animation: fadeUp 0.8s ease 0.35s forwards;
@@ -250,11 +252,11 @@
     }
 
     .quiz-question {
-      font-family: var(--serif);
+      font-family: var(--display);
       font-size: clamp(28px, 3.5vw, 48px);
-      font-weight: 400;
+      font-weight: 500;
       line-height: 1.1;
-      letter-spacing: -0.02em;
+      letter-spacing: -0.01em;
       color: var(--fg);
       margin-bottom: 40px;
     }
@@ -299,12 +301,12 @@
       display: block;
     }
     .option-text {
-      font-family: var(--serif);
+      font-family: var(--display);
       font-size: clamp(15px, 1.4vw, 19px);
-      font-weight: 400;
+      font-weight: 500;
       color: var(--fg);
       line-height: 1.25;
-      letter-spacing: -0.01em;
+      letter-spacing: -0.005em;
       margin-bottom: 6px;
     }
     .option-sub {
@@ -331,15 +333,15 @@
       margin-bottom: 20px;
     }
     .result-hl {
-      font-family: var(--serif);
+      font-family: var(--display);
       font-size: clamp(28px,3.5vw,48px);
-      font-style: italic;
+      font-weight: 500;
       color: var(--fg);
       line-height: 1.1;
       margin-bottom: 16px;
-      letter-spacing: -0.02em;
+      letter-spacing: -0.01em;
     }
-    .result-hl em { font-style: normal; color: var(--pink); }
+    .result-hl em { font-style: italic; color: var(--pink); }
     .result-sub {
       font-size: clamp(12px,1vw,14px);
       font-weight: 400;
@@ -390,11 +392,11 @@
     }
 
     .services-intro-hl {
-      font-family: var(--serif);
+      font-family: var(--display);
       font-size: clamp(36px,4.5vw,64px);
-      font-weight: 400;
+      font-weight: 500;
       line-height: 1.0;
-      letter-spacing: -0.025em;
+      letter-spacing: -0.01em;
       color: var(--fg);
     }
     .services-intro-hl em { font-style: italic; color: var(--pink); }
@@ -478,12 +480,12 @@
     }
 
     .svc-name {
-      font-family: var(--serif);
+      font-family: var(--display);
       font-size: clamp(18px,1.8vw,26px);
-      font-weight: 400;
+      font-weight: 500;
       color: var(--fg);
       line-height: 1.15;
-      letter-spacing: -0.01em;
+      letter-spacing: -0.005em;
       margin-bottom: 4px;
     }
 
@@ -502,9 +504,10 @@
     }
 
     .svc-price {
-      font-family: var(--serif);
+      font-family: var(--display);
       font-size: clamp(13px,1.2vw,17px);
-      font-style: italic;
+      font-weight: 400;
+      letter-spacing: 0;
       color: var(--cream);
       opacity: 0.6;
       white-space: nowrap;
@@ -610,7 +613,7 @@
     }
 
     .duration-label { font-size: 8px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--fg3); margin-bottom: 6px; }
-    .duration-val { font-family: var(--serif); font-size: 22px; font-style: italic; color: var(--fg); }
+    .duration-val { font-family: var(--display); font-size: 22px; font-weight: 500; letter-spacing: -0.005em; color: var(--fg); }
 
     .svc-card-cta-row {
       padding: clamp(20px,2.5vw,28px) clamp(20px,2.5vw,32px);
@@ -626,7 +629,6 @@
       font-size: 11px;
       font-weight: 400;
       color: var(--fg3);
-      font-style: italic;
       max-width: 380px;
       line-height: 1.6;
     }
@@ -694,7 +696,7 @@
     }
 
     .mgmt-label { font-size: 9px; letter-spacing: 0.26em; text-transform: uppercase; color: var(--pink); opacity: 0.6; margin-bottom: 16px; }
-    .mgmt-hl { font-family: var(--serif); font-size: clamp(36px,4.5vw,66px); font-weight: 400; line-height: 1.0; letter-spacing: -0.025em; color: var(--fg); }
+    .mgmt-hl { font-family: var(--display); font-size: clamp(36px,4.5vw,66px); font-weight: 500; line-height: 1.0; letter-spacing: -0.01em; color: var(--fg); }
     .mgmt-hl em { font-style: italic; color: var(--pink); }
     .mgmt-desc { font-size: clamp(12px,1vw,14px); font-weight: 400; color: var(--fg2); line-height: 1.85; }
     .mgmt-desc strong { color: var(--fg); font-weight: 400; }
@@ -718,7 +720,7 @@
     .mgmt-pillar:hover::before { height: 100%; }
 
     .pillar-num { font-size: 9px; letter-spacing: 0.22em; color: var(--pink); opacity: 0.35; margin-bottom: 20px; }
-    .pillar-name { font-family: var(--serif); font-size: clamp(17px,1.6vw,22px); color: var(--fg); line-height: 1.2; margin-bottom: 12px; letter-spacing: -0.01em; }
+    .pillar-name { font-family: var(--display); font-size: clamp(17px,1.6vw,22px); font-weight: 500; color: var(--fg); line-height: 1.2; margin-bottom: 12px; letter-spacing: -0.005em; }
     .pillar-rule { width: 20px; height: 1px; background: var(--pink); opacity: 0.25; margin-bottom: 14px; }
     .pillar-desc { font-size: clamp(11px,0.82vw,12px); font-weight: 400; color: var(--fg2); line-height: 1.85; }
 
@@ -731,14 +733,15 @@
     }
 
     .mgmt-cta-text {
-      font-family: var(--serif);
+      font-family: var(--display);
       font-size: clamp(18px,2vw,26px);
-      font-style: italic;
+      font-weight: 400;
+      letter-spacing: 0;
       color: var(--fg2);
       line-height: 1.4;
       max-width: 480px;
     }
-    .mgmt-cta-text em { font-style: normal; color: var(--fg); }
+    .mgmt-cta-text em { font-style: italic; color: var(--fg); }
 
     /* ── CLOSING QUOTE ───────────────────────────────── */
     .closing-quote {
@@ -747,9 +750,9 @@
       position: relative;
     }
     .closing-quote-inner { max-width: var(--max); margin: 0 auto; position: relative; padding-left: clamp(48px,8vw,120px); }
-    .cq-mark { position: absolute; left: 0; top: -10px; font-family: var(--serif); font-size: clamp(60px,7vw,100px); font-style: italic; color: var(--pink); opacity: 0.12; line-height: 1; user-select: none; }
-    .cq-text { font-family: var(--serif); font-size: clamp(18px,1.8vw,26px); font-style: italic; color: var(--fg2); line-height: 1.5; max-width: 680px; }
-    .cq-text em { font-style: normal; color: var(--fg); }
+    .cq-mark { position: absolute; left: 0; top: -10px; font-family: var(--display); font-size: clamp(60px,7vw,100px); font-style: normal; font-weight: 400; letter-spacing: 0; color: var(--pink); opacity: 0.12; line-height: 1; user-select: none; }
+    .cq-text { font-family: var(--display); font-size: clamp(18px,1.8vw,26px); font-weight: 400; letter-spacing: 0; color: var(--fg2); line-height: 1.5; max-width: 680px; }
+    .cq-text em { font-style: italic; color: var(--fg); }
     .cq-attr { margin-top: 22px; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--fg3); }
     .cq-attr span { color: var(--cream); opacity: 0.6; }
 

@@ -138,6 +138,15 @@
       background: #FF6666;
       border-color: #FF6666;
     }
+    .lo-privacy-btn-secondary {
+      color: rgba(242,236,225,0.7);
+      background: none;
+      border: 1px solid rgba(242,236,225,0.22);
+    }
+    .lo-privacy-btn-secondary:hover {
+      color: #f2ece1;
+      border-color: rgba(242,236,225,0.5);
+    }
     /* ── MOBILE — compact, bottom-anchored bar ─────── */
     @media (max-width: 768px) {
       .lo-privacy-notice {
@@ -171,7 +180,8 @@
     @media (max-width: 520px) {
       .lo-privacy-body { font-size: 12px; }
       .lo-privacy-actions { justify-content: stretch; }
-      .lo-privacy-btn-primary { flex: 1; text-align: center; }
+      .lo-privacy-btn-primary,
+      .lo-privacy-btn-secondary { flex: 1; text-align: center; }
     }
   `;
   const styleEl = document.createElement('style');
@@ -190,20 +200,23 @@
         '<button class="lo-privacy-close" type="button" aria-label="Dismiss privacy notice">&#x2715;</button>' +
       '</div>' +
       '<p class="lo-privacy-body">' +
-        'Lost Objects uses cookies and similar technologies for essential site features and to remember your preferences. ' +
-        'By continuing to use this site, you agree to our <a href="privacy.html">Privacy Policy</a> and ' +
+        'We use cookies to improve your experience. ' +
+        'By continuing, you agree to our <a href="privacy.html">Privacy Policy</a> and ' +
         '<a href="terms.html">Terms &amp; Conditions</a>.' +
       '</p>' +
       '<div class="lo-privacy-actions">' +
-        '<button class="lo-privacy-btn lo-privacy-btn-primary" type="button">Accept &amp; Continue</button>' +
+        '<button class="lo-privacy-btn lo-privacy-btn-primary" type="button">Accept All</button>' +
+        '<button class="lo-privacy-btn lo-privacy-btn-secondary" type="button">Decline</button>' +
       '</div>';
 
     document.body.appendChild(wrap);
 
     const closeBtn = wrap.querySelector('.lo-privacy-close');
     const acceptBtn = wrap.querySelector('.lo-privacy-btn-primary');
+    const declineBtn = wrap.querySelector('.lo-privacy-btn-secondary');
     closeBtn.addEventListener('click', dismiss);
     acceptBtn.addEventListener('click', dismiss);
+    declineBtn.addEventListener('click', dismiss);
 
     /* Fade in after the short delay, letting the page settle first */
     setTimeout(function () {

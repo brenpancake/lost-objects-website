@@ -24,7 +24,7 @@
   <meta name="twitter:image" content="https://wearelostobjects.com/images/og-image.jpg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
     html { scroll-behavior: smooth; }
@@ -41,7 +41,7 @@
       --fg2:   rgba(232,226,217,0.72);
       --fg3:   rgba(232,226,217,0.44);
       --fg4:   rgba(232,226,217,0.14);
-      --serif: 'DM Serif Display', Georgia, serif;
+      --display: 'Fraunces', Georgia, serif;
       --sans:  'Inter', system-ui, sans-serif;
       --max:   1380px;
       --pad:   clamp(20px, 4vw, 60px);
@@ -53,6 +53,7 @@
       color: var(--fg);
       font-family: var(--sans);
       font-weight: 400;
+      font-optical-sizing: auto;
       -webkit-font-smoothing: antialiased;
       overflow-x: hidden;
     }
@@ -179,18 +180,18 @@
     .eyebrow-line { width: 28px; height: 1px; background: var(--pink); opacity: 0.5; flex-shrink: 0; }
     .eyebrow-text { font-size: 11px; font-weight: 500; letter-spacing: 0.24em; text-transform: uppercase; color: var(--pink); opacity: 0.7; }
     .hero-hl {
-      font-family: var(--serif);
+      font-family: var(--display);
       font-size: clamp(52px, 7.5vw, 108px);
-      font-weight: 400;
-      line-height: 0.95;
-      letter-spacing: -0.025em;
+      font-weight: 500;
+      line-height: 1.0;
+      letter-spacing: -0.01em;
       color: var(--fg);
       margin-bottom: clamp(20px, 3.5vh, 36px);
       opacity: 0;
       animation: fadeUp 0.8s ease 0.3s forwards;
       text-shadow: 0 2px 40px rgba(10,9,8,0.6);
     }
-    .hero-hl em { font-style: italic; color: var(--pink); }
+    .hero-hl em { font-style: italic; color: var(--pink); font-weight: 500; }
     .hero-desc {
       font-size: clamp(14px, 1.1vw, 15px);
       font-weight: 400;
@@ -213,10 +214,12 @@
       font-size: 10px; font-weight: 600;
       letter-spacing: 0.2em; text-transform: uppercase;
       padding: 13px 28px;
+      border-radius: 0;
       transition: opacity 0.2s;
       white-space: nowrap;
     }
     .hero-cta .btn-p:hover { opacity: 0.82; }
+    .pill-label { display:inline-block; font-family: var(--sans); font-size:9px; font-weight:500; letter-spacing:0.2em; text-transform:uppercase; color: var(--pink); border:1px solid rgba(255,102,102,0.4); border-radius:0; padding:5px 14px; }
     .hero-fade-out {
       position: absolute;
       bottom: 0; left: 0; right: 0;
@@ -664,10 +667,10 @@
       transform: translateY(0);
     }
     .convo-prompt {
-      font-family: var(--serif);
+      font-family: var(--display);
       font-size: clamp(22px, 3vw, 32px);
       font-weight: 400;
-      font-style: italic;
+      letter-spacing: 0;
       color: var(--fg);
       line-height: 1.2;
       margin-bottom: 28px;
@@ -860,10 +863,10 @@
     }
     .convo-success.visible { display: block; }
     .convo-success-hl {
-      font-family: var(--serif);
+      font-family: var(--display);
       font-size: clamp(32px, 5vw, 56px);
-      font-weight: 400;
-      font-style: italic;
+      font-weight: 500;
+      letter-spacing: -0.01em;
       color: var(--pink);
       margin-bottom: 18px;
     }
@@ -888,183 +891,348 @@
       50% { opacity: 1; transform: scale(1.3); }
     }
 
-    /* DOSSIER — data label block */
-    .dossier {
+    /* WHO WE ARE — interactive phone profile */
+    .whois {
       max-width: var(--max);
       margin: 0 auto;
       padding: clamp(52px, 8vh, 80px) var(--pad) clamp(64px, 10vh, 100px);
+      border-top: 1px solid var(--fg4);
     }
-    .dossier-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 1px;
-      background: var(--fg4);
-      border: 1px solid var(--fg4);
-    }
-    .dossier-cell {
-      background: var(--bg);
-      padding: clamp(20px, 3vh, 32px) clamp(16px, 2vw, 28px);
-    }
-    .dossier-cell.span-2 {
-      grid-column: span 2;
-    }
-    .dossier-cell.span-3 {
-      grid-column: span 3;
-    }
-    .dossier-key {
-      font-size: 9px;
+    .whois-hl {
+      font-family: var(--display);
+      font-size: clamp(30px, 4.5vw, 54px);
       font-weight: 500;
-      letter-spacing: 0.28em;
-      text-transform: uppercase;
-      color: var(--pink);
-      opacity: 0.8;
-      margin-bottom: 8px;
-    }
-    .dossier-val {
-      font-size: 14px;
-      font-weight: 300;
+      letter-spacing: -0.01em;
+      line-height: 1.05;
       color: var(--fg);
-      line-height: 1.65;
+      margin-top: clamp(18px, 2.5vh, 26px);
+      max-width: 14em;
     }
-    .dossier-val-lg {
-      font-family: var(--serif);
-      font-size: clamp(18px, 2.2vw, 26px);
-      font-weight: 400;
-      font-style: italic;
-      color: var(--fg);
-      line-height: 1.3;
-    }
-    .dossier-val strong {
-      color: var(--fg);
-      font-weight: 400;
-    }
-    .dossier-tags {
+    .whois-hl em { font-style: italic; color: var(--pink); }
+
+    /* Tab row — square */
+    .whois-tabs {
       display: flex;
       flex-wrap: wrap;
-      gap: 6px;
-      margin-top: 4px;
+      gap: 8px;
+      margin-top: clamp(26px, 4vh, 38px);
     }
-    .dossier-tag {
-      font-size: 10px;
-      font-weight: 400;
-      letter-spacing: 0.08em;
-      color: var(--fg2);
+    .whois-tab {
+      font-family: var(--sans);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--fg3);
+      background: transparent;
       border: 1px solid var(--fg4);
-      padding: 6px 14px;
+      padding: 10px 22px;
+      cursor: pointer;
+      transition: color 0.2s, border-color 0.2s, background 0.2s;
     }
-    .dossier-founders {
+    .whois-tab:hover { color: var(--fg); border-color: rgba(255,102,102,0.45); }
+    .whois-tab.active {
+      background: var(--pink);
+      color: var(--bg);
+      border-color: var(--pink);
+    }
+
+    /* Panels — two-column device + copy */
+    .whois-panels { margin-top: clamp(36px, 5vh, 56px); }
+    .whois-panel { display: none; }
+    .whois-panel.active { display: block; animation: whoisFade 0.4s ease; }
+    @keyframes whoisFade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+    .whois-cols {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 24px;
+      grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+      gap: clamp(28px, 4vw, 56px);
+      align-items: start;
     }
-    .dossier-person-name {
-      font-size: 15px;
-      font-weight: 400;
-      color: var(--fg);
-      margin-bottom: 4px;
-    }
-    .dossier-person-role {
-      font-size: 12px;
-      font-weight: 300;
-      color: var(--fg2);
-      line-height: 1.5;
-    }
-    .dossier-person-links {
+    .whois-device-col { display: flex; justify-content: center; width: 100%; min-width: 0; }
+    .whois-copy-col { min-width: 0; }
+
+    /* Carousel — lives inside every device screen */
+    .carousel { position: absolute; inset: 0; }
+    .carousel-viewport { position: absolute; inset: 0; overflow: hidden; }
+    .carousel-track { display: flex; height: 100%; transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1); }
+    .slide { flex: 0 0 100%; height: 100%; padding: 9px; }
+    .slot {
+      width: 100%; height: 100%;
+      border: 1.5px dashed rgba(255,102,102,0.5);
       display: flex;
-      gap: 10px;
-      margin-top: 8px;
-    }
-    .dossier-person-link {
-      display: flex;
+      flex-direction: column;
       align-items: center;
-      gap: 6px;
-      font-size: 10px;
-      font-weight: 400;
-      letter-spacing: 0.08em;
-      color: var(--fg2);
-      transition: color 0.2s;
-    }
-    .dossier-person-link:hover {
+      justify-content: center;
+      gap: 7px;
       color: var(--pink);
+      text-align: center;
     }
-    .dossier-person-link svg {
-      opacity: 0.5;
-      transition: opacity 0.2s;
+    .slot .lab {
+      font-family: var(--sans);
+      font-size: 8px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--fg3);
     }
-    .dossier-person-link:hover svg {
-      opacity: 1;
-    }
-    .dossier-status-row {
+    .carousel-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(11,10,9,0.5);
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      width: 26px; height: 38px;
       display: flex;
       align-items: center;
-      gap: 10px;
-    }
-    .dossier-status-dot {
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: #34d399;
-      animation: statusPulse 2s ease-in-out infinite;
-    }
-    @keyframes statusPulse {
-      0%, 100% { opacity: 0.4; transform: scale(1); }
-      50% { opacity: 1; transform: scale(1.3); }
-    }
-    .dossier-status-text {
-      font-size: 13px;
-      font-weight: 400;
+      justify-content: center;
       color: var(--fg);
-      letter-spacing: 0.04em;
+      opacity: 0.85;
+      transition: opacity 0.2s, background 0.2s;
+      z-index: 3;
+    }
+    .carousel-nav:hover { opacity: 1; background: rgba(11,10,9,0.8); }
+    .carousel-nav.prev { left: 7px; }
+    .carousel-nav.next { right: 7px; }
+    .carousel-dots {
+      position: absolute;
+      bottom: 9px; left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 5px;
+      z-index: 3;
+    }
+    .cdot {
+      width: 6px; height: 4px;
+      padding: 0;
+      background: rgba(242,236,225,0.35);
+      border: none;
+      cursor: pointer;
+      transition: width 0.25s ease, background 0.25s ease;
+    }
+    .cdot.active { width: 17px; background: var(--pink); }
+
+    /* Device frames — KEEP rounded corners (everything else stays sharp) */
+    .device-laptop { width: 100%; max-width: 470px; display: flex; flex-direction: column; align-items: center; }
+    .laptop-lid {
+      width: 94%;
+      background: var(--bg3);
+      border: 1px solid var(--fg4);
+      border-radius: 16px;
+      padding: 11px;
+    }
+    .browser-bar { display: flex; align-items: center; gap: 5px; padding: 1px 3px 9px; }
+    .browser-bar i { width: 7px; height: 7px; border-radius: 50%; background: var(--fg4); }
+    .browser-bar .b-url { flex: 1; height: 13px; margin-left: 7px; background: var(--bg); border: 1px solid var(--fg4); }
+    .laptop-screen {
+      position: relative;
+      aspect-ratio: 16 / 10;
+      border-radius: 6px;
+      overflow: hidden;
+      background: var(--bg);
+    }
+    .laptop-base {
+      width: 100%;
+      height: 11px;
+      background: var(--bg3);
+      border: 1px solid var(--fg4);
+      border-top: none;
+      border-radius: 0 0 13px 13px;
     }
 
-    @media (max-width: 700px) {
-      .dossier-grid {
-        grid-template-columns: 1fr 1fr;
-      }
-      .dossier-cell.span-3 {
-        grid-column: span 2;
-      }
-      .dossier-cell.span-2 {
-        grid-column: span 2;
-      }
-      .dossier-founders {
-        grid-template-columns: 1fr;
-        gap: 16px;
-      }
+    .device-phone { width: 100%; max-width: 246px; }
+    .phone-body {
+      position: relative;
+      background: var(--bg3);
+      border: 1px solid var(--fg4);
+      border-radius: 38px;
+      padding: 10px;
+      box-shadow: 0 30px 74px rgba(0,0,0,0.5);
+    }
+    .phone-notch2 {
+      position: absolute;
+      top: 18px; left: 50%;
+      transform: translateX(-50%);
+      width: 90px; height: 17px;
+      background: #0b0a09;
+      border-radius: 0 0 12px 12px;
+      z-index: 4;
+    }
+    .phone-screen2 {
+      position: relative;
+      aspect-ratio: 9 / 19;
+      border-radius: 28px;
+      overflow: hidden;
+      background: var(--bg);
     }
 
-    @media (max-width: 480px) {
-      .dossier-grid { grid-template-columns: 1fr; }
-      .dossier-cell.span-2, .dossier-cell.span-3 { grid-column: span 1; }
+    .device-tablet { width: 100%; max-width: 330px; }
+    .tablet-body {
+      position: relative;
+      background: var(--bg3);
+      border: 1px solid var(--fg4);
+      border-radius: 22px;
+      padding: 14px;
+      box-shadow: 0 30px 74px rgba(0,0,0,0.5);
+    }
+    .tablet-cam {
+      position: absolute;
+      top: 6px; left: 50%;
+      transform: translateX(-50%);
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--fg4);
+      z-index: 4;
+    }
+    .tablet-screen {
+      position: relative;
+      aspect-ratio: 3 / 4;
+      border-radius: 9px;
+      overflow: hidden;
+      background: var(--bg);
     }
 
-    /* STATS BAR */
-    .stats-bar {
+    /* Copy column — The Story */
+    .wc-statement {
+      font-family: var(--sans);
+      font-size: clamp(15px, 1.4vw, 18px);
+      font-weight: 300;
+      line-height: 1.6;
+      color: var(--fg);
+    }
+    .wc-origin {
+      font-family: var(--sans);
+      font-size: 13px;
+      font-weight: 300;
+      line-height: 1.75;
+      color: var(--fg2);
+      margin-top: 18px;
+    }
+    .wc-quote {
+      font-family: var(--display);
+      font-style: italic;
+      font-weight: 400;
+      font-size: clamp(19px, 2vw, 26px);
+      line-height: 1.35;
+      color: var(--fg);
+      margin-top: 26px;
+      padding-left: 16px;
+      border-left: 2px solid var(--pink);
+    }
+    .wc-quote em { font-style: italic; color: var(--pink); }
+    .wc-story {
+      font-family: var(--sans);
+      font-size: 13px;
+      font-weight: 300;
+      line-height: 1.75;
+      color: var(--fg2);
+      margin-top: 16px;
+    }
+    .wc-meta {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      font-family: var(--sans);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--fg3);
+      margin-top: 26px;
+    }
+    .wc-meta .dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--pink);
+      box-shadow: 0 0 8px rgba(255,102,102,0.7);
+      flex-shrink: 0;
+    }
+    .wc-stats {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(auto-fit, minmax(112px, 1fr));
       gap: 1px;
       background: var(--fg4);
       border: 1px solid var(--fg4);
-      margin-top: clamp(32px, 5vh, 48px);
+      margin-top: 22px;
     }
-    .stat-item {
-      background: var(--bg);
-      padding: clamp(18px, 3vh, 28px) clamp(14px, 2vw, 24px);
-      text-align: center;
-    }
-    .stat-num {
-      font-family: var(--serif);
-      font-size: clamp(28px, 3.5vw, 40px);
-      font-weight: 400;
+    .wc-stat { background: var(--bg); padding: 16px 14px; }
+    .wc-stat .num {
+      font-family: var(--display);
+      font-size: clamp(22px, 2.4vw, 30px);
+      font-weight: 500;
+      letter-spacing: -0.01em;
       color: var(--pink);
       line-height: 1;
-      margin-bottom: 8px;
     }
-    .stat-label {
-      font-size: 9px;
-      font-weight: 500;
-      letter-spacing: 0.18em;
+    .wc-stat .lbl {
+      font-family: var(--sans);
+      font-size: 8.5px;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
       color: var(--fg3);
+      margin-top: 8px;
+      line-height: 1.4;
+    }
+    .wc-industries {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-top: 24px;
+    }
+
+    /* Copy column — people */
+    .wc-name {
+      font-family: var(--display);
+      font-size: clamp(26px, 3vw, 40px);
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      color: var(--fg);
+    }
+    .wc-handle {
+      font-family: var(--sans);
+      font-size: 13px;
+      color: var(--pink);
+      margin-top: 6px;
+    }
+    .wc-role {
+      font-family: var(--sans);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--fg3);
+      margin-top: 14px;
+    }
+    .wc-lead {
+      font-family: var(--sans);
+      font-size: clamp(15px, 1.4vw, 18px);
+      font-weight: 300;
+      line-height: 1.6;
+      color: var(--fg);
+      margin-top: 18px;
+    }
+    .wc-bioph {
+      font-family: var(--sans);
+      font-style: italic;
+      font-size: 13px;
+      color: var(--fg3);
+      line-height: 1.7;
+      margin-top: 16px;
+      padding: 14px 16px;
+      border: 1px dashed var(--fg4);
+    }
+
+    /* Responsive — stack device above copy */
+    @media (max-width: 880px) {
+      .whois-cols { grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 30px; }
+    }
+    @media (max-width: 640px) {
+      .whois-cols { grid-template-columns: 1fr; gap: 30px; }
+      .device-laptop, .device-phone, .device-tablet { max-width: 360px; }
+    }
+    @media (max-width: 420px) {
+      .whois-tabs { flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+      .whois-tab { flex: 0 0 auto; }
     }
 
     /* SERVICES — WHAT WE DO */
@@ -1078,10 +1246,10 @@
       text-align: center;
     }
     .services-intro-hl {
-      font-family: var(--serif);
+      font-family: var(--display);
       font-size: clamp(28px, 4vw, 44px);
-      font-weight: 400;
-      font-style: italic;
+      font-weight: 500;
+      letter-spacing: -0.01em;
       color: var(--fg);
       margin-bottom: 10px;
     }
@@ -1151,14 +1319,15 @@
       margin-bottom: 14px;
       background: rgba(255,102,102,0.06);
       border: 1px solid rgba(255,102,102,0.15);
-      border-radius: 20px;
+      border-radius: 0;
       padding: 3px 10px;
     }
     .svc-type-dot { color: var(--pink); margin: 0 4px; }
     .svc-name {
-      font-family: var(--serif);
+      font-family: var(--display);
       font-size: 26px;
-      font-weight: 400;
+      font-weight: 500;
+      letter-spacing: -0.005em;
       color: var(--fg);
       margin-bottom: 12px;
     }
@@ -1334,7 +1503,7 @@
     .vcard-card {
       background: var(--bg2);
       border: 1px solid rgba(255,102,102,0.15);
-      border-radius: 2px;
+      border-radius: 0;
       padding: 32px;
       width: clamp(220px, 28vw, 320px);
       transition: transform 0.3s, border-color 0.3s;
@@ -1351,15 +1520,17 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-family: var(--serif);
+      font-family: var(--display);
       font-size: 22px;
+      font-weight: 500;
       color: #fff;
       margin-bottom: 16px;
     }
     .vcard-name {
-      font-family: var(--serif);
+      font-family: var(--display);
       font-size: 22px;
-      font-weight: 400;
+      font-weight: 500;
+      letter-spacing: -0.005em;
       color: #e8e2d9;
       margin-bottom: 4px;
     }
@@ -1391,10 +1562,10 @@
     .vcard-row.ig a { color: var(--pink); }
     .vcard-row.ig svg { opacity: 0.8; }
     .vcard-tagline {
-      font-family: var(--serif);
+      font-family: var(--display);
       font-size: clamp(16px, 2vw, 20px);
-      font-style: italic;
       font-weight: 400;
+      letter-spacing: 0;
       color: #fff;
       opacity: 0.8;
       margin-bottom: 24px;
@@ -1504,7 +1675,6 @@
       .cstat-label { font-size: 8px; letter-spacing: 0.16em; }
       .collage-card-rule { bottom: 34px; }
 
-      .stats-bar { grid-template-columns: 1fr 1fr; }
       .svc-grid { grid-template-columns: 1fr; }
       .svc-card { padding: 24px; }
       .svc-name { font-size: 22px; }
@@ -1571,7 +1741,7 @@
       <span class="eyebrow-text">Social strategy for the creative industry</span>
     </div>
     <h1 class="hero-hl">Your work deserves<br>to be <em>found.</em></h1>
-    <p class="hero-desc">We're building something new. A home for the work, the process, and the people behind it. Stay close.</p>
+    <p class="hero-desc">A boutique agency built by creatives, for the people who make the work and rarely get seen for it.</p>
     <div class="hero-cta">
       <a href="#contact" class="btn-p">Let's talk</a>
     </div>
@@ -1717,103 +1887,209 @@
   <p class="collage-caption">Follow our work <a href="https://www.instagram.com/wearelostobjects/" target="_blank" rel="noopener noreferrer">@wearelostobjects</a></p>
 </section>
 
-<!-- DOSSIER A — WHO WE ARE -->
-<section class="dossier scene" data-scene-label="Who We Are">
+<!-- WHO WE ARE — interactive device profiles -->
+<section class="whois scene" data-scene-label="Who We Are">
   <div class="section-eyebrow">
     <div class="section-eyebrow-line"></div>
     <span class="section-eyebrow-text">Who we are</span>
   </div>
 
-  <div class="dossier-grid">
+  <h2 class="whois-hl">Get to know the people <em>behind the work.</em></h2>
 
-    <div class="dossier-cell span-3">
-      <div class="dossier-key">What is Lost Objects</div>
-      <div class="dossier-val-lg">A boutique social media agency built from inside the film industry. We help filmmakers, creative brands, and entertainment businesses show up online with strategy, clarity, and a point of view.</div>
-    </div>
-
-    <div class="dossier-cell">
-      <div class="dossier-key">Entity</div>
-      <div class="dossier-val"><strong>Lost Objects</strong></div>
-    </div>
-    <div class="dossier-cell">
-      <div class="dossier-key">Based</div>
-      <div class="dossier-val"><strong>West Hollywood</strong>, Los Angeles</div>
-    </div>
-    <div class="dossier-cell">
-      <div class="dossier-key">Status</div>
-      <div class="dossier-status-row">
-        <span class="dossier-status-dot"></span>
-        <span class="dossier-status-text">Accepting Clients</span>
-      </div>
-    </div>
-
-    <div class="dossier-cell span-2">
-      <div class="dossier-key">Founded by</div>
-      <div class="dossier-founders">
-        <div>
-          <div class="dossier-person-name">Kyra Sweeney</div>
-          <div class="dossier-person-role">Actor · Social Media Strategist</div>
-          <div class="dossier-person-links">
-            <a href="https://www.instagram.com/kyragracee" target="_blank" rel="noopener noreferrer" class="dossier-person-link">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="#FF6666" stroke-width="1.5"/><circle cx="12" cy="12" r="4" stroke="#FF6666" stroke-width="1.5"/><circle cx="17.5" cy="6.5" r="1" fill="#FF6666"/></svg>
-              @kyragracee
-            </a>
-          </div>
-        </div>
-        <div>
-          <div class="dossier-person-name">Brendan Sweeney</div>
-          <div class="dossier-person-role">Director · Producer · Business Relations</div>
-          <div class="dossier-person-links">
-            <a href="https://www.instagram.com/brenpancake" target="_blank" rel="noopener noreferrer" class="dossier-person-link">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="#FF6666" stroke-width="1.5"/><circle cx="12" cy="12" r="4" stroke="#FF6666" stroke-width="1.5"/><circle cx="17.5" cy="6.5" r="1" fill="#FF6666"/></svg>
-              @brenpancake
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="dossier-cell">
-      <div class="dossier-key">Origin</div>
-      <div class="dossier-val">Founded in West Hollywood in 2023, Lost Objects grew from a simple observation: the most talented people in the film industry were going unseen online. Kyra and Brendan Sweeney built this to change that.</div>
-    </div>
-
-    <div class="dossier-cell span-2">
-      <div class="dossier-key">Industries</div>
-      <div class="dossier-tags">
-        <span class="dossier-tag">Film</span>
-        <span class="dossier-tag">Cinematography</span>
-        <span class="dossier-tag">Grip & Lighting</span>
-        <span class="dossier-tag">Production</span>
-        <span class="dossier-tag">Entertainment</span>
-      </div>
-    </div>
-    <div class="dossier-cell">
-      <div class="dossier-key">The name</div>
-      <div class="dossier-val">The name is personal. Kyra and Brendan both felt it — that specific feeling of being lost in your creative career, unseen in an industry you care deeply about. Lost Objects came from that. The belief that even when you feel like a lost object, you can still be found. And that finding others is worth building a company around.</div>
-    </div>
-
+  <!-- Tabs -->
+  <div class="whois-tabs" role="tablist" aria-label="Profiles">
+    <button type="button" class="whois-tab active" data-tab="story" aria-pressed="true">The Story</button>
+    <button type="button" class="whois-tab" data-tab="kyra" aria-pressed="false">Kyra</button>
+    <button type="button" class="whois-tab" data-tab="brendan" aria-pressed="false">Brendan</button>
   </div>
 
-  <!-- Stats bar -->
-  <div class="stats-bar">
-    <div class="stat-item">
-      <div class="stat-num">800K+</div>
-      <div class="stat-label">Followers grown organically</div>
+  <div class="whois-panels">
+
+    <!-- ============ THE STORY — laptop ============ -->
+    <div class="whois-panel active" data-panel="story">
+      <div class="whois-cols">
+        <div class="whois-device-col">
+          <div class="device-laptop">
+            <div class="laptop-lid">
+              <div class="browser-bar"><i></i><i></i><i></i><span class="b-url"></span></div>
+              <div class="laptop-screen">
+                <div class="carousel" data-carousel>
+                  <div class="carousel-viewport">
+                    <div class="carousel-track">
+                      <div class="slide"><div class="slot"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18"/><circle cx="8.5" cy="8.5" r="1.6"/><path d="M21 14l-5-4-11 9"/></svg><span class="lab">Studio · 1</span></div></div>
+                      <div class="slide"><div class="slot"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18"/><circle cx="8.5" cy="8.5" r="1.6"/><path d="M21 14l-5-4-11 9"/></svg><span class="lab">Studio · 2</span></div></div>
+                      <div class="slide"><div class="slot"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18"/><circle cx="8.5" cy="8.5" r="1.6"/><path d="M21 14l-5-4-11 9"/></svg><span class="lab">Business · 3</span></div></div>
+                      <div class="slide"><div class="slot"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18"/><circle cx="8.5" cy="8.5" r="1.6"/><path d="M21 14l-5-4-11 9"/></svg><span class="lab">Business · 4</span></div></div>
+                    </div>
+                  </div>
+                  <button type="button" class="carousel-nav prev" aria-label="Previous photo"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+                  <button type="button" class="carousel-nav next" aria-label="Next photo"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>
+                  <div class="carousel-dots"></div>
+                </div>
+              </div>
+            </div>
+            <div class="laptop-base"></div>
+          </div>
+        </div>
+        <div class="whois-copy-col">
+          <p class="wc-statement">A boutique social media agency built from inside the film industry now serving all creative industries. We help filmmakers, creative brands, and entertainment businesses show up online with strategy, clarity, and a point of view.</p>
+          <p class="wc-origin">Founded in 2023, Lost Objects began with a simple frustration: the most talented people in the creative industries stay invisible online, and the agencies meant to help them don't speak their language. Marketing a product is one thing. Representing a creative is a different specialty, one most agencies were never built for. Born out of the film world, Lost Objects was built to serve businesses and artists across the creative landscape, giving them the tools to be seen on their own terms with a team who will support and lead them to success.</p>
+          <blockquote class="wc-quote">We each felt like a <em>lost object.</em> Then we found each other.</blockquote>
+          <p class="wc-story">There was a time when Kyra and Brendan each felt like a lost object. Unsure in their careers, their lives, their hearts. Then they found each other, and in creating together they understood something simple: feeling found can come from anywhere, and being lost is not the end of the story. It can be the beginning of it. That belief became Lost Objects. Because every lost object is only waiting to be seen, and so is everyone who feels like one.</p>
+          <div class="wc-meta"><span class="dot"></span><span>Accepting clients · West Hollywood, Los Angeles</span></div>
+          <div class="wc-stats">
+            <div class="wc-stat"><div class="num">800K+</div><div class="lbl">Followers grown organically</div></div>
+            <div class="wc-stat"><div class="num">8+</div><div class="lbl">Brand partnerships</div></div>
+            <div class="wc-stat"><div class="num">2023</div><div class="lbl">Established in West Hollywood</div></div>
+            <div class="wc-stat"><div class="num">5</div><div class="lbl">Key service tiers</div></div>
+          </div>
+          <div class="wc-industries">
+            <span class="pill-label">Film</span>
+            <span class="pill-label">Cinematography</span>
+            <span class="pill-label">Creators</span>
+            <span class="pill-label">Directors</span>
+            <span class="pill-label">Actors</span>
+            <span class="pill-label">Agencies</span>
+            <span class="pill-label">Education</span>
+            <span class="pill-label">Grip &amp; Lighting</span>
+            <span class="pill-label">Production</span>
+            <span class="pill-label">Entertainment</span>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="stat-item">
-      <div class="stat-num">8+</div>
-      <div class="stat-label">Brand partnerships</div>
+
+    <!-- ============ KYRA — phone ============ -->
+    <div class="whois-panel" data-panel="kyra">
+      <div class="whois-cols">
+        <div class="whois-device-col">
+          <div class="device-phone">
+            <div class="phone-body">
+              <div class="phone-notch2"></div>
+              <div class="phone-screen2">
+                <div class="carousel" data-carousel>
+                  <div class="carousel-viewport">
+                    <div class="carousel-track">
+                      <div class="slide"><div class="slot"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18"/><circle cx="8.5" cy="8.5" r="1.6"/><path d="M21 14l-5-4-11 9"/></svg><span class="lab">Kyra · 1</span></div></div>
+                      <div class="slide"><div class="slot"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18"/><circle cx="8.5" cy="8.5" r="1.6"/><path d="M21 14l-5-4-11 9"/></svg><span class="lab">Kyra · 2</span></div></div>
+                      <div class="slide"><div class="slot"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18"/><circle cx="8.5" cy="8.5" r="1.6"/><path d="M21 14l-5-4-11 9"/></svg><span class="lab">Kyra · 3</span></div></div>
+                      <div class="slide"><div class="slot"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18"/><circle cx="8.5" cy="8.5" r="1.6"/><path d="M21 14l-5-4-11 9"/></svg><span class="lab">Kyra · 4</span></div></div>
+                    </div>
+                  </div>
+                  <button type="button" class="carousel-nav prev" aria-label="Previous photo"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+                  <button type="button" class="carousel-nav next" aria-label="Next photo"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>
+                  <div class="carousel-dots"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="whois-copy-col">
+          <h3 class="wc-name">Kyra Sweeney</h3>
+          <div class="wc-handle">@kyragracee</div>
+          <div class="wc-role">Actor · Social Media Strategist</div>
+          <p class="wc-lead">Leads creative direction, content, and community across every account.</p>
+          <p class="wc-bioph">[Kyra's full bio goes here.]</p>
+        </div>
+      </div>
     </div>
-    <div class="stat-item">
-      <div class="stat-num">2023</div>
-      <div class="stat-label">Established in West Hollywood</div>
+
+    <!-- ============ BRENDAN — tablet ============ -->
+    <div class="whois-panel" data-panel="brendan">
+      <div class="whois-cols">
+        <div class="whois-device-col">
+          <div class="device-tablet">
+            <div class="tablet-body">
+              <div class="tablet-cam"></div>
+              <div class="tablet-screen">
+                <div class="carousel" data-carousel>
+                  <div class="carousel-viewport">
+                    <div class="carousel-track">
+                      <div class="slide"><div class="slot"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18"/><circle cx="8.5" cy="8.5" r="1.6"/><path d="M21 14l-5-4-11 9"/></svg><span class="lab">Brendan · 1</span></div></div>
+                      <div class="slide"><div class="slot"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18"/><circle cx="8.5" cy="8.5" r="1.6"/><path d="M21 14l-5-4-11 9"/></svg><span class="lab">Brendan · 2</span></div></div>
+                      <div class="slide"><div class="slot"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18"/><circle cx="8.5" cy="8.5" r="1.6"/><path d="M21 14l-5-4-11 9"/></svg><span class="lab">Brendan · 3</span></div></div>
+                      <div class="slide"><div class="slot"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18"/><circle cx="8.5" cy="8.5" r="1.6"/><path d="M21 14l-5-4-11 9"/></svg><span class="lab">Brendan · 4</span></div></div>
+                    </div>
+                  </div>
+                  <button type="button" class="carousel-nav prev" aria-label="Previous photo"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+                  <button type="button" class="carousel-nav next" aria-label="Next photo"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>
+                  <div class="carousel-dots"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="whois-copy-col">
+          <h3 class="wc-name">Brendan Sweeney</h3>
+          <div class="wc-handle">@brenpancake</div>
+          <div class="wc-role">Director · Producer · Business Relations</div>
+          <p class="wc-lead">Leads strategy, partnerships, and business development.</p>
+          <p class="wc-bioph">[Brendan's full bio goes here.]</p>
+        </div>
+      </div>
     </div>
-    <div class="stat-item">
-      <div class="stat-num">5</div>
-      <div class="stat-label">Key service tiers</div>
-    </div>
+
   </div>
 </section>
+
+<script>
+  /* WHO WE ARE — tabs + per-device photo carousels */
+  (function () {
+    /* Carousels (one per device) */
+    document.querySelectorAll('[data-carousel]').forEach(function (car) {
+      const track = car.querySelector('.carousel-track');
+      const slides = track ? track.children : [];
+      const n = slides.length;
+      if (!n) return;
+      const dotsWrap = car.querySelector('.carousel-dots');
+      const vp = car.querySelector('.carousel-viewport');
+      let idx = 0;
+      const dots = [];
+      for (let i = 0; i < n; i++) {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'cdot' + (i === 0 ? ' active' : '');
+        b.setAttribute('aria-label', 'Go to slide ' + (i + 1));
+        b.addEventListener('click', (function (j) { return function () { go(j); }; })(i));
+        dotsWrap.appendChild(b);
+        dots.push(b);
+      }
+      function update() {
+        track.style.transform = 'translateX(' + (-idx * 100) + '%)';
+        dots.forEach(function (d, i) { d.classList.toggle('active', i === idx); });
+      }
+      function go(i) { idx = (i % n + n) % n; update(); }
+      const prev = car.querySelector('.prev');
+      const next = car.querySelector('.next');
+      if (prev) prev.addEventListener('click', function () { go(idx - 1); });
+      if (next) next.addEventListener('click', function () { go(idx + 1); });
+      /* touch swipe */
+      let sx = 0, dx = 0, sw = false;
+      if (vp) {
+        vp.addEventListener('touchstart', function (e) { sx = e.touches[0].clientX; dx = 0; sw = true; }, { passive: true });
+        vp.addEventListener('touchmove', function (e) { if (sw) dx = e.touches[0].clientX - sx; }, { passive: true });
+        vp.addEventListener('touchend', function () { if (sw && Math.abs(dx) > 40) { go(idx + (dx < 0 ? 1 : -1)); } sw = false; });
+      }
+      update();
+    });
+
+    /* Tabs swap device + copy */
+    const tabs = document.querySelectorAll('.whois-tab');
+    const panels = document.querySelectorAll('.whois-panel');
+    if (!tabs.length || !panels.length) return;
+    tabs.forEach(function (tab) {
+      tab.addEventListener('click', function () {
+        const key = tab.dataset.tab;
+        tabs.forEach(function (t) {
+          const on = t === tab;
+          t.classList.toggle('active', on);
+          t.setAttribute('aria-pressed', on ? 'true' : 'false');
+        });
+        panels.forEach(function (p) { p.classList.toggle('active', p.dataset.panel === key); });
+      });
+    });
+  })();
+</script>
 
 <!-- DOSSIER B — WHAT WE DO -->
 <section class="services-section scene" data-scene-label="What We Do">
@@ -1854,9 +2130,9 @@
       <div class="svc-expand-hint"><span class="svc-expand-icon">+</span> What's included</div>
       <div class="svc-details">
         <ul class="svc-details-inner">
-          <li>Everything in Basic</li>
-          <li>Cross-platform review</li>
-          <li>Written report</li>
+          <li>Everything in Basic Audit</li>
+          <li>Cross-platform profile review</li>
+          <li>Written audit report</li>
           <li>Follow-up email support</li>
         </ul>
       </div>
@@ -1890,9 +2166,9 @@
       <div class="svc-details">
         <ul class="svc-details-inner">
           <li>Full audit</li>
-          <li>Brand voice doc</li>
+          <li>Brand voice document</li>
           <li>Content strategy</li>
-          <li>KPIs</li>
+          <li>KPIs and metrics</li>
           <li>Follow-up session</li>
           <li>Ongoing support</li>
         </ul>
@@ -1922,7 +2198,7 @@
     <!-- Service confirmation (shown when pre-selected) -->
     <div id="svcConfirm" style="display:none; margin-bottom:32px;">
       <div style="font-size:9px; font-weight:500; letter-spacing:0.22em; text-transform:uppercase; color:var(--fg3); margin-bottom:8px;">You're interested in</div>
-      <div id="svcConfirmName" style="font-family:var(--serif); font-size:clamp(22px,3vw,32px); font-style:italic; color:var(--pink); margin-bottom:8px;"></div>
+      <div id="svcConfirmName" style="font-family:var(--display); font-size:clamp(22px,3vw,32px); font-style:italic; font-weight:500; color:var(--pink); margin-bottom:8px;"></div>
       <button type="button" id="svcChangeBtn" style="font-family:var(--sans); font-size:9px; font-weight:400; letter-spacing:0.14em; text-transform:uppercase; color:var(--fg3); background:none; border:none; cursor:pointer; padding:0; transition:color 0.2s;" onmouseover="this.style.color='var(--fg)'" onmouseout="this.style.color='var(--fg3)'">Change selection</button>
     </div>
 
@@ -1951,7 +2227,7 @@
     <!-- Step 2: Email -->
     <div class="convo-step" data-step="2">
       <div class="convo-prompt">Where can we reach you?</div>
-      <input class="convo-input" type="email" id="cs-email" placeholder="your@email.com" autocomplete="email" />
+      <input class="convo-input" type="email" id="cs-email" placeholder="Email address" autocomplete="email" />
     </div>
 
     <!-- Step 3: Platforms -->
