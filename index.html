@@ -3707,11 +3707,16 @@
       // Float the outgoing view so the incoming one defines the new height.
       // Incoming starts scaled-down + softly blurred so it blooms INTO focus.
       nxt.hidden = false;
+      nxt.style.pointerEvents = '';          // incoming view is interactive right away
       nxt.style.opacity = '0';
       nxt.style.transform = reduce ? 'none' : 'scale(0.94)';
       nxt.style.filter    = reduce ? 'none' : 'blur(12px)';
       cur.style.position = 'absolute';
       cur.style.top = '0'; cur.style.left = '0'; cur.style.right = '0';
+      // The outgoing view floats on top while it melts away — make it transparent
+      // to the pointer immediately so it can't intercept clicks/hovers on the
+      // incoming form (the chips especially) during the ~1.4s before cleanup.
+      cur.style.pointerEvents = 'none';
       const endH = heightEl.offsetHeight;
 
       heightEl.style.overflow = 'hidden';
@@ -3744,7 +3749,9 @@
         cur.hidden = true;
         cur.style.position = ''; cur.style.top = ''; cur.style.left = ''; cur.style.right = '';
         cur.style.opacity = ''; cur.style.transform = ''; cur.style.filter = ''; cur.style.transition = '';
+        cur.style.pointerEvents = '';
         nxt.style.opacity = ''; nxt.style.transform = ''; nxt.style.filter = ''; nxt.style.transition = '';
+        nxt.style.pointerEvents = '';
         heightEl.style.height = ''; heightEl.style.transition = ''; heightEl.style.overflow = '';
         if (onDone) onDone();
       }, reduce ? 700 : 1400);
