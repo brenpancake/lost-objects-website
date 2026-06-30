@@ -1455,6 +1455,16 @@
       max-width: 50ch;
       margin: 0 auto;
     }
+    .svc-fineprint {
+      font-size: 11px;
+      font-weight: 300;
+      line-height: 1.6;
+      color: var(--fg3);
+      max-width: 64ch;
+      margin: 16px auto 0;
+      text-align: center;
+      letter-spacing: 0.02em;
+    }
     /* 2x2 hairline grid — one continuous grid, sharp corners */
     .svc-grid {
       display: grid;
@@ -1670,6 +1680,7 @@
 
     /* Shared inline detail panel */
     .svc-panel {
+      position: relative;
       margin-top: clamp(24px, 4vh, 36px);
       border: 1px solid var(--fg4);
       box-shadow: inset 2px 0 0 var(--pink), 0 0 30px rgba(255,102,102,0.12);
@@ -1688,6 +1699,9 @@
       grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
       gap: 0;
     }
+    /* display:grid above would override the bare [hidden] attribute, so the
+       form panel could never actually hide on success — make it explicit. */
+    .svc-panel-inner[hidden] { display: none; }
     .svc-panel-left {
       padding: clamp(28px, 3.5vw, 44px);
       border-right: 1px solid var(--fg4);
@@ -1701,6 +1715,14 @@
       color: var(--fg3);
       margin-bottom: 12px;
     }
+    .svc-booking-note {
+      font-size: 11px;
+      font-weight: 300;
+      line-height: 1.6;
+      color: var(--fg3);
+      margin-top: 16px;
+      letter-spacing: 0.02em;
+    }
     .svc-panel-title {
       font-family: var(--display);
       font-size: clamp(22px, 2.6vw, 32px);
@@ -1709,8 +1731,18 @@
       line-height: 0.98;
       text-transform: uppercase;
       color: var(--pink);
+      margin-bottom: 14px;
+    }
+    .svc-panel-price {
+      font-family: var(--sans);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--fg2);
       margin-bottom: 20px;
     }
+    .svc-panel-price[hidden] { display: none; }
     .svc-incl { list-style: none; }
     .svc-incl li {
       position: relative;
@@ -1732,7 +1764,10 @@
     /* Questionnaire */
     .fit-form { display: flex; flex-direction: column; gap: 18px; }
     #fitDynamic { display: flex; flex-direction: column; gap: 18px; }
-    .fit-field { display: flex; flex-direction: column; gap: 8px; }
+    .fit-field { display: flex; flex-direction: column; gap: 8px; position: relative; }
+    /* Lift a field-row (and its open <select>) above the rows below it, so an open
+       option list / the select's click target is never covered by a later field. */
+    .fit-field:focus-within { z-index: 4; }
     .fit-label {
       font-size: 9px;
       font-weight: 500;
@@ -1742,6 +1777,8 @@
     }
     .fit-opt { color: var(--fg4); letter-spacing: 0.1em; }
     .fit-input {
+      position: relative;
+      z-index: 1;
       width: 100%;
       font-family: var(--sans);
       font-size: 15px;
@@ -1753,7 +1790,11 @@
       transition: border-color 0.2s ease;
     }
     .fit-input::placeholder { color: var(--fg3); }
-    .fit-input:focus { outline: none; border-color: var(--pink); }
+    .fit-input:focus { outline: none; border-color: var(--pink); z-index: 5; }
+    /* Hover lifts a select above the following fields BEFORE the click that opens it,
+       so nothing in source order after it can intercept the pointer. The chevron is a
+       background-image (not an overlay), so it never needs pointer-events handling. */
+    select.fit-input:hover { z-index: 5; }
     select.fit-input {
       cursor: pointer;
       -webkit-appearance: none;
@@ -1789,8 +1830,11 @@
     .fit-submit:hover { opacity: 0.92; box-shadow: 0 0 24px rgba(255,102,102,0.45); }
     .fit-submit:disabled { opacity: 0.5; cursor: default; box-shadow: none; }
 
-    /* Multi-select checkbox chips — sharp coral chips whose values POST to Formspree */
-    .fit-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    /* Coral chip groups (multi-select checkboxes + single-select radios) whose
+       values POST to Formspree. Raised above the z-index:1 .fit-input siblings
+       (set for the dropdown fix) so neighbouring fields can never paint over a
+       chip group and swallow its hover/click. */
+    .fit-chips { display: flex; flex-wrap: wrap; gap: 8px; position: relative; z-index: 6; }
     .fit-chip { position: relative; display: inline-flex; cursor: pointer; }
     .fit-chip input { position: absolute; inset: 0; margin: 0; opacity: 0; cursor: pointer; }
     .fit-chip span {
@@ -1815,32 +1859,96 @@
     .fit-error { font-size: 12px; color: var(--pink); }
     .fit-error[hidden] { display: none; }
 
-    /* Success state */
+    /* Success state — full-panel, centered confirmation moment */
+    .fit-success {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: clamp(48px, 8vh, 96px) clamp(28px, 5vw, 56px);
+      min-height: clamp(320px, 48vh, 460px);
+    }
     .fit-success[hidden] { display: none; }
     .fit-success-hl {
       font-family: var(--display);
-      font-size: clamp(26px, 3vw, 38px);
-      font-weight: 600;
+      font-size: clamp(34px, 5vw, 60px);
+      font-weight: 700;
       letter-spacing: 0.01em;
       line-height: 0.98;
+      text-transform: uppercase;
+      color: var(--fg);
+      margin-bottom: 18px;
+    }
+    .fit-success-hl em { font-style: normal; color: var(--pink); }
+    .fit-success-line {
+      font-family: var(--sans);
+      font-size: clamp(14px, 1.4vw, 16px);
+      font-weight: 300;
+      line-height: 1.7;
+      color: var(--fg2);
+      max-width: 52ch;
+      margin: 0 auto;
+    }
+    /* Hairline between the two beats: (1) request received, (2) community invite */
+    .fit-success-divider {
+      width: 64px;
+      height: 1px;
+      background: var(--fg4);
+      margin: clamp(26px, 4.5vh, 40px) auto;
+    }
+    .fit-success-invite {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      max-width: 48ch;
+      margin: 0 auto;
+    }
+    .fit-success-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--sans);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.22em;
       text-transform: uppercase;
       color: var(--pink);
       margin-bottom: 14px;
     }
-    .fit-success-sub {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 13px;
+    .fit-success-eyebrow svg { flex-shrink: 0; }
+    .fit-success-hook {
+      font-family: var(--sans);
+      font-size: clamp(13px, 1.3vw, 15px);
       font-weight: 300;
-      line-height: 1.6;
+      line-height: 1.7;
       color: var(--fg2);
+      margin-bottom: clamp(22px, 3.5vh, 30px);
     }
-    .fit-success-dot {
-      width: 7px; height: 7px;
+    .fit-success-note {
+      font-family: var(--sans);
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--fg3);
+      margin-top: 16px;
+    }
+    .fit-success-cta {
+      display: inline-flex; align-items: center; justify-content: center;
+      font-family: var(--sans);
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--bg);
       background: var(--pink);
-      flex-shrink: 0;
-      box-shadow: 0 0 8px rgba(255,102,102,0.7);
+      border: 1px solid var(--pink);
+      padding: 15px 32px;
+      cursor: pointer;
+      transition: box-shadow 0.25s ease, filter 0.25s ease;
+    }
+    .fit-success-cta:hover {
+      filter: brightness(1.06);
+      box-shadow: 0 0 32px rgba(255,102,102,0.5), 0 0 10px rgba(255,102,102,0.4);
     }
 
 
@@ -2582,6 +2690,7 @@
     <h2 class="services-intro-hl">Find the right fit.</h2>
     <div class="svc-intro-rule"></div>
     <p class="services-intro-sub">Every engagement starts where you are right now. Pick one and answer a few quick questions.</p>
+    <p class="svc-fineprint">Prices shown are starting points. Final pricing depends on the scope and scale of your request, and we&rsquo;ll confirm exact pricing when we follow up. All sessions are booking requests, not instant confirmations.</p>
   </div>
 
   <!-- Stage: chooser (cards) and detail (questionnaire) swap IN PLACE, no page bump -->
@@ -2591,35 +2700,35 @@
   <div class="svc-chooser" id="svcChooser">
   <!-- 2x2 hairline grid of à la carte services -->
   <div class="svc-grid">
-    <button type="button" class="svc-card" data-service="Social Media Audit">
+    <button type="button" class="svc-card" data-service="Basic Social Media Audit">
       <span class="svc-index">01</span>
-      <span class="svc-tag">Audit · 2 hrs</span>
-      <span class="svc-name">Social Media Audit</span>
+      <span class="svc-tag">Audit · 3 hrs · from $500+</span>
+      <span class="svc-name">Basic Social Media Audit</span>
       <span class="svc-desc">A clear-eyed look at where you stand. Real feedback, no filler.</span>
       <span class="svc-select">Select &rarr;</span>
     </button>
 
-    <button type="button" class="svc-card" data-service="Premium Audit">
+    <button type="button" class="svc-card" data-service="Premium Social Media Audit">
       <span class="svc-index">02</span>
-      <span class="svc-tag">Audit · 3.5 hrs</span>
-      <span class="svc-name">Premium Audit</span>
-      <span class="svc-desc">A deep dive across two profiles with a written report and follow-up support.</span>
+      <span class="svc-tag">Audit · 4 hrs · from $850+</span>
+      <span class="svc-name">Premium Social Media Audit</span>
+      <span class="svc-desc">A deep dive across multiple profiles, with a written report you keep.</span>
       <span class="svc-select">Select &rarr;</span>
     </button>
 
-    <button type="button" class="svc-card" data-service="Social Media Strategy">
+    <button type="button" class="svc-card" data-service="Basic Social Media Strategy Session">
       <span class="svc-index">03</span>
-      <span class="svc-tag">Strategy · 90 min</span>
-      <span class="svc-name">Social Media Strategy</span>
-      <span class="svc-desc">The tools and direction to build or revamp your presence with intention.</span>
+      <span class="svc-tag">Strategy · 2 hrs · from $500+</span>
+      <span class="svc-name">Basic Social Media Strategy Session</span>
+      <span class="svc-desc">The foundation and direction to build your presence with intention.</span>
       <span class="svc-select">Select &rarr;</span>
     </button>
 
-    <button type="button" class="svc-card" data-service="Premium Strategy">
+    <button type="button" class="svc-card" data-service="Premium Social Media Strategy Session">
       <span class="svc-index">04</span>
-      <span class="svc-tag">Strategy · 4 hrs</span>
-      <span class="svc-name">Premium Strategy</span>
-      <span class="svc-desc">A comprehensive strategy with a content plan, KPIs, and a follow-up session.</span>
+      <span class="svc-tag">Strategy · 4 hrs · from $2,000+</span>
+      <span class="svc-name">Premium Social Media Strategy Session</span>
+      <span class="svc-desc">A comprehensive, KPI-driven strategy mapped to the next 3 to 6 months.</span>
       <span class="svc-select">Select &rarr;</span>
     </button>
   </div>
@@ -2627,7 +2736,7 @@
   <!-- Full Management — premium full-width row -->
   <button type="button" class="svc-premium" data-service="Full Management">
     <span class="svc-premium-main">
-      <span class="svc-tag svc-tag-pink">Full Service · Selective</span>
+      <span class="svc-tag svc-tag-pink">Full Service · Selective · Custom</span>
       <span class="svc-premium-name">Full Management</span>
       <span class="svc-desc">End-to-end social, handled. Our most selective offering for brands ready to hand it all off.</span>
     </span>
@@ -2651,7 +2760,9 @@
       <div class="svc-panel-left">
         <div class="svc-panel-eyebrow" id="svcPanelKicker">What's included</div>
         <h3 class="svc-panel-title" id="svcPanelTitle"></h3>
+        <div class="svc-panel-price" id="svcPanelPrice" hidden></div>
         <ul class="svc-incl" id="svcInclList"></ul>
+        <p class="svc-booking-note" id="svcBookingNote" hidden></p>
       </div>
       <div class="svc-panel-right">
         <form class="fit-form" id="fitForm" novalidate>
@@ -2672,10 +2783,22 @@
           <button type="submit" class="fit-submit" id="fitSubmit">Send it.</button>
           <div class="fit-error" id="fitError" hidden></div>
         </form>
-        <div class="fit-success" id="fitSuccess" hidden>
-          <div class="fit-success-hl">You've been found.</div>
-          <div class="fit-success-sub"><span class="fit-success-dot"></span><span id="fitSuccessMsg"></span></div>
+      </div>
+    </div>
+    <div class="fit-success" id="fitSuccess" hidden>
+      <div class="fit-success-hl">You&rsquo;ve Been <em>Found.</em></div>
+      <p class="fit-success-line" id="fitSuccessMsg"></p>
+
+      <div class="fit-success-divider"></div>
+
+      <div class="fit-success-invite">
+        <div class="fit-success-eyebrow">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="9" cy="12" r="1"/><circle cx="15" cy="12" r="1"/><path d="M7.5 7.5c3.5 -1 5.5 -1 9 0"/><path d="M7 16.5c3.5 1 6.5 1 10 0"/><path d="M15.5 17c0 1 1.5 3 2 3c1.5 0 2.833 -1.667 3.5 -3c.667 -1.667 .5 -5.833 -1.5 -11.5c-1.457 -1.015 -3 -1.34 -4.5 -1.5l-.972 1.923a11.913 11.913 0 0 0 -4.053 0l-.975 -1.923c-1.5 .16 -3.043 .485 -4.5 1.5c-2 5.667 -2.167 9.833 -1.5 11.5c.667 1.333 2 3 3.5 3c.5 0 2 -2 2 -3"/></svg>
+          <span>Lost Objects: After Hours</span>
         </div>
+        <p class="fit-success-hook">Looking for a room full of like-minded creatives? Our private community is free, application-only, and built for the people who make the work &mdash; filmmakers, marketers, and creative entrepreneurs trading ideas after hours.</p>
+        <a href="https://discord.gg/ZqGhVfJu2a" target="_blank" rel="noopener noreferrer" class="fit-success-cta">Apply to join After Hours</a>
+        <p class="fit-success-note">Free to join &middot; Every member hand-picked</p>
       </div>
     </div>
   </div>
@@ -3379,27 +3502,33 @@
     const FORMSPREE = 'https://formspree.io/f/xgoqdyyd';
 
     const SERVICES = {
-      'Social Media Audit': {
+      'Basic Social Media Audit': {
         kicker: "What's included",
-        included: ['Profile review','Content audit','Engagement analysis','Competitor review','Top 5 recommendations'],
+        price: "From $500+",
+        booking: "This is a booking request — we'll confirm your date and time once you submit.",
+        included: ['One primary profile reviewed (Instagram, TikTok, YouTube, LinkedIn, or other)','Content strategy & posting frequency','Engagement & follower growth assessment','Branding review','Brief competitor analysis','Immediate, actionable recommendations','Access to the Lost Objects: After Hours community'],
         fields: [
           { type:'text', name:'profile', label:'Profile to review', placeholder:'@handle or profile URL' },
-          { type:'select', name:'main_platform', label:'Main platform', options:['Instagram','TikTok','YouTube','LinkedIn','Other'] },
+          { type:'radio', name:'main_platform', label:'Main platform', options:['Instagram','TikTok','YouTube','LinkedIn','Other'] },
           { type:'select', name:'prompting', label:"What's prompting this", options:['Not growing','Stuck on content','About to launch','Want a second opinion'] }
         ]
       },
-      'Premium Audit': {
+      'Premium Social Media Audit': {
         kicker: "What's included",
-        included: ['Everything in the Audit','Cross-platform profile review','Written audit report','Follow-up email support'],
+        price: "From $850+",
+        booking: "This is a booking request — we'll confirm your date and time once you submit.",
+        included: ['2 to 3 profiles reviewed (Instagram, Facebook, X, LinkedIn, YouTube)','Content strategy, posting frequency & engagement','Brand voice, visuals & cross-platform consistency','Actionable recommendations','Written audit report','Follow-up email support','Access to the Lost Objects: After Hours community'],
         fields: [
-          { type:'text', name:'profiles', label:'The two profiles to review', placeholder:'@handles or profile URLs' },
+          { type:'text', name:'profiles', label:'The profiles to review', placeholder:'@handles or profile URLs' },
           { type:'chips', name:'platforms', label:"Platforms you're on", options:['Instagram','TikTok','YouTube','LinkedIn'] },
           { type:'text', name:'report_focus', label:'What you most want the report to answer', placeholder:'In a sentence' }
         ]
       },
-      'Social Media Strategy': {
+      'Basic Social Media Strategy Session': {
         kicker: "What's included",
-        included: ['Goal setting','Content calendar','Audience identification','Growth strategies','Platform tools'],
+        price: "From $500+",
+        booking: "This is a booking request — we'll confirm your date and time once you submit.",
+        included: ['Goals & objectives defined','Strategy for one main profile','Target audience & demographics','Basic content calendar','Engagement & growth strategies','Tools & resources to manage it yourself','Access to the Lost Objects: After Hours community'],
         fields: [
           { type:'text', name:'profile', label:'Your main profile', placeholder:'@handle or profile URL' },
           { type:'chips', name:'platforms', label:"Platforms you're on", options:['Instagram','TikTok','YouTube','LinkedIn'] },
@@ -3407,9 +3536,11 @@
           { type:'text', name:'success_6mo', label:'What success looks like in 6 months', placeholder:'In a sentence' }
         ]
       },
-      'Premium Strategy': {
+      'Premium Social Media Strategy Session': {
         kicker: "What's included",
-        included: ['Full audit','Brand voice document','Content strategy','KPIs and metrics','Follow-up session','Ongoing support'],
+        price: "From $2,000+",
+        booking: "This is a booking request — we'll confirm your date and time once you submit.",
+        included: ['Detailed strategy PDF based on a pre-call survey','Full analysis of your current presence','Goals & KPIs defined','3 to 6 month content strategy','Growth opportunities identified','Follow-up review session','Ongoing email support','Access to the Lost Objects: After Hours community'],
         fields: [
           { type:'text', name:'profiles', label:'Your profile(s)', placeholder:'@handle(s) or profile URLs' },
           { type:'chips', name:'platforms', label:"Platforms you're on", options:['Instagram','TikTok','YouTube','LinkedIn'] },
@@ -3420,7 +3551,9 @@
       },
       'Full Management': {
         kicker: "What's included",
-        included: ['Content creation and scheduling','Analytics and reporting','Trend integration','Community management','Brand partnerships'],
+        price: "Custom",
+        booking: "Apply and we'll be in touch to scope it together.",
+        included: ['Content creation & scheduling','Analytics & reporting','Trend integration','Community management','Brand partnerships','Access to the Lost Objects: After Hours community'],
         fields: [
           { type:'text', name:'handles', label:'Handle(s)', placeholder:'@yourbrand' },
           { type:'text', name:'website', label:'Website or portfolio', placeholder:'https://' },
@@ -3442,9 +3575,12 @@
     };
 
     const panel      = document.getElementById('svcPanel');
+    const panelInner  = panel.querySelector('.svc-panel-inner');
     const kickerEl    = document.getElementById('svcPanelKicker');
     const titleEl     = document.getElementById('svcPanelTitle');
+    const priceEl     = document.getElementById('svcPanelPrice');
     const inclEl      = document.getElementById('svcInclList');
+    const bookingEl   = document.getElementById('svcBookingNote');
     const dynamic     = document.getElementById('fitDynamic');
     const serviceFld  = document.getElementById('fitService');
     const form        = document.getElementById('fitForm');
@@ -3552,22 +3688,22 @@
       scrollRAF = requestAnimationFrame(step);
     }
 
-    function swapView(toDetail){
-      if (toDetail === onDetail || animating) return;
-      if (!stage || !chooser || !detail) return;
-      onDetail = toDetail;
-      const cur = toDetail ? chooser : detail;
-      const nxt = toDetail ? detail : chooser;
-
-      animating = true;
+    // Core cross-dissolve + height-morph. ONE motion language shared by the
+    // chooser<->detail swap AND the form<->confirmation swap, so selecting a
+    // service and submitting it read as the same effect, just the next beat.
+    //   cur      — outgoing element (floated absolute, melts away)
+    //   nxt      — incoming element (blooms up from blur)
+    //   heightEl — element whose height morphs between the two view heights
+    //   onDone   — called once the swap settles
+    function crossfade(cur, nxt, heightEl, onDone){
       // Honor reduced-motion with a gentle fade (no blur/scale); full bloom otherwise.
       const reduce = reduceMotion.matches;
       // Expo-style ease — fast to start, long graceful deceleration (luxe settle)
       const EASE = 'cubic-bezier(0.16, 1, 0.3, 1)';
-      const startH = stage.offsetHeight;
-      // Stage's top in the document is fixed (content above doesn't move), so this
-      // is a stable anchor for centering the incoming view even as height morphs.
-      const stageTopDoc = stage.getBoundingClientRect().top + window.scrollY;
+      const startH = heightEl.offsetHeight;
+      // heightEl's top in the document is a stable anchor for centering the
+      // incoming view even as its height morphs.
+      const anchorTopDoc = heightEl.getBoundingClientRect().top + window.scrollY;
       // Float the outgoing view so the incoming one defines the new height.
       // Incoming starts scaled-down + softly blurred so it blooms INTO focus.
       nxt.hidden = false;
@@ -3576,13 +3712,13 @@
       nxt.style.filter    = reduce ? 'none' : 'blur(12px)';
       cur.style.position = 'absolute';
       cur.style.top = '0'; cur.style.left = '0'; cur.style.right = '0';
-      const endH = stage.offsetHeight;
+      const endH = heightEl.offsetHeight;
 
-      stage.style.overflow = 'hidden';
-      stage.style.height = startH + 'px';
-      void stage.offsetHeight; // reflow
-      stage.style.transition = 'height ' + (reduce ? '0.5s ease' : '0.9s ' + EASE);
-      stage.style.height = endH + 'px';
+      heightEl.style.overflow = 'hidden';
+      heightEl.style.height = startH + 'px';
+      void heightEl.offsetHeight; // reflow
+      heightEl.style.transition = 'height ' + (reduce ? '0.5s ease' : '0.9s ' + EASE);
+      heightEl.style.height = endH + 'px';
 
       // Outgoing MELTS away — it softens (blur) + recedes as it fades, so the two
       // views cross-dissolve into one another instead of one hard-cutting (no flash).
@@ -3600,8 +3736,8 @@
         nxt.style.opacity = '1';
         nxt.style.transform = 'none';
         nxt.style.filter = reduce ? 'none' : 'blur(0px)';
-        // Center the incoming view as it blooms — effortless flow into the fields
-        glideToCenter(stageTopDoc, endH);
+        // Center the incoming view as it blooms — effortless flow
+        glideToCenter(anchorTopDoc, endH);
       });
 
       window.setTimeout(function(){
@@ -3609,10 +3745,36 @@
         cur.style.position = ''; cur.style.top = ''; cur.style.left = ''; cur.style.right = '';
         cur.style.opacity = ''; cur.style.transform = ''; cur.style.filter = ''; cur.style.transition = '';
         nxt.style.opacity = ''; nxt.style.transform = ''; nxt.style.filter = ''; nxt.style.transition = '';
-        stage.style.height = ''; stage.style.transition = ''; stage.style.overflow = '';
+        heightEl.style.height = ''; heightEl.style.transition = ''; heightEl.style.overflow = '';
+        if (onDone) onDone();
+      }, reduce ? 700 : 1400);
+    }
+
+    // Chooser (cards) <-> detail (questionnaire), morphing the whole stage.
+    function swapView(toDetail){
+      if (toDetail === onDetail || animating) return;
+      if (!stage || !chooser || !detail) return;
+      onDetail = toDetail;
+      animating = true;
+      crossfade(toDetail ? chooser : detail, toDetail ? detail : chooser, stage, function(){
         animating = false;
         if (toDetail) focusName();
-      }, reduce ? 700 : 1400);
+      });
+    }
+
+    // Form panel -> confirmation, the next beat in the same motion language:
+    // the whole open panel (left included column + right form) melts away and
+    // the centered confirmation blooms into the same space, stage height morphing.
+    function swapToSuccess(){
+      if (!panelInner || !successEl) { if (panelInner) panelInner.hidden = true; successEl.hidden = false; return; }
+      if (animating) {
+        // A swap is mid-flight — show immediately rather than lock the user out.
+        panelInner.hidden = true; successEl.hidden = false;
+        successEl.scrollIntoView({ behavior:'smooth', block:'center' });
+        return;
+      }
+      animating = true;
+      crossfade(panelInner, successEl, stage, function(){ animating = false; });
     }
 
     function escHtml(s){ const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
@@ -3646,6 +3808,19 @@
             chips.appendChild(lb);
           });
           wrap.appendChild(chips);
+        } else if (f.type === 'radio') {
+          // Single-select chip group — identical look to the multi-select chips,
+          // but native radio inputs (shared name) make exactly one selectable. The
+          // chosen value POSTs under f.name via FormData, just like the old <select>.
+          const chips = el('div','fit-chips');
+          f.options.forEach(function(o){
+            const lb = el('label','fit-chip');
+            const cb = el('input'); cb.type = 'radio'; cb.name = f.name; cb.value = o;
+            const sp = el('span'); sp.textContent = o;
+            lb.appendChild(cb); lb.appendChild(sp);
+            chips.appendChild(lb);
+          });
+          wrap.appendChild(chips);
         } else {
           lab.setAttribute('for', fid);
           const inp = el('input','fit-input');
@@ -3663,6 +3838,9 @@
       kickerEl.textContent = cfg.kicker;
       titleEl.textContent = svc;
       inclEl.innerHTML = cfg.included.map(function(i){ return '<li>' + escHtml(i) + '</li>'; }).join('');
+      if (priceEl)   { priceEl.textContent = cfg.price || ''; priceEl.hidden = !cfg.price; }
+      if (bookingEl) { bookingEl.textContent = cfg.booking || ''; bookingEl.hidden = !cfg.booking; }
+      if (panelInner) panelInner.hidden = false;
       buildFields(cfg);
       serviceFld.value = svc;
       // reset to form view (clear any prior success/error)
@@ -3729,10 +3907,14 @@
       try {
         const res = await fetch(FORMSPREE, { method:'POST', body:fd, headers:{ 'Accept':'application/json' } });
         if (res.ok) {
-          form.hidden = true;
-          successMsg.textContent = "We'll be in touch about your " + serviceFld.value + " within 48 hours.";
-          successEl.hidden = false;
-          successEl.scrollIntoView({ behavior:'smooth', block:'center' });
+          var svc = serviceFld.value;
+          var subject = (svc === 'Full Management') ? 'Full Management' : 'your ' + svc;
+          // Keep "within 48 hours." together so it never orphans onto its own line.
+          successMsg.innerHTML = "We'll be in touch about " + escHtml(subject) +
+            " <span style=\"white-space:nowrap\">within 48 hours.</span>";
+          // Cross-dissolve the form panel out and the confirmation in — the same
+          // motion as selecting a service, just the next beat.
+          swapToSuccess();
         } else {
           showError('Something went wrong — please try again.');
           submitBtn.textContent = 'Send it.';
@@ -3748,10 +3930,10 @@
     // Deep-link support: a link landing with one of these hashes opens that panel.
     // (No current internal link uses these — the hero CTA just scrolls to #services.)
     const HASH_MAP = {
-      '#services-audit':'Social Media Audit',
-      '#services-premium-audit':'Premium Audit',
-      '#services-strategy':'Social Media Strategy',
-      '#services-premium-strategy':'Premium Strategy',
+      '#services-audit':'Basic Social Media Audit',
+      '#services-premium-audit':'Premium Social Media Audit',
+      '#services-strategy':'Basic Social Media Strategy Session',
+      '#services-premium-strategy':'Premium Social Media Strategy Session',
       '#services-full-management':'Full Management'
     };
     function openFromHash(){
