@@ -164,12 +164,25 @@
     #lo-modal {
       background: #0f0e0d;
       border: 1px solid rgba(255,102,102,0.42);
+      border-radius: 0;
       box-shadow: 0 24px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,102,102,0.08);
       width: 100%;
-      max-width: 520px;
+      max-width: 500px;
+      max-height: 90dvh;
+      display: flex;
+      flex-direction: column;
       position: relative;
       overflow: hidden;
       animation: lo-modal-in 0.4s cubic-bezier(0.34,1.56,0.64,1);
+    }
+
+    /* Header is fixed; only the body scrolls if content ever exceeds 90dvh */
+    #lo-form-wrap {
+      display: flex;
+      flex-direction: column;
+      flex: 1 1 auto;
+      min-height: 0;
+      overflow: hidden;
     }
 
     @keyframes lo-modal-in {
@@ -204,7 +217,8 @@
     #lo-modal-header {
       position: relative;
       z-index: 1;
-      padding: 36px 36px 28px;
+      flex-shrink: 0;
+      padding: clamp(22px, 4vw, 36px) clamp(20px, 5vw, 36px) clamp(18px, 3vw, 28px);
       border-bottom: 1px solid rgba(232,226,217,0.07);
       background:
         radial-gradient(ellipse at 20% 0%, rgba(255,102,102,0.12) 0%, transparent 65%),
@@ -234,7 +248,10 @@
     #lo-modal-body {
       position: relative;
       z-index: 1;
-      padding: 28px 36px 36px;
+      min-height: 0;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      padding: clamp(20px, 3vw, 28px) clamp(20px, 5vw, 36px) clamp(22px, 4vw, 36px);
       background: #0f0e0d;
     }
 
@@ -276,16 +293,17 @@
     }
 
     .lo-modal-hl {
-      font-family: 'DM Serif Display', Georgia, serif;
-      font-size: clamp(26px, 5vw, 36px);
-      font-weight: 400;
-      line-height: 1.0;
-      letter-spacing: -0.025em;
+      font-family: var(--display, 'Built Titling', 'Arial Narrow', sans-serif);
+      font-size: clamp(28px, 6vw, 42px);
+      font-weight: 700;
+      line-height: 0.98;
+      letter-spacing: 0.01em;
+      text-transform: uppercase;
       color: #e8e2d9;
       margin-bottom: 14px;
     }
 
-    .lo-modal-hl em { font-style: italic; color: #FF6666; }
+    .lo-modal-hl em { font-style: normal; color: #FF6666; }
 
     .lo-modal-sub {
       font-family: 'Inter', system-ui, sans-serif;
@@ -312,10 +330,11 @@
     }
 
     .lo-stat-pill strong {
-      font-family: 'DM Serif Display', Georgia, serif;
-      font-style: italic;
-      font-size: 14px;
-      letter-spacing: 0;
+      font-family: inherit;
+      font-style: normal;
+      font-weight: 700;
+      font-size: inherit;
+      letter-spacing: inherit;
       color: #FF6666;
     }
 
@@ -413,6 +432,7 @@
       background: #FF6666;
       color: #0f0e0d;
       border: none;
+      border-radius: 0;
       font-family: 'Inter', system-ui, sans-serif;
       font-size: 10px;
       font-weight: 700;
@@ -420,13 +440,17 @@
       text-transform: uppercase;
       padding: 15px;
       cursor: pointer;
-      transition: opacity 0.2s, transform 0.15s;
+      transition: filter 0.2s ease, box-shadow 0.25s ease, transform 0.15s ease;
       box-shadow: 0 4px 24px rgba(255,102,102,0.35);
     }
 
-    .lo-submit:hover { opacity: 0.88; transform: translateY(-1px); }
+    .lo-submit:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.1) saturate(1.08);
+      box-shadow: 0 0 24px rgba(255,102,102,0.55), 0 0 7px rgba(255,102,102,0.45);
+    }
     .lo-submit:active { transform: translateY(0); }
-    .lo-submit:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+    .lo-submit:disabled { opacity: 0.5; cursor: not-allowed; transform: none; filter: none; }
 
     .lo-fine-print {
       font-family: 'Inter', system-ui, sans-serif;
@@ -451,7 +475,7 @@
       justify-content: center;
       background: rgba(255,102,102,0.08);
       border: 1px solid rgba(255,102,102,0.42);
-      border-radius: 2px;
+      border-radius: 0;
       cursor: pointer;
       font-family: 'Inter', system-ui, sans-serif;
       font-size: 14px;
@@ -469,7 +493,11 @@
 
     #lo-success {
       display: none;
-      padding: 48px 32px;
+      flex: 1 1 auto;
+      min-height: 0;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      padding: clamp(32px, 6vw, 48px) clamp(20px, 5vw, 32px);
       text-align: center;
     }
 
@@ -482,8 +510,11 @@
     }
 
     .lo-success-hl {
-      font-family: 'DM Serif Display', Georgia, serif;
-      font-size: 28px; font-style: italic;
+      font-family: var(--display, 'Built Titling', 'Arial Narrow', sans-serif);
+      font-size: clamp(26px, 5vw, 32px);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.01em;
       color: #e8e2d9; margin-bottom: 10px;
     }
 
@@ -509,6 +540,11 @@
     }
     .lo-success-btn:hover { opacity: 0.82; }
 
+    /* ── TABLET — comfortable centered width, name fields side by side ── */
+    @media (min-width: 481px) and (max-width: 820px) {
+      #lo-modal { max-width: 460px; }
+    }
+
     /* ── MOBILE — coexist cleanly with the cookie banner ── */
     @media (max-width: 768px) {
       /* Normal resting position when no cookie banner is showing */
@@ -522,16 +558,12 @@
       body.cookie-active #lo-launcher {
         bottom: calc(var(--lo-cookie-h, 0px) + 8px);
       }
-      /* Expanded modal stacks below the cookie banner (9000) and is
-         capped so it never runs under the bottom-anchored banner. */
+      /* Modal stacks below the cookie banner (9000); 90dvh + body scroll
+         keep the form fully reachable. */
       #lo-overlay { z-index: 8500; }
-      #lo-modal {
-        max-height: 60vh;
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
-      }
     }
 
+    /* ── PHONE — near-full-width, stacked name fields ──────────── */
     @media (max-width: 480px) {
       #lo-launcher { bottom: 16px; }
       #lo-launcher.lo-collapsed #lo-trigger {
@@ -543,10 +575,10 @@
         min-height: 36px;
         padding: 8px 12px;
       }
-      #lo-modal-header { padding: 24px 20px 18px; }
-      #lo-modal-body { padding: 18px 20px 24px; }
+      /* 16px side margins → card is calc(100% - 32px) wide */
+      #lo-overlay { padding: 16px; }
+      /* Stack First / Last name vertically */
       .lo-field-row { grid-template-columns: 1fr; }
-      #lo-success { padding: 36px 20px; }
     }
   `;
   document.head.appendChild(css);
@@ -579,7 +611,7 @@
           <div id="lo-modal-header">
             <div class="lo-eyebrow">Free — B&amp;H BILD Expo 2025</div>
             <h2 class="lo-modal-hl" id="lo-modal-title">
-              Free Instagram <em>Seminar</em>
+              <em>Free</em> Instagram Seminar
             </h2>
             <p class="lo-modal-sub">
               Watch Kyra and Brendan's full keynote from the B&amp;H BILD Expo — free. What's changing on Instagram, what it means for your career, and exactly what to do about it. No pitch, no paywall.

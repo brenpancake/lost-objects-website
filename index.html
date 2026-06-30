@@ -269,7 +269,7 @@
 
     /* SCROLL-DRIVEN FOCUS — sections fade in/out as scenes */
     .scene {
-      opacity: 0.15;
+      opacity: 0.12;
       transform: scale(0.98);
       transition: opacity 0.6s ease, transform 0.7s ease;
       will-change: opacity, transform;
@@ -278,8 +278,123 @@
       opacity: 1;
       transform: scale(1);
     }
-    /* Hero is always in focus (it has its own intro animations) */
-    .hero.scene { opacity: 1; transform: scale(1); }
+
+    /* SCROLL RAIL — minimal left-edge tick indicator, syncs to active scene */
+    .scroll-rail {
+      position: fixed;
+      left: clamp(14px, 1.6vw, 30px);
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 150;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 22px;
+      padding: 6px 0;
+      opacity: 0;
+      transition: opacity 0.6s ease;
+      pointer-events: none;
+    }
+    .scroll-rail.ready { opacity: 1; pointer-events: auto; }
+    /* Continuous faint spine + coral progress fill (positioned by JS to
+       run through the true centers of the first and last dots). */
+    .rail-track, .rail-fill {
+      position: absolute;
+      left: 3px;
+      width: 1px;
+      border-radius: 1px;
+    }
+    .rail-track { background: rgba(242,236,225,0.13); }
+    .rail-fill {
+      top: 0; height: 0;
+      background: var(--pink);
+      box-shadow: 0 0 6px rgba(255,102,102,0.55);
+      transition: height 0.25s ease;
+    }
+    /* Faint glow at the leading tip of the fill */
+    .rail-fill::after {
+      content: "";
+      position: absolute;
+      left: 50%; bottom: 0;
+      width: 5px; height: 5px;
+      transform: translate(-50%, 50%);
+      border-radius: 50%;
+      background: rgba(255,102,102,0.4);
+      box-shadow: 0 0 7px 1px rgba(255,102,102,0.5);
+    }
+    .rail-dot {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: none;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .rail-tick {
+      position: relative;
+      z-index: 1;
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--bg);
+      border: 1px solid rgba(242,236,225,0.42);
+      transition: background 0.3s ease, border-color 0.3s ease,
+                  transform 0.3s ease, box-shadow 0.3s ease;
+      flex-shrink: 0;
+    }
+    .rail-label {
+      font-family: var(--sans);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      color: var(--fg2);
+      opacity: 0;
+      transform: translateX(-6px);
+      transition: opacity 0.3s ease, transform 0.3s ease, color 0.3s ease;
+      pointer-events: none;
+    }
+    /* Hover/focus reveals the label only */
+    .rail-dot:hover .rail-tick,
+    .rail-dot:focus-visible .rail-tick { border-color: var(--pink); }
+    .rail-dot:hover .rail-label,
+    .rail-dot:focus-visible .rail-label {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    /* Active section — coral, larger dot (label still only on hover) */
+    .rail-dot.active .rail-tick {
+      background: var(--pink);
+      border-color: var(--pink);
+      transform: scale(1.4);
+      box-shadow: 0 0 10px rgba(255,102,102,0.55);
+    }
+    .rail-dot.active .rail-label { color: var(--pink); }
+
+    /* MOBILE — slim coral scroll-progress line at the very left edge */
+    .scroll-progress {
+      position: fixed;
+      left: 0; top: 0;
+      width: 2px;
+      height: 100vh;
+      z-index: 150;
+      background: rgba(242,236,225,0.12);
+      pointer-events: none;
+    }
+    .scroll-progress-fill {
+      position: absolute;
+      left: 0; top: 0;
+      width: 100%;
+      height: 0;
+      background: var(--pink);
+      box-shadow: 0 0 6px rgba(255,102,102,0.55);
+    }
+    @media (max-width: 768px) {
+      .scroll-rail { display: none; }
+    }
 
     /* SECTION EYEBROW — shared pattern */
     .section-eyebrow {
@@ -1451,18 +1566,27 @@
       margin-top: clamp(20px, 3vh, 28px);
     }
     .svc-help-btn {
+      display: inline-block;
       font-family: var(--sans);
-      font-size: 12px;
-      font-weight: 400;
-      color: var(--fg3);
-      background: none;
-      border: none;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--pink);
+      background: transparent;
+      border: 1px solid var(--pink);
+      border-radius: 0;
       cursor: pointer;
-      padding: 4px 0;
-      transition: color 0.2s ease;
+      padding: 13px 28px;
+      transition: background 0.2s ease, color 0.2s ease, box-shadow 0.25s ease;
     }
     .svc-help-btn:hover,
-    .svc-help-btn.active { color: var(--pink); }
+    .svc-help-btn:focus-visible,
+    .svc-help-btn.active {
+      background: var(--pink);
+      color: var(--bg);
+      box-shadow: 0 0 24px rgba(255,102,102,0.45);
+    }
 
     /* Stage — chooser & detail crossfade in place (no page bump) */
     .svc-stage { position: relative; }
@@ -1701,6 +1825,10 @@
       text-align: center;
       max-width: var(--max);
       margin: 0 auto;
+      /* Extra breathing room so Stay Connected can sit centered in the
+         viewport on its own and reach full focus between Services and
+         After Hours. */
+      padding: clamp(40px, 7vh, 80px) 0;
     }
     .vcard-cards {
       display: flex;
@@ -2470,7 +2598,7 @@
 
   <!-- Triage -->
   <div class="svc-help">
-    <button type="button" class="svc-help-btn" data-service="Help me choose">Not sure where to start? Help me choose &rarr;</button>
+    <button type="button" class="svc-help-btn" data-service="Help me choose">Not sure where to start? Let&rsquo;s chat.</button>
   </div>
   </div><!-- /.svc-chooser -->
 
@@ -2520,9 +2648,9 @@
 <!-- Standalone "Let's Talk" section removed — its service-aware form now lives inside the Services section above (#services). -->
 
 <!-- CONTACT CARD DOWNLOAD -->
-<section class="vcard-section scene">
+<section class="vcard-section">
   <div class="vcard-glow"></div>
-  <div class="vcard-content">
+  <div class="vcard-content scene" data-scene-label="Stay Connected">
     <div class="section-eyebrow">
       <div class="section-eyebrow-line"></div>
       <span class="section-eyebrow-text">Stay connected</span>
@@ -2568,7 +2696,7 @@
   </div>
 
   <!-- AFTER HOURS — private community invite -->
-  <section id="after-hours" class="after-hours scene">
+  <section id="after-hours" class="after-hours scene" data-scene-label="Join Community">
     <div class="ah-wrap">
       <div class="section-eyebrow">
         <div class="section-eyebrow-line"></div>
@@ -2639,19 +2767,112 @@
 
   /* SCROLL-DRIVEN SECTION FOCUS */
   const isMobile = window.matchMedia('(max-width: 768px)').matches;
-  const scenes = document.querySelectorAll('.scene');
+  const scenes = Array.from(document.querySelectorAll('.scene'));
 
   if (!isMobile) {
-    const sceneObs = new IntersectionObserver(entries => {
-      entries.forEach(e => {
-        e.target.classList.toggle('in-focus', e.isIntersecting);
+    const reduceMotionRail = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    /* Build the minimal left tick rail straight from the scenes, so the
+       rail and the focus logic share one source of truth and stay in sync.
+       Each dot scrolls its section to viewport center on click — the same
+       metric the focus model uses, so the clicked section becomes active. */
+    const rail = document.createElement('nav');
+    rail.className = 'scroll-rail';
+    rail.setAttribute('aria-label', 'Section navigation');
+    /* Track (full faint spine) + coral progress fill sit behind the dots */
+    const track = document.createElement('div'); track.className = 'rail-track';
+    const fill = document.createElement('div'); fill.className = 'rail-fill';
+    rail.appendChild(track); rail.appendChild(fill);
+    const dots = scenes.map((s, i) => {
+      const label = s.getAttribute('data-scene-label') || ('Section ' + (i + 1));
+      const dot = document.createElement('button');
+      dot.type = 'button';
+      dot.className = 'rail-dot';
+      dot.setAttribute('aria-label', label);
+      const tick = document.createElement('span'); tick.className = 'rail-tick';
+      const lab = document.createElement('span'); lab.className = 'rail-label'; lab.textContent = label;
+      dot.appendChild(tick); dot.appendChild(lab);
+      dot.addEventListener('click', () => {
+        s.scrollIntoView({ behavior: reduceMotionRail.matches ? 'auto' : 'smooth', block: 'center' });
       });
-    }, { threshold: 0.4 });
-    scenes.forEach(s => {
-      if (s.classList.contains('hero')) { s.classList.add('in-focus'); }
-      sceneObs.observe(s);
+      rail.appendChild(dot);
+      return dot;
     });
+    document.body.appendChild(rail);
+
+    /* Measure the true dot centers so the spine runs through every dot and
+       the coral fill can climb to the exact center of the active dot. */
+    let firstCenter = 0;
+    function layoutRail() {
+      if (!dots.length) return;
+      const first = dots[0], last = dots[dots.length - 1];
+      firstCenter = first.offsetTop + first.offsetHeight / 2;
+      const lastCenter = last.offsetTop + last.offsetHeight / 2;
+      track.style.top = firstCenter + 'px';
+      track.style.height = Math.max(0, lastCenter - firstCenter) + 'px';
+      fill.style.top = firstCenter + 'px';
+    }
+
+    /* Single active section: whichever scene's vertical center sits
+       closest to the viewport center wins. Section height is irrelevant,
+       so short stacked blocks (Stay Connected / After Hours) isolate just
+       like the tall ones, and exactly ONE scene is ever lit. The hero at
+       the top and the last block at the bottom win naturally — there is no
+       competing scene above the hero or below the last block. */
+    let ticking = false;
+    function updateFocus() {
+      ticking = false;
+      const viewportCenter = window.innerHeight / 2;
+      let bestIdx = -1, bestDist = Infinity;
+      scenes.forEach((s, i) => {
+        const r = s.getBoundingClientRect();
+        const dist = Math.abs((r.top + r.height / 2) - viewportCenter);
+        if (dist < bestDist) { bestDist = dist; bestIdx = i; }
+      });
+      scenes.forEach((s, i) => {
+        const on = i === bestIdx;
+        s.classList.toggle('in-focus', on);
+        dots[i].classList.toggle('active', on);
+        if (on) dots[i].setAttribute('aria-current', 'true');
+        else dots[i].removeAttribute('aria-current');
+      });
+      /* Grow the coral fill from the top dot to the active dot's center */
+      if (bestIdx >= 0) {
+        const activeCenter = dots[bestIdx].offsetTop + dots[bestIdx].offsetHeight / 2;
+        fill.style.height = Math.max(0, activeCenter - firstCenter) + 'px';
+      }
+    }
+    function onScroll() {
+      if (!ticking) { ticking = true; requestAnimationFrame(updateFocus); }
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', () => { layoutRail(); onScroll(); }, { passive: true });
+    requestAnimationFrame(() => { rail.classList.add('ready'); layoutRail(); updateFocus(); });
   } else {
+    /* Mobile: slim coral scroll-progress line at the very left edge */
+    const prog = document.createElement('div');
+    prog.className = 'scroll-progress';
+    prog.setAttribute('aria-hidden', 'true');
+    const progFill = document.createElement('div');
+    progFill.className = 'scroll-progress-fill';
+    prog.appendChild(progFill);
+    document.body.appendChild(prog);
+
+    let pTick = false;
+    function updateProgress() {
+      pTick = false;
+      const doc = document.documentElement;
+      const max = doc.scrollHeight - doc.clientHeight;
+      const pct = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+      progFill.style.height = (pct * 100) + '%';
+    }
+    function onProgScroll() {
+      if (!pTick) { pTick = true; requestAnimationFrame(updateProgress); }
+    }
+    window.addEventListener('scroll', onProgScroll, { passive: true });
+    window.addEventListener('resize', onProgScroll, { passive: true });
+    updateProgress();
+
     const revealObs = new IntersectionObserver(entries => {
       entries.forEach(e => {
         if (e.isIntersecting) { e.target.classList.add('visible'); revealObs.unobserve(e.target); }
