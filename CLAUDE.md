@@ -20,14 +20,12 @@ Each page is authored in a single file with **inlined CSS in a `<style>` block**
 
 Shared design tokens live in each file's `:root` CSS variables (`--pink`, `--cream`, `--bg`, `--bg2`, `--fg*`, `--serif`, `--sans`, `--max`, `--pad`, `--nav-h`). Keep these consistent across pages when editing.
 
-The **only shared JS asset** is `lead-popup.js`, included via `<script src="lead-popup.js">` on every page. It self-initializes as an IIFE, injects its own CSS and DOM, and renders a persistent collapsible lead-capture tab in the bottom-right. It posts to ConvertKit (Kit) at `https://api.convertkit.com/v3/forms/${KIT_FORM_ID}/subscribe` and persists a `lo_signed_up` flag in `localStorage` to suppress re-prompts.
+The **only shared JS asset** is `lead-popup.js`, included via `<script src="lead-popup.js">` on every page. It self-initializes as an IIFE, injects its own CSS and DOM, and renders a persistent collapsible lead-capture tab in the bottom-right. It posts to ConvertKit (Kit)'s **keyless public form-subscription endpoint** at `https://app.convertkit.com/forms/${KIT_FORM_ID}/subscriptions` (no API key in client code) and persists a `lo_signed_up` flag in `localStorage` to suppress re-prompts.
 
-## Third-party integrations (placeholders in code)
+## Third-party integrations
 
-Several integrations are wired up but hold placeholder IDs that must be filled in before the site is functional:
-
-- **ConvertKit / Kit** (newsletter): `KIT_FORM_ID` and `KIT_API_KEY` constants at the top of `lead-popup.js`.
-- **Formspree** (contact forms): `action="https://formspree.io/f/YOUR_FORMSPREE_ID"` on both `#auditForm` and `#openForm` in `contact.html`. Setup instructions are left as an HTML comment above the forms.
+- **ConvertKit / Kit** (newsletter): `KIT_FORM_ID` constant at the top of `lead-popup.js`. The popup submits to that form's keyless public endpoint (`https://app.convertkit.com/forms/${KIT_FORM_ID}/subscriptions`) with `email_address` + `fields[first_name]` — **no API key in client code**. Tagging/automation is configured on the form itself in the Kit dashboard. The homepage CSP (`index.html`) must allow `https://app.convertkit.com` in `connect-src`.
+- **Formspree** (contact forms): both `#auditForm` and `#openForm` in `contact.html`, and the Services `#fitForm` in `index.html`, post to `https://formspree.io/f/xgoqdyyd`.
 - **Vimeo Player API**: loaded in `index.html` only (`https://player.vimeo.com/api/player.js`) for the hero video.
 
 When editing these, do not replace the placeholder strings with real keys unless explicitly asked — treat them as config the site owner fills in.

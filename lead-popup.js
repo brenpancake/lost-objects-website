@@ -3,14 +3,15 @@
  * Stays on screen always as a small tab. Expands to full button.
  * Never fully dismisses — just tucks away.
  *
- * SETUP: Replace YOUR_KIT_FORM_ID and YOUR_KIT_API_KEY below
- * with values from kit.com (free up to 10,000 subscribers)
+ * SETUP: Set KIT_FORM_ID to your kit.com (ConvertKit) form id. The
+ * popup posts to that form's keyless public subscription endpoint, so
+ * no API key lives in client code. Tagging/automation is configured on
+ * the form itself in the Kit dashboard.
  */
 (function () {
   'use strict';
 
   const KIT_FORM_ID = '9497290';
-  const KIT_API_KEY = '2kX3wQFp_oPESdqb_Vi6RQ';
 
   /* Don't show the button if already signed up */
   let signedUp = false;
@@ -755,17 +756,18 @@
     submitBtn.disabled = true;
 
     try {
+      /* Keyless public form-subscription endpoint (same one Kit's embed
+         forms use): no API key in client code. Fields mirror the embed
+         form — email_address + fields[first_name]. */
+      const fd = new FormData();
+      fd.append('email_address', email);
+      fd.append('fields[first_name]', first + ' ' + last);
       const res = await fetch(
-        `https://api.convertkit.com/v3/forms/${KIT_FORM_ID}/subscribe`,
+        `https://app.convertkit.com/forms/${KIT_FORM_ID}/subscriptions`,
         {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            api_key: KIT_API_KEY,
-            first_name: first + ' ' + last,
-            email: email,
-            tags: ['bh-seminar', 'website-popup'],
-          }),
+          headers: { 'Accept': 'application/json' },
+          body: fd,
         }
       );
 
