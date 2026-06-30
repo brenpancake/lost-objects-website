@@ -329,11 +329,18 @@
       align-items: flex-start;
       gap: 22px;
       padding: 6px 0;
+      /* Shrink the box to the dots; a shrink-to-fit fixed flex box was spanning
+         the full viewport width and its empty area intercepted clicks on
+         centered content (e.g. the success Discord button). */
+      width: max-content;
       opacity: 0;
       transition: opacity 0.6s ease;
       pointer-events: none;
     }
-    .scroll-rail.ready { opacity: 1; pointer-events: auto; }
+    /* Only the dots are interactive — the container stays click-through so its
+       (transparent) area can never swallow pointer events on page content. */
+    .scroll-rail.ready { opacity: 1; }
+    .scroll-rail.ready .rail-dot { pointer-events: auto; }
     /* Continuous faint spine + coral progress fill (positioned by JS to
        run through the true centers of the first and last dots). */
     .rail-track, .rail-fill {
