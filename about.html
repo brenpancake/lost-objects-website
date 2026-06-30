@@ -24,6 +24,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/fonts.css" />
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
     html { scroll-behavior: smooth; }
@@ -39,7 +40,8 @@
       --fg2:   rgba(232,226,217,0.72);
       --fg3:   rgba(232,226,217,0.44);
       --fg4:   rgba(232,226,217,0.14);
-      --display: 'Fraunces', Georgia, serif;
+      --display: 'Built Titling', 'Arial Narrow', sans-serif;
+      --accent-serif: 'Fraunces', Georgia, serif;
       --sans:  'Inter', system-ui, sans-serif;
       --max:   1380px;
       --pad:   clamp(20px, 4vw, 60px);
@@ -138,8 +140,8 @@
 
     .tc-hl {
       font-family: var(--display);
-      font-size: clamp(56px,8.5vw,128px);
-      font-weight: 500; line-height: 0.92; letter-spacing: -0.01em;
+      font-size: clamp(56px,8.5vw,113px);
+      font-weight: 700; line-height: 0.98; letter-spacing: 0.01em;
       color: var(--fg);
       opacity: 0; animation: fadeUp 0.8s ease 0.35s forwards;
     }
@@ -185,7 +187,7 @@
     .scene-hl {
       font-family: var(--display);
       font-size: clamp(32px,4vw,58px);
-      font-weight: 500; line-height: 1.0; letter-spacing: -0.01em;
+      font-weight: 600; line-height: 0.98; letter-spacing: 0.01em;
       color: var(--fg); margin-bottom: clamp(20px,3vh,32px);
     }
     .scene-hl em { font-style: italic; color: var(--pink); }
@@ -205,7 +207,7 @@
       border-left: 2px solid rgba(255,102,102,0.35);
     }
     .scene-pull p {
-      font-family: var(--display);
+      font-family: var(--accent-serif);
       font-size: clamp(18px,1.8vw,24px);
       font-weight: 400; color: var(--fg2);
       line-height: 1.45; letter-spacing: 0;
@@ -273,7 +275,7 @@
     .scene-map-location {
       font-family: var(--display);
       font-size: clamp(18px,2vw,28px);
-      font-weight: 500; letter-spacing: -0.005em;
+      font-weight: 600; letter-spacing: 0.01em; line-height: 0.98;
       color: var(--fg);
       text-shadow: 0 2px 20px rgba(10,9,8,0.85);
     }
@@ -288,7 +290,7 @@
       z-index: 10;
       max-width: 280px;
       text-align: right;
-      font-family: var(--display);
+      font-family: var(--accent-serif);
       font-weight: 400; letter-spacing: 0;
       font-size: clamp(12px,0.95vw,14px);
       color: rgba(232,226,217,0.55);
@@ -347,8 +349,8 @@
     .profile-name {
       font-family: var(--display);
       font-size: clamp(28px,3vw,44px);
-      font-weight: 500; letter-spacing: -0.005em; color: var(--fg);
-      margin-bottom: 8px; line-height: 1.05;
+      font-weight: 600; letter-spacing: 0.01em; color: var(--fg);
+      margin-bottom: 8px; line-height: 0.98;
     }
     .profile-title {
       font-size: 11px; font-weight: 400; color: var(--fg3);
@@ -399,7 +401,7 @@
     .philosophy-hl {
       font-family: var(--display);
       font-size: clamp(36px,4.5vw,66px);
-      font-weight: 500; line-height: 1.0; letter-spacing: -0.01em;
+      font-weight: 600; line-height: 0.98; letter-spacing: 0.01em;
       color: var(--fg); margin-bottom: clamp(24px,3.5vh,40px);
     }
     .philosophy-hl em { font-style: italic; color: var(--pink); }
@@ -435,7 +437,7 @@
     .city-stat:hover::before { height: 100%; }
     .cs-num {
       font-family: var(--display); font-size: clamp(28px,3.5vw,52px);
-      font-weight: 500; letter-spacing: -0.005em; color: var(--fg); line-height: 1; margin-bottom: 8px;
+      font-weight: 700; letter-spacing: 0.01em; color: var(--fg); line-height: 0.98; margin-bottom: 8px;
     }
     .cs-num em { color: var(--pink); font-style: italic; }
     .cs-label { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--fg3); line-height: 1.5; }
@@ -468,7 +470,7 @@
     .closing-hl {
       font-family: var(--display);
       font-size: clamp(40px,5.5vw,82px);
-      font-weight: 500; line-height: 1.0; letter-spacing: -0.01em;
+      font-weight: 600; line-height: 0.98; letter-spacing: 0.01em;
       color: var(--fg); margin-bottom: clamp(24px,4vh,44px);
     }
     .closing-hl em { font-style: italic; color: var(--pink); }
@@ -478,14 +480,14 @@
     }
     .closing-sig {
       font-family: var(--display); font-size: clamp(14px,1.2vw,18px);
-      font-weight: 400; letter-spacing: 0; color: var(--fg3);
+      font-weight: 600; letter-spacing: 0.01em; line-height: 0.98; color: var(--fg3);
     }
 
     /* ── CTA ────────────────────────────────────────── */
     .cta-band { border-top: 1px solid var(--fg4); }
     .cta-inner { max-width: var(--max); margin: 0 auto; padding: clamp(64px,10vh,100px) var(--pad); text-align: center; }
     .cta-eye { font-size: 9px; letter-spacing: 0.26em; text-transform: uppercase; color: var(--pink); opacity: 0.55; margin-bottom: 22px; }
-    .cta-hl { font-family: var(--display); font-size: clamp(30px,3.8vw,58px); font-weight: 500; color: var(--fg); line-height: 1.08; letter-spacing: -0.01em; margin-bottom: 28px; }
+    .cta-hl { font-family: var(--display); font-size: clamp(30px,3.8vw,58px); font-weight: 600; color: var(--fg); line-height: 0.98; letter-spacing: 0.01em; margin-bottom: 28px; }
     .cta-hl em { font-style: italic; color: var(--pink); }
     .cta-sub { font-size: clamp(12px,0.9vw,14px); font-weight: 400; color: var(--fg2); line-height: 1.75; max-width: 440px; margin: 0 auto 36px; }
     .btn-p { display: inline-block; background: var(--pink); color: var(--bg); font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; padding: 13px 28px; border-radius: 0; transition: opacity 0.2s; }

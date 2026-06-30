@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/fonts.css" />
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
     html { scroll-behavior: smooth; }
@@ -23,7 +24,8 @@
       --fg2:   rgba(232,226,217,0.72);
       --fg3:   rgba(232,226,217,0.44);
       --fg4:   rgba(232,226,217,0.14);
-      --display: 'Fraunces', Georgia, serif;
+      --display: 'Built Titling', 'Arial Narrow', sans-serif;
+      --accent-serif: 'Fraunces', Georgia, serif;
       --sans:  'Inter', system-ui, sans-serif;
       --max:   1380px;
       --pad:   clamp(20px, 4vw, 60px);
@@ -84,9 +86,9 @@
     .page-title {
       font-family: var(--display);
       font-size: clamp(36px, 5vw, 64px);
-      font-weight: 500;
-      line-height: 1.05;
-      letter-spacing: -0.01em;
+      font-weight: 600;
+      line-height: 0.98;
+      letter-spacing: 0.01em;
       color: var(--fg);
     }
     .page-title em { font-style: italic; color: var(--pink); }
@@ -114,8 +116,9 @@
     .legal-content h2 {
       font-family: var(--display);
       font-size: clamp(22px, 3vw, 30px);
-      font-weight: 500;
-      letter-spacing: -0.005em;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      line-height: 0.98;
       color: var(--fg);
       margin: clamp(40px, 6vh, 56px) 0 16px;
     }

@@ -24,6 +24,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/fonts.css" />
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
     html { scroll-behavior: smooth; }
@@ -39,7 +40,8 @@
       --fg2:   rgba(232,226,217,0.72);
       --fg3:   rgba(232,226,217,0.44);
       --fg4:   rgba(232,226,217,0.14);
-      --display: 'Fraunces', Georgia, serif;
+      --display: 'Built Titling', 'Arial Narrow', sans-serif;
+      --accent-serif: 'Fraunces', Georgia, serif;
       --sans:  'Inter', system-ui, sans-serif;
       --max:   1380px;
       --pad:   clamp(20px, 4vw, 60px);
@@ -122,10 +124,10 @@
 
     .opener-hl {
       font-family: var(--display);
-      font-size: clamp(52px, 7.5vw, 110px);
-      font-weight: 500;
-      line-height: 0.95;
-      letter-spacing: -0.01em;
+      font-size: clamp(52px, 7.5vw, 97px);
+      font-weight: 700;
+      line-height: 0.98;
+      letter-spacing: 0.01em;
       color: var(--fg);
       margin-bottom: clamp(20px,3vh,32px);
       opacity: 0; animation: fadeUp 0.8s ease 0.35s forwards;
@@ -254,9 +256,9 @@
     .quiz-question {
       font-family: var(--display);
       font-size: clamp(28px, 3.5vw, 48px);
-      font-weight: 500;
-      line-height: 1.1;
-      letter-spacing: -0.01em;
+      font-weight: 600;
+      line-height: 0.98;
+      letter-spacing: 0.01em;
       color: var(--fg);
       margin-bottom: 40px;
     }
@@ -303,10 +305,10 @@
     .option-text {
       font-family: var(--display);
       font-size: clamp(15px, 1.4vw, 19px);
-      font-weight: 500;
+      font-weight: 600;
       color: var(--fg);
-      line-height: 1.25;
-      letter-spacing: -0.005em;
+      line-height: 0.98;
+      letter-spacing: 0.01em;
       margin-bottom: 6px;
     }
     .option-sub {
@@ -335,11 +337,11 @@
     .result-hl {
       font-family: var(--display);
       font-size: clamp(28px,3.5vw,48px);
-      font-weight: 500;
+      font-weight: 600;
       color: var(--fg);
-      line-height: 1.1;
+      line-height: 0.98;
       margin-bottom: 16px;
-      letter-spacing: -0.01em;
+      letter-spacing: 0.01em;
     }
     .result-hl em { font-style: italic; color: var(--pink); }
     .result-sub {
@@ -394,9 +396,9 @@
     .services-intro-hl {
       font-family: var(--display);
       font-size: clamp(36px,4.5vw,64px);
-      font-weight: 500;
-      line-height: 1.0;
-      letter-spacing: -0.01em;
+      font-weight: 600;
+      line-height: 0.98;
+      letter-spacing: 0.01em;
       color: var(--fg);
     }
     .services-intro-hl em { font-style: italic; color: var(--pink); }
@@ -482,10 +484,10 @@
     .svc-name {
       font-family: var(--display);
       font-size: clamp(18px,1.8vw,26px);
-      font-weight: 500;
+      font-weight: 600;
       color: var(--fg);
-      line-height: 1.15;
-      letter-spacing: -0.005em;
+      line-height: 0.98;
+      letter-spacing: 0.01em;
       margin-bottom: 4px;
     }
 
@@ -506,8 +508,9 @@
     .svc-price {
       font-family: var(--display);
       font-size: clamp(13px,1.2vw,17px);
-      font-weight: 400;
-      letter-spacing: 0;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      line-height: 0.98;
       color: var(--cream);
       opacity: 0.6;
       white-space: nowrap;
@@ -613,7 +616,7 @@
     }
 
     .duration-label { font-size: 8px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--fg3); margin-bottom: 6px; }
-    .duration-val { font-family: var(--display); font-size: 22px; font-weight: 500; letter-spacing: -0.005em; color: var(--fg); }
+    .duration-val { font-family: var(--display); font-size: 22px; font-weight: 700; letter-spacing: 0.01em; line-height: 0.98; color: var(--fg); }
 
     .svc-card-cta-row {
       padding: clamp(20px,2.5vw,28px) clamp(20px,2.5vw,32px);
@@ -696,7 +699,7 @@
     }
 
     .mgmt-label { font-size: 9px; letter-spacing: 0.26em; text-transform: uppercase; color: var(--pink); opacity: 0.6; margin-bottom: 16px; }
-    .mgmt-hl { font-family: var(--display); font-size: clamp(36px,4.5vw,66px); font-weight: 500; line-height: 1.0; letter-spacing: -0.01em; color: var(--fg); }
+    .mgmt-hl { font-family: var(--display); font-size: clamp(36px,4.5vw,66px); font-weight: 600; line-height: 0.98; letter-spacing: 0.01em; color: var(--fg); }
     .mgmt-hl em { font-style: italic; color: var(--pink); }
     .mgmt-desc { font-size: clamp(12px,1vw,14px); font-weight: 400; color: var(--fg2); line-height: 1.85; }
     .mgmt-desc strong { color: var(--fg); font-weight: 400; }
@@ -720,7 +723,7 @@
     .mgmt-pillar:hover::before { height: 100%; }
 
     .pillar-num { font-size: 9px; letter-spacing: 0.22em; color: var(--pink); opacity: 0.35; margin-bottom: 20px; }
-    .pillar-name { font-family: var(--display); font-size: clamp(17px,1.6vw,22px); font-weight: 500; color: var(--fg); line-height: 1.2; margin-bottom: 12px; letter-spacing: -0.005em; }
+    .pillar-name { font-family: var(--display); font-size: clamp(17px,1.6vw,22px); font-weight: 600; color: var(--fg); line-height: 0.98; margin-bottom: 12px; letter-spacing: 0.01em; }
     .pillar-rule { width: 20px; height: 1px; background: var(--pink); opacity: 0.25; margin-bottom: 14px; }
     .pillar-desc { font-size: clamp(11px,0.82vw,12px); font-weight: 400; color: var(--fg2); line-height: 1.85; }
 
@@ -733,7 +736,7 @@
     }
 
     .mgmt-cta-text {
-      font-family: var(--display);
+      font-family: var(--accent-serif);
       font-size: clamp(18px,2vw,26px);
       font-weight: 400;
       letter-spacing: 0;
@@ -750,8 +753,8 @@
       position: relative;
     }
     .closing-quote-inner { max-width: var(--max); margin: 0 auto; position: relative; padding-left: clamp(48px,8vw,120px); }
-    .cq-mark { position: absolute; left: 0; top: -10px; font-family: var(--display); font-size: clamp(60px,7vw,100px); font-style: normal; font-weight: 400; letter-spacing: 0; color: var(--pink); opacity: 0.12; line-height: 1; user-select: none; }
-    .cq-text { font-family: var(--display); font-size: clamp(18px,1.8vw,26px); font-weight: 400; letter-spacing: 0; color: var(--fg2); line-height: 1.5; max-width: 680px; }
+    .cq-mark { position: absolute; left: 0; top: -10px; font-family: var(--accent-serif); font-size: clamp(60px,7vw,100px); font-style: normal; font-weight: 400; letter-spacing: 0; color: var(--pink); opacity: 0.12; line-height: 1; user-select: none; }
+    .cq-text { font-family: var(--accent-serif); font-size: clamp(18px,1.8vw,26px); font-weight: 400; letter-spacing: 0; color: var(--fg2); line-height: 1.5; max-width: 680px; }
     .cq-text em { font-style: italic; color: var(--fg); }
     .cq-attr { margin-top: 22px; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--fg3); }
     .cq-attr span { color: var(--cream); opacity: 0.6; }
