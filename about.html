@@ -23,7 +23,8 @@
   <meta name="twitter:image" content="https://wearelostobjects.com/images/og-image.jpg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/fonts.css" />
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
     html { scroll-behavior: smooth; }
@@ -39,7 +40,8 @@
       --fg2:   rgba(232,226,217,0.72);
       --fg3:   rgba(232,226,217,0.44);
       --fg4:   rgba(232,226,217,0.14);
-      --serif: 'DM Serif Display', Georgia, serif;
+      --display: 'Built Titling', 'Arial Narrow', sans-serif;
+      --accent-serif: 'Fraunces', Georgia, serif;
       --sans:  'Inter', system-ui, sans-serif;
       --max:   1380px;
       --pad:   clamp(20px, 4vw, 60px);
@@ -51,6 +53,7 @@
       color: var(--fg);
       font-family: var(--sans);
       font-weight: 400;
+      font-optical-sizing: auto;
       -webkit-font-smoothing: antialiased;
       overflow-x: hidden;
     }
@@ -87,7 +90,7 @@
     .nav-links a.active { color: var(--fg2); text-decoration: underline; text-decoration-color: var(--pink); text-decoration-thickness: 1.5px; text-underline-offset: 5px; }
     .lo-icon { cursor: pointer; opacity: 0.45; transition: opacity 0.2s, transform 0.3s; display: flex; align-items: center; margin-left: 2px; }
     .lo-icon:hover { opacity: 1; transform: rotate(15deg) scale(1.1); }
-    .nav-cta { font-size: 10px; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--pink); border: 1px solid rgba(255,102,102,0.35); padding: 8px 20px; transition: background 0.2s, color 0.2s; }
+    .nav-cta { font-size: 10px; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--pink); border: 1px solid rgba(255,102,102,0.35); border-radius: 0; padding: 8px 20px; transition: background 0.2s, color 0.2s; }
     .nav-cta:hover { background: var(--pink); color: var(--bg); }
     .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
     .hamburger span { display: block; width: 22px; height: 1px; background: rgba(232,226,217,0.6); }
@@ -136,9 +139,9 @@
     }
 
     .tc-hl {
-      font-family: var(--serif);
-      font-size: clamp(56px,8.5vw,128px);
-      font-weight: 400; line-height: 0.92; letter-spacing: -0.03em;
+      font-family: var(--display);
+      font-size: clamp(56px,8.5vw,113px);
+      font-weight: 700; line-height: 0.98; letter-spacing: 0.01em;
       color: var(--fg);
       opacity: 0; animation: fadeUp 0.8s ease 0.35s forwards;
     }
@@ -182,9 +185,9 @@
     .scene-text-block {}
 
     .scene-hl {
-      font-family: var(--serif);
+      font-family: var(--display);
       font-size: clamp(32px,4vw,58px);
-      font-weight: 400; line-height: 1.0; letter-spacing: -0.025em;
+      font-weight: 600; line-height: 0.98; letter-spacing: 0.01em;
       color: var(--fg); margin-bottom: clamp(20px,3vh,32px);
     }
     .scene-hl em { font-style: italic; color: var(--pink); }
@@ -204,12 +207,12 @@
       border-left: 2px solid rgba(255,102,102,0.35);
     }
     .scene-pull p {
-      font-family: var(--serif);
+      font-family: var(--accent-serif);
       font-size: clamp(18px,1.8vw,24px);
-      font-style: italic; color: var(--fg2);
-      line-height: 1.45; letter-spacing: -0.01em;
+      font-weight: 400; color: var(--fg2);
+      line-height: 1.45; letter-spacing: 0;
     }
-    .scene-pull p em { font-style: normal; color: var(--fg); }
+    .scene-pull p em { font-style: italic; font-weight: 500; color: var(--fg); }
 
     /* Full-width prose scenes */
     .scene-full {
@@ -270,9 +273,9 @@
       color: rgba(232,226,217,0.32);
     }
     .scene-map-location {
-      font-family: var(--serif);
+      font-family: var(--display);
       font-size: clamp(18px,2vw,28px);
-      font-style: italic;
+      font-weight: 600; letter-spacing: 0.01em; line-height: 0.98;
       color: var(--fg);
       text-shadow: 0 2px 20px rgba(10,9,8,0.85);
     }
@@ -287,8 +290,8 @@
       z-index: 10;
       max-width: 280px;
       text-align: right;
-      font-family: var(--serif);
-      font-style: italic;
+      font-family: var(--accent-serif);
+      font-weight: 400; letter-spacing: 0;
       font-size: clamp(12px,0.95vw,14px);
       color: rgba(232,226,217,0.55);
       line-height: 1.5;
@@ -344,10 +347,10 @@
       color: var(--pink); opacity: 0.55; margin-bottom: 10px;
     }
     .profile-name {
-      font-family: var(--serif);
+      font-family: var(--display);
       font-size: clamp(28px,3vw,44px);
-      font-weight: 400; letter-spacing: -0.02em; color: var(--fg);
-      margin-bottom: 8px; line-height: 1.05;
+      font-weight: 600; letter-spacing: 0.01em; color: var(--fg);
+      margin-bottom: 8px; line-height: 0.98;
     }
     .profile-title {
       font-size: 11px; font-weight: 400; color: var(--fg3);
@@ -396,9 +399,9 @@
     }
 
     .philosophy-hl {
-      font-family: var(--serif);
+      font-family: var(--display);
       font-size: clamp(36px,4.5vw,66px);
-      font-weight: 400; line-height: 1.0; letter-spacing: -0.025em;
+      font-weight: 600; line-height: 0.98; letter-spacing: 0.01em;
       color: var(--fg); margin-bottom: clamp(24px,3.5vh,40px);
     }
     .philosophy-hl em { font-style: italic; color: var(--pink); }
@@ -433,10 +436,10 @@
     }
     .city-stat:hover::before { height: 100%; }
     .cs-num {
-      font-family: var(--serif); font-size: clamp(28px,3.5vw,52px);
-      font-style: italic; color: var(--fg); line-height: 1; margin-bottom: 8px;
+      font-family: var(--display); font-size: clamp(28px,3.5vw,52px);
+      font-weight: 700; letter-spacing: 0.01em; color: var(--fg); line-height: 0.98; margin-bottom: 8px;
     }
-    .cs-num em { color: var(--pink); font-style: normal; }
+    .cs-num em { color: var(--pink); font-style: italic; }
     .cs-label { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--fg3); line-height: 1.5; }
 
     /* ── FOUNDING MOMENT ────────────────────────────── */
@@ -465,9 +468,9 @@
     }
     .closing-inner { max-width: 800px; }
     .closing-hl {
-      font-family: var(--serif);
+      font-family: var(--display);
       font-size: clamp(40px,5.5vw,82px);
-      font-weight: 400; line-height: 1.0; letter-spacing: -0.025em;
+      font-weight: 600; line-height: 0.98; letter-spacing: 0.01em;
       color: var(--fg); margin-bottom: clamp(24px,4vh,44px);
     }
     .closing-hl em { font-style: italic; color: var(--pink); }
@@ -476,19 +479,20 @@
       color: var(--fg2); line-height: 1.85; margin-bottom: clamp(36px,5vh,56px);
     }
     .closing-sig {
-      font-family: var(--serif); font-size: clamp(14px,1.2vw,18px);
-      font-style: italic; color: var(--fg3);
+      font-family: var(--display); font-size: clamp(14px,1.2vw,18px);
+      font-weight: 600; letter-spacing: 0.01em; line-height: 0.98; color: var(--fg3);
     }
 
     /* ── CTA ────────────────────────────────────────── */
     .cta-band { border-top: 1px solid var(--fg4); }
     .cta-inner { max-width: var(--max); margin: 0 auto; padding: clamp(64px,10vh,100px) var(--pad); text-align: center; }
     .cta-eye { font-size: 9px; letter-spacing: 0.26em; text-transform: uppercase; color: var(--pink); opacity: 0.55; margin-bottom: 22px; }
-    .cta-hl { font-family: var(--serif); font-size: clamp(30px,3.8vw,58px); font-style: italic; color: var(--fg); line-height: 1.08; letter-spacing: -0.02em; margin-bottom: 28px; }
-    .cta-hl em { font-style: normal; color: var(--pink); }
+    .cta-hl { font-family: var(--display); font-size: clamp(30px,3.8vw,58px); font-weight: 600; color: var(--fg); line-height: 0.98; letter-spacing: 0.01em; margin-bottom: 28px; }
+    .cta-hl em { font-style: italic; color: var(--pink); }
     .cta-sub { font-size: clamp(12px,0.9vw,14px); font-weight: 400; color: var(--fg2); line-height: 1.75; max-width: 440px; margin: 0 auto 36px; }
-    .btn-p { display: inline-block; background: var(--pink); color: var(--bg); font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; padding: 13px 28px; transition: opacity 0.2s; }
+    .btn-p { display: inline-block; background: var(--pink); color: var(--bg); font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; padding: 13px 28px; border-radius: 0; transition: opacity 0.2s; }
     .btn-p:hover { opacity: 0.82; }
+    .pill-label { display:inline-block; font-family: var(--sans); font-size:9px; font-weight:500; letter-spacing:0.2em; text-transform:uppercase; color: var(--pink); border:1px solid rgba(255,102,102,0.4); border-radius:0; padding:5px 14px; }
 
     /* FOOTER */
     footer { border-top: 1px solid var(--fg4); }
@@ -776,7 +780,7 @@
       <line x1="180" y1="120" x2="170" y2="142" stroke="rgba(255,102,102,0.2)" stroke-width="1"/>
       <line x1="180" y1="120" x2="188" y2="142" stroke="rgba(255,102,102,0.2)" stroke-width="1"/>
       <!-- Space between — question mark path -->
-      <text x="140" y="115" text-anchor="middle" font-family="DM Serif Display, serif" font-size="28" font-style="italic" fill="rgba(255,102,102,0.15)">?</text>
+      <text x="140" y="115" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="28" fill="rgba(255,102,102,0.15)">?</text>
       <!-- Frame number -->
       <text x="32" y="158" font-family="Inter, sans-serif" font-size="7" letter-spacing="2" fill="rgba(232,226,217,0.18)">SCENE 001</text>
       <text x="200" y="158" font-family="Inter, sans-serif" font-size="7" letter-spacing="2" fill="rgba(232,226,217,0.18)">LOST OBJECTS</text>
@@ -1358,8 +1362,8 @@
 
           <!-- Frame 5 — Lost Objects -->
           <rect x="106" y="278" width="68" height="50" fill="rgba(255,102,102,0.05)" stroke="rgba(255,102,102,0.25)" stroke-width="1"/>
-          <text x="140" y="298" text-anchor="middle" font-family="DM Serif Display,serif" font-size="8" font-style="italic" fill="rgba(255,102,102,0.6)">Lost</text>
-          <text x="140" y="312" text-anchor="middle" font-family="DM Serif Display,serif" font-size="8" font-style="italic" fill="rgba(255,102,102,0.6)">Objects</text>
+          <text x="140" y="298" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="8" fill="rgba(255,102,102,0.6)">Lost</text>
+          <text x="140" y="312" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="8" fill="rgba(255,102,102,0.6)">Objects</text>
           <text x="140" y="322" text-anchor="middle" font-family="Inter,sans-serif" font-size="5" letter-spacing="1" fill="rgba(255,102,102,0.35)">EST. 2022</text>
 
           <!-- Rest of the strip fades to possibility -->

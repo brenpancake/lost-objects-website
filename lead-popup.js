@@ -579,7 +579,7 @@
           <div id="lo-modal-header">
             <div class="lo-eyebrow">Free — B&amp;H BILD Expo 2025</div>
             <h2 class="lo-modal-hl" id="lo-modal-title">
-              Instagram is changing<br><em>filmmakers' lives.</em>
+              Free Instagram <em>Seminar</em>
             </h2>
             <p class="lo-modal-sub">
               Watch Kyra and Brendan's full keynote from the B&amp;H BILD Expo — free. What's changing on Instagram, what it means for your career, and exactly what to do about it. No pitch, no paywall.
@@ -632,7 +632,7 @@
             </svg>
           </div>
           <h3 class="lo-success-hl">You're <em>found.</em></h3>
-          <p class="lo-success-sub">Check your inbox — the seminar is on its way.<br>If you don't see it, check your spam folder.</p>
+          <p class="lo-success-sub">Check your inbox, the seminar is on its way.<br>If you don't see it, check your spam folder.</p>
           <a href="https://watch.filmmakersacademy.com/programs/instagram-for-filmmakers-your-blueprint-for-success" target="_blank" rel="noopener" class="lo-success-btn">Watch the free seminar &rarr;</a>
         </div>
 

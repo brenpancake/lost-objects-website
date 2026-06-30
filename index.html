@@ -24,7 +24,8 @@
   <meta name="twitter:image" content="https://wearelostobjects.com/images/og-image.jpg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/fonts.css" />
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
     html { scroll-behavior: smooth; }
@@ -41,7 +42,8 @@
       --fg2:   rgba(232,226,217,0.72);
       --fg3:   rgba(232,226,217,0.44);
       --fg4:   rgba(232,226,217,0.14);
-      --serif: 'DM Serif Display', Georgia, serif;
+      --display: 'Built Titling', 'Arial Narrow', sans-serif;
+      --accent-serif: 'Fraunces', Georgia, serif;
       --sans:  'Inter', system-ui, sans-serif;
       --max:   1380px;
       --pad:   clamp(20px, 4vw, 60px);
@@ -53,6 +55,7 @@
       color: var(--fg);
       font-family: var(--sans);
       font-weight: 400;
+      font-optical-sizing: auto;
       -webkit-font-smoothing: antialiased;
       overflow-x: hidden;
     }
@@ -111,7 +114,7 @@
     }
     .nav-ig {
       position: absolute;
-      right: var(--pad);
+      right: calc(var(--pad) + 30px);
       display: flex;
       align-items: center;
       opacity: 0.45;
@@ -119,6 +122,10 @@
     }
     .nav-ig:hover {
       opacity: 1;
+    }
+    .nav-dc {
+      position: absolute;
+      right: var(--pad);
     }
 
     /* HERO */
@@ -166,7 +173,7 @@
       align-items: center;
       text-align: center;
       padding: calc(var(--nav-h) + 8vh) var(--pad) 0;
-      max-width: min(860px, 90vw);
+      max-width: min(1040px, 94vw);
     }
     .hero-eyebrow {
       display: flex;
@@ -179,18 +186,19 @@
     .eyebrow-line { width: 28px; height: 1px; background: var(--pink); opacity: 0.5; flex-shrink: 0; }
     .eyebrow-text { font-size: 11px; font-weight: 500; letter-spacing: 0.24em; text-transform: uppercase; color: var(--pink); opacity: 0.7; }
     .hero-hl {
-      font-family: var(--serif);
-      font-size: clamp(52px, 7.5vw, 108px);
-      font-weight: 400;
-      line-height: 0.95;
-      letter-spacing: -0.025em;
+      font-family: var(--display);
+      font-size: clamp(40px, 6.6vw, 84px);
+      font-weight: 700;
+      line-height: 0.98;
+      letter-spacing: 0.01em;
+      white-space: nowrap;
       color: var(--fg);
       margin-bottom: clamp(20px, 3.5vh, 36px);
       opacity: 0;
       animation: fadeUp 0.8s ease 0.3s forwards;
       text-shadow: 0 2px 40px rgba(10,9,8,0.6);
     }
-    .hero-hl em { font-style: italic; color: var(--pink); }
+    .hero-hl em { font-style: italic; color: var(--pink); font-weight: 700; }
     .hero-desc {
       font-size: clamp(14px, 1.1vw, 15px);
       font-weight: 400;
@@ -205,6 +213,10 @@
     .hero-cta {
       opacity: 0;
       animation: fadeUp 0.7s ease 0.65s forwards;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
     }
     .hero-cta .btn-p {
       display: inline-block;
@@ -213,10 +225,30 @@
       font-size: 10px; font-weight: 600;
       letter-spacing: 0.2em; text-transform: uppercase;
       padding: 13px 28px;
-      transition: opacity 0.2s;
+      border: 1px solid var(--pink);
+      border-radius: 0;
+      transition: box-shadow 0.25s ease, filter 0.25s ease;
       white-space: nowrap;
     }
-    .hero-cta .btn-p:hover { opacity: 0.82; }
+    .hero-cta .btn-p:hover {
+      filter: brightness(1.1) saturate(1.08);
+      box-shadow: 0 0 24px rgba(255,102,102,0.55), 0 0 7px rgba(255,102,102,0.45);
+    }
+    /* Outline twin — transparent, coral keyline, fills coral on hover */
+    .hero-cta .btn-o {
+      display: inline-block;
+      background: transparent;
+      color: var(--pink);
+      font-size: 10px; font-weight: 600;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      padding: 13px 28px;
+      border: 1px solid var(--pink);
+      border-radius: 0;
+      transition: background 0.2s ease, color 0.2s ease;
+      white-space: nowrap;
+    }
+    .hero-cta .btn-o:hover { background: var(--pink); color: var(--bg); }
+    .pill-label { display:inline-block; font-family: var(--sans); font-size:9px; font-weight:500; letter-spacing:0.2em; text-transform:uppercase; color: var(--pink); border:1px solid rgba(255,102,102,0.4); border-radius:0; padding:5px 14px; }
     .hero-fade-out {
       position: absolute;
       bottom: 0; left: 0; right: 0;
@@ -664,12 +696,12 @@
       transform: translateY(0);
     }
     .convo-prompt {
-      font-family: var(--serif);
+      font-family: var(--display);
       font-size: clamp(22px, 3vw, 32px);
-      font-weight: 400;
-      font-style: italic;
+      font-weight: 600;
+      letter-spacing: 0.01em;
       color: var(--fg);
-      line-height: 1.2;
+      line-height: 0.98;
       margin-bottom: 28px;
     }
 
@@ -860,10 +892,11 @@
     }
     .convo-success.visible { display: block; }
     .convo-success-hl {
-      font-family: var(--serif);
+      font-family: var(--display);
       font-size: clamp(32px, 5vw, 56px);
-      font-weight: 400;
-      font-style: italic;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      line-height: 0.98;
       color: var(--pink);
       margin-bottom: 18px;
     }
@@ -888,187 +921,354 @@
       50% { opacity: 1; transform: scale(1.3); }
     }
 
-    /* DOSSIER — data label block */
-    .dossier {
+    /* WHO WE ARE — interactive per-tab devices + photo carousels */
+    .whois {
       max-width: var(--max);
       margin: 0 auto;
       padding: clamp(52px, 8vh, 80px) var(--pad) clamp(64px, 10vh, 100px);
+      border-top: 1px solid var(--fg4);
     }
-    .dossier-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 1px;
-      background: var(--fg4);
-      border: 1px solid var(--fg4);
-    }
-    .dossier-cell {
-      background: var(--bg);
-      padding: clamp(20px, 3vh, 32px) clamp(16px, 2vw, 28px);
-    }
-    .dossier-cell.span-2 {
-      grid-column: span 2;
-    }
-    .dossier-cell.span-3 {
-      grid-column: span 3;
-    }
-    .dossier-key {
-      font-size: 9px;
-      font-weight: 500;
-      letter-spacing: 0.28em;
-      text-transform: uppercase;
-      color: var(--pink);
-      opacity: 0.8;
-      margin-bottom: 8px;
-    }
-    .dossier-val {
-      font-size: 14px;
-      font-weight: 300;
+    .whois-hl {
+      font-family: var(--display);
+      font-size: clamp(30px, 4.5vw, 54px);
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      line-height: 0.98;
       color: var(--fg);
-      line-height: 1.65;
+      margin-top: clamp(18px, 2.5vh, 26px);
+      max-width: 14em;
     }
-    .dossier-val-lg {
-      font-family: var(--serif);
-      font-size: clamp(18px, 2.2vw, 26px);
-      font-weight: 400;
-      font-style: italic;
-      color: var(--fg);
-      line-height: 1.3;
-    }
-    .dossier-val strong {
-      color: var(--fg);
-      font-weight: 400;
-    }
-    .dossier-tags {
+    .whois-hl em { font-style: italic; color: var(--pink); }
+
+    /* Tab row — square */
+    .whois-tabs {
       display: flex;
       flex-wrap: wrap;
-      gap: 6px;
-      margin-top: 4px;
+      gap: 8px;
+      margin-top: clamp(26px, 4vh, 38px);
     }
-    .dossier-tag {
-      font-size: 10px;
-      font-weight: 400;
-      letter-spacing: 0.08em;
-      color: var(--fg2);
+    .whois-tab {
+      font-family: var(--sans);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--fg3);
+      background: transparent;
       border: 1px solid var(--fg4);
-      padding: 6px 14px;
+      padding: 10px 22px;
+      cursor: pointer;
+      transition: color 0.2s, border-color 0.2s, background 0.2s;
     }
-    .dossier-founders {
+    .whois-tab:hover { color: var(--fg); border-color: rgba(255,102,102,0.45); }
+    .whois-tab.active {
+      background: var(--pink);
+      color: var(--bg);
+      border-color: var(--pink);
+    }
+
+    /* Panels — two-column device + copy */
+    .whois-panels { margin-top: clamp(36px, 5vh, 56px); }
+    .whois-panel { display: none; }
+    .whois-panel.active { display: block; animation: whoisFade 0.4s ease; }
+    @keyframes whoisFade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+    .whois-cols {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 24px;
+      grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+      gap: clamp(28px, 4vw, 56px);
+      align-items: start;
     }
-    .dossier-person-name {
-      font-size: 15px;
-      font-weight: 400;
-      color: var(--fg);
-      margin-bottom: 4px;
-    }
-    .dossier-person-role {
-      font-size: 12px;
-      font-weight: 300;
-      color: var(--fg2);
-      line-height: 1.5;
-    }
-    .dossier-person-links {
+    .whois-device-col { display: flex; justify-content: center; width: 100%; min-width: 0; }
+    .whois-copy-col { min-width: 0; }
+
+    /* Carousel — lives inside every device screen */
+    .carousel { position: absolute; inset: 0; }
+    .carousel-viewport { position: absolute; inset: 0; overflow: hidden; }
+    .carousel-track { display: flex; height: 100%; transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1); }
+    .slide { flex: 0 0 100%; height: 100%; padding: 9px; }
+    .slot {
+      width: 100%; height: 100%;
+      border: 1.5px dashed rgba(255,102,102,0.5);
       display: flex;
-      gap: 10px;
-      margin-top: 8px;
-    }
-    .dossier-person-link {
-      display: flex;
+      flex-direction: column;
       align-items: center;
-      gap: 6px;
-      font-size: 10px;
-      font-weight: 400;
-      letter-spacing: 0.08em;
-      color: var(--fg2);
-      transition: color 0.2s;
-    }
-    .dossier-person-link:hover {
+      justify-content: center;
+      gap: 7px;
       color: var(--pink);
-    }
-    .dossier-person-link svg {
-      opacity: 0.5;
-      transition: opacity 0.2s;
-    }
-    .dossier-person-link:hover svg {
-      opacity: 1;
-    }
-    .dossier-status-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .dossier-status-dot {
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: #34d399;
-      animation: statusPulse 2s ease-in-out infinite;
-    }
-    @keyframes statusPulse {
-      0%, 100% { opacity: 0.4; transform: scale(1); }
-      50% { opacity: 1; transform: scale(1.3); }
-    }
-    .dossier-status-text {
-      font-size: 13px;
-      font-weight: 400;
-      color: var(--fg);
-      letter-spacing: 0.04em;
-    }
-
-    @media (max-width: 700px) {
-      .dossier-grid {
-        grid-template-columns: 1fr 1fr;
-      }
-      .dossier-cell.span-3 {
-        grid-column: span 2;
-      }
-      .dossier-cell.span-2 {
-        grid-column: span 2;
-      }
-      .dossier-founders {
-        grid-template-columns: 1fr;
-        gap: 16px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .dossier-grid { grid-template-columns: 1fr; }
-      .dossier-cell.span-2, .dossier-cell.span-3 { grid-column: span 1; }
-    }
-
-    /* STATS BAR */
-    .stats-bar {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 1px;
-      background: var(--fg4);
-      border: 1px solid var(--fg4);
-      margin-top: clamp(32px, 5vh, 48px);
-    }
-    .stat-item {
-      background: var(--bg);
-      padding: clamp(18px, 3vh, 28px) clamp(14px, 2vw, 24px);
       text-align: center;
     }
-    .stat-num {
-      font-family: var(--serif);
-      font-size: clamp(28px, 3.5vw, 40px);
-      font-weight: 400;
-      color: var(--pink);
-      line-height: 1;
-      margin-bottom: 8px;
-    }
-    .stat-label {
-      font-size: 9px;
-      font-weight: 500;
-      letter-spacing: 0.18em;
+    .slot .lab {
+      font-family: var(--sans);
+      font-size: 8px;
+      letter-spacing: 0.16em;
       text-transform: uppercase;
       color: var(--fg3);
     }
+    .carousel-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(11,10,9,0.5);
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      width: 26px; height: 38px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--fg);
+      opacity: 0.85;
+      transition: opacity 0.2s, background 0.2s;
+      z-index: 3;
+    }
+    .carousel-nav:hover { opacity: 1; background: rgba(11,10,9,0.8); }
+    .carousel-nav.prev { left: 7px; }
+    .carousel-nav.next { right: 7px; }
+    .carousel-dots {
+      position: absolute;
+      bottom: 9px; left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 5px;
+      z-index: 3;
+    }
+    .cdot {
+      width: 6px; height: 4px;
+      padding: 0;
+      background: rgba(242,236,225,0.35);
+      border: none;
+      cursor: pointer;
+      transition: width 0.25s ease, background 0.25s ease;
+    }
+    .cdot.active { width: 17px; background: var(--pink); }
 
-    /* SERVICES — WHAT WE DO */
+    /* Device frames — KEEP rounded corners (everything else stays sharp) */
+    .device-laptop { width: 100%; max-width: 470px; display: flex; flex-direction: column; align-items: center; }
+    .laptop-lid {
+      width: 94%;
+      background: var(--bg3);
+      border: 1px solid var(--fg4);
+      border-radius: 16px;
+      padding: 11px;
+    }
+    .browser-bar { display: flex; align-items: center; gap: 5px; padding: 1px 3px 9px; }
+    .browser-bar i { width: 7px; height: 7px; border-radius: 50%; background: var(--fg4); }
+    .browser-bar .b-url { flex: 1; height: 13px; margin-left: 7px; background: var(--bg); border: 1px solid var(--fg4); }
+    .laptop-screen {
+      position: relative;
+      aspect-ratio: 16 / 10;
+      border-radius: 6px;
+      overflow: hidden;
+      background: var(--bg);
+    }
+    .laptop-base {
+      width: 100%;
+      height: 11px;
+      background: var(--bg3);
+      border: 1px solid var(--fg4);
+      border-top: none;
+      border-radius: 0 0 13px 13px;
+    }
+
+    .device-phone { width: 100%; max-width: 246px; }
+    .phone-body {
+      position: relative;
+      background: var(--bg3);
+      border: 1px solid var(--fg4);
+      border-radius: 38px;
+      padding: 10px;
+      box-shadow: 0 30px 74px rgba(0,0,0,0.5);
+    }
+    .phone-notch2 {
+      position: absolute;
+      top: 18px; left: 50%;
+      transform: translateX(-50%);
+      width: 90px; height: 17px;
+      background: #0b0a09;
+      border-radius: 0 0 12px 12px;
+      z-index: 4;
+    }
+    .phone-screen2 {
+      position: relative;
+      aspect-ratio: 9 / 19;
+      border-radius: 28px;
+      overflow: hidden;
+      background: var(--bg);
+    }
+
+    .device-tablet { width: 100%; max-width: 330px; }
+    .tablet-body {
+      position: relative;
+      background: var(--bg3);
+      border: 1px solid var(--fg4);
+      border-radius: 22px;
+      padding: 14px;
+      box-shadow: 0 30px 74px rgba(0,0,0,0.5);
+    }
+    .tablet-cam {
+      position: absolute;
+      top: 6px; left: 50%;
+      transform: translateX(-50%);
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--fg4);
+      z-index: 4;
+    }
+    .tablet-screen {
+      position: relative;
+      aspect-ratio: 3 / 4;
+      border-radius: 9px;
+      overflow: hidden;
+      background: var(--bg);
+    }
+
+    /* Copy column — The Story */
+    .wc-statement {
+      font-family: var(--sans);
+      font-size: clamp(15px, 1.4vw, 18px);
+      font-weight: 300;
+      line-height: 1.6;
+      color: var(--fg);
+    }
+    .wc-origin {
+      font-family: var(--sans);
+      font-size: 13px;
+      font-weight: 300;
+      line-height: 1.75;
+      color: var(--fg2);
+      margin-top: 18px;
+    }
+    .wc-quote {
+      font-family: var(--accent-serif);
+      font-style: italic;
+      font-weight: 400;
+      font-size: clamp(19px, 2vw, 26px);
+      line-height: 1.35;
+      color: var(--fg);
+      margin-top: 26px;
+      padding-left: 16px;
+      border-left: 2px solid var(--pink);
+    }
+    .wc-quote em { font-style: italic; color: var(--pink); }
+    .wc-story {
+      font-family: var(--sans);
+      font-size: 13px;
+      font-weight: 300;
+      line-height: 1.75;
+      color: var(--fg2);
+      margin-top: 16px;
+    }
+    .wc-meta {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      font-family: var(--sans);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--fg3);
+      margin-top: 26px;
+    }
+    .wc-meta .dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--pink);
+      box-shadow: 0 0 8px rgba(255,102,102,0.7);
+      flex-shrink: 0;
+    }
+    .wc-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(112px, 1fr));
+      gap: 1px;
+      background: var(--fg4);
+      border: 1px solid var(--fg4);
+      margin-top: 22px;
+    }
+    .wc-stat { background: var(--bg); padding: 16px 14px; }
+    .wc-stat .num {
+      font-family: var(--display);
+      font-size: clamp(22px, 2.4vw, 30px);
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      color: var(--pink);
+      line-height: 0.98;
+    }
+    .wc-stat .lbl {
+      font-family: var(--sans);
+      font-size: 8.5px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--fg3);
+      margin-top: 8px;
+      line-height: 1.4;
+    }
+    .wc-industries {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-top: 24px;
+    }
+
+    /* Copy column — people */
+    .wc-name {
+      font-family: var(--display);
+      font-size: clamp(26px, 3vw, 40px);
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      line-height: 0.98;
+      color: var(--fg);
+    }
+    .wc-handle {
+      font-family: var(--sans);
+      font-size: 13px;
+      color: var(--pink);
+      margin-top: 6px;
+    }
+    .wc-role {
+      font-family: var(--sans);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--fg3);
+      margin-top: 14px;
+    }
+    .wc-lead {
+      font-family: var(--sans);
+      font-size: clamp(15px, 1.4vw, 18px);
+      font-weight: 300;
+      line-height: 1.6;
+      color: var(--fg);
+      margin-top: 18px;
+    }
+    .wc-bioph {
+      font-family: var(--sans);
+      font-style: italic;
+      font-size: 13px;
+      color: var(--fg3);
+      line-height: 1.7;
+      margin-top: 16px;
+      padding: 14px 16px;
+      border: 1px dashed var(--fg4);
+    }
+
+    /* Responsive — stack device above copy */
+    @media (max-width: 880px) {
+      .whois-cols { grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 30px; }
+    }
+    @media (max-width: 640px) {
+      .whois-cols { grid-template-columns: 1fr; gap: 30px; }
+      .device-laptop, .device-phone, .device-tablet { max-width: 360px; }
+    }
+    @media (max-width: 420px) {
+      .whois-tabs { flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+      .whois-tab { flex: 0 0 auto; }
+    }
+
+    /* SERVICES — FIND THE RIGHT FIT (inline questionnaire) */
     .services-section {
+      position: relative;
       max-width: var(--max);
       margin: 0 auto;
       padding: clamp(52px, 8vh, 80px) var(--pad) clamp(64px, 10vh, 100px);
@@ -1077,232 +1277,410 @@
       margin-bottom: clamp(32px, 5vh, 48px);
       text-align: center;
     }
+    /* 40px coral rule centered under the headline */
+    .svc-intro-rule {
+      width: 40px;
+      height: 2px;
+      background: var(--pink);
+      margin: 0 auto 16px;
+      box-shadow: 0 0 12px rgba(255,102,102,0.55);
+    }
     .services-intro-hl {
-      font-family: var(--serif);
+      font-family: var(--display);
       font-size: clamp(28px, 4vw, 44px);
-      font-weight: 400;
-      font-style: italic;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      line-height: 0.98;
       color: var(--fg);
-      margin-bottom: 10px;
+      margin-bottom: 12px;
     }
     .services-intro-sub {
       font-size: 14px;
       font-weight: 300;
+      line-height: 1.7;
       color: var(--fg2);
+      max-width: 50ch;
+      margin: 0 auto;
     }
+    /* 2x2 hairline grid — one continuous grid, sharp corners */
     .svc-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 0;
+      border-top: 1px solid var(--fg4);
+      border-left: 1px solid var(--fg4);
     }
     .svc-card {
-      background: var(--bg);
-      padding: 36px;
-      border: 1px solid var(--fg4);
-      margin-top: -1px;
-      margin-left: -1px;
+      position: relative;
       display: flex;
       flex-direction: column;
+      align-items: flex-start;
+      text-align: left;
+      gap: 11px;
+      background: var(--bg);
+      border: none;
+      border-right: 1px solid var(--fg4);
+      border-bottom: 1px solid var(--fg4);
+      padding: clamp(24px, 3vw, 40px);
+      font-family: var(--sans);
       cursor: pointer;
-      position: relative;
-      transition: transform 0.35s ease, opacity 0.35s ease, background 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
-      transform-origin: center center;
+      transition: background 0.25s ease, box-shadow 0.25s ease;
     }
-    /* Selected dot */
-    .svc-card.selected::after {
-      content: '';
+    /* Index numbers — top-right, Built Titling, muted by default */
+    .svc-index {
       position: absolute;
-      top: 16px; right: 16px;
-      width: 8px; height: 8px;
-      border-radius: 50%;
-      background: var(--pink);
+      top: clamp(18px, 2.4vw, 30px);
+      right: clamp(18px, 2.4vw, 30px);
+      font-family: var(--display);
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: var(--fg3);
+      transition: color 0.2s ease;
     }
-    .svc-card.selected {
-      border-color: rgba(255,102,102,0.5);
+    /* Hover (non-selected) — coral keyline + coral index/name + glow, lifted above neighbors, NO size change */
+    .svc-card:hover {
       background: var(--bg2);
-      z-index: 2;
+      z-index: 3;
+      box-shadow: inset 0 0 0 1px var(--pink), 0 0 22px rgba(255,102,102,0.16);
     }
-    /* Desktop hover: dim siblings, brighten hovered */
-    @media (min-width: 769px) {
-      .svc-grid:hover .svc-card { opacity: 0.45; transform: scale(0.98); }
-      .svc-grid:hover .svc-card:hover,
-      .svc-grid:hover .svc-card.selected {
-        opacity: 1;
-        transform: scale(1.02);
-        background: var(--bg2);
-        box-shadow: 0 0 32px rgba(255,102,102,0.08);
-        z-index: 2;
-      }
-      .svc-card:hover { border-color: rgba(255,102,102,0.4); }
-      /* Auto-expand details on hover (desktop) */
-      .svc-card:hover .svc-details { max-height: 300px; }
-      .svc-card:hover .svc-expand-icon { transform: rotate(45deg); border-color: rgba(255,102,102,0.35); }
-      .svc-card:hover .svc-cta-btn button { opacity: 1; }
+    .svc-card:hover .svc-name,
+    .svc-card:hover .svc-index { color: var(--pink); }
+    /* Selected — SOLID coral fill, dark ink, strong glow */
+    .svc-card.active {
+      background: var(--pink);
+      box-shadow: 0 0 40px rgba(255,102,102,0.34);
+      z-index: 4;
     }
-
-    .svc-type {
-      display: inline-block;
-      align-self: flex-start;
+    .svc-card.active .svc-index,
+    .svc-card.active .svc-name,
+    .svc-card.active .svc-desc,
+    .svc-card.active .svc-select { color: #0f0e0d; }
+    .svc-card.active .svc-select { opacity: 1; }
+    .svc-tag {
       font-size: 9px;
       font-weight: 500;
       letter-spacing: 0.2em;
       text-transform: uppercase;
       color: var(--fg3);
-      margin-bottom: 14px;
-      background: rgba(255,102,102,0.06);
-      border: 1px solid rgba(255,102,102,0.15);
-      border-radius: 20px;
-      padding: 3px 10px;
+      background: rgba(255,102,102,0.05);
+      border: 1px solid rgba(255,102,102,0.18);
+      padding: 4px 10px;
     }
-    .svc-type-dot { color: var(--pink); margin: 0 4px; }
+    .svc-tag-pink { color: var(--pink); border-color: rgba(255,102,102,0.4); }
+    .svc-card.active .svc-tag {
+      color: #0f0e0d;
+      background: rgba(15,14,13,0.16);
+      border-color: rgba(15,14,13,0.34);
+    }
     .svc-name {
-      font-family: var(--serif);
-      font-size: 26px;
-      font-weight: 400;
+      font-family: var(--display);
+      font-size: clamp(22px, 2.4vw, 30px);
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      line-height: 0.98;
+      text-transform: uppercase;
       color: var(--fg);
-      margin-bottom: 12px;
+      transition: color 0.25s ease;
     }
+    .svc-premium.active .svc-premium-name { color: var(--pink); }
     .svc-desc {
-      font-size: 14px;
+      font-size: 13.5px;
       font-weight: 300;
       color: var(--fg2);
-      line-height: 1.75;
-      margin-bottom: 18px;
+      line-height: 1.7;
     }
-    .svc-expand-hint {
+    .svc-select {
+      margin-top: auto;
+      padding-top: 4px;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--pink);
+      opacity: 0.75;
+      transition: opacity 0.2s ease;
+    }
+    .svc-card:hover .svc-select,
+    .svc-card.active .svc-select,
+    .svc-premium:hover .svc-select,
+    .svc-premium.active .svc-select { opacity: 1; }
+
+    /* Full Management — premium full-width row */
+    .svc-premium {
+      position: relative;
+      width: 100%;
       display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+      text-align: left;
+      background: rgba(255,102,102,0.05);
+      border: 1px solid rgba(255,102,102,0.22);
+      border-top: none;
+      padding: clamp(24px, 3vw, 36px) clamp(24px, 3vw, 40px);
+      font-family: var(--sans);
+      cursor: pointer;
+      box-shadow: inset 2px 0 0 var(--pink);
+      transition: background 0.25s ease, box-shadow 0.25s ease;
+    }
+    .svc-premium:hover { background: rgba(255,102,102,0.09); box-shadow: inset 2px 0 0 var(--pink), 0 0 26px rgba(255,102,102,0.2); }
+    .svc-premium.active { background: rgba(255,102,102,0.12); box-shadow: inset 2px 0 0 var(--pink), 0 0 34px rgba(255,102,102,0.28); }
+    .svc-premium-main {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 11px;
+      min-width: 0;
+    }
+    .svc-premium-name {
+      font-family: var(--display);
+      font-size: clamp(24px, 2.8vw, 34px);
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      line-height: 0.98;
+      text-transform: uppercase;
+      color: var(--fg);
+      transition: color 0.25s ease;
+    }
+
+    /* Help me choose */
+    .svc-help {
+      text-align: center;
+      margin-top: clamp(20px, 3vh, 28px);
+    }
+    .svc-help-btn {
+      font-family: var(--sans);
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--fg3);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px 0;
+      transition: color 0.2s ease;
+    }
+    .svc-help-btn:hover,
+    .svc-help-btn.active { color: var(--pink); }
+
+    /* Stage — chooser & detail crossfade in place (no page bump) */
+    .svc-stage { position: relative; }
+    .svc-chooser, .svc-detail { width: 100%; }
+    .svc-chooser[hidden], .svc-detail[hidden] { display: none; }
+    /* Detail header bar with the "Change service" control */
+    .svc-detail-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    .svc-back {
+      display: inline-flex;
       align-items: center;
       gap: 8px;
+      font-family: var(--sans);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--fg2);
+      background: transparent;
+      border: 1px solid var(--fg4);
+      padding: 11px 18px;
+      cursor: pointer;
+      transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+    }
+    .svc-back:hover { color: var(--pink); border-color: var(--pink); background: rgba(255,102,102,0.06); }
+    .svc-back-arrow { transition: transform 0.2s ease; }
+    .svc-back:hover .svc-back-arrow { transform: translateX(-3px); }
+    .svc-detail-tag {
+      font-family: var(--sans);
       font-size: 9px;
       font-weight: 500;
-      letter-spacing: 0.16em;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--pink);
+      text-align: right;
+    }
+    .svc-detail .svc-panel { margin-top: 0; }
+
+    /* Shared inline detail panel */
+    .svc-panel {
+      margin-top: clamp(24px, 4vh, 36px);
+      border: 1px solid var(--fg4);
+      box-shadow: inset 2px 0 0 var(--pink), 0 0 30px rgba(255,102,102,0.12);
+      background: var(--bg2);
+    }
+    .svc-panel[hidden] { display: none; }
+    /* Coral glow that swells in as the panel blooms, then settles to its resting glow */
+    @keyframes panelGlowSwell {
+      0%   { box-shadow: inset 2px 0 0 var(--pink), 0 0 0 rgba(255,102,102,0); }
+      45%  { box-shadow: inset 2px 0 0 var(--pink), 0 0 66px rgba(255,102,102,0.3); }
+      100% { box-shadow: inset 2px 0 0 var(--pink), 0 0 30px rgba(255,102,102,0.12); }
+    }
+    .svc-panel.glow-swell { animation: panelGlowSwell 1.3s cubic-bezier(0.16, 1, 0.3, 1); }
+    .svc-panel-inner {
+      display: grid;
+      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+      gap: 0;
+    }
+    .svc-panel-left {
+      padding: clamp(28px, 3.5vw, 44px);
+      border-right: 1px solid var(--fg4);
+    }
+    .svc-panel-right { padding: clamp(28px, 3.5vw, 44px); }
+    .svc-panel-eyebrow {
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 0.22em;
       text-transform: uppercase;
       color: var(--fg3);
-      margin-bottom: 4px;
+      margin-bottom: 12px;
     }
-    .svc-expand-icon {
-      width: 18px; height: 18px;
-      border: 1px solid var(--fg4);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 13px;
-      font-weight: 300;
+    .svc-panel-title {
+      font-family: var(--display);
+      font-size: clamp(22px, 2.6vw, 32px);
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      line-height: 0.98;
+      text-transform: uppercase;
       color: var(--pink);
-      transition: transform 0.3s ease, border-color 0.3s;
-      flex-shrink: 0;
+      margin-bottom: 20px;
     }
-    .svc-card.expanded .svc-expand-icon {
-      transform: rotate(45deg);
-      border-color: rgba(255,102,102,0.35);
-    }
-    .svc-details {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.4s ease;
-    }
-    .svc-details.open { max-height: 300px; }
-    .svc-details-inner {
-      padding-top: 14px;
-    }
-    .svc-details-inner li {
-      font-size: 13px;
-      font-weight: 300;
-      color: var(--fg2);
-      line-height: 1.8;
-      padding-left: 20px;
+    .svc-incl { list-style: none; }
+    .svc-incl li {
       position: relative;
-      list-style: none;
+      padding-left: 22px;
+      font-size: 13.5px;
+      font-weight: 300;
+      line-height: 1.95;
+      color: var(--fg2);
     }
-    .svc-details-inner li::before {
+    .svc-incl li::before {
       content: '→';
       position: absolute;
       left: 0; top: 0;
       color: var(--pink);
       font-size: 11px;
-      opacity: 0.6;
+      opacity: 0.7;
     }
-    .svc-cta-btn {
-      margin-top: auto;
-      padding-top: 24px;
-    }
-    .svc-cta-btn button {
-      font-family: var(--sans);
-      font-size: 10px;
+
+    /* Questionnaire */
+    .fit-form { display: flex; flex-direction: column; gap: 18px; }
+    #fitDynamic { display: flex; flex-direction: column; gap: 18px; }
+    .fit-field { display: flex; flex-direction: column; gap: 8px; }
+    .fit-label {
+      font-size: 9px;
       font-weight: 500;
       letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: var(--pink);
-      opacity: 0.6;
-      background: none;
-      border: none;
-      padding: 0;
-      cursor: pointer;
-      transition: opacity 0.25s;
-      border-bottom: 1px solid transparent;
-    }
-    .svc-cta-btn button:hover {
-      opacity: 1;
-      border-bottom-color: var(--pink);
-    }
-    .svc-card.selected .svc-cta-btn button { opacity: 1; }
-
-    /* Pill pre-select pulse */
-    @keyframes pillPulse {
-      0% { box-shadow: 0 0 0 0 rgba(255,102,102,0.5); }
-      50% { box-shadow: 0 0 0 8px rgba(255,102,102,0); }
-      100% { box-shadow: 0 0 0 0 rgba(255,102,102,0); }
-    }
-    .pill.pulse {
-      animation: pillPulse 0.8s ease 2;
-    }
-
-    /* Full management callout */
-    .svc-callout {
-      background: var(--bg2);
-      border-top: 1px solid var(--fg4);
-      border-bottom: 1px solid var(--fg4);
-      padding: clamp(20px, 3vh, 28px) clamp(20px, 3vw, 36px);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 16px;
-      margin-top: clamp(24px, 4vh, 40px);
-    }
-    .svc-callout-text {
-      font-size: 13px;
-      font-weight: 300;
-      color: var(--fg2);
-    }
-    .svc-callout-btn {
-      display: inline-block;
-      font-family: var(--sans);
-      font-size: 10px;
-      font-weight: 500;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--pink);
-      background: transparent;
-      border: 1px solid rgba(255,102,102,0.35);
-      padding: 12px 24px;
-      transition: opacity 0.2s;
-      white-space: nowrap;
-    }
-    .svc-callout-btn:hover { background: var(--pink); color: var(--bg); }
-    .svc-quiz {
-      text-align: center;
-      margin-top: 28px;
-      font-size: 12px;
-      font-weight: 300;
       color: var(--fg3);
     }
-    .svc-quiz a {
-      color: var(--pink);
-      border-bottom: 1px solid rgba(255,102,102,0.3);
-      transition: border-color 0.2s;
+    .fit-opt { color: var(--fg4); letter-spacing: 0.1em; }
+    .fit-input {
+      width: 100%;
+      font-family: var(--sans);
+      font-size: 15px;
+      font-weight: 300;
+      color: var(--fg);
+      background: var(--bg);
+      border: 1px solid var(--fg4);
+      padding: 13px 14px;
+      transition: border-color 0.2s ease;
     }
-    .svc-quiz a:hover { border-color: var(--pink); }
+    .fit-input::placeholder { color: var(--fg3); }
+    .fit-input:focus { outline: none; border-color: var(--pink); }
+    select.fit-input {
+      cursor: pointer;
+      -webkit-appearance: none;
+      appearance: none;
+      color-scheme: dark;
+      padding-right: 36px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23FF6666' stroke-width='1.3'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+    }
+    /* Native dropdown list — light text on dark fill so options are readable */
+    select.fit-input option {
+      color: #f2ece1;
+      background-color: #1c1a19;
+    }
+    select.fit-input option:checked { color: #FF6666; }
+    .fit-textarea { resize: vertical; min-height: 64px; line-height: 1.6; }
+    .fit-submit {
+      align-self: flex-start;
+      margin-top: 4px;
+      font-family: var(--sans);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--bg);
+      background: var(--pink);
+      border: 1px solid var(--pink);
+      padding: 14px 30px;
+      cursor: pointer;
+      transition: opacity 0.2s ease, box-shadow 0.2s ease;
+    }
+    .fit-submit:hover { opacity: 0.92; box-shadow: 0 0 24px rgba(255,102,102,0.45); }
+    .fit-submit:disabled { opacity: 0.5; cursor: default; box-shadow: none; }
+
+    /* Multi-select checkbox chips — sharp coral chips whose values POST to Formspree */
+    .fit-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .fit-chip { position: relative; display: inline-flex; cursor: pointer; }
+    .fit-chip input { position: absolute; inset: 0; margin: 0; opacity: 0; cursor: pointer; }
+    .fit-chip span {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--fg2);
+      background: var(--bg);
+      border: 1px solid var(--fg4);
+      padding: 9px 14px;
+      transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+    }
+    .fit-chip input:hover + span { border-color: rgba(255,102,102,0.5); }
+    .fit-chip input:checked + span {
+      background: var(--pink);
+      color: var(--bg);
+      border-color: var(--pink);
+    }
+    .fit-chip input:focus-visible + span { box-shadow: 0 0 0 2px rgba(255,102,102,0.3); }
+    .fit-error { font-size: 12px; color: var(--pink); }
+    .fit-error[hidden] { display: none; }
+
+    /* Success state */
+    .fit-success[hidden] { display: none; }
+    .fit-success-hl {
+      font-family: var(--display);
+      font-size: clamp(26px, 3vw, 38px);
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      line-height: 0.98;
+      text-transform: uppercase;
+      color: var(--pink);
+      margin-bottom: 14px;
+    }
+    .fit-success-sub {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      font-weight: 300;
+      line-height: 1.6;
+      color: var(--fg2);
+    }
+    .fit-success-dot {
+      width: 7px; height: 7px;
+      background: var(--pink);
+      flex-shrink: 0;
+      box-shadow: 0 0 8px rgba(255,102,102,0.7);
+    }
+
 
     /* CONTACT CARD */
     .vcard-section {
@@ -1313,7 +1691,7 @@
     .vcard-glow {
       position: absolute;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: linear-gradient(to top, rgba(255,102,102,0.15) 0%, rgba(255,102,102,0.08) 30%, rgba(255,102,102,0.03) 60%, transparent 100%);
+      background: linear-gradient(to top, rgba(255,102,102,0.28) 0%, rgba(255,102,102,0.17) 12%, rgba(255,102,102,0.08) 30%, rgba(255,102,102,0.025) 48%, transparent 64%);
       z-index: 0;
       pointer-events: none;
     }
@@ -1334,7 +1712,7 @@
     .vcard-card {
       background: var(--bg2);
       border: 1px solid rgba(255,102,102,0.15);
-      border-radius: 2px;
+      border-radius: 0;
       padding: 32px;
       width: clamp(220px, 28vw, 320px);
       transition: transform 0.3s, border-color 0.3s;
@@ -1351,15 +1729,20 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-family: var(--serif);
+      font-family: var(--display);
       font-size: 22px;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      line-height: 0.98;
       color: #fff;
       margin-bottom: 16px;
     }
     .vcard-name {
-      font-family: var(--serif);
+      font-family: var(--display);
       font-size: 22px;
-      font-weight: 400;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      line-height: 0.98;
       color: #e8e2d9;
       margin-bottom: 4px;
     }
@@ -1391,10 +1774,11 @@
     .vcard-row.ig a { color: var(--pink); }
     .vcard-row.ig svg { opacity: 0.8; }
     .vcard-tagline {
-      font-family: var(--serif);
+      font-family: var(--display);
       font-size: clamp(16px, 2vw, 20px);
-      font-style: italic;
-      font-weight: 400;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      line-height: 0.98;
       color: #fff;
       opacity: 0.8;
       margin-bottom: 24px;
@@ -1424,6 +1808,90 @@
       letter-spacing: 0.02em;
     }
 
+    /* AFTER HOURS — private community (closing section, glows into footer) */
+    .after-hours {
+      position: relative;
+      padding: clamp(72px, 12vh, 128px) 0 clamp(72px, 11vh, 120px);
+    }
+    /* Max-width wrapper so the top-left eyebrow lines up with the other sections */
+    .ah-wrap {
+      position: relative;
+      z-index: 1;
+      max-width: var(--max);
+      margin: 0 auto;
+    }
+    .after-hours .section-eyebrow { margin-bottom: clamp(40px, 7vh, 80px); }
+    .ah-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--sans);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--pink);
+      margin-bottom: clamp(18px, 2.5vh, 26px);
+    }
+    .ah-kicker svg { display: block; flex-shrink: 0; }
+    .ah-inner {
+      max-width: 660px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    .ah-hl {
+      font-family: var(--display);
+      font-size: clamp(32px, 6.6vw, 84px);
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      line-height: 0.98;
+      white-space: nowrap;
+      color: var(--fg);
+      margin-bottom: clamp(24px, 3.5vh, 40px);
+    }
+    .ah-hl em { font-style: italic; color: var(--pink); }
+    .ah-copy {
+      font-family: var(--sans);
+      font-size: 14.5px; font-weight: 300;
+      line-height: 1.8; color: var(--fg2);
+      max-width: 520px;
+      margin: 0 auto clamp(32px, 5vh, 52px);
+    }
+    .ah-tags {
+      display: flex; flex-wrap: wrap; justify-content: center;
+      gap: 9px;
+      margin-bottom: clamp(34px, 5.5vh, 56px);
+    }
+    .ah-cta {
+      display: inline-flex; align-items: center; justify-content: center;
+      font-family: var(--sans);
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--bg);
+      background: var(--pink);
+      border: 1px solid var(--pink);
+      padding: 15px 32px;
+      cursor: pointer;
+      transition: box-shadow 0.25s ease, filter 0.25s ease;
+    }
+    .ah-cta:hover {
+      filter: brightness(1.06);
+      box-shadow: 0 0 32px rgba(255,102,102,0.5), 0 0 10px rgba(255,102,102,0.4);
+    }
+    .ah-note {
+      font-family: var(--sans);
+      font-size: 9px; font-weight: 500;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--fg3);
+      margin-top: 18px;
+    }
+    @media (max-width: 440px) {
+      .ah-cta { width: 100%; max-width: 340px; }
+    }
+
     /* FOOTER */
     footer {
       background: transparent;
@@ -1443,6 +1911,7 @@
       transition: color 0.2s;
     }
     .foot-ig:hover { color: var(--pink); }
+    .foot-social { display: flex; align-items: center; gap: 14px; }
     .foot-bot { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; padding-top: 20px; }
     .foot-email { font-size: 9px; letter-spacing: 0.1em; color: rgba(232,226,217,0.55); }
     .foot-mail-lnk { color: rgba(232,226,217,0.75); border-bottom: none; transition: color 0.2s; }
@@ -1478,9 +1947,11 @@
       .scene.reveal { opacity: 0; transform: translateY(24px); }
       .scene.reveal.visible { opacity: 1; transform: translateY(0); }
 
-      .hero-hl { font-size: clamp(36px, 10vw, 52px); }
+      .hero-hl { font-size: clamp(36px, 10vw, 52px); white-space: normal; }
       .hero-content { padding: calc(var(--nav-h) + 4vh) var(--pad) 0; }
-      .hero-cta .btn-p {
+      .hero-cta { flex-direction: column; }
+      .hero-cta .btn-p,
+      .hero-cta .btn-o {
         display: block;
         width: 100%;
         text-align: center;
@@ -1504,19 +1975,16 @@
       .cstat-label { font-size: 8px; letter-spacing: 0.16em; }
       .collage-card-rule { bottom: 34px; }
 
-      .stats-bar { grid-template-columns: 1fr 1fr; }
       .svc-grid { grid-template-columns: 1fr; }
       .svc-card { padding: 24px; }
       .svc-name { font-size: 22px; }
-      .svc-cta-btn button { font-size: 14px; min-height: 44px; padding: 12px 0; }
+      .svc-premium { flex-direction: column; align-items: flex-start; gap: 16px; }
+      .svc-panel-inner { grid-template-columns: 1fr; }
+      .svc-panel-left { border-right: none; border-bottom: 1px solid var(--fg4); }
+      .fit-submit { width: 100%; text-align: center; }
       .vcard-cards { flex-direction: column; align-items: center; }
       .vcard-card { width: 100%; max-width: 400px; }
       .vcard-btn { display: block; width: 100%; text-align: center; }
-      .svc-callout { flex-direction: column; text-align: center; }
-      .convo-prompt { font-size: clamp(20px, 5vw, 26px); }
-      #svcPickerGroup { grid-template-columns: repeat(2, 1fr); }
-      #svcPickerGroup .pill { min-height: 44px; }
-      .convo-wrap { max-width: 100%; }
 
       .foot-top, .foot-bot {
         flex-direction: column;
@@ -1548,6 +2016,15 @@
         <circle cx="17.5" cy="6.5" r="1.2" fill="#FF6666"/>
       </svg>
     </a>
+    <a href="https://discord.gg/ZqGhVfJu2a" target="_blank" aria-label="Discord" rel="noopener noreferrer" class="nav-dc" style="display:flex;align-items:center;opacity:0.5;transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FF6666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="9" cy="12" r="1"/>
+        <circle cx="15" cy="12" r="1"/>
+        <path d="M7.5 7.5c3.5 -1 5.5 -1 9 0"/>
+        <path d="M7 16.5c3.5 1 6.5 1 10 0"/>
+        <path d="M15.5 17c0 1 1.5 3 2 3c1.5 0 2.833 -1.667 3.5 -3c.667 -1.667 .5 -5.833 -1.5 -11.5c-1.457 -1.015 -3 -1.34 -4.5 -1.5l-.972 1.923a11.913 11.913 0 0 0 -4.053 0l-.975 -1.923c-1.5 .16 -3.043 .485 -4.5 1.5c-2 5.667 -2.167 9.833 -1.5 11.5c.667 1.333 2 3 3.5 3c.5 0 2 -2 2 -3"/>
+      </svg>
+    </a>
   </div>
 </nav>
 
@@ -1571,9 +2048,10 @@
       <span class="eyebrow-text">Social strategy for the creative industry</span>
     </div>
     <h1 class="hero-hl">Your work deserves<br>to be <em>found.</em></h1>
-    <p class="hero-desc">We're building something new. A home for the work, the process, and the people behind it. Stay close.</p>
+    <p class="hero-desc">A boutique agency built by creatives, for the people who make the work and rarely get seen for it.</p>
     <div class="hero-cta">
-      <a href="#contact" class="btn-p">Let's talk</a>
+      <a href="#services" class="btn-p">Let's talk</a>
+      <a href="#after-hours" class="btn-o">Join the Community</a>
     </div>
   </div>
 
@@ -1717,106 +2195,218 @@
   <p class="collage-caption">Follow our work <a href="https://www.instagram.com/wearelostobjects/" target="_blank" rel="noopener noreferrer">@wearelostobjects</a></p>
 </section>
 
-<!-- DOSSIER A — WHO WE ARE -->
-<section class="dossier scene" data-scene-label="Who We Are">
+<!-- WHO WE ARE — interactive device profiles -->
+<!-- HIDDEN (WIP): Who We Are section temporarily commented out. To restore, remove the comment wrappers added around the section markup and its init script block below. -->
+<!--
+<section class="whois scene" data-scene-label="Who We Are">
   <div class="section-eyebrow">
     <div class="section-eyebrow-line"></div>
     <span class="section-eyebrow-text">Who we are</span>
   </div>
 
-  <div class="dossier-grid">
+  <h2 class="whois-hl">Get to know the people <em>behind the work.</em></h2>
 
-    <div class="dossier-cell span-3">
-      <div class="dossier-key">What is Lost Objects</div>
-      <div class="dossier-val-lg">A boutique social media agency built from inside the film industry. We help filmmakers, creative brands, and entertainment businesses show up online with strategy, clarity, and a point of view.</div>
-    </div>
-
-    <div class="dossier-cell">
-      <div class="dossier-key">Entity</div>
-      <div class="dossier-val"><strong>Lost Objects</strong></div>
-    </div>
-    <div class="dossier-cell">
-      <div class="dossier-key">Based</div>
-      <div class="dossier-val"><strong>West Hollywood</strong>, Los Angeles</div>
-    </div>
-    <div class="dossier-cell">
-      <div class="dossier-key">Status</div>
-      <div class="dossier-status-row">
-        <span class="dossier-status-dot"></span>
-        <span class="dossier-status-text">Accepting Clients</span>
-      </div>
-    </div>
-
-    <div class="dossier-cell span-2">
-      <div class="dossier-key">Founded by</div>
-      <div class="dossier-founders">
-        <div>
-          <div class="dossier-person-name">Kyra Sweeney</div>
-          <div class="dossier-person-role">Actor · Social Media Strategist</div>
-          <div class="dossier-person-links">
-            <a href="https://www.instagram.com/kyragracee" target="_blank" rel="noopener noreferrer" class="dossier-person-link">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="#FF6666" stroke-width="1.5"/><circle cx="12" cy="12" r="4" stroke="#FF6666" stroke-width="1.5"/><circle cx="17.5" cy="6.5" r="1" fill="#FF6666"/></svg>
-              @kyragracee
-            </a>
-          </div>
-        </div>
-        <div>
-          <div class="dossier-person-name">Brendan Sweeney</div>
-          <div class="dossier-person-role">Director · Producer · Business Relations</div>
-          <div class="dossier-person-links">
-            <a href="https://www.instagram.com/brenpancake" target="_blank" rel="noopener noreferrer" class="dossier-person-link">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="#FF6666" stroke-width="1.5"/><circle cx="12" cy="12" r="4" stroke="#FF6666" stroke-width="1.5"/><circle cx="17.5" cy="6.5" r="1" fill="#FF6666"/></svg>
-              @brenpancake
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="dossier-cell">
-      <div class="dossier-key">Origin</div>
-      <div class="dossier-val">Founded in West Hollywood in 2023, Lost Objects grew from a simple observation: the most talented people in the film industry were going unseen online. Kyra and Brendan Sweeney built this to change that.</div>
-    </div>
-
-    <div class="dossier-cell span-2">
-      <div class="dossier-key">Industries</div>
-      <div class="dossier-tags">
-        <span class="dossier-tag">Film</span>
-        <span class="dossier-tag">Cinematography</span>
-        <span class="dossier-tag">Grip & Lighting</span>
-        <span class="dossier-tag">Production</span>
-        <span class="dossier-tag">Entertainment</span>
-      </div>
-    </div>
-    <div class="dossier-cell">
-      <div class="dossier-key">The name</div>
-      <div class="dossier-val">The name is personal. Kyra and Brendan both felt it — that specific feeling of being lost in your creative career, unseen in an industry you care deeply about. Lost Objects came from that. The belief that even when you feel like a lost object, you can still be found. And that finding others is worth building a company around.</div>
-    </div>
-
+  --><!-- Tabs --><!--
+  <div class="whois-tabs" role="tablist" aria-label="Profiles">
+    <button type="button" class="whois-tab active" data-tab="story" aria-pressed="true">The Story</button>
+    <button type="button" class="whois-tab" data-tab="kyra" aria-pressed="false">Kyra</button>
+    <button type="button" class="whois-tab" data-tab="brendan" aria-pressed="false">Brendan</button>
   </div>
 
-  <!-- Stats bar -->
-  <div class="stats-bar">
-    <div class="stat-item">
-      <div class="stat-num">800K+</div>
-      <div class="stat-label">Followers grown organically</div>
+  <div class="whois-panels">
+
+    --><!-- ============ THE STORY — laptop ============ --><!--
+    <div class="whois-panel active" data-panel="story">
+      <div class="whois-cols">
+        <div class="whois-device-col">
+          <div class="device-laptop">
+            <div class="laptop-lid">
+              <div class="browser-bar"><i></i><i></i><i></i><span class="b-url"></span></div>
+              <div class="laptop-screen">
+                <div class="carousel" data-carousel>
+                  <div class="carousel-viewport">
+                    <div class="carousel-track">
+                      <div class="slide"><div class="slot"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18"/><circle cx="8.5" cy="8.5" r="1.6"/><path d="M21 14l-5-4-11 9"/></svg><span class="lab">Studio · 1</span></div></div>
+                      <div class="slide"><div class="slot"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18"/><circle cx="8.5" cy="8.5" r="1.6"/><path d="M21 14l-5-4-11 9"/></svg><span class="lab">Studio · 2</span></div></div>
+                      <div class="slide"><div class="slot"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18"/><circle cx="8.5" cy="8.5" r="1.6"/><path d="M21 14l-5-4-11 9"/></svg><span class="lab">Business · 3</span></div></div>
+                      <div class="slide"><div class="slot"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18"/><circle cx="8.5" cy="8.5" r="1.6"/><path d="M21 14l-5-4-11 9"/></svg><span class="lab">Business · 4</span></div></div>
+                    </div>
+                  </div>
+                  <button type="button" class="carousel-nav prev" aria-label="Previous photo"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+                  <button type="button" class="carousel-nav next" aria-label="Next photo"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>
+                  <div class="carousel-dots"></div>
+                </div>
+              </div>
+            </div>
+            <div class="laptop-base"></div>
+          </div>
+        </div>
+        <div class="whois-copy-col">
+          <p class="wc-statement">A boutique social media agency built from inside the film industry now serving all creative industries. We help filmmakers, creative brands, and entertainment businesses show up online with strategy, clarity, and a point of view.</p>
+          <p class="wc-origin">Founded in 2023, Lost Objects began with a simple frustration: the most talented people in the creative industries stay invisible online, and the agencies meant to help them don't speak their language. Marketing a product is one thing. Representing a creative is a different specialty, one most agencies were never built for. Born out of the film world, Lost Objects was built to serve businesses and artists across the creative landscape, giving them the tools to be seen on their own terms with a team who will support and lead them to success.</p>
+          <blockquote class="wc-quote">We each felt like a <em>lost object.</em> Then we found each other.</blockquote>
+          <p class="wc-story">There was a time when Kyra and Brendan each felt like a lost object. Unsure in their careers, their lives, their hearts. Then they found each other, and in creating together they understood something simple: feeling found can come from anywhere, and being lost is not the end of the story. It can be the beginning of it. That belief became Lost Objects. Because every lost object is only waiting to be seen, and so is everyone who feels like one.</p>
+          <div class="wc-meta"><span class="dot"></span><span>Accepting clients · West Hollywood, Los Angeles</span></div>
+          <div class="wc-stats">
+            <div class="wc-stat"><div class="num">800K+</div><div class="lbl">Followers grown organically</div></div>
+            <div class="wc-stat"><div class="num">8+</div><div class="lbl">Brand partnerships</div></div>
+            <div class="wc-stat"><div class="num">2023</div><div class="lbl">Established in West Hollywood</div></div>
+            <div class="wc-stat"><div class="num">5</div><div class="lbl">Key service tiers</div></div>
+          </div>
+          <div class="wc-industries">
+            <span class="pill-label">Film</span>
+            <span class="pill-label">Cinematography</span>
+            <span class="pill-label">Creators</span>
+            <span class="pill-label">Directors</span>
+            <span class="pill-label">Actors</span>
+            <span class="pill-label">Agencies</span>
+            <span class="pill-label">Education</span>
+            <span class="pill-label">Grip &amp; Lighting</span>
+            <span class="pill-label">Production</span>
+            <span class="pill-label">Entertainment</span>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="stat-item">
-      <div class="stat-num">8+</div>
-      <div class="stat-label">Brand partnerships</div>
+
+    --><!-- ============ KYRA — phone ============ --><!--
+    <div class="whois-panel" data-panel="kyra">
+      <div class="whois-cols">
+        <div class="whois-device-col">
+          <div class="device-phone">
+            <div class="phone-body">
+              <div class="phone-notch2"></div>
+              <div class="phone-screen2">
+                <div class="carousel" data-carousel>
+                  <div class="carousel-viewport">
+                    <div class="carousel-track">
+                      <div class="slide"><div class="slot"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18"/><circle cx="8.5" cy="8.5" r="1.6"/><path d="M21 14l-5-4-11 9"/></svg><span class="lab">Kyra · 1</span></div></div>
+                      <div class="slide"><div class="slot"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18"/><circle cx="8.5" cy="8.5" r="1.6"/><path d="M21 14l-5-4-11 9"/></svg><span class="lab">Kyra · 2</span></div></div>
+                      <div class="slide"><div class="slot"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18"/><circle cx="8.5" cy="8.5" r="1.6"/><path d="M21 14l-5-4-11 9"/></svg><span class="lab">Kyra · 3</span></div></div>
+                      <div class="slide"><div class="slot"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18"/><circle cx="8.5" cy="8.5" r="1.6"/><path d="M21 14l-5-4-11 9"/></svg><span class="lab">Kyra · 4</span></div></div>
+                    </div>
+                  </div>
+                  <button type="button" class="carousel-nav prev" aria-label="Previous photo"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+                  <button type="button" class="carousel-nav next" aria-label="Next photo"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>
+                  <div class="carousel-dots"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="whois-copy-col">
+          <h3 class="wc-name">Kyra Sweeney</h3>
+          <div class="wc-handle">@kyragracee</div>
+          <div class="wc-role">Actor · Social Media Strategist</div>
+          <p class="wc-lead">Leads creative direction, content, and community across every account.</p>
+          <p class="wc-bioph">[Kyra's full bio goes here.]</p>
+        </div>
+      </div>
     </div>
-    <div class="stat-item">
-      <div class="stat-num">2023</div>
-      <div class="stat-label">Established in West Hollywood</div>
+
+    --><!-- ============ BRENDAN — tablet ============ --><!--
+    <div class="whois-panel" data-panel="brendan">
+      <div class="whois-cols">
+        <div class="whois-device-col">
+          <div class="device-tablet">
+            <div class="tablet-body">
+              <div class="tablet-cam"></div>
+              <div class="tablet-screen">
+                <div class="carousel" data-carousel>
+                  <div class="carousel-viewport">
+                    <div class="carousel-track">
+                      <div class="slide"><div class="slot"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18"/><circle cx="8.5" cy="8.5" r="1.6"/><path d="M21 14l-5-4-11 9"/></svg><span class="lab">Brendan · 1</span></div></div>
+                      <div class="slide"><div class="slot"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18"/><circle cx="8.5" cy="8.5" r="1.6"/><path d="M21 14l-5-4-11 9"/></svg><span class="lab">Brendan · 2</span></div></div>
+                      <div class="slide"><div class="slot"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18"/><circle cx="8.5" cy="8.5" r="1.6"/><path d="M21 14l-5-4-11 9"/></svg><span class="lab">Brendan · 3</span></div></div>
+                      <div class="slide"><div class="slot"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18"/><circle cx="8.5" cy="8.5" r="1.6"/><path d="M21 14l-5-4-11 9"/></svg><span class="lab">Brendan · 4</span></div></div>
+                    </div>
+                  </div>
+                  <button type="button" class="carousel-nav prev" aria-label="Previous photo"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+                  <button type="button" class="carousel-nav next" aria-label="Next photo"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>
+                  <div class="carousel-dots"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="whois-copy-col">
+          <h3 class="wc-name">Brendan Sweeney</h3>
+          <div class="wc-handle">@brenpancake</div>
+          <div class="wc-role">Director · Producer · Business Relations</div>
+          <p class="wc-lead">Leads strategy, partnerships, and business development.</p>
+          <p class="wc-bioph">[Brendan's full bio goes here.]</p>
+        </div>
+      </div>
     </div>
-    <div class="stat-item">
-      <div class="stat-num">5</div>
-      <div class="stat-label">Key service tiers</div>
-    </div>
+
   </div>
 </section>
+-->
 
-<!-- DOSSIER B — WHAT WE DO -->
-<section class="services-section scene" data-scene-label="What We Do">
+<!-- HIDDEN (WIP): Who We Are init (tab switching + carousels) commented out with the section above. Restore together. -->
+<!--
+<script>
+  /* WHO WE ARE — tabs + per-device photo carousels */
+  (function () {
+    /* Carousels (one per device) */
+    document.querySelectorAll('[data-carousel]').forEach(function (car) {
+      const track = car.querySelector('.carousel-track');
+      const slides = track ? track.children : [];
+      const n = slides.length;
+      if (!n) return;
+      const dotsWrap = car.querySelector('.carousel-dots');
+      const vp = car.querySelector('.carousel-viewport');
+      let idx = 0;
+      const dots = [];
+      for (let i = 0; i < n; i++) {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'cdot' + (i === 0 ? ' active' : '');
+        b.setAttribute('aria-label', 'Go to slide ' + (i + 1));
+        b.addEventListener('click', (function (j) { return function () { go(j); }; })(i));
+        dotsWrap.appendChild(b);
+        dots.push(b);
+      }
+      function update() {
+        track.style.transform = 'translateX(' + (-idx * 100) + '%)';
+        dots.forEach(function (d, i) { d.classList.toggle('active', i === idx); });
+      }
+      function go(i) { idx = (i % n + n) % n; update(); }
+      const prev = car.querySelector('.prev');
+      const next = car.querySelector('.next');
+      if (prev) prev.addEventListener('click', function () { go(idx - 1); });
+      if (next) next.addEventListener('click', function () { go(idx + 1); });
+      /* touch swipe */
+      let sx = 0, dx = 0, sw = false;
+      if (vp) {
+        vp.addEventListener('touchstart', function (e) { sx = e.touches[0].clientX; dx = 0; sw = true; }, { passive: true });
+        vp.addEventListener('touchmove', function (e) { if (sw) dx = e.touches[0].clientX - sx; }, { passive: true });
+        vp.addEventListener('touchend', function () { if (sw && Math.abs(dx) > 40) { go(idx + (dx < 0 ? 1 : -1)); } sw = false; });
+      }
+      update();
+    });
+
+    /* Tabs swap device + copy */
+    const tabs = document.querySelectorAll('.whois-tab');
+    const panels = document.querySelectorAll('.whois-panel');
+    if (!tabs.length || !panels.length) return;
+    tabs.forEach(function (tab) {
+      tab.addEventListener('click', function () {
+        const key = tab.dataset.tab;
+        tabs.forEach(function (t) {
+          const on = t === tab;
+          t.classList.toggle('active', on);
+          t.setAttribute('aria-pressed', on ? 'true' : 'false');
+        });
+        panels.forEach(function (p) { p.classList.toggle('active', p.dataset.panel === key); });
+      });
+    });
+  })();
+</script>
+-->
+
+<!-- SERVICES — FIND THE RIGHT FIT (with inline questionnaire) -->
+<section class="services-section scene" id="services" data-scene-label="Services">
   <div class="section-eyebrow">
     <div class="section-eyebrow-line"></div>
     <span class="section-eyebrow-text">Services</span>
@@ -1824,203 +2414,110 @@
 
   <div class="services-intro">
     <h2 class="services-intro-hl">Find the right fit.</h2>
-    <p class="services-intro-sub">Every engagement starts where you are right now.</p>
+    <div class="svc-intro-rule"></div>
+    <p class="services-intro-sub">Every engagement starts where you are right now. Pick one and answer a few quick questions.</p>
   </div>
 
+  <!-- Stage: chooser (cards) and detail (questionnaire) swap IN PLACE, no page bump -->
+  <div class="svc-stage" id="svcStage">
+
+  <!-- View A — chooser -->
+  <div class="svc-chooser" id="svcChooser">
+  <!-- 2x2 hairline grid of à la carte services -->
   <div class="svc-grid">
-    <!-- Card 01 -->
-    <div class="svc-card" data-service="Social Media Audit">
-      <div class="svc-type">Audit <span class="svc-type-dot">·</span> 2 hrs</div>
-      <h3 class="svc-name">Social Media Audit</h3>
-      <p class="svc-desc">A clear-eyed look at where you stand. Real feedback, no filler.</p>
-      <div class="svc-expand-hint"><span class="svc-expand-icon">+</span> What's included</div>
-      <div class="svc-details">
-        <ul class="svc-details-inner">
-          <li>Profile review</li>
-          <li>Content audit</li>
-          <li>Engagement analysis</li>
-          <li>Competitor review</li>
-          <li>Top 5 recommendations</li>
-        </ul>
-      </div>
-      <div class="svc-cta-btn"><button type="button" data-service="Social Media Audit">Start with this &rarr;</button></div>
-    </div>
+    <button type="button" class="svc-card" data-service="Social Media Audit">
+      <span class="svc-index">01</span>
+      <span class="svc-tag">Audit · 2 hrs</span>
+      <span class="svc-name">Social Media Audit</span>
+      <span class="svc-desc">A clear-eyed look at where you stand. Real feedback, no filler.</span>
+      <span class="svc-select">Select &rarr;</span>
+    </button>
 
-    <!-- Card 02 -->
-    <div class="svc-card" data-service="Premium Audit">
-      <div class="svc-type">Audit <span class="svc-type-dot">·</span> 3.5 hrs</div>
-      <h3 class="svc-name">Premium Social Media Audit</h3>
-      <p class="svc-desc">A deep dive across two profiles with a written report and follow-up support.</p>
-      <div class="svc-expand-hint"><span class="svc-expand-icon">+</span> What's included</div>
-      <div class="svc-details">
-        <ul class="svc-details-inner">
-          <li>Everything in Basic</li>
-          <li>Cross-platform review</li>
-          <li>Written report</li>
-          <li>Follow-up email support</li>
-        </ul>
-      </div>
-      <div class="svc-cta-btn"><button type="button" data-service="Premium Audit">Start with this &rarr;</button></div>
-    </div>
+    <button type="button" class="svc-card" data-service="Premium Audit">
+      <span class="svc-index">02</span>
+      <span class="svc-tag">Audit · 3.5 hrs</span>
+      <span class="svc-name">Premium Audit</span>
+      <span class="svc-desc">A deep dive across two profiles with a written report and follow-up support.</span>
+      <span class="svc-select">Select &rarr;</span>
+    </button>
 
-    <!-- Card 03 -->
-    <div class="svc-card" data-service="Social Media Strategy">
-      <div class="svc-type">Strategy <span class="svc-type-dot">·</span> 90 min</div>
-      <h3 class="svc-name">Social Media Strategy</h3>
-      <p class="svc-desc">The tools and direction to build or revamp your presence with intention.</p>
-      <div class="svc-expand-hint"><span class="svc-expand-icon">+</span> What's included</div>
-      <div class="svc-details">
-        <ul class="svc-details-inner">
-          <li>Goal setting</li>
-          <li>Content calendar</li>
-          <li>Audience identification</li>
-          <li>Growth strategies</li>
-          <li>Platform tools</li>
-        </ul>
-      </div>
-      <div class="svc-cta-btn"><button type="button" data-service="Social Media Strategy">Start with this &rarr;</button></div>
-    </div>
+    <button type="button" class="svc-card" data-service="Social Media Strategy">
+      <span class="svc-index">03</span>
+      <span class="svc-tag">Strategy · 90 min</span>
+      <span class="svc-name">Social Media Strategy</span>
+      <span class="svc-desc">The tools and direction to build or revamp your presence with intention.</span>
+      <span class="svc-select">Select &rarr;</span>
+    </button>
 
-    <!-- Card 04 -->
-    <div class="svc-card" data-service="Premium Strategy">
-      <div class="svc-type">Strategy <span class="svc-type-dot">·</span> 4 hrs</div>
-      <h3 class="svc-name">Premium Social Media Strategy</h3>
-      <p class="svc-desc">A comprehensive strategy PDF, 3-6 month content plan, and follow-up session.</p>
-      <div class="svc-expand-hint"><span class="svc-expand-icon">+</span> What's included</div>
-      <div class="svc-details">
-        <ul class="svc-details-inner">
-          <li>Full audit</li>
-          <li>Brand voice doc</li>
-          <li>Content strategy</li>
-          <li>KPIs</li>
-          <li>Follow-up session</li>
-          <li>Ongoing support</li>
-        </ul>
-      </div>
-      <div class="svc-cta-btn"><button type="button" data-service="Premium Strategy">Start with this &rarr;</button></div>
-    </div>
+    <button type="button" class="svc-card" data-service="Premium Strategy">
+      <span class="svc-index">04</span>
+      <span class="svc-tag">Strategy · 4 hrs</span>
+      <span class="svc-name">Premium Strategy</span>
+      <span class="svc-desc">A comprehensive strategy with a content plan, KPIs, and a follow-up session.</span>
+      <span class="svc-select">Select &rarr;</span>
+    </button>
   </div>
 
-  <!-- Full management callout -->
-  <div class="svc-callout">
-    <div class="svc-callout-text">Need the full picture? Full Management is our most selective offering.</div>
-    <button type="button" class="svc-callout-btn" data-service="Full Management">Apply for Full Management</button>
+  <!-- Full Management — premium full-width row -->
+  <button type="button" class="svc-premium" data-service="Full Management">
+    <span class="svc-premium-main">
+      <span class="svc-tag svc-tag-pink">Full Service · Selective</span>
+      <span class="svc-premium-name">Full Management</span>
+      <span class="svc-desc">End-to-end social, handled. Our most selective offering for brands ready to hand it all off.</span>
+    </span>
+    <span class="svc-select">Apply &rarr;</span>
+  </button>
+
+  <!-- Triage -->
+  <div class="svc-help">
+    <button type="button" class="svc-help-btn" data-service="Help me choose">Not sure where to start? Help me choose &rarr;</button>
   </div>
+  </div><!-- /.svc-chooser -->
+
+  <!-- View B — detail (questionnaire) crossfades into the chooser's place -->
+  <div class="svc-detail" id="svcDetail" hidden>
+    <div class="svc-detail-bar">
+      <button type="button" class="svc-back" id="svcBack"><span class="svc-back-arrow">&larr;</span> Change service</button>
+      <span class="svc-detail-tag" id="svcDetailTag"></span>
+    </div>
+  <div class="svc-panel" id="svcPanel">
+    <div class="svc-panel-inner">
+      <div class="svc-panel-left">
+        <div class="svc-panel-eyebrow" id="svcPanelKicker">What's included</div>
+        <h3 class="svc-panel-title" id="svcPanelTitle"></h3>
+        <ul class="svc-incl" id="svcInclList"></ul>
+      </div>
+      <div class="svc-panel-right">
+        <form class="fit-form" id="fitForm" novalidate>
+          <input type="hidden" name="service" id="fitService" value="" />
+          <div class="fit-field">
+            <label class="fit-label" for="fit-name">Your name</label>
+            <input class="fit-input" type="text" id="fit-name" name="name" placeholder="First and last name" autocomplete="name" />
+          </div>
+          <div class="fit-field">
+            <label class="fit-label" for="fit-email">Email</label>
+            <input class="fit-input" type="email" id="fit-email" name="email" placeholder="Email address" autocomplete="email" />
+          </div>
+          <div id="fitDynamic"></div>
+          <div class="fit-field">
+            <label class="fit-label" for="fit-message">Anything else <span class="fit-opt">(optional)</span></label>
+            <textarea class="fit-input fit-textarea" id="fit-message" name="message" placeholder="Tell us a little more" rows="2"></textarea>
+          </div>
+          <button type="submit" class="fit-submit" id="fitSubmit">Send it.</button>
+          <div class="fit-error" id="fitError" hidden></div>
+        </form>
+        <div class="fit-success" id="fitSuccess" hidden>
+          <div class="fit-success-hl">You've been found.</div>
+          <div class="fit-success-sub"><span class="fit-success-dot"></span><span id="fitSuccessMsg"></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div><!-- /.svc-detail -->
+  </div><!-- /.svc-stage -->
 </section>
 
-<!-- CONTACT — SERVICE-AWARE CONVERSATIONAL FORM (sticky scroll expansion) -->
-<div class="contact-scroll-container">
-<section class="contact-section" id="contact" data-scene-label="Let's Talk">
-  <div class="section-eyebrow" id="convoHeader">
-    <div class="section-eyebrow-line"></div>
-    <span class="section-eyebrow-text">Let's talk</span>
-  </div>
-
-  <div class="contact-stage">
-  <div class="convo-wrap">
-
-    <!-- Service confirmation (shown when pre-selected) -->
-    <div id="svcConfirm" style="display:none; margin-bottom:32px;">
-      <div style="font-size:9px; font-weight:500; letter-spacing:0.22em; text-transform:uppercase; color:var(--fg3); margin-bottom:8px;">You're interested in</div>
-      <div id="svcConfirmName" style="font-family:var(--serif); font-size:clamp(22px,3vw,32px); font-style:italic; color:var(--pink); margin-bottom:8px;"></div>
-      <button type="button" id="svcChangeBtn" style="font-family:var(--sans); font-size:9px; font-weight:400; letter-spacing:0.14em; text-transform:uppercase; color:var(--fg3); background:none; border:none; cursor:pointer; padding:0; transition:color 0.2s;" onmouseover="this.style.color='var(--fg)'" onmouseout="this.style.color='var(--fg3)'">Change selection</button>
-    </div>
-
-    <!-- Step 0: Service selection (organic entry) -->
-    <div class="convo-step" data-step="0">
-      <div class="convo-prompt">What are you looking for?</div>
-      <div class="pill-group" id="svcPickerGroup">
-        <button type="button" class="pill" data-value="Social Media Audit">Social Media Audit</button>
-        <button type="button" class="pill" data-value="Premium Audit">Premium Audit</button>
-        <button type="button" class="pill" data-value="Social Media Strategy">Social Media Strategy</button>
-        <button type="button" class="pill" data-value="Premium Strategy">Premium Strategy</button>
-        <button type="button" class="pill" data-value="Full Management">Full Management</button>
-        <button type="button" class="pill" data-value="Not sure yet">Not sure yet</button>
-      </div>
-    </div>
-
-    <!-- Receipt of completed answers -->
-    <div class="convo-receipt" id="convoReceipt"></div>
-
-    <!-- Step 1: Name -->
-    <div class="convo-step" data-step="1">
-      <div class="convo-prompt">What's your name?</div>
-      <input class="convo-input" type="text" id="cs-name" placeholder="First and last name" autocomplete="name" />
-    </div>
-
-    <!-- Step 2: Email -->
-    <div class="convo-step" data-step="2">
-      <div class="convo-prompt">Where can we reach you?</div>
-      <input class="convo-input" type="email" id="cs-email" placeholder="your@email.com" autocomplete="email" />
-    </div>
-
-    <!-- Step 3: Platforms -->
-    <div class="convo-step" data-step="3">
-      <div class="convo-prompt">Which platforms are you on?</div>
-      <div class="pill-group" id="platformGroup">
-        <button type="button" class="pill" data-value="Instagram">Instagram</button>
-        <button type="button" class="pill" data-value="TikTok">TikTok</button>
-        <button type="button" class="pill" data-value="YouTube">YouTube</button>
-        <button type="button" class="pill" data-value="Facebook">Facebook</button>
-        <button type="button" class="pill" data-value="LinkedIn">LinkedIn</button>
-        <button type="button" class="pill" data-value="None yet">None yet</button>
-      </div>
-      <button type="button" class="convo-next" id="platformNext">Continue &rarr;</button>
-    </div>
-
-    <!-- Step 4: Service-specific question (content swapped by JS) -->
-    <div class="convo-step" data-step="4">
-      <div class="convo-prompt" id="step4Prompt"></div>
-      <!-- Audit variant -->
-      <div id="step4Audit" style="display:none;">
-        <input class="convo-input" type="text" id="cs-profile" placeholder="@handle or profile URL" />
-      </div>
-      <!-- Strategy variant -->
-      <div id="step4Strategy" style="display:none;">
-        <div class="pill-group" id="challengeGroup">
-          <button type="button" class="pill" data-value="I don't know what to post">I don't know what to post</button>
-          <button type="button" class="pill" data-value="I have no strategy">I have no strategy</button>
-          <button type="button" class="pill" data-value="I don't have time">I don't have time</button>
-          <button type="button" class="pill" data-value="I'm not growing">I'm not growing</button>
-        </div>
-        <button type="button" class="convo-next" id="challengeNext">Continue &rarr;</button>
-      </div>
-      <!-- Full Management variant -->
-      <div id="step4Mgmt" style="display:none;">
-        <div class="pill-group" id="presenceGroup">
-          <button type="button" class="pill" data-value="Just starting out">Just starting out</button>
-          <button type="button" class="pill" data-value="Active but stuck">Active but stuck</button>
-          <button type="button" class="pill" data-value="Ready to hand it off">Ready to hand it off</button>
-          <button type="button" class="pill" data-value="Growing and need to scale">Growing and need to scale</button>
-        </div>
-        <button type="button" class="convo-next" id="presenceNext">Continue &rarr;</button>
-      </div>
-    </div>
-
-    <!-- Step 5: Message -->
-    <div class="convo-step" data-step="5">
-      <div class="convo-prompt">Tell us a little more.</div>
-      <textarea class="convo-textarea" id="cs-message" placeholder="Context, goals, where you are right now..." rows="1"></textarea>
-      <button type="button" class="convo-next" id="messageNext" style="display:none">Continue &rarr;</button>
-    </div>
-
-    <!-- Step 6: Send -->
-    <div class="convo-step" data-step="6">
-      <button type="button" class="convo-submit" id="convoSend">Send it.</button>
-    </div>
-
-    <!-- Success -->
-    <div class="convo-success" id="convoSuccess">
-      <div class="convo-success-hl">You've been found.</div>
-      <div class="convo-success-sub">
-        <span class="convo-success-dot"></span>
-        <span id="successMsg">We'll be in touch within 48 hours.</span>
-      </div>
-    </div>
-  </div>
-  </div>
-</section>
-</div>
+<!-- Standalone "Let's Talk" section removed — its service-aware form now lives inside the Services section above (#services). -->
 
 <!-- CONTACT CARD DOWNLOAD -->
 <section class="vcard-section scene">
@@ -2070,18 +2567,56 @@
     <p class="vcard-note">Adds Kyra &amp; Brendan as separate contacts &middot; Works on iPhone, Android, and desktop</p>
   </div>
 
+  <!-- AFTER HOURS — private community invite -->
+  <section id="after-hours" class="after-hours scene">
+    <div class="ah-wrap">
+      <div class="section-eyebrow">
+        <div class="section-eyebrow-line"></div>
+        <span class="section-eyebrow-text">Join Community</span>
+      </div>
+
+      <div class="ah-inner">
+        <div class="ah-kicker"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="9" cy="12" r="1"/><circle cx="15" cy="12" r="1"/><path d="M7.5 7.5c3.5 -1 5.5 -1 9 0"/><path d="M7 16.5c3.5 1 6.5 1 10 0"/><path d="M15.5 17c0 1 1.5 3 2 3c1.5 0 2.833 -1.667 3.5 -3c.667 -1.667 .5 -5.833 -1.5 -11.5c-1.457 -1.015 -3 -1.34 -4.5 -1.5l-.972 1.923a11.913 11.913 0 0 0 -4.053 0l-.975 -1.923c-1.5 .16 -3.043 .485 -4.5 1.5c-2 5.667 -2.167 9.833 -1.5 11.5c.667 1.333 2 3 3.5 3c.5 0 2 -2 2 -3"/></svg><span>Lost Objects: After Hours</span></div>
+        <h2 class="ah-hl">Pull up <em>a chair.</em></h2>
+
+        <p class="ah-copy">A private community where filmmakers, marketers, and creative entrepreneurs trade ideas, find collaborators, and talk shop after hours. Every member is hand-picked. Free to join, by application.</p>
+
+        <div class="ah-tags">
+          <span class="pill-label">Free</span>
+          <span class="pill-label">Application-only</span>
+          <span class="pill-label">Global</span>
+          <span class="pill-label">For creative entrepreneurs</span>
+        </div>
+
+        <a href="https://discord.gg/ZqGhVfJu2a" target="_blank" rel="noopener" class="ah-cta">Apply to join</a>
+        <p class="ah-note">Free to join &middot; Every member hand-picked</p>
+      </div>
+    </div>
+  </section>
+
   <!-- FOOTER (inside vcard section — one scene) -->
   <footer>
     <div class="foot-inner">
       <div class="foot-top">
         <div class="foot-logo">Lost Objects</div>
-        <a href="https://www.instagram.com/wearelostobjects/" target="_blank" rel="noopener noreferrer" class="foot-ig" aria-label="Instagram">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="2" y="2" width="20" height="20" rx="5" stroke="#FF6666" stroke-width="1.5"/>
-            <circle cx="12" cy="12" r="5" stroke="#FF6666" stroke-width="1.5"/>
-            <circle cx="17.5" cy="6.5" r="1.2" fill="#FF6666"/>
-          </svg>
-        </a>
+        <div class="foot-social">
+          <a href="https://www.instagram.com/wearelostobjects/" target="_blank" rel="noopener noreferrer" class="foot-ig" aria-label="Instagram">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="2" y="2" width="20" height="20" rx="5" stroke="#FF6666" stroke-width="1.5"/>
+              <circle cx="12" cy="12" r="5" stroke="#FF6666" stroke-width="1.5"/>
+              <circle cx="17.5" cy="6.5" r="1.2" fill="#FF6666"/>
+            </svg>
+          </a>
+          <a href="https://discord.gg/ZqGhVfJu2a" target="_blank" rel="noopener noreferrer" class="foot-ig" aria-label="Discord">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FF6666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="9" cy="12" r="1"/>
+              <circle cx="15" cy="12" r="1"/>
+              <path d="M7.5 7.5c3.5 -1 5.5 -1 9 0"/>
+              <path d="M7 16.5c3.5 1 6.5 1 10 0"/>
+              <path d="M15.5 17c0 1 1.5 3 2 3c1.5 0 2.833 -1.667 3.5 -3c.667 -1.667 .5 -5.833 -1.5 -11.5c-1.457 -1.015 -3 -1.34 -4.5 -1.5l-.972 1.923a11.913 11.913 0 0 0 -4.053 0l-.975 -1.923c-1.5 .16 -3.043 .485 -4.5 1.5c-2 5.667 -2.167 9.833 -1.5 11.5c.667 1.333 2 3 3.5 3c.5 0 2 -2 2 -3"/>
+            </svg>
+          </a>
+        </div>
       </div>
       <div class="foot-bot">
         <div class="foot-email">Email us at <a href="mailto:contact@wearelostobjects.com" class="foot-mail-lnk">contact@wearelostobjects.com</a></div>
@@ -2293,9 +2828,12 @@
   })();
 
   /* ═══════════════════════════════════════════
-     SERVICE-AWARE CONVERSATIONAL FORM ENGINE
+     LEGACY LET'S TALK ENGINE — disabled.
+     The standalone form was merged into the Services section; this
+     no-ops because its DOM (#convoReceipt) no longer exists.
      ═══════════════════════════════════════════ */
   (function() {
+    if (!document.getElementById('convoReceipt')) return;
     const FORMSPREE = 'https://formspree.io/f/xgoqdyyd';
     const receipt = document.getElementById('convoReceipt');
     const steps = document.querySelectorAll('.convo-step');
@@ -2572,31 +3110,400 @@
   })();
 
   /* ═══════════════════════════════════════════
-     SERVICE CARD INTERACTIONS
+     SERVICES — inline questionnaire controller
+     Reuses the Formspree endpoint + field names from the old Let's Talk form.
+     One shared detail panel; one service open at a time.
      ═══════════════════════════════════════════ */
+  (function() {
+    const section = document.getElementById('services');
+    if (!section) return;
+    const FORMSPREE = 'https://formspree.io/f/xgoqdyyd';
 
-  // Card body click toggles details expand/collapse + selected state
-  document.querySelectorAll('.svc-card').forEach(card => {
-    card.addEventListener('click', function(e) {
-      if (e.target.closest('.svc-cta-btn')) return;
-      const details = this.querySelector('.svc-details');
-      if (details) {
-        details.classList.toggle('open');
-        this.classList.toggle('expanded');
+    const SERVICES = {
+      'Social Media Audit': {
+        kicker: "What's included",
+        included: ['Profile review','Content audit','Engagement analysis','Competitor review','Top 5 recommendations'],
+        fields: [
+          { type:'text', name:'profile', label:'Profile to review', placeholder:'@handle or profile URL' },
+          { type:'select', name:'main_platform', label:'Main platform', options:['Instagram','TikTok','YouTube','LinkedIn','Other'] },
+          { type:'select', name:'prompting', label:"What's prompting this", options:['Not growing','Stuck on content','About to launch','Want a second opinion'] }
+        ]
+      },
+      'Premium Audit': {
+        kicker: "What's included",
+        included: ['Everything in the Audit','Cross-platform profile review','Written audit report','Follow-up email support'],
+        fields: [
+          { type:'text', name:'profiles', label:'The two profiles to review', placeholder:'@handles or profile URLs' },
+          { type:'chips', name:'platforms', label:"Platforms you're on", options:['Instagram','TikTok','YouTube','LinkedIn'] },
+          { type:'text', name:'report_focus', label:'What you most want the report to answer', placeholder:'In a sentence' }
+        ]
+      },
+      'Social Media Strategy': {
+        kicker: "What's included",
+        included: ['Goal setting','Content calendar','Audience identification','Growth strategies','Platform tools'],
+        fields: [
+          { type:'text', name:'profile', label:'Your main profile', placeholder:'@handle or profile URL' },
+          { type:'chips', name:'platforms', label:"Platforms you're on", options:['Instagram','TikTok','YouTube','LinkedIn'] },
+          { type:'select', name:'challenge', label:'Biggest challenge', options:["I don't know what to post","I have no strategy","I don't have time","I'm not growing"] },
+          { type:'text', name:'success_6mo', label:'What success looks like in 6 months', placeholder:'In a sentence' }
+        ]
+      },
+      'Premium Strategy': {
+        kicker: "What's included",
+        included: ['Full audit','Brand voice document','Content strategy','KPIs and metrics','Follow-up session','Ongoing support'],
+        fields: [
+          { type:'text', name:'profiles', label:'Your profile(s)', placeholder:'@handle(s) or profile URLs' },
+          { type:'chips', name:'platforms', label:"Platforms you're on", options:['Instagram','TikTok','YouTube','LinkedIn'] },
+          { type:'select', name:'challenge', label:'Biggest challenge', options:["I don't know what to post","I have no strategy","I don't have time","I'm not growing"] },
+          { type:'select', name:'primary_goal', label:'Primary goal', options:['Grow audience','Book more work','Launch something','Rebrand'] },
+          { type:'text', name:'niche', label:'Your niche or who you serve', placeholder:'e.g. indie filmmakers' }
+        ]
+      },
+      'Full Management': {
+        kicker: "What's included",
+        included: ['Content creation and scheduling','Analytics and reporting','Trend integration','Community management','Brand partnerships'],
+        fields: [
+          { type:'text', name:'handles', label:'Handle(s)', placeholder:'@yourbrand' },
+          { type:'text', name:'website', label:'Website or portfolio', placeholder:'https://' },
+          { type:'chips', name:'platforms', label:'Platforms to manage', options:['Instagram','TikTok','YouTube','LinkedIn'] },
+          { type:'select', name:'current_status', label:'Where are you now', options:['Just starting out','Active but stuck','Ready to hand it off','Growing and need to scale'] },
+          { type:'chips', name:'handoff', label:'What you want handed off', options:['Content','Strategy','Community','Partnerships','All of it'] },
+          { type:'select', name:'investment', label:'Investment range', options:['Keeping it lean','Room to invest','All in','Not sure yet'] },
+          { type:'select', name:'start_when', label:'When to start', options:['ASAP','1-3 months','Just exploring'] }
+        ]
+      },
+      'Help me choose': {
+        kicker: 'How it works',
+        included: ['Tell us your goal','Tell us where you are now','We point you to the right tier'],
+        fields: [
+          { type:'text', name:'profile', label:'Your handle or URL', placeholder:'@handle or URL' },
+          { type:'text', name:'goal', label:"What you're hoping to achieve", placeholder:'In a sentence or two' }
+        ]
       }
-      // Set selected state
-      document.querySelectorAll('.svc-card').forEach(c => c.classList.remove('selected'));
-      this.classList.add('selected');
-    });
-  });
+    };
 
-  // "Start with this" buttons and "Apply for Full Management"
-  document.querySelectorAll('.svc-cta-btn button, .svc-callout-btn').forEach(btn => {
-    btn.addEventListener('click', function(e) {
-      e.stopPropagation();
-      if (window.__loSelectService) window.__loSelectService(this.dataset.service);
+    const panel      = document.getElementById('svcPanel');
+    const kickerEl    = document.getElementById('svcPanelKicker');
+    const titleEl     = document.getElementById('svcPanelTitle');
+    const inclEl      = document.getElementById('svcInclList');
+    const dynamic     = document.getElementById('fitDynamic');
+    const serviceFld  = document.getElementById('fitService');
+    const form        = document.getElementById('fitForm');
+    const successEl   = document.getElementById('fitSuccess');
+    const successMsg  = document.getElementById('fitSuccessMsg');
+    const errorEl     = document.getElementById('fitError');
+    const submitBtn   = document.getElementById('fitSubmit');
+    const triggers    = section.querySelectorAll('[data-service]');
+    let activeService = null;
+
+    // Remember each trigger's default affordance label ("Select →" / "Apply →")
+    triggers.forEach(function(t){
+      const s = t.querySelector('.svc-select');
+      if (s && !s.dataset.def) s.dataset.def = s.textContent;
     });
-  });
+
+    // ── In-place view swap: chooser (cards) <-> detail (questionnaire) ──
+    // The two views occupy the same spot; selecting crossfades + morphs the
+    // stage height so nothing gets bumped down the page.
+    const stage       = document.getElementById('svcStage');
+    const chooser     = document.getElementById('svcChooser');
+    const detail      = document.getElementById('svcDetail');
+    const backBtn     = document.getElementById('svcBack');
+    const detailTag   = document.getElementById('svcDetailTag');
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let animating = false;
+    let onDetail  = false;
+
+    function focusName(){
+      const nameEl = document.getElementById('fit-name');
+      if (nameEl) nameEl.focus({ preventScroll: true });
+    }
+
+    // ── Staggered reveal: checklist items + form rows cascade in once the panel
+    //    has bloomed, so the content feels like it assembles itself. ──
+    function staggerTargets(){
+      return Array.prototype.slice.call(
+        detail.querySelectorAll('.svc-incl li, .fit-field, .fit-submit')
+      );
+    }
+    function prepStagger(){
+      if (reduceMotion.matches) return;
+      staggerTargets().forEach(function(elm){
+        elm.style.transition = 'none';
+        elm.style.opacity = '0';
+        elm.style.transform = 'translateY(10px)';
+      });
+    }
+    function runStagger(){
+      if (reduceMotion.matches) return;
+      const items = staggerTargets();
+      requestAnimationFrame(function(){
+        items.forEach(function(elm, i){
+          const d = (0.05 * i).toFixed(2);
+          elm.style.transition = 'opacity 0.5s ease ' + d + 's, transform 0.6s cubic-bezier(0.16,1,0.3,1) ' + d + 's';
+          elm.style.opacity = '1';
+          elm.style.transform = 'none';
+        });
+      });
+      // Clear the inline styles once done so nothing lingers for the next open
+      const total = 0.05 * items.length + 0.6;
+      window.setTimeout(function(){
+        items.forEach(function(elm){ elm.style.transition = ''; elm.style.transform = ''; elm.style.opacity = ''; });
+      }, Math.round(total * 1000) + 150);
+    }
+
+    // Glide the page so the active view sits centered in the viewport (below the
+    // fixed nav). Views taller than the viewport pin just under the nav instead,
+    // so their top is always reachable. Runs alongside the bloom for a flowing feel.
+    function glideToCenter(topDoc, viewH){
+      const navH = 62; // --nav-h
+      const avail = window.innerHeight - navH;
+      const desiredTop = (viewH <= avail - 32) ? navH + (avail - viewH) * 0.4 : navH + 20;
+      const targetY = Math.max(0, Math.round(topDoc - desiredTop));
+      if (Math.abs(targetY - window.scrollY) < 24) return; // already nicely placed
+      animateScrollTo(targetY, 1000);
+    }
+
+    // Custom eased scroll — same expo curve + ~duration as the bloom, so the page
+    // glide and the view materialising read as ONE motion. Bows out instantly if
+    // the user grabs the scroll (wheel/touch), so it never feels like a hijack.
+    let scrollRAF = null;
+    function animateScrollTo(targetY, duration){
+      if (scrollRAF) { cancelAnimationFrame(scrollRAF); scrollRAF = null; }
+      const startY = window.scrollY;
+      const dist = targetY - startY;
+      if (Math.abs(dist) < 2) return;
+      if (reduceMotion.matches) { window.scrollTo(0, targetY); return; }
+      const easeOutExpo = function(t){ return t >= 1 ? 1 : 1 - Math.pow(2, -10 * t); };
+      let startTs = null;
+      function stop(){
+        if (scrollRAF) { cancelAnimationFrame(scrollRAF); scrollRAF = null; }
+        window.removeEventListener('wheel', stop);
+        window.removeEventListener('touchstart', stop);
+      }
+      window.addEventListener('wheel', stop, { passive: true });
+      window.addEventListener('touchstart', stop, { passive: true });
+      function step(ts){
+        if (startTs === null) startTs = ts;
+        const t = Math.min(1, (ts - startTs) / duration);
+        window.scrollTo(0, Math.round(startY + dist * easeOutExpo(t)));
+        if (t < 1) scrollRAF = requestAnimationFrame(step);
+        else stop();
+      }
+      scrollRAF = requestAnimationFrame(step);
+    }
+
+    function swapView(toDetail){
+      if (toDetail === onDetail || animating) return;
+      if (!stage || !chooser || !detail) return;
+      onDetail = toDetail;
+      const cur = toDetail ? chooser : detail;
+      const nxt = toDetail ? detail : chooser;
+
+      animating = true;
+      // Honor reduced-motion with a gentle fade (no blur/scale); full bloom otherwise.
+      const reduce = reduceMotion.matches;
+      // Expo-style ease — fast to start, long graceful deceleration (luxe settle)
+      const EASE = 'cubic-bezier(0.16, 1, 0.3, 1)';
+      const startH = stage.offsetHeight;
+      // Stage's top in the document is fixed (content above doesn't move), so this
+      // is a stable anchor for centering the incoming view even as height morphs.
+      const stageTopDoc = stage.getBoundingClientRect().top + window.scrollY;
+      // Float the outgoing view so the incoming one defines the new height.
+      // Incoming starts scaled-down + softly blurred so it blooms INTO focus.
+      nxt.hidden = false;
+      nxt.style.opacity = '0';
+      nxt.style.transform = reduce ? 'none' : 'scale(0.94)';
+      nxt.style.filter    = reduce ? 'none' : 'blur(12px)';
+      cur.style.position = 'absolute';
+      cur.style.top = '0'; cur.style.left = '0'; cur.style.right = '0';
+      const endH = stage.offsetHeight;
+
+      stage.style.overflow = 'hidden';
+      stage.style.height = startH + 'px';
+      void stage.offsetHeight; // reflow
+      stage.style.transition = 'height ' + (reduce ? '0.5s ease' : '0.9s ' + EASE);
+      stage.style.height = endH + 'px';
+
+      // Outgoing MELTS away — it softens (blur) + recedes as it fades, so the two
+      // views cross-dissolve into one another instead of one hard-cutting (no flash).
+      cur.style.transition = reduce
+        ? 'opacity 0.45s ease'
+        : 'opacity 0.65s ease, transform 0.7s ' + EASE + ', filter 0.65s ease';
+      cur.style.opacity = '0';
+      if (!reduce) { cur.style.transform = 'scale(0.992)'; cur.style.filter = 'blur(8px)'; }
+      requestAnimationFrame(function(){
+        // Incoming blooms up from blur, overlapping the outgoing so there's never
+        // a blank gap to read as a blink. Small lead-in delay, long graceful settle.
+        nxt.style.transition = reduce
+          ? 'opacity 0.55s ease 0.1s'
+          : 'opacity 0.55s ease 0.06s, transform 1.15s ' + EASE + ' 0.06s, filter 0.95s ease 0.08s';
+        nxt.style.opacity = '1';
+        nxt.style.transform = 'none';
+        nxt.style.filter = reduce ? 'none' : 'blur(0px)';
+        // Center the incoming view as it blooms — effortless flow into the fields
+        glideToCenter(stageTopDoc, endH);
+      });
+
+      window.setTimeout(function(){
+        cur.hidden = true;
+        cur.style.position = ''; cur.style.top = ''; cur.style.left = ''; cur.style.right = '';
+        cur.style.opacity = ''; cur.style.transform = ''; cur.style.filter = ''; cur.style.transition = '';
+        nxt.style.opacity = ''; nxt.style.transform = ''; nxt.style.filter = ''; nxt.style.transition = '';
+        stage.style.height = ''; stage.style.transition = ''; stage.style.overflow = '';
+        animating = false;
+        if (toDetail) focusName();
+      }, reduce ? 700 : 1400);
+    }
+
+    function escHtml(s){ const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+    function el(tag, cls){ const e = document.createElement(tag); if (cls) e.className = cls; return e; }
+
+    // Render the per-service field set into #fitDynamic. Every control carries a
+    // name attribute, so all of them POST through the existing Formspree endpoint.
+    function buildFields(cfg){
+      dynamic.innerHTML = '';
+      cfg.fields.forEach(function(f){
+        const wrap = el('div','fit-field');
+        const lab  = el('label','fit-label');
+        lab.textContent = f.label;
+        const fid = 'fit-' + f.name;
+        wrap.appendChild(lab);
+        if (f.type === 'select') {
+          lab.setAttribute('for', fid);
+          const sel = el('select','fit-input');
+          sel.id = fid; sel.name = f.name;
+          const ph = el('option'); ph.value = ''; ph.textContent = 'Select one'; ph.disabled = true; ph.selected = true;
+          sel.appendChild(ph);
+          f.options.forEach(function(o){ const op = el('option'); op.value = o; op.textContent = o; sel.appendChild(op); });
+          wrap.appendChild(sel);
+        } else if (f.type === 'chips') {
+          const chips = el('div','fit-chips');
+          f.options.forEach(function(o){
+            const lb = el('label','fit-chip');
+            const cb = el('input'); cb.type = 'checkbox'; cb.name = f.name; cb.value = o;
+            const sp = el('span'); sp.textContent = o;
+            lb.appendChild(cb); lb.appendChild(sp);
+            chips.appendChild(lb);
+          });
+          wrap.appendChild(chips);
+        } else {
+          lab.setAttribute('for', fid);
+          const inp = el('input','fit-input');
+          inp.type = 'text'; inp.id = fid; inp.name = f.name;
+          inp.placeholder = f.placeholder || '';
+          wrap.appendChild(inp);
+        }
+        dynamic.appendChild(wrap);
+      });
+    }
+
+    function openService(svc, trigger){
+      const cfg = SERVICES[svc];
+      if (!cfg) return;
+      kickerEl.textContent = cfg.kicker;
+      titleEl.textContent = svc;
+      inclEl.innerHTML = cfg.included.map(function(i){ return '<li>' + escHtml(i) + '</li>'; }).join('');
+      buildFields(cfg);
+      serviceFld.value = svc;
+      // reset to form view (clear any prior success/error)
+      successEl.hidden = true;
+      form.hidden = false;
+      errorEl.hidden = true;
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Send it.';
+      activeService = svc;
+      if (detailTag) detailTag.textContent = svc;
+      // No bright "selected" flip on the card here — it's about to morph away, and
+      // that instant coral pop was the click "flash". The smooth swap is the feedback.
+      // Pre-hide the checklist + form rows so they can cascade in after the bloom
+      prepStagger();
+      // Coral glow swells behind the panel as it materialises
+      if (!reduceMotion.matches) {
+        panel.classList.remove('glow-swell');
+        void panel.offsetWidth; // restart the animation each open
+        panel.classList.add('glow-swell');
+      }
+      // Morph the chooser into the questionnaire in place (no page bump)
+      swapView(true);
+      // Cascade the content in just as the panel becomes visible
+      window.setTimeout(runStagger, 260);
+    }
+
+    // "Change service" — morph back to the chooser and re-arm the grid
+    function changeService(){
+      swapView(false);
+      activeService = null;
+      triggers.forEach(function(t){
+        t.classList.remove('active');
+        const s = t.querySelector('.svc-select');
+        if (s) s.textContent = s.dataset.def || s.textContent;
+      });
+    }
+
+    triggers.forEach(function(trigger){
+      trigger.addEventListener('click', function(){ openService(trigger.dataset.service, trigger); });
+    });
+    if (backBtn) backBtn.addEventListener('click', changeService);
+
+    function showError(msg){ errorEl.textContent = msg; errorEl.hidden = false; }
+
+    // Submit — FormData(form) captures the hidden "service" field, name, email,
+    // every dynamic field, the checkbox chips, and the optional message by their
+    // name attributes, and POSTs to the original Formspree endpoint unchanged.
+    form.addEventListener('submit', async function(e){
+      e.preventDefault();
+      const nameEl  = document.getElementById('fit-name');
+      const emailEl = document.getElementById('fit-email');
+      const name    = nameEl.value.trim();
+      const email   = emailEl.value.trim();
+
+      errorEl.hidden = true;
+      if (!name) { showError('Please add your name.'); return; }
+      if (!email || !emailEl.checkValidity()) { showError('Please add a valid email.'); return; }
+
+      submitBtn.textContent = 'Sending...';
+      submitBtn.disabled = true;
+
+      const fd = new FormData(form);
+
+      try {
+        const res = await fetch(FORMSPREE, { method:'POST', body:fd, headers:{ 'Accept':'application/json' } });
+        if (res.ok) {
+          form.hidden = true;
+          successMsg.textContent = "We'll be in touch about your " + serviceFld.value + " within 48 hours.";
+          successEl.hidden = false;
+          successEl.scrollIntoView({ behavior:'smooth', block:'center' });
+        } else {
+          showError('Something went wrong — please try again.');
+          submitBtn.textContent = 'Send it.';
+          submitBtn.disabled = false;
+        }
+      } catch (err) {
+        showError('Network error — please try again.');
+        submitBtn.textContent = 'Send it.';
+        submitBtn.disabled = false;
+      }
+    });
+
+    // Deep-link support: a link landing with one of these hashes opens that panel.
+    // (No current internal link uses these — the hero CTA just scrolls to #services.)
+    const HASH_MAP = {
+      '#services-audit':'Social Media Audit',
+      '#services-premium-audit':'Premium Audit',
+      '#services-strategy':'Social Media Strategy',
+      '#services-premium-strategy':'Premium Strategy',
+      '#services-full-management':'Full Management'
+    };
+    function openFromHash(){
+      const svc = HASH_MAP[location.hash];
+      if (!svc) return;
+      const t = section.querySelector('[data-service="' + svc + '"]');
+      if (t) setTimeout(function(){ openService(svc, t); }, 400);
+    }
+    window.addEventListener('hashchange', openFromHash);
+    openFromHash();
+  })();
 
   // Collage cards — tap to toggle the stats overlay on mobile (no hover available)
   (function() {
