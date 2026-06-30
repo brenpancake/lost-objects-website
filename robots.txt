@@ -1,12 +1,13 @@
 # robots.txt — wearelostobjects.com
 
-# All crawlers: full site allowed, internal CRM tool disallowed
+# All crawlers: site allowed, internal CRM tool disallowed.
+# Work-in-progress pages are kept out of search via per-page
+# <meta name="robots" content="noindex, follow"> instead of robots.txt.
 User-agent: *
 Allow: /
 Disallow: /crm/
 
-# Explicitly welcome AI search & answer-engine crawlers
-# (same rules — site allowed, /crm/ disallowed)
+# Explicitly welcome AI search & answer-engine crawlers (same rules)
 User-agent: GPTBot
 User-agent: OAI-SearchBot
 User-agent: ChatGPT-User
