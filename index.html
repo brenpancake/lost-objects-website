@@ -6,7 +6,8 @@
   <title>Lost Objects — Social Media Strategy for the Creative Industry</title>
   <meta name="description" content="Lost Objects. Social media strategy and full management for filmmakers, creators, and entertainment brands. Something new is coming." />
   <link rel="canonical" href="https://wearelostobjects.com/" />
-  <link rel="icon" href="/images/og-image.jpg" />
+  <link rel="icon" type="image/png" href="/images/image_favicon.png" />
+  <link rel="apple-touch-icon" href="/images/image_favicon.png" />
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -129,12 +130,20 @@
       justify-content: center;
       position: relative;
     }
+    .nav-logo-link {
+      display: flex;
+      align-items: center;
+      line-height: 0;
+    }
     .nav-logo {
-      font-size: 13px;
-      font-weight: 600;
-      letter-spacing: 0.28em;
-      text-transform: uppercase;
-      color: var(--pink);
+      display: block;
+      height: 14px;
+      width: auto;
+      /* ~8:1 wordmark: 14px tall ≈ the old 13px cap-height footprint.
+         Backstop so it never crowds the icons on tiny screens; object-fit
+         keeps aspect ratio (no stretch) if the width cap ever engages. */
+      max-width: min(150px, 46vw);
+      object-fit: contain;
     }
     .nav-ig {
       position: absolute;
@@ -2184,7 +2193,8 @@
     }
     .foot-inner { max-width: var(--max); margin: 0 auto; padding: clamp(40px, 6vh, 64px) var(--pad) 26px; display: flex; flex-direction: column; gap: 0; }
     .foot-top { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; padding-bottom: 20px; border-bottom: 1px solid rgba(232,226,217,0.08); }
-    .foot-logo { font-size: 10px; font-weight: 600; letter-spacing: 0.24em; text-transform: uppercase; color: var(--pink); }
+    .foot-logo { display: flex; align-items: center; line-height: 0; }
+    .foot-logo img { display: block; height: 11px; width: auto; max-width: min(140px, 50vw); object-fit: contain; }
     .foot-ig {
       display: flex;
       align-items: center;
@@ -2289,7 +2299,9 @@
 <!-- NAV -->
 <nav>
   <div class="nav-inner">
-    <span class="nav-logo">Lost Objects</span>
+    <a href="#top" class="nav-logo-link" aria-label="Lost Objects — back to top">
+      <img src="images/logo-nav.png" alt="Lost Objects" class="nav-logo">
+    </a>
     <a href="https://www.instagram.com/wearelostobjects/" target="_blank" rel="noopener noreferrer" class="nav-ig" aria-label="Instagram">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <rect x="2" y="2" width="20" height="20" rx="5" stroke="#FF6666" stroke-width="1.5"/>
@@ -2894,7 +2906,9 @@
   <footer>
     <div class="foot-inner">
       <div class="foot-top">
-        <div class="foot-logo">Lost Objects</div>
+        <a href="#top" class="foot-logo" aria-label="Lost Objects — back to top">
+          <img src="images/logo-nav.png" alt="Lost Objects">
+        </a>
         <div class="foot-social">
           <a href="https://www.instagram.com/wearelostobjects/" target="_blank" rel="noopener noreferrer" class="foot-ig" aria-label="Instagram">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
