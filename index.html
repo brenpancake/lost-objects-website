@@ -1536,6 +1536,184 @@
       .whois-tab { flex: 0 0 auto; }
     }
 
+    /* TESTIMONIALS — rotating quote stage. Mirrors the section rhythm and the
+       Services panel crossfade language (same cubic-bezier(0.16,1,0.3,1) ease
+       with an opacity + scale + blur bloom). One slide shows at a time; slides
+       are stacked in a single grid cell so the stage auto-sizes to the tallest
+       quote (no height jump between slides). Section is a .scene, so it inherits
+       the scroll-focus fade and gets its own left-rail dot in DOM order. */
+    .testimonials-section {
+      position: relative;
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: clamp(52px, 8vh, 80px) var(--pad) clamp(64px, 10vh, 100px);
+    }
+    .tst-stage {
+      display: grid;
+      max-width: 820px;
+      margin: clamp(28px, 5vh, 52px) auto 0;
+    }
+    /* All slides share one grid cell (stacked); the cell grows to the tallest */
+    .tst-slide {
+      grid-area: 1 / 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      text-align: center;
+      opacity: 0;
+      transform: scale(0.985);
+      filter: blur(6px);
+      pointer-events: none;
+      transition: opacity 0.65s ease,
+                  transform 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+                  filter 0.65s ease;
+    }
+    .tst-slide.active {
+      opacity: 1;
+      transform: none;
+      filter: blur(0);
+      pointer-events: auto;
+    }
+    /* Index — same treatment as the Services card numbers (Built Titling, muted).
+       Now sits alone above the quote (the decorative mark was removed) with
+       comfortable spacing below. */
+    .tst-index {
+      font-family: var(--display);
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: var(--fg3);
+      margin-bottom: clamp(20px, 3vh, 30px);
+    }
+    /* Longer real quotes: sized + widened to sit at ~3-5 lines on desktop.
+       clamp min (1.05rem) also carries mobile, so there's no breakpoint jump. */
+    .tst-quote {
+      margin: 0 0 clamp(22px, 3.4vh, 34px);
+      max-width: 760px;
+      font-family: var(--accent-serif);
+      font-style: italic;
+      font-weight: 400;
+      font-size: clamp(1.05rem, 2.1vw, 1.5rem);
+      line-height: 1.45;
+      color: var(--fg);
+      text-wrap: balance;
+    }
+    /* Quotation marks live inside the quote: coral, Fraunces italic (inherited),
+       a touch larger than the text. The opening mark hangs slightly outside the
+       block for a hanging-punctuation feel; the quote text itself stays white. */
+    .tst-quote-mark {
+      color: var(--pink);
+      font-size: 1.3em;
+      line-height: 0;
+    }
+    .tst-quote-mark-open { margin-left: -0.32em; margin-right: 0.03em; }
+    .tst-quote-mark-close { margin-left: 0.03em; }
+    /* Portrait — square, sharp corners, coral hairline, gently desaturated.
+       Placeholder = dark square with initials; swapping in a real photo is a
+       one-line change per slide (add the .tst-portrait-img line — see markup). */
+    .tst-portrait {
+      position: relative;
+      width: clamp(64px, 6.5vw, 84px);
+      height: clamp(64px, 6.5vw, 84px);
+      margin: 0 0 clamp(16px, 2.2vh, 22px);
+      background: #1a1a1a;
+      border: 1px solid var(--pink);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .tst-portrait-initials {
+      font-family: var(--display);
+      font-size: clamp(20px, 2vw, 26px);
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: var(--fg3);
+    }
+    /* Real photo overlays the placeholder, covers the square, slightly muted */
+    .tst-portrait-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: saturate(0.85);
+    }
+    .tst-name {
+      font-family: var(--display);
+      font-size: clamp(18px, 2vw, 24px);
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      color: var(--fg);
+      margin-bottom: 7px;
+    }
+    .tst-role {
+      font-family: var(--sans);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--fg3);
+    }
+    /* Manual nav dots — active filled coral, inactive dimmed outline */
+    .tst-dots {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 16px;
+      margin-top: clamp(28px, 4.5vh, 44px);
+    }
+    .tst-dot {
+      position: relative;
+      width: 9px;
+      height: 9px;
+      padding: 0;
+      border-radius: 50%;
+      background: transparent;
+      border: 1px solid rgba(255,102,102,0.45);
+      cursor: pointer;
+      overflow: visible;
+      transition: background 0.25s ease, border-color 0.25s ease;
+    }
+    .tst-dot:hover { border-color: var(--pink); }
+    .tst-dot.active { background: var(--pink); border-color: var(--pink); }
+    /* Progress ring — thin coral arc that draws around the active dot over the
+       6s auto-advance. Restarted by JS on every slide change (incl. manual),
+       paused on hover, hidden entirely under reduced motion. Quiet, not a spinner. */
+    .tst-ring {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 16px;
+      height: 16px;
+      transform: translate(-50%, -50%) rotate(-90deg);
+      opacity: 0;
+      pointer-events: none;
+      overflow: visible;
+    }
+    .tst-ring circle {
+      fill: none;
+      stroke: var(--pink);
+      stroke-width: 1.5;
+      stroke-dasharray: 50.27;   /* 2·pi·8 ≈ circumference of r=8 in the viewBox */
+      stroke-dashoffset: 50.27;
+    }
+    .tst-ring.tst-ring-run { opacity: 0.8; }
+    .tst-ring.tst-ring-run circle { animation: tst-ring-draw 6s linear forwards; }
+    @keyframes tst-ring-draw { to { stroke-dashoffset: 0; } }
+    .testimonials-section:hover .tst-ring.tst-ring-run circle { animation-play-state: paused; }
+    @media (prefers-reduced-motion: reduce) {
+      /* Keep a gentle opacity crossfade; drop the scale/blur bloom + progress ring */
+      .tst-slide { transform: none; filter: none; transition: opacity 0.5s ease; }
+      .tst-ring { display: none; }
+    }
+    @media (max-width: 768px) {
+      .tst-portrait { width: 62px; height: 62px; }
+    }
+
     /* SERVICES — FIND THE RIGHT FIT (inline questionnaire) */
     .services-section {
       position: relative;
@@ -2093,9 +2271,20 @@
          After Hours. */
       padding: clamp(40px, 7vh, 80px) 0;
     }
+    /* Section headline — identical treatment to Services "Find the Right Fit."
+       (reuses .services-intro-hl + .svc-intro-rule). Wrapper carries the same
+       block-to-content margin as .services-intro so the flow into the cards
+       matches the Services rhythm; the rule's own bottom margin is dropped since
+       no paragraph follows it here. */
+    .vcard-intro {
+      margin-bottom: clamp(32px, 5vh, 48px);
+      text-align: center;
+    }
+    .vcard-intro .svc-intro-rule { margin-bottom: 0; }
     .vcard-cards {
       display: flex;
       justify-content: center;
+      align-items: flex-start;   /* each card sizes to its own content; expanding one won't stretch the other */
       gap: 24px;
       margin-bottom: 36px;
       flex-wrap: wrap;
@@ -2113,20 +2302,22 @@
       transform: translateY(-2px);
       border-color: rgba(255,102,102,0.3);
     }
+    /* Square portrait — same treatment as the testimonials (sharp corners,
+       1px coral border, gently desaturated). No border-radius remains. */
     .vcard-avatar {
-      width: 52px; height: 52px;
-      border-radius: 50%;
-      background: var(--pink);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: var(--display);
-      font-size: 22px;
-      font-weight: 600;
-      letter-spacing: 0.01em;
-      line-height: 0.98;
-      color: #fff;
+      width: 88px; height: 88px;
+      border-radius: 0;
+      border: 1px solid var(--pink);
+      overflow: hidden;
+      background: #1a1a1a;
       margin-bottom: 16px;
+    }
+    .vcard-photo {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: saturate(0.85);
     }
     .vcard-name {
       font-family: var(--display);
@@ -2141,6 +2332,15 @@
       font-size: 11px;
       font-weight: 300;
       color: rgba(232,226,217,0.65);
+      margin-bottom: 4px;
+    }
+    /* Secondary creative title — same size, visually secondary (muted, tag-style) */
+    .vcard-role2 {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--fg3);
       margin-bottom: 16px;
     }
     .vcard-divider {
@@ -2164,6 +2364,119 @@
     .vcard-row.ig { color: var(--pink); opacity: 1; }
     .vcard-row.ig a { color: var(--pink); }
     .vcard-row.ig svg { opacity: 0.8; }
+    /* Discord row — plain-text username (not a link), coral icon in the same
+       treatment as the Instagram icon; text stays muted so it doesn't read as a link. */
+    .vcard-row.dc svg { opacity: 0.8; }
+    /* Read More / Less trigger — styled like the site's coral arrow links */
+    .vcard-more {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      margin-top: 16px;
+      padding: 0;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      font-family: var(--sans);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--pink);
+      opacity: 0.85;
+      transition: opacity 0.2s ease, text-shadow 0.25s ease, transform 0.25s ease;
+    }
+    /* Coral glow on hover — clearly interactive, matches the site's button/active glow */
+    .vcard-more:hover {
+      opacity: 1;
+      text-shadow: 0 0 14px rgba(255,102,102,0.6), 0 0 6px rgba(255,102,102,0.45);
+      transform: translateY(-1px);
+    }
+    /* Closed arrow points DOWN (signals the card expands downward); UP when open */
+    .vcard-more-arrow {
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      transform: rotate(90deg);
+    }
+    .vcard-more.is-open .vcard-more-arrow { transform: rotate(-90deg); }
+    /* Mobile: comfortable tap target (>=44px tall) via padding — text size unchanged */
+    @media (max-width: 768px) {
+      .vcard-more { margin-top: 4px; padding: 16px 8px; }
+    }
+    /* Expandable bio — max-height transition on the Services easing; JS sets the
+       open height to the exact content height for a clean, smooth reveal. */
+    .vcard-bio {
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: max-height 0.7s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease;
+    }
+    .vcard-bio.open { opacity: 1; }
+    .vcard-bio-text {
+      margin: 14px 0 0;
+      padding-top: 14px;
+      border-top: 1px solid rgba(232,226,217,0.12);
+      font-family: var(--sans);
+      font-size: 12px;
+      font-weight: 300;
+      line-height: 1.7;
+      color: rgba(232,226,217,0.6);
+      text-align: left;
+    }
+    /* Personal detail line inside the bio — tag styling (uppercase, spaced, muted) */
+    .vcard-bio-meta {
+      margin: 14px 0 0;
+      font-family: var(--sans);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--fg3);
+      text-align: left;
+    }
+    /* Linked film title — inherits the quiet metadata treatment; coral + underline on hover */
+    .vcard-bio-meta-link {
+      color: inherit;
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+    .vcard-bio-meta-link:hover {
+      color: var(--pink);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    /* Discord context — quiet supporting note, not a coral CTA */
+    .vcard-dc-note {
+      margin: 8px 0 0;
+      font-size: 10.5px;
+      font-weight: 300;
+      letter-spacing: 0.02em;
+      color: rgba(232,226,217,0.4);
+    }
+    .vcard-dc-note a {
+      color: rgba(232,226,217,0.55);
+      border-bottom: 1px solid rgba(232,226,217,0.18);
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .vcard-dc-note a:hover { color: var(--fg2); border-color: rgba(232,226,217,0.4); }
+    @media (prefers-reduced-motion: reduce) {
+      /* Opacity-only fallbacks: no height animation, no hover glow/lift */
+      .vcard-bio { transition: opacity 0.3s ease; }
+      .vcard-more { transition: opacity 0.2s ease; }
+      .vcard-more:hover { text-shadow: none; transform: none; }
+      .vcard-more-arrow { transition: none; }
+    }
+    /* Company paragraph — quiet body copy between the cards and the tagline.
+       Same muted Inter treatment as the card bios, centered, comfortable measure. */
+    .vcard-about {
+      max-width: 640px;
+      margin: 0 auto clamp(28px, 4.5vh, 44px);
+      font-family: var(--sans);
+      font-size: 13px;
+      font-weight: 300;
+      line-height: 1.75;
+      color: rgba(232,226,217,0.6);
+      text-align: center;
+    }
     .vcard-tagline {
       font-family: var(--display);
       font-size: clamp(16px, 2vw, 20px);
@@ -2819,6 +3132,141 @@
 </script>
 -->
 
+<!-- TESTIMONIALS — rotating quote stage (crossfade, auto-advance, dots, swipe) -->
+<section class="testimonials-section scene" id="testimonials" data-scene-label="Testimonials">
+  <div class="section-eyebrow">
+    <div class="section-eyebrow-line"></div>
+    <span class="section-eyebrow-text">Testimonials</span>
+  </div>
+
+  <div class="tst-stage" id="tstStage">
+    <figure class="tst-slide active" data-index="0">
+      <span class="tst-index">01</span>
+      <blockquote class="tst-quote"><span class="tst-quote-mark tst-quote-mark-open">&ldquo;</span>Lost Objects grew my Instagram from 400 to over 50,000 followers in less than a year, completely organically. Their personalized strategy and attention to detail have been the foundation for building my brand online.<span class="tst-quote-mark tst-quote-mark-close">&rdquo;</span></blockquote>
+      <div class="tst-portrait">
+        <img class="tst-portrait-img" src="images/riel_400.jpg" alt="Brendan Riel" decoding="async">
+      </div>
+      <figcaption>
+        <div class="tst-name">Brendan Riel</div>
+        <div class="tst-role">Local 80 Key Grip &amp; Owner, Legacy Grip</div>
+      </figcaption>
+    </figure>
+
+    <figure class="tst-slide" data-index="1">
+      <span class="tst-index">02</span>
+      <blockquote class="tst-quote"><span class="tst-quote-mark tst-quote-mark-open">&ldquo;</span>Kyra and Brendan helped me launch a cohesive brand across Instagram and my website, with a clear roadmap tailored to the film industry. Their creative input and strategic approach have been invaluable.<span class="tst-quote-mark tst-quote-mark-close">&rdquo;</span></blockquote>
+      <div class="tst-portrait">
+        <img class="tst-portrait-img" src="images/bruce_400.jpg" alt="Bruce Eisenberg" decoding="async">
+      </div>
+      <figcaption>
+        <div class="tst-name">Bruce Eisenberg</div>
+        <div class="tst-role">Cinematographer &amp; Photographer</div>
+      </figcaption>
+    </figure>
+
+    <figure class="tst-slide" data-index="2">
+      <span class="tst-index">03</span>
+      <blockquote class="tst-quote"><span class="tst-quote-mark tst-quote-mark-open">&ldquo;</span>Lost Objects gave me clear, actionable advice that elevated my Instagram and made my profile stand out. Their feedback was thoughtful, easy to implement, and made an immediate difference in how I present my work online.<span class="tst-quote-mark tst-quote-mark-close">&rdquo;</span></blockquote>
+      <div class="tst-portrait">
+        <img class="tst-portrait-img" src="images/will_400.jpg" alt="Hugo Will" decoding="async">
+      </div>
+      <figcaption>
+        <div class="tst-name">Hugo Will</div>
+        <div class="tst-role">Cinematographer</div>
+      </figcaption>
+    </figure>
+  </div>
+
+  <div class="tst-dots" aria-label="Choose a testimonial">
+    <button type="button" class="tst-dot active" aria-label="Show testimonial 1" aria-current="true"><svg class="tst-ring" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8"/></svg></button>
+    <button type="button" class="tst-dot" aria-label="Show testimonial 2"><svg class="tst-ring" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8"/></svg></button>
+    <button type="button" class="tst-dot" aria-label="Show testimonial 3"><svg class="tst-ring" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8"/></svg></button>
+  </div>
+</section>
+
+<script>
+/* Testimonials rotation — auto-advance (6s) with a hover pause, a 15s pause
+   after any manual interaction, clickable dots, and touch swipe. Self-contained
+   IIFE so it can't touch any other section. */
+(function () {
+  'use strict';
+  var section = document.getElementById('testimonials');
+  var stage   = document.getElementById('tstStage');
+  if (!section || !stage) return;
+
+  var slides = Array.prototype.slice.call(section.querySelectorAll('.tst-slide'));
+  var dots   = Array.prototype.slice.call(section.querySelectorAll('.tst-dot'));
+  var rings  = Array.prototype.slice.call(section.querySelectorAll('.tst-ring'));
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var N = slides.length;
+  if (!N) return;
+
+  var INTERVAL = 6000;       /* auto-advance cadence */
+  var MANUAL_PAUSE = 15000;  /* pause after a manual interaction */
+  var idx = 0, hovering = false, paused = false, timer = null, pauseTimer = null;
+
+  function render() {
+    for (var i = 0; i < N; i++) {
+      slides[i].classList.toggle('active', i === idx);
+      var on = i === idx;
+      dots[i].classList.toggle('active', on);
+      if (on) dots[i].setAttribute('aria-current', 'true');
+      else dots[i].removeAttribute('aria-current');
+    }
+    /* Restart the progress ring on the active dot only (skipped under reduced
+       motion). Removing then re-adding the class with a reflow between forces
+       the 6s draw animation to restart from zero on every slide change. */
+    if (rings.length && !reduceMotion.matches) {
+      for (var r = 0; r < rings.length; r++) rings[r].classList.remove('tst-ring-run');
+      var active = rings[idx];
+      if (active) { void active.getBoundingClientRect(); active.classList.add('tst-ring-run'); }
+    }
+  }
+
+  /* Re-armed on every change; while hovering or in a manual pause it simply
+     re-checks one interval later instead of advancing. */
+  function schedule() {
+    clearTimeout(timer);
+    timer = setTimeout(function () {
+      if (hovering || paused) { schedule(); return; }
+      go(idx + 1);
+    }, INTERVAL);
+  }
+
+  function go(i) { idx = ((i % N) + N) % N; render(); schedule(); }
+
+  function manualGo(i) {
+    paused = true;
+    clearTimeout(pauseTimer);
+    pauseTimer = setTimeout(function () { paused = false; }, MANUAL_PAUSE);
+    go(i);
+  }
+
+  for (var d = 0; d < N; d++) {
+    (function (i) { dots[i].addEventListener('click', function () { manualGo(i); }); })(d);
+  }
+
+  section.addEventListener('mouseenter', function () { hovering = true; });
+  section.addEventListener('mouseleave', function () { hovering = false; });
+
+  /* Touch swipe left/right on the stage */
+  var sx = 0, sy = 0, tracking = false;
+  stage.addEventListener('touchstart', function (e) {
+    var t = e.changedTouches[0]; sx = t.clientX; sy = t.clientY; tracking = true;
+  }, { passive: true });
+  stage.addEventListener('touchend', function (e) {
+    if (!tracking) return; tracking = false;
+    var t = e.changedTouches[0], dx = t.clientX - sx, dy = t.clientY - sy;
+    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) {
+      manualGo(dx < 0 ? idx + 1 : idx - 1);
+    }
+  }, { passive: true });
+
+  render();
+  schedule();
+})();
+</script>
+
 <!-- SERVICES — FIND THE RIGHT FIT (with inline questionnaire) -->
 <section class="services-section scene" id="services" data-scene-label="Services">
   <div class="section-eyebrow">
@@ -2957,12 +3405,18 @@
       <span class="section-eyebrow-text">Stay connected</span>
     </div>
 
+    <div class="vcard-intro">
+      <h2 class="services-intro-hl">You Found Us.</h2>
+      <div class="svc-intro-rule"></div>
+    </div>
+
     <div class="vcard-cards">
       <!-- Kyra -->
       <div class="vcard-card">
-        <div class="vcard-avatar">K</div>
+        <div class="vcard-avatar"><img class="vcard-photo" src="images/kyra_400.jpg" alt="Kyra Sweeney" decoding="async"></div>
         <div class="vcard-name">Kyra Sweeney</div>
         <div class="vcard-title">Co-Founder, Lost Objects</div>
+        <div class="vcard-role2">Actor, Producer</div>
         <div class="vcard-divider"></div>
         <div class="vcard-row">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 4l10 9 10-9"/></svg>
@@ -2972,13 +3426,27 @@
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="#FF6666" stroke-width="1.5"/><circle cx="12" cy="12" r="4" stroke="#FF6666" stroke-width="1.5"/><circle cx="17.5" cy="6.5" r="1" fill="#FF6666"/></svg>
           <a href="https://www.instagram.com/kyragracee" target="_blank" rel="noopener noreferrer">@kyragracee</a>
         </div>
+        <div class="vcard-row dc">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FF6666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="12" r="1"/><circle cx="15" cy="12" r="1"/><path d="M7.5 7.5c3.5 -1 5.5 -1 9 0"/><path d="M7 16.5c3.5 1 6.5 1 10 0"/><path d="M15.5 17c0 1 1.5 3 2 3c1.5 0 2.833 -1.667 3.5 -3c.667 -1.667 .5 -5.833 -1.5 -11.5c-1.457 -1.015 -3 -1.34 -4.5 -1.5l-.972 1.923a11.913 11.913 0 0 0 -4.053 0l-.975 -1.923c-1.5 .16 -3.043 .485 -4.5 1.5c-2 5.667 -2.167 9.833 -1.5 11.5c.667 1.333 2 3 3.5 3c.5 0 2 -2 2 -3"/></svg>
+          <span>kyragracee</span>
+        </div>
+        <p class="vcard-dc-note">Find us in <a href="#after-hours">Lost Objects: After Hours</a>.</p>
+        <button class="vcard-more" type="button" aria-expanded="false" aria-controls="vcard-bio-kyra">
+          <span class="vcard-more-label">Read More</span>
+          <span class="vcard-more-arrow" aria-hidden="true">&rarr;</span>
+        </button>
+        <div class="vcard-bio" id="vcard-bio-kyra">
+          <p class="vcard-bio-text">I grew up on set watching my father, Shane Hurlbut, ASC, paint with light, and I fell in love with performance early. After training at the Marni Cooper School of Acting and earning my BFA from AMDA, I appeared in Netflix's Holidate and Tall Girl 2 and Kacey Musgraves' Star Crossed film, and I recently booked a lead role in an unannounced AAA video game. Lost Objects is where I bring that same artistic sensibility to helping filmmakers and creative brands build strong, authentic digital presences.</p>
+          <p class="vcard-bio-meta">COMFORT FILM &middot; <a class="vcard-bio-meta-link" href="https://www.imdb.com/title/tt14905854/" target="_blank" rel="noopener noreferrer">HAMNET (2025)</a></p>
+        </div>
       </div>
 
       <!-- Brendan -->
       <div class="vcard-card">
-        <div class="vcard-avatar">B</div>
+        <div class="vcard-avatar"><img class="vcard-photo" src="images/brendan_400.jpg" alt="Brendan Sweeney" decoding="async"></div>
         <div class="vcard-name">Brendan Sweeney</div>
         <div class="vcard-title">Co-Founder, Lost Objects</div>
+        <div class="vcard-role2">Director, Producer</div>
         <div class="vcard-divider"></div>
         <div class="vcard-row">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 4l10 9 10-9"/></svg>
@@ -2988,12 +3456,55 @@
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="#FF6666" stroke-width="1.5"/><circle cx="12" cy="12" r="4" stroke="#FF6666" stroke-width="1.5"/><circle cx="17.5" cy="6.5" r="1" fill="#FF6666"/></svg>
           <a href="https://www.instagram.com/brenpancake" target="_blank" rel="noopener noreferrer">@brenpancake</a>
         </div>
+        <div class="vcard-row dc">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FF6666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="12" r="1"/><circle cx="15" cy="12" r="1"/><path d="M7.5 7.5c3.5 -1 5.5 -1 9 0"/><path d="M7 16.5c3.5 1 6.5 1 10 0"/><path d="M15.5 17c0 1 1.5 3 2 3c1.5 0 2.833 -1.667 3.5 -3c.667 -1.667 .5 -5.833 -1.5 -11.5c-1.457 -1.015 -3 -1.34 -4.5 -1.5l-.972 1.923a11.913 11.913 0 0 0 -4.053 0l-.975 -1.923c-1.5 .16 -3.043 .485 -4.5 1.5c-2 5.667 -2.167 9.833 -1.5 11.5c.667 1.333 2 3 3.5 3c.5 0 2 -2 2 -3"/></svg>
+          <span>brenpancake</span>
+        </div>
+        <p class="vcard-dc-note">Find us in <a href="#after-hours">Lost Objects: After Hours</a>.</p>
+        <button class="vcard-more" type="button" aria-expanded="false" aria-controls="vcard-bio-brendan">
+          <span class="vcard-more-label">Read More</span>
+          <span class="vcard-more-arrow" aria-hidden="true">&rarr;</span>
+        </button>
+        <div class="vcard-bio" id="vcard-bio-brendan">
+          <p class="vcard-bio-text">I came up as a filmmaker, and Lost Objects is my way back to it. As Co-Founder with my wife and partner Kyra, I'm building a creative boutique that brings cinematic craft to social media, working with cinematographers, grip and lighting companies, production houses, and film industry brands on campaigns as considered as the work our clients make on set. After leading Filmmakers Academy as CEO, I've returned to directing and producing with sharper instincts, better systems, and a clearer sense of what I want to make.</p>
+          <p class="vcard-bio-meta">COMFORT FILM &middot; <a class="vcard-bio-meta-link" href="https://www.imdb.com/title/tt11003218/" target="_blank" rel="noopener noreferrer">PIG (2021)</a></p>
+        </div>
       </div>
     </div>
 
+    <p class="vcard-about">Lost Objects is a boutique social media agency built from inside the film industry. Founded in 2023 by Kyra and Brendan Sweeney in West Hollywood, we help cinematographers, production companies, grip and lighting houses, and creative brands show up online with the same craft they bring to set. Every strategy is built by people who speak the language of this industry, because we came up in it.</p>
     <p class="vcard-tagline">Save us to your phone. We'll be there when you're ready.</p>
     <a href="lost-objects-team.vcf" download class="vcard-btn">Add Lost Objects</a>
     <p class="vcard-note">Adds Kyra &amp; Brendan as separate contacts &middot; Works on iPhone, Android, and desktop</p>
+
+    <script>
+    /* Stay Connected — independent Read More / Less bio expanders. Sets the open
+       height to the exact content height so the max-height transition is smooth;
+       reduced-motion falls back to an opacity-only reveal (handled in CSS). */
+    (function () {
+      'use strict';
+      var cards = document.querySelectorAll('.vcard-cards .vcard-card');
+      cards.forEach(function (card) {
+        var btn = card.querySelector('.vcard-more');
+        var bio = card.querySelector('.vcard-bio');
+        var label = btn && btn.querySelector('.vcard-more-label');
+        if (!btn || !bio) return;
+        var open = false;
+        btn.addEventListener('click', function () {
+          open = !open;
+          btn.classList.toggle('is-open', open);
+          btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+          if (label) label.textContent = open ? 'Read Less' : 'Read More';
+          if (open) { bio.classList.add('open'); bio.style.maxHeight = bio.scrollHeight + 'px'; }
+          else { bio.classList.remove('open'); bio.style.maxHeight = '0'; }
+        });
+        /* Keep the open height correct if the layout reflows (e.g. rotate/resize) */
+        window.addEventListener('resize', function () {
+          if (open) bio.style.maxHeight = bio.scrollHeight + 'px';
+        }, { passive: true });
+      });
+    })();
+    </script>
   </div>
 
   <!-- AFTER HOURS — private community invite -->
