@@ -2535,9 +2535,41 @@
       letter-spacing: 0.22em;
       text-transform: uppercase;
       color: var(--pink);
-      margin-bottom: clamp(18px, 2.5vh, 26px);
+      margin-bottom: clamp(13px, 1.8vh, 18px);
     }
     .ah-kicker svg { display: block; flex-shrink: 0; }
+    /* Live "accepting members" status — coral dot with a gentle continuous pulse,
+       matching the site's status-dot pattern (.wc-meta .dot). */
+    .ah-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--sans);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--fg3);
+      /* Sits directly above the Apply button now — small gap below it */
+      margin: 0 0 clamp(14px, 2vh, 18px);
+    }
+    /* Live green (bright emerald) — the one non-coral accent, reads "open" */
+    .ah-status-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: #34d399;
+      box-shadow: 0 0 8px rgba(52,211,153,0.7);
+      flex-shrink: 0;
+      animation: ahDotPulse 2.4s ease-in-out infinite;
+    }
+    /* Soft breathing pulse — not a hard blink */
+    @keyframes ahDotPulse {
+      0%, 100% { opacity: 1;   box-shadow: 0 0 5px rgba(52,211,153,0.5); }
+      50%      { opacity: 0.5; box-shadow: 0 0 13px rgba(52,211,153,0.9); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .ah-status-dot { animation: none; }
+    }
     .ah-inner {
       max-width: 660px;
       margin: 0 auto;
@@ -2557,17 +2589,29 @@
       margin-bottom: clamp(24px, 3.5vh, 40px);
     }
     .ah-hl em { font-style: italic; color: var(--pink); }
+    /* Bold white secondary header — bolder/larger than the paragraph, smaller
+       than the main headline, not italic. */
+    .ah-subhead {
+      font-family: var(--sans);
+      font-size: clamp(16px, 1.9vw, 22px);
+      font-weight: 600;
+      line-height: 1.35;
+      letter-spacing: 0.005em;
+      color: var(--fg);
+      max-width: 560px;
+      margin: 0 auto clamp(14px, 2vh, 20px);
+    }
     .ah-copy {
       font-family: var(--sans);
       font-size: 14.5px; font-weight: 300;
       line-height: 1.8; color: var(--fg2);
       max-width: 520px;
-      margin: 0 auto clamp(32px, 5vh, 52px);
+      margin: 0 auto clamp(28px, 4vh, 40px);
     }
     .ah-tags {
       display: flex; flex-wrap: wrap; justify-content: center;
       gap: 9px;
-      margin-bottom: clamp(34px, 5.5vh, 56px);
+      margin-bottom: clamp(24px, 4vh, 40px);
     }
     .ah-cta {
       display: inline-flex; align-items: center; justify-content: center;
@@ -3517,19 +3561,25 @@
 
       <div class="ah-inner">
         <div class="ah-kicker"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="9" cy="12" r="1"/><circle cx="15" cy="12" r="1"/><path d="M7.5 7.5c3.5 -1 5.5 -1 9 0"/><path d="M7 16.5c3.5 1 6.5 1 10 0"/><path d="M15.5 17c0 1 1.5 3 2 3c1.5 0 2.833 -1.667 3.5 -3c.667 -1.667 .5 -5.833 -1.5 -11.5c-1.457 -1.015 -3 -1.34 -4.5 -1.5l-.972 1.923a11.913 11.913 0 0 0 -4.053 0l-.975 -1.923c-1.5 .16 -3.043 .485 -4.5 1.5c-2 5.667 -2.167 9.833 -1.5 11.5c.667 1.333 2 3 3.5 3c.5 0 2 -2 2 -3"/></svg><span>Lost Objects: After Hours</span></div>
-        <h2 class="ah-hl">Pull up <em>a chair.</em></h2>
+        <h2 class="ah-hl">Pull up a <em>chair.</em></h2>
 
-        <p class="ah-copy">A private community where filmmakers, marketers, and creative entrepreneurs trade ideas, find collaborators, and talk shop after hours. Every member is hand-picked. Free to join, by application.</p>
+        <p class="ah-subhead">The back room for filmmakers, marketers, and creative founders.</p>
+        <p class="ah-copy">A private community where the film and creative industries connect after hours. Trade ideas, share work, find collaborators, and get real feedback from people who speak your language. Every member is reviewed by hand.</p>
 
         <div class="ah-tags">
           <span class="pill-label">Free</span>
-          <span class="pill-label">Application-only</span>
+          <span class="pill-label">Application only</span>
           <span class="pill-label">Global</span>
-          <span class="pill-label">For creative entrepreneurs</span>
+          <span class="pill-label">Hand picked</span>
+          <span class="pill-label">Live events</span>
+          <span class="pill-label">Real feedback</span>
+          <span class="pill-label">Find collaborators</span>
+          <span class="pill-label">Founder access</span>
+          <span class="pill-label">Early drops</span>
         </div>
 
+        <div class="ah-status"><span class="ah-status-dot" aria-hidden="true"></span>Accepting members</div>
         <a href="https://discord.gg/ZqGhVfJu2a" target="_blank" rel="noopener" class="ah-cta">Apply to join</a>
-        <p class="ah-note">Free to join &middot; Every member hand-picked</p>
       </div>
     </div>
   </section>
