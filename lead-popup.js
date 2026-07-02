@@ -177,13 +177,32 @@
       animation: lo-modal-in 0.4s cubic-bezier(0.34,1.56,0.64,1);
     }
 
-    /* Header is fixed; only the body scrolls if content ever exceeds 90dvh */
+    /* Poster is pinned at the top (the CLOSE tag sits over it); everything below
+       it — header + form — scrolls together in #lo-scroll, so the form gets the
+       full remaining height instead of a cramped sub-window on short screens. */
     #lo-form-wrap {
       display: flex;
       flex-direction: column;
       flex: 1 1 auto;
       min-height: 0;
       overflow: hidden;
+    }
+    #lo-scroll {
+      flex: 1 1 auto;
+      min-height: 0;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    /* Seminar poster — full-width banner at the top of the popup. Sharp corners
+       (modal is border-radius 0 + overflow hidden). Shows the WHOLE 16:9 image
+       (no crop) so the FA + Lost Objects logos at the top stay fully visible;
+       the popup height accommodates it and the body scrolls if needed. */
+    #lo-poster {
+      display: block;
+      width: 100%;
+      height: auto;
+      flex-shrink: 0;
     }
 
     @keyframes lo-modal-in {
@@ -249,9 +268,6 @@
     #lo-modal-body {
       position: relative;
       z-index: 1;
-      min-height: 0;
-      overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
       padding: clamp(20px, 3vw, 28px) clamp(20px, 5vw, 36px) clamp(22px, 4vw, 36px);
       background: #0f0e0d;
     }
@@ -462,34 +478,67 @@
       text-align: center;
     }
 
-    /* Close button — must sit ABOVE #lo-modal-header (z-index: 1)
-       or it will be painted behind the header's background. */
+    /* Legal line — quiet supporting text at the very bottom, matching the fine
+       print. Only the two policy names are linked (muted, subtle coral hover). */
+    .lo-legal {
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 9px;
+      font-weight: 300;
+      color: rgba(232,226,217,0.28);
+      line-height: 1.6;
+      margin-top: 10px;
+      text-align: center;
+    }
+    .lo-legal a {
+      color: rgba(232,226,217,0.5);
+      border-bottom: 1px solid rgba(232,226,217,0.2);
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .lo-legal a:hover { color: #FF6666; border-color: rgba(255,102,102,0.6); }
+
+    /* Close control — an outline "tag" matching the Join Community tags: thin
+       coral outline, transparent fill, small uppercase letter-spaced coral text.
+       Centered over the poster's top dark band, between the FA logo (left) and
+       the Lost Objects logo (right), so it never covers either. Fills coral with
+       dark text on hover. z-index 3 keeps it above the poster + header. */
     #lo-close {
       position: absolute;
-      top: 14px;
-      right: 14px;
+      top: 13px;
+      left: 50%;
+      transform: translateX(-50%);
       z-index: 3;
-      width: 30px;
-      height: 30px;
-      display: flex;
+      display: inline-flex;
       align-items: center;
       justify-content: center;
-      background: rgba(255,102,102,0.08);
-      border: 1px solid rgba(255,102,102,0.42);
+      background: transparent;
+      border: 1px solid rgba(255,102,102,0.55);
       border-radius: 0;
       cursor: pointer;
       font-family: 'Inter', system-ui, sans-serif;
-      font-size: 14px;
-      font-weight: 500;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
       line-height: 1;
-      color: rgba(242,236,225,0.85);
-      padding: 0;
+      color: #FF6666;
+      padding: 7px 16px;
       transition: color 0.2s, background 0.2s, border-color 0.2s;
     }
     #lo-close:hover {
       color: #14120f;
       background: #FF6666;
       border-color: #FF6666;
+    }
+    /* Invisible hit-area extension so the compact tag stays a >=44px tap target */
+    #lo-close::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 100%;
+      min-width: 72px;
+      height: 44px;
     }
 
     #lo-success {
@@ -559,9 +608,20 @@
       body.cookie-active #lo-launcher {
         bottom: calc(var(--lo-cookie-h, 0px) + 8px);
       }
-      /* Modal stacks below the cookie banner (9000); 90dvh + body scroll
-         keep the form fully reachable. */
+      /* The modal overlay stays below the cookie banner (9000) in z-order. To
+         stop the two overlapping, when the banner is up we reserve its height at
+         the bottom of the overlay and cap the modal, so the whole popup — incl.
+         the submit button and legal links — sits ABOVE the banner rather than
+         behind it. --lo-cookie-h is published by cookie-notice.js. These rules
+         only apply while the banner is active AND the modal is open; with either
+         absent they do nothing, so each element's normal behavior is preserved. */
       #lo-overlay { z-index: 8500; }
+      body.cookie-active #lo-overlay {
+        padding-bottom: calc(var(--lo-cookie-h, 0px) + 12px);
+      }
+      body.cookie-active #lo-modal {
+        max-height: calc(100dvh - var(--lo-cookie-h, 0px) - 32px);
+      }
     }
 
     /* ── PHONE — near-full-width, stacked name fields ──────────── */
@@ -580,6 +640,11 @@
       #lo-overlay { padding: 16px; }
       /* Stack First / Last name vertically */
       .lo-field-row { grid-template-columns: 1fr; }
+      /* Keep the CLOSE tag comfortably between the logos on the narrowest widths */
+      #lo-close { font-size: 8px; letter-spacing: 0.16em; padding: 6px 12px; }
+      /* More readable fine print + legal line on mobile, with easier link taps */
+      .lo-fine-print { font-size: 10px; color: rgba(232,226,217,0.32); }
+      .lo-legal { font-size: 10.5px; line-height: 1.75; }
     }
   `;
   document.head.appendChild(css);
@@ -589,14 +654,14 @@
   wrap.innerHTML = `
     <div id="lo-launcher">
 
-      <button id="lo-trigger" aria-label="Get free seminar">
+      <button id="lo-trigger" aria-label="Get free lesson">
         <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0">
           <polygon points="1,0.5 11,6 1,11.5" fill="#0f0e0d"/>
         </svg>
-        <span id="lo-trigger-label">Free Seminar</span>
+        <span id="lo-trigger-label">Free Lesson</span>
       </button>
 
-      <button id="lo-collapse-btn" aria-label="Toggle seminar button">
+      <button id="lo-collapse-btn" aria-label="Toggle lesson button">
         <span id="lo-collapse-label">Hide</span>
         <span id="lo-collapse-icon">&#8249;</span>
       </button>
@@ -606,19 +671,18 @@
     <div id="lo-overlay" role="dialog" aria-modal="true" aria-labelledby="lo-modal-title">
       <div id="lo-modal">
 
-        <button id="lo-close" type="button" aria-label="Close">&#x2715;</button>
+        <button id="lo-close" type="button" aria-label="Close">Close</button>
 
         <div id="lo-form-wrap">
+          <img id="lo-poster" src="images/Instragram-Live-Seminar-Poster-800.jpg" alt="Kyra and Brendan Sweeney presenting Instagram for Filmmakers at the B&amp;H BILD Expo" decoding="async" />
+          <div id="lo-scroll">
           <div id="lo-modal-header">
-            <div class="lo-eyebrow">Free — B&amp;H BILD Expo 2025</div>
-            <h2 class="lo-modal-hl" id="lo-modal-title">
-              <em>Free</em> Instagram Seminar
-            </h2>
+            <div class="lo-eyebrow" id="lo-modal-title">Duration, 47 min</div>
             <p class="lo-modal-sub">
-              Watch Kyra and Brendan's full keynote from the B&amp;H BILD Expo — free. What's changing on Instagram, what it means for your career, and exactly what to do about it. No pitch, no paywall.
+              Kyra and Brendan Sweeney share their framework for mastering social media as a filmmaker, from optimizing your profile to growing organically with Reels and collaborations. Using their Legacy Grip case study, they show how a niche industry pro grew from 400 to over 50,000 followers and unlocked new career opportunities.
             </p>
             <div class="lo-stat-pill">
-              <strong>Free</strong> keynote — opt in to unlock
+              <strong>Free</strong> keynote
             </div>
           </div>
 
@@ -644,17 +708,20 @@
               <label class="lo-optin">
                 <input class="lo-checkbox" type="checkbox" id="lo-optin" required />
                 <span class="lo-optin-text">
-                  I agree to receive the free seminar and occasional emails from Lost Objects about social media strategy for the film industry. Unsubscribe any time.
+                  I agree to receive the free lesson and occasional emails from Lost Objects about social media strategy for the film industry. Unsubscribe any time.
                 </span>
               </label>
 
               <button class="lo-submit" type="submit" id="lo-submit-btn">
-                Send me the free seminar &#8594;
+                Send Me The Free Lesson
               </button>
 
-              <p class="lo-fine-print">No spam. No selling your info. Just the seminar and useful things.</p>
+              <p class="lo-fine-print">No spam. No selling your info. Just the lesson and useful things.</p>
+
+              <p class="lo-legal">By signing up you agree to our <a href="privacy.html" target="_blank" rel="noopener noreferrer">Privacy Policy</a> and <a href="terms.html" target="_blank" rel="noopener noreferrer">Terms and Conditions</a>.</p>
 
             </form>
+          </div>
           </div>
         </div>
 
@@ -665,8 +732,8 @@
             </svg>
           </div>
           <h3 class="lo-success-hl">You're <em>found.</em></h3>
-          <p class="lo-success-sub">Check your inbox, the seminar is on its way.<br>If you don't see it, check your spam folder.</p>
-          <a href="https://watch.filmmakersacademy.com/programs/instagram-for-filmmakers-your-blueprint-for-success" target="_blank" rel="noopener" class="lo-success-btn">Watch the free seminar &rarr;</a>
+          <p class="lo-success-sub">Check your inbox, the lesson is on its way.<br>If you don't see it, check your spam folder.</p>
+          <a href="https://watch.filmmakersacademy.com/programs/instagram-for-filmmakers-your-blueprint-for-success" target="_blank" rel="noopener" class="lo-success-btn">Watch the free lesson &rarr;</a>
         </div>
 
       </div>
@@ -789,11 +856,11 @@
         setTimeout(() => setCollapsed(true), 1200);
         try { localStorage.setItem('lo_signed_up', '1'); } catch (err) {}
       } else {
-        submitBtn.textContent = 'Something went wrong — try again';
+        submitBtn.textContent = 'Something went wrong, try again';
         submitBtn.disabled    = false;
       }
     } catch (err) {
-      submitBtn.textContent = 'Something went wrong — try again';
+      submitBtn.textContent = 'Something went wrong, try again';
       submitBtn.disabled    = false;
     }
   });
