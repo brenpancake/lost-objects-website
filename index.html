@@ -473,6 +473,107 @@
       opacity: 0.85;
     }
 
+    /* CLIENT MARQUEE — "worked with" credit line pinned to the hero's lower
+       edge. It lives INSIDE .hero (absolutely positioned), so it inherits the
+       hero's opacity fade via the .scene/.in-focus system: bright on load,
+       fading out together with the hero as you scroll into Selected Work — no
+       extra JS. It is NOT itself a .scene and has no data-scene-label, so it
+       adds NO scroll-rail tick. Fade is opacity-only (the hero uses
+       translateZ(0), never scale), so no hero→Selected Work seam flicker.
+       The "WORKED WITH" label is pinned/crisp at the left; only the names
+       scroll (right-to-left, seamless two-copy loop), pausing on hover/focus.
+       No scrollbar in any state; edge-fade mask on the scrolling window only. */
+    .client-marquee {
+      position: absolute;
+      left: 0; right: 0;
+      bottom: clamp(16px, 3.6vh, 36px);
+      z-index: 8;                 /* above hero-fade-out (5), below hero-content (10) */
+      display: flex;
+      align-items: center;
+      gap: clamp(14px, 2vw, 26px);
+      padding: 9px var(--pad);
+      /* No scrim: names sit directly over the hero's dark lower area (the
+         hero's own hero-fade-out handles that region). Left/right edge-fade
+         lives on .cm-viewport, not here. */
+    }
+    /* Pinned, crisp eyebrow — stays put while names scroll past to its right */
+    .cm-label {
+      flex: none;
+      font-family: var(--sans);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--pink);
+      opacity: 0.8;
+      white-space: nowrap;
+    }
+    /* The scrolling window: overflow-clipped (never a scrollbar) and edge-faded.
+       Its left edge starts AFTER the label, so the left fade begins past the
+       label and the label itself is never masked. */
+    .cm-viewport {
+      position: relative;
+      flex: 1 1 auto;
+      min-width: 0;               /* let it shrink so overflow actually clips */
+      overflow: hidden;
+      scrollbar-width: none;
+      -webkit-mask-image: linear-gradient(to right, transparent 0, #000 6%, #000 92%, transparent 100%);
+              mask-image: linear-gradient(to right, transparent 0, #000 6%, #000 92%, transparent 100%);
+    }
+    .cm-viewport::-webkit-scrollbar { display: none; }
+    .client-marquee-track {
+      display: flex;
+      width: max-content;
+      animation: cm-scroll 60s linear infinite;
+      will-change: transform;
+    }
+    /* Pause so a hovering (or keyboard-focused) user can read and click a name */
+    .client-marquee:hover .client-marquee-track,
+    .client-marquee:focus-within .client-marquee-track {
+      animation-play-state: paused;
+    }
+    .cm-copy {
+      display: flex;
+      align-items: center;
+      flex: none;
+    }
+    .cm-item {
+      font-family: var(--sans);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      color: var(--fg3);
+      text-decoration: none;
+      cursor: pointer;
+      transition: color 0.25s ease;
+      /* Spacing lives on the item (not a separator), so both duplicated
+         copies stay exactly equal width and translateX(-50%) wraps seamlessly.
+         Every item carries a trailing gap, including each copy's last item. */
+      margin-right: clamp(54px, 6vw, 96px);
+    }
+    .cm-item:hover,
+    .cm-item:focus-visible {
+      color: var(--fg);
+      outline: none;
+    }
+    @keyframes cm-scroll {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      /* No auto-scroll and NO scrollbar: show the names statically; overflow
+         stays hidden, so any overflow is simply clipped. */
+      .client-marquee-track { animation: none; }
+      .cm-viewport .cm-copy[aria-hidden="true"] { display: none; }
+    }
+    @media (max-width: 768px) {
+      .client-marquee { gap: clamp(10px, 3vw, 18px); padding: 8px var(--pad); }
+      .cm-label { font-size: 9px; letter-spacing: 0.2em; }
+      .cm-item { font-size: 11px; letter-spacing: 0.16em; margin-right: clamp(34px, 9vw, 56px); }
+    }
+
     /* COLLAGE GRID */
     .collage-section {
       padding: clamp(52px, 8vh, 80px) var(--pad) clamp(64px, 10vh, 100px);
@@ -2349,7 +2450,27 @@
   </div>
 
   <div class="hero-fade-out"></div>
+
+  <!-- CLIENT MARQUEE — pinned to the hero's lower edge as a "worked with"
+       credit line. Inside .hero (absolute) so it inherits the hero's opacity
+       fade and adds NO scroll-rail tick (not a .scene, no data-scene-label).
+       Pinned "WORKED WITH" label stays crisp; only the names scroll (RTL,
+       seamless two-copy loop), pausing on hover/focus. No scrollbar. -->
+  <div class="client-marquee" role="region" aria-label="Clients and brands we have worked with">
+    <span class="cm-label">Worked With</span>
+    <div class="cm-viewport">
+      <div class="client-marquee-track">
+        <div class="cm-copy">
+          <a class="cm-item" href="https://www.instagram.com/legacy_grip/" target="_blank" rel="noopener noreferrer">Legacy Grip</a>      <a class="cm-item" href="https://www.instagram.com/filmmakers_academy/" target="_blank" rel="noopener noreferrer">Filmmakers Academy</a>      <a class="cm-item" href="https://www.instagram.com/shanehurlbutasc/" target="_blank" rel="noopener noreferrer">Shane Hurlbut, ASC</a>      <a class="cm-item" href="https://www.instagram.com/blackoutlightingconsole/" target="_blank" rel="noopener noreferrer">Blackout Lighting Console</a>      <a class="cm-item" href="https://www.instagram.com/collectivecameracranes/" target="_blank" rel="noopener noreferrer">Collective Camera Cranes</a>      <a class="cm-item" href="https://www.instagram.com/telescopingcameracranes/" target="_blank" rel="noopener noreferrer">Telescoping Camera Cranes</a>      <a class="cm-item" href="https://www.instagram.com/davidliebling/" target="_blank" rel="noopener noreferrer">David Liebling, SOC</a>      <a class="cm-item" href="https://www.instagram.com/strada.tech/" target="_blank" rel="noopener noreferrer">Strada</a>      <a class="cm-item" href="https://www.instagram.com/sherrikauk/" target="_blank" rel="noopener noreferrer">Sherri Kauk</a>      <a class="cm-item" href="#" data-cm-placeholder onclick="event.preventDefault()">B&amp;H Photo Video</a>      <a class="cm-item" href="#" data-cm-placeholder onclick="event.preventDefault()">Blackmagic Design</a>      <a class="cm-item" href="#" data-cm-placeholder onclick="event.preventDefault()">Keslow Camera</a>      <a class="cm-item" href="#" data-cm-placeholder onclick="event.preventDefault()">Nanlux</a>      <a class="cm-item" href="#" data-cm-placeholder onclick="event.preventDefault()">Nanlite</a>      <a class="cm-item" href="#" data-cm-placeholder onclick="event.preventDefault()">Hollyland</a>
+        </div>
+        <div class="cm-copy" aria-hidden="true">
+          <a class="cm-item" href="https://www.instagram.com/legacy_grip/" target="_blank" rel="noopener noreferrer" tabindex="-1">Legacy Grip</a>      <a class="cm-item" href="https://www.instagram.com/filmmakers_academy/" target="_blank" rel="noopener noreferrer" tabindex="-1">Filmmakers Academy</a>      <a class="cm-item" href="https://www.instagram.com/shanehurlbutasc/" target="_blank" rel="noopener noreferrer" tabindex="-1">Shane Hurlbut, ASC</a>      <a class="cm-item" href="https://www.instagram.com/blackoutlightingconsole/" target="_blank" rel="noopener noreferrer" tabindex="-1">Blackout Lighting Console</a>      <a class="cm-item" href="https://www.instagram.com/collectivecameracranes/" target="_blank" rel="noopener noreferrer" tabindex="-1">Collective Camera Cranes</a>      <a class="cm-item" href="https://www.instagram.com/telescopingcameracranes/" target="_blank" rel="noopener noreferrer" tabindex="-1">Telescoping Camera Cranes</a>      <a class="cm-item" href="https://www.instagram.com/davidliebling/" target="_blank" rel="noopener noreferrer" tabindex="-1">David Liebling, SOC</a>      <a class="cm-item" href="https://www.instagram.com/strada.tech/" target="_blank" rel="noopener noreferrer" tabindex="-1">Strada</a>      <a class="cm-item" href="https://www.instagram.com/sherrikauk/" target="_blank" rel="noopener noreferrer" tabindex="-1">Sherri Kauk</a>      <a class="cm-item" href="#" data-cm-placeholder onclick="event.preventDefault()" tabindex="-1">B&amp;H Photo Video</a>      <a class="cm-item" href="#" data-cm-placeholder onclick="event.preventDefault()" tabindex="-1">Blackmagic Design</a>      <a class="cm-item" href="#" data-cm-placeholder onclick="event.preventDefault()" tabindex="-1">Keslow Camera</a>      <a class="cm-item" href="#" data-cm-placeholder onclick="event.preventDefault()" tabindex="-1">Nanlux</a>      <a class="cm-item" href="#" data-cm-placeholder onclick="event.preventDefault()" tabindex="-1">Nanlite</a>      <a class="cm-item" href="#" data-cm-placeholder onclick="event.preventDefault()" tabindex="-1">Hollyland</a>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
+
 
 <!-- COLLAGE GRID -->
 <section class="collage-section scene" data-scene-label="Selected Work">
