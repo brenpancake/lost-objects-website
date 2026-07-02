@@ -689,13 +689,24 @@
   /* ── COLLAPSE STATE ─────────────────────────────── */
   let collapsed = false;
 
-  /* Restore collapse preference */
+  /* Default to collapsed on mobile so the tab is a small edge sliver that
+     never covers the hero CTAs (even when lifted above the cookie banner).
+     Desktop still opens expanded. A stored session preference always wins. */
+  const loNarrow = !!(window.matchMedia && window.matchMedia('(max-width: 768px)').matches);
   try {
-    if (sessionStorage.getItem('lo_collapsed') === '1') {
+    const stored = sessionStorage.getItem('lo_collapsed');
+    if (stored === '1' || (stored === null && loNarrow)) {
       collapsed = true;
       launcher.classList.add('lo-collapsed');
+      collapseLabel.textContent = 'Show';
     }
-  } catch (e) {}
+  } catch (e) {
+    if (loNarrow) {
+      collapsed = true;
+      launcher.classList.add('lo-collapsed');
+      collapseLabel.textContent = 'Show';
+    }
+  }
 
   function setCollapsed(val) {
     collapsed = val;

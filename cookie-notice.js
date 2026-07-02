@@ -185,6 +185,18 @@
       .lo-privacy-btn-primary,
       .lo-privacy-btn-secondary { flex: 1; text-align: center; }
     }
+    /* ── SHORT LAPTOPS (e.g. 1366×768) — wide but not tall. The centered card
+       otherwise floats high enough to cover the vertically-centered hero CTAs.
+       Dock it flush to the bottom edge and trim its height so the CTAs stay
+       fully visible above it. ─────────────────────────────────────────── */
+    @media (min-width: 769px) and (max-height: 820px) {
+      .lo-privacy-notice {
+        bottom: 0;
+        padding: 12px 22px;
+      }
+      .lo-privacy-head { margin-bottom: 6px; }
+      .lo-privacy-body { margin-bottom: 10px; line-height: 1.5; }
+    }
   `;
   const styleEl = document.createElement('style');
   styleEl.textContent = CSS;
