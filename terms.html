@@ -82,8 +82,8 @@
       border-bottom: 1px solid var(--fg4);
     }
     .nav-inner { max-width: var(--max); margin: 0 auto; padding: 0 var(--pad); height: 100%; display: flex; align-items: center; }
-    .nav-logo { font-size: 13px; font-weight: 600; letter-spacing: 0.28em; text-transform: uppercase; color: var(--pink); transition: color 0.25s ease; }
-    .nav-logo:hover { color: var(--cream); }
+    .nav-logo-link { display: flex; align-items: center; line-height: 0; }
+    .nav-logo { display: block; height: 14px; width: auto; max-width: min(150px, 46vw); object-fit: contain; }
 
     /* PAGE HEADER */
     .page-header {
@@ -185,19 +185,30 @@
 
     /* FOOTER */
     footer { border-top: 1px solid var(--fg4); }
-    .foot-inner {
-      max-width: var(--max); margin: 0 auto; padding: 26px var(--pad);
-      display: flex; align-items: center; justify-content: space-between;
-      flex-wrap: wrap; gap: 16px;
+    .foot-inner { max-width: var(--max); margin: 0 auto; padding: clamp(40px, 6vh, 64px) var(--pad) 26px; display: flex; flex-direction: column; gap: 0; }
+    .foot-top { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; padding-bottom: 20px; border-bottom: 1px solid rgba(232,226,217,0.08); }
+    .foot-logo { display: flex; align-items: center; line-height: 0; }
+    .foot-logo img { display: block; height: 11px; width: auto; max-width: min(140px, 50vw); object-fit: contain; }
+    .foot-ig {
+      display: flex;
+      align-items: center;
+      color: rgba(232,226,217,0.5);
+      transition: color 0.2s;
     }
-    .foot-logo { font-size: 10px; font-weight: 600; letter-spacing: 0.24em; text-transform: uppercase; color: rgba(255,102,102,0.48); }
-    .foot-back { font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--fg3); transition: color 0.2s; }
-    .foot-back:hover { color: var(--fg2); }
-    .foot-copy { font-size: 9px; letter-spacing: 0.1em; color: var(--fg3); }
+    .foot-ig:hover { color: var(--pink); }
+    .foot-social { display: flex; align-items: center; gap: 14px; }
+    .foot-bot { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; padding-top: 20px; }
+    .foot-email { font-size: 9px; letter-spacing: 0.1em; color: rgba(232,226,217,0.55); }
+    .foot-mail-lnk { color: rgba(232,226,217,0.75); border-bottom: none; transition: color 0.2s; }
+    .foot-mail-lnk:hover { color: var(--pink); }
+    .foot-legal { display: flex; gap: 22px; flex-wrap: wrap; }
+    .foot-lnk { font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(232,226,217,0.5); transition: color 0.2s; }
+    .foot-lnk:hover { color: var(--fg2); }
+    .foot-copy { font-size: 9px; letter-spacing: 0.1em; color: rgba(232,226,217,0.4); }
 
     @media (max-width: 768px) {
       :root { --nav-h: 56px; }
-      .foot-inner { flex-direction: column; text-align: center; }
+      .foot-top, .foot-bot { flex-direction: column; gap: 12px; text-align: center; }
     }
   </style>
 </head>
@@ -208,7 +219,9 @@
 <!-- NAV -->
 <nav>
   <div class="nav-inner">
-    <a href="index.html" class="nav-logo">Lost Objects</a>
+    <a href="index.html" class="nav-logo-link" aria-label="Lost Objects — back to home">
+      <img src="images/logo-nav.png" alt="Lost Objects" class="nav-logo">
+    </a>
   </div>
 </nav>
 
@@ -268,9 +281,37 @@
 <!-- FOOTER -->
 <footer>
   <div class="foot-inner">
-    <div class="foot-logo">Lost Objects</div>
-    <a href="index.html" class="foot-back">&larr; Back to Home</a>
-    <div class="foot-copy">&copy; 2026 Lost Objects</div>
+    <div class="foot-top">
+      <a href="#top" class="foot-logo" aria-label="Lost Objects — back to top">
+        <img src="images/logo-nav.png" alt="Lost Objects">
+      </a>
+      <div class="foot-social">
+        <a href="https://www.instagram.com/wearelostobjects/" target="_blank" rel="noopener noreferrer" class="foot-ig" aria-label="Instagram">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="2" y="2" width="20" height="20" rx="5" stroke="#FF6666" stroke-width="1.5"/>
+            <circle cx="12" cy="12" r="5" stroke="#FF6666" stroke-width="1.5"/>
+            <circle cx="17.5" cy="6.5" r="1.2" fill="#FF6666"/>
+          </svg>
+        </a>
+        <a href="https://discord.gg/ZqGhVfJu2a" target="_blank" rel="noopener noreferrer" class="foot-ig" aria-label="Discord">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FF6666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="9" cy="12" r="1"/>
+            <circle cx="15" cy="12" r="1"/>
+            <path d="M7.5 7.5c3.5 -1 5.5 -1 9 0"/>
+            <path d="M7 16.5c3.5 1 6.5 1 10 0"/>
+            <path d="M15.5 17c0 1 1.5 3 2 3c1.5 0 2.833 -1.667 3.5 -3c.667 -1.667 .5 -5.833 -1.5 -11.5c-1.457 -1.015 -3 -1.34 -4.5 -1.5l-.972 1.923a11.913 11.913 0 0 0 -4.053 0l-.975 -1.923c-1.5 .16 -3.043 .485 -4.5 1.5c-2 5.667 -2.167 9.833 -1.5 11.5c.667 1.333 2 3 3.5 3c.5 0 2 -2 2 -3"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+    <div class="foot-bot">
+      <div class="foot-email">Email us at <a href="mailto:contact@wearelostobjects.com" class="foot-mail-lnk">contact@wearelostobjects.com</a></div>
+      <div class="foot-legal">
+        <a href="privacy.html" class="foot-lnk" target="_blank" rel="noopener noreferrer">Privacy</a>
+        <a href="terms.html" class="foot-lnk" target="_blank" rel="noopener noreferrer">Terms &amp; Conditions</a>
+      </div>
+      <div class="foot-copy">&copy; 2026 Lost Objects</div>
+    </div>
   </div>
 </footer>
 
