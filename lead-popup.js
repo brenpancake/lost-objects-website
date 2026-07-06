@@ -186,12 +186,48 @@
       flex: 1 1 auto;
       min-height: 0;
       overflow: hidden;
+      position: relative;   /* positioning context for the scroll indicator */
     }
     #lo-scroll {
       flex: 1 1 auto;
       min-height: 0;
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
+    }
+
+    /* ── SCROLL INDICATOR ─────────────────────────────
+       Sleek coral progress cue on the right inner edge of the scroll area.
+       JS positions it to overlay the #lo-scroll viewport and toggles
+       .lo-visible only when the content actually overflows. pointer-events
+       stay off so it never blocks the Close tag, the fields, or the submit
+       button. Sharp edges (no radius) to match the popup aesthetic. */
+    #lo-scrollbar {
+      position: absolute;
+      right: 0;
+      width: 3px;
+      z-index: 2;
+      background: rgba(255,102,102,0.10);   /* very faint track */
+      opacity: 0;
+      display: none;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+    #lo-scrollbar.lo-visible { display: block; opacity: 1; }
+    #lo-scrollbar-thumb {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 3px;
+      min-height: 28px;
+      background: #FF6666;                   /* coral thumb */
+      box-shadow: 0 0 4px rgba(255,102,102,0.45);
+      transition: transform 0.09s linear;    /* smooth position updates */
+      will-change: transform;
+    }
+    /* Reduced motion: keep the position cue, drop the animated glide */
+    @media (prefers-reduced-motion: reduce) {
+      #lo-scrollbar { transition: none; }
+      #lo-scrollbar-thumb { transition: none; }
     }
 
     /* Seminar poster — full-width banner at the top of the popup. Sharp corners
@@ -675,6 +711,7 @@
 
         <div id="lo-form-wrap">
           <img id="lo-poster" src="images/Instragram-Live-Seminar-Poster-800.jpg" alt="Kyra and Brendan Sweeney presenting Instagram for Filmmakers at the B&amp;H BILD Expo" decoding="async" />
+          <div id="lo-scrollbar" aria-hidden="true"><div id="lo-scrollbar-thumb"></div></div>
           <div id="lo-scroll">
           <div id="lo-modal-header">
             <div class="lo-eyebrow" id="lo-modal-title">Duration, 47 min</div>
@@ -753,6 +790,56 @@
   const formWrap   = document.getElementById('lo-form-wrap');
   const success    = document.getElementById('lo-success');
 
+  /* ── SCROLL INDICATOR ───────────────────────────────
+     A thin coral thumb that overlays the right edge of #lo-scroll, sized to
+     the visible fraction and moved to reflect scroll position. Only visible
+     when the content overflows; recomputed on scroll, resize, and layout
+     changes (incl. the poster image finishing loading). */
+  const scrollArea  = document.getElementById('lo-scroll');
+  const scrollbar   = document.getElementById('lo-scrollbar');
+  const scrollThumb = document.getElementById('lo-scrollbar-thumb');
+  const poster      = document.getElementById('lo-poster');
+  let sbRaf = 0;
+
+  function updateScrollIndicator() {
+    sbRaf = 0;
+    if (!scrollArea || !scrollbar || !overlay.classList.contains('lo-open')) {
+      if (scrollbar) scrollbar.classList.remove('lo-visible');
+      return;
+    }
+    const sh = scrollArea.scrollHeight;
+    const ch = scrollArea.clientHeight;
+    const overflow = sh - ch;
+    if (overflow <= 1 || ch <= 0) {          /* fits on screen — no cue */
+      scrollbar.classList.remove('lo-visible');
+      return;
+    }
+    /* Overlay exactly the scroll viewport (below the pinned poster). */
+    scrollbar.style.top = scrollArea.offsetTop + 'px';
+    scrollbar.style.height = ch + 'px';
+    scrollbar.classList.add('lo-visible');
+    const thumbH = Math.max(28, Math.round((ch / sh) * ch));
+    const travel = Math.max(0, ch - thumbH);
+    const y = Math.round((scrollArea.scrollTop / overflow) * travel);
+    scrollThumb.style.height = thumbH + 'px';
+    scrollThumb.style.transform = 'translateY(' + y + 'px)';
+  }
+
+  function queueScrollUpdate() {
+    if (sbRaf) return;
+    sbRaf = requestAnimationFrame(updateScrollIndicator);
+  }
+
+  if (scrollArea && scrollbar) {
+    scrollArea.addEventListener('scroll', queueScrollUpdate, { passive: true });
+    window.addEventListener('resize', queueScrollUpdate);
+    if (poster) poster.addEventListener('load', queueScrollUpdate);
+    if (window.ResizeObserver) {
+      const ro = new ResizeObserver(queueScrollUpdate);
+      ro.observe(scrollArea);
+    }
+  }
+
   /* ── COLLAPSE STATE ─────────────────────────────── */
   let collapsed = false;
 
@@ -799,6 +886,10 @@
     overlay.classList.add('lo-open');
     document.body.style.overflow = 'hidden';
     setTimeout(() => document.getElementById('lo-first').focus(), 100);
+    /* Show/size the scroll cue once the modal is laid out (and again once the
+       poster image has settled its height). */
+    queueScrollUpdate();
+    setTimeout(queueScrollUpdate, 250);
   }
 
   function closeModal() {
