@@ -3705,27 +3705,36 @@
       fill.style.top = firstCenter + 'px';
     }
 
-    /* Single active section: whichever scene's vertical center sits
-       closest to the viewport center wins. Section height is irrelevant,
-       so short stacked blocks (Stay Connected / After Hours) isolate just
-       like the tall ones, and exactly ONE scene is ever lit. The hero at
-       the top and the last block at the bottom win naturally — there is no
-       competing scene above the hero or below the last block. */
+    /* Active section: whichever scene's vertical center sits closest to the
+       viewport center wins (drives the single rail dot). A scene ALSO reaches
+       full opacity when it fits within the viewport and is substantially shown
+       (>=90% visible). On normal landscape/standard screens the content scenes
+       are ~viewport-tall or taller, so that second clause only ever coincides
+       with the center-winner — exactly ONE scene is lit, unchanged. But on very
+       tall / portrait viewports (e.g. 9:16, 2160x3840) sections are shorter than
+       the viewport and cannot be scrolled to the exact center; there the clause
+       lets every fully-visible section — including the last block before the
+       footer (Join Community) — complete its fade to full opacity. */
     let ticking = false;
     function updateFocus() {
       ticking = false;
-      const viewportCenter = window.innerHeight / 2;
+      const vh = window.innerHeight;
+      const viewportCenter = vh / 2;
+      const rects = scenes.map((s) => s.getBoundingClientRect());
       let bestIdx = -1, bestDist = Infinity;
-      scenes.forEach((s, i) => {
-        const r = s.getBoundingClientRect();
+      rects.forEach((r, i) => {
         const dist = Math.abs((r.top + r.height / 2) - viewportCenter);
         if (dist < bestDist) { bestDist = dist; bestIdx = i; }
       });
       scenes.forEach((s, i) => {
-        const on = i === bestIdx;
-        s.classList.toggle('in-focus', on);
-        dots[i].classList.toggle('active', on);
-        if (on) dots[i].setAttribute('aria-current', 'true');
+        const r = rects[i];
+        const visible = Math.max(0, Math.min(r.bottom, vh) - Math.max(r.top, 0));
+        const fitsAndShown = r.height <= vh && visible >= r.height * 0.9;
+        s.classList.toggle('in-focus', i === bestIdx || fitsAndShown);
+        /* Rail dot tracks only the single center-winner, so the spine stays clean. */
+        const dotActive = i === bestIdx;
+        dots[i].classList.toggle('active', dotActive);
+        if (dotActive) dots[i].setAttribute('aria-current', 'true');
         else dots[i].removeAttribute('aria-current');
       });
       /* Grow the coral fill from the top dot to the active dot's center */
