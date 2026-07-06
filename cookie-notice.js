@@ -214,24 +214,31 @@
         '<button class="lo-privacy-close" type="button" aria-label="Dismiss privacy notice">&#x2715;</button>' +
       '</div>' +
       '<p class="lo-privacy-body">' +
-        'We use cookies to improve your experience. ' +
-        'By continuing, you agree to our ' +
-        '<span class="lo-privacy-links"><a href="privacy.html" target="_blank" rel="noopener noreferrer">Privacy Policy</a> and ' +
-        '<a href="terms.html" target="_blank" rel="noopener noreferrer">Terms &amp; Conditions</a></span>.' +
+        'This site uses only the essential cookies it needs to work. ' +
+        'We run no analytics, advertising, or tracking. See our ' +
+        '<span class="lo-privacy-links"><a href="privacy.html" target="_blank" rel="noopener noreferrer">Privacy Policy</a></span> ' +
+        'for details.' +
       '</p>' +
+      /* Single acknowledgment button: there is nothing to accept or decline
+         while the site uses essential cookies only. If analytics, advertising,
+         or other tracking is ever added, restore this to a real consent banner:
+         reinstate the Accept All / Decline buttons (the .lo-privacy-btn-secondary
+         styling is retained below for that purpose) and wire Accept to enable the
+         tracking and Decline to suppress it, storing the choice rather than just
+         the dismissal. */
       '<div class="lo-privacy-actions">' +
-        '<button class="lo-privacy-btn lo-privacy-btn-primary" type="button">Accept All</button>' +
-        '<button class="lo-privacy-btn lo-privacy-btn-secondary" type="button">Decline</button>' +
+        '<button class="lo-privacy-btn lo-privacy-btn-primary" type="button">I Understand</button>' +
       '</div>';
 
     document.body.appendChild(wrap);
 
     const closeBtn = wrap.querySelector('.lo-privacy-close');
-    const acceptBtn = wrap.querySelector('.lo-privacy-btn-primary');
-    const declineBtn = wrap.querySelector('.lo-privacy-btn-secondary');
+    const ackBtn = wrap.querySelector('.lo-privacy-btn-primary');
+    /* Both the acknowledgment button and the X simply dismiss and remember it.
+       When real consent is added later, wire the Accept / Decline buttons here
+       to their respective enable / suppress handlers instead of shared dismiss. */
     closeBtn.addEventListener('click', dismiss);
-    acceptBtn.addEventListener('click', dismiss);
-    declineBtn.addEventListener('click', dismiss);
+    ackBtn.addEventListener('click', dismiss);
 
     /* Fade in after the short delay, letting the page settle first */
     setTimeout(function () {
