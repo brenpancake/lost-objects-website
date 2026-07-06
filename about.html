@@ -662,6 +662,21 @@
     @media (max-width: 768px) {
       .scene-progress { display: none; }
     }
+    /* ---- Mobile usability polish ----
+       Larger invisible tap areas via ::after overlays (icons and text stay the
+       same size, layout unchanged) plus a small legibility floor for micro-labels.
+       Scoped to mobile; desktop is untouched. */
+    @media (max-width: 768px) {
+      .foot-ig, .foot-lnk, .foot-mail-lnk { position: relative; }
+      .foot-lnk, .foot-mail-lnk { display: inline-block; }
+      .nav-ig::after, .nav-dc::after, .foot-ig::after,
+      .foot-lnk::after, .foot-mail-lnk::after {
+        content: ""; position: absolute; top: 50%; left: 50%;
+        transform: translate(-50%, -50%);
+        width: 100%; min-width: 44px; height: 44px;
+      }
+      .foot-lnk, .foot-copy, .foot-email, .eyebrow-text { font-size: 10px; }
+    }
   </style>
 </head>
 <body>
