@@ -207,7 +207,10 @@
       flex-direction: column;
       align-items: center;
       text-align: center;
-      padding: calc(var(--nav-h) + 8vh) var(--pad) 0;
+      /* Reserve the fixed nav (top) and the pinned client marquee zone (bottom)
+         so flex centering balances the block in the space between them, rather
+         than the old top-heavy padding that pushed it below center. */
+      padding: var(--nav-h) var(--pad) clamp(50px, 3.6vh + 34px, 70px);
       max-width: min(1040px, 94vw);
     }
     .hero-eyebrow {
@@ -2702,7 +2705,6 @@
       .scene.reveal.visible { opacity: 1; transform: translateY(0); }
 
       .hero-hl { font-size: clamp(36px, 10vw, 52px); white-space: normal; }
-      .hero-content { padding: calc(var(--nav-h) + 4vh) var(--pad) 0; }
       .hero-cta { flex-direction: column; }
       .hero-cta .btn-p,
       .hero-cta .btn-o {
