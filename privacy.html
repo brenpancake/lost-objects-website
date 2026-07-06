@@ -6,8 +6,10 @@
   <title>Privacy Policy — Lost Objects</title>
   <meta name="description" content="Privacy policy for Lost Objects LLC. How we collect, use, and protect your information." />
   <link rel="canonical" href="https://wearelostobjects.com/privacy" />
-  <link rel="icon" type="image/png" href="/images/image_favicon.png" />
-  <link rel="apple-touch-icon" href="/images/image_favicon.png" />
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16.png" />
+  <link rel="apple-touch-icon" href="/images/apple-touch-icon.png" />
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -77,13 +79,56 @@
     nav {
       position: fixed; top: 0; left: 0; right: 0;
       z-index: 200; height: var(--nav-h);
-      background: rgba(15,14,13,0.9);
-      backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
-      border-bottom: 1px solid var(--fg4);
+      background: transparent;
+      border-bottom: 1px solid transparent;
+      transition: background 0.4s, border-color 0.4s, backdrop-filter 0.4s;
     }
-    .nav-inner { max-width: var(--max); margin: 0 auto; padding: 0 var(--pad); height: 100%; display: flex; align-items: center; }
-    .nav-logo { font-size: 13px; font-weight: 600; letter-spacing: 0.28em; text-transform: uppercase; color: var(--pink); transition: color 0.25s ease; }
-    .nav-logo:hover { color: var(--cream); }
+    nav.scrolled {
+      background: rgba(15,14,13,0.9);
+      border-bottom-color: var(--fg4);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+    .nav-inner {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0 var(--pad);
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .nav-logo-link {
+      display: flex;
+      align-items: center;
+      line-height: 0;
+    }
+    .nav-logo {
+      display: block;
+      height: 14px;
+      width: auto;
+      /* ~8:1 wordmark: 14px tall ≈ the old 13px cap-height footprint.
+         Backstop so it never crowds the icons on tiny screens; object-fit
+         keeps aspect ratio (no stretch) if the width cap ever engages. */
+      max-width: min(150px, 46vw);
+      object-fit: contain;
+    }
+    .nav-ig {
+      position: absolute;
+      right: calc(var(--pad) + 30px);
+      display: flex;
+      align-items: center;
+      opacity: 0.45;
+      transition: opacity 0.2s;
+    }
+    .nav-ig:hover {
+      opacity: 1;
+    }
+    .nav-dc {
+      position: absolute;
+      right: var(--pad);
+    }
 
     /* PAGE HEADER */
     .page-header {
@@ -184,20 +229,31 @@
     }
 
     /* FOOTER */
-    footer { border-top: 1px solid var(--fg4); }
-    .foot-inner {
-      max-width: var(--max); margin: 0 auto; padding: 26px var(--pad);
-      display: flex; align-items: center; justify-content: space-between;
-      flex-wrap: wrap; gap: 16px;
+    footer { border: none; }
+    .foot-inner { max-width: var(--max); margin: 0 auto; padding: clamp(40px, 6vh, 64px) var(--pad) 26px; display: flex; flex-direction: column; gap: 0; }
+    .foot-top { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; padding-bottom: 20px; border-bottom: 1px solid rgba(232,226,217,0.08); }
+    .foot-logo { display: flex; align-items: center; line-height: 0; }
+    .foot-logo img { display: block; height: 11px; width: auto; max-width: min(140px, 50vw); object-fit: contain; }
+    .foot-ig {
+      display: flex;
+      align-items: center;
+      color: rgba(232,226,217,0.5);
+      transition: color 0.2s;
     }
-    .foot-logo { font-size: 10px; font-weight: 600; letter-spacing: 0.24em; text-transform: uppercase; color: rgba(255,102,102,0.48); }
-    .foot-back { font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--fg3); transition: color 0.2s; }
-    .foot-back:hover { color: var(--fg2); }
-    .foot-copy { font-size: 9px; letter-spacing: 0.1em; color: var(--fg3); }
+    .foot-ig:hover { color: var(--pink); }
+    .foot-social { display: flex; align-items: center; gap: 14px; }
+    .foot-bot { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; padding-top: 20px; }
+    .foot-email { font-size: 9px; letter-spacing: 0.1em; color: rgba(232,226,217,0.55); }
+    .foot-mail-lnk { color: rgba(232,226,217,0.75); border-bottom: none; transition: color 0.2s; }
+    .foot-mail-lnk:hover { color: var(--pink); }
+    .foot-legal { display: flex; gap: 22px; flex-wrap: wrap; }
+    .foot-lnk { font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(232,226,217,0.5); transition: color 0.2s; }
+    .foot-lnk:hover { color: var(--fg2); }
+    .foot-copy { font-size: 9px; letter-spacing: 0.1em; color: rgba(232,226,217,0.4); }
 
     @media (max-width: 768px) {
       :root { --nav-h: 56px; }
-      .foot-inner { flex-direction: column; text-align: center; }
+      .foot-top, .foot-bot { flex-direction: column; gap: 12px; text-align: center; }
     }
   </style>
 </head>
@@ -208,7 +264,25 @@
 <!-- NAV -->
 <nav>
   <div class="nav-inner">
-    <a href="index.html" class="nav-logo">Lost Objects</a>
+    <a href="index.html" class="nav-logo-link" aria-label="Lost Objects — back to home">
+      <img src="images/logo-nav.png" alt="Lost Objects" class="nav-logo">
+    </a>
+    <a href="https://www.instagram.com/wearelostobjects/" target="_blank" rel="noopener noreferrer" class="nav-ig" aria-label="Instagram">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="2" y="2" width="20" height="20" rx="5" stroke="#FF6666" stroke-width="1.5"/>
+        <circle cx="12" cy="12" r="5" stroke="#FF6666" stroke-width="1.5"/>
+        <circle cx="17.5" cy="6.5" r="1.2" fill="#FF6666"/>
+      </svg>
+    </a>
+    <a href="https://discord.gg/ZqGhVfJu2a" target="_blank" aria-label="Discord" rel="noopener noreferrer" class="nav-dc" style="display:flex;align-items:center;opacity:0.5;transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FF6666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="9" cy="12" r="1"/>
+        <circle cx="15" cy="12" r="1"/>
+        <path d="M7.5 7.5c3.5 -1 5.5 -1 9 0"/>
+        <path d="M7 16.5c3.5 1 6.5 1 10 0"/>
+        <path d="M15.5 17c0 1 1.5 3 2 3c1.5 0 2.833 -1.667 3.5 -3c.667 -1.667 .5 -5.833 -1.5 -11.5c-1.457 -1.015 -3 -1.34 -4.5 -1.5l-.972 1.923a11.913 11.913 0 0 0 -4.053 0l-.975 -1.923c-1.5 .16 -3.043 .485 -4.5 1.5c-2 5.667 -2.167 9.833 -1.5 11.5c.667 1.333 2 3 3.5 3c.5 0 2 -2 2 -3"/>
+      </svg>
+    </a>
   </div>
 </nav>
 
@@ -224,18 +298,18 @@
 
 <!-- CONTENT -->
 <div class="legal-content">
-  <p class="legal-updated">Last updated — 2026</p>
+  <p class="legal-updated">Last updated July 5, 2026</p>
 
   <h2>Who we are</h2>
-  <p>Lost Objects LLC ("Lost Objects," "we," "us," or "our") is a social media strategy and management company based in West Hollywood, Los Angeles. This privacy policy explains how we collect, use, and protect your personal information when you visit our website or use our services.</p>
+  <p>Lost Objects LLC ("Lost Objects," "we," "us," or "our") is a social media strategy and management company based in West Hollywood, Los Angeles. This privacy policy explains how we collect, use, and protect your personal information when you visit our website, use our services, or apply to our community.</p>
 
   <h2>What we collect</h2>
-  <p>We collect personal information that you voluntarily provide to us, including:</p>
+  <p>We collect personal information that you voluntarily provide to us. We collect it in three places and nowhere else: our contact form, the Free Lesson popup email signup, and the Lost Objects: After Hours community application. This information may include:</p>
   <ul>
-    <li>Name and email address when you submit a contact form or sign up for our free seminar</li>
-    <li>Phone number, if you choose to provide it</li>
+    <li>Your name and email address</li>
+    <li>Portfolio or social media links you choose to share</li>
     <li>Information about your business, role, platforms, and goals shared through our contact forms</li>
-    <li>Any additional details you include in your message to us</li>
+    <li>A short bio and any other details you voluntarily include when you apply to our community or message us</li>
   </ul>
   <p>We also automatically collect certain technical information through cookies and similar technologies, including your browser type, device information, IP address, and pages visited.</p>
 
@@ -244,23 +318,28 @@
   <ul>
     <li>Respond to your inquiries and communicate with you about our services</li>
     <li>Deliver our free seminar and related educational content</li>
+    <li>Review applications to and operate our Lost Objects: After Hours community</li>
     <li>Send occasional email marketing about social media strategy for the creative industry (you can unsubscribe at any time)</li>
     <li>Improve our website and understand how visitors use it</li>
     <li>Comply with legal obligations</li>
   </ul>
 
   <h2>Third-party services</h2>
-  <p>We use the following third-party services to operate our website and business:</p>
+  <p>We rely on a small number of third party services to operate our website and business. Each one processes only the information needed for its function:</p>
   <ul>
-    <li><strong>Kit (ConvertKit)</strong> — Email marketing and newsletter delivery. When you subscribe, your name and email are stored with Kit. <a href="https://kit.com/privacy">Kit's privacy policy</a></li>
-    <li><strong>Formspree</strong> — Contact form processing. Form submissions are routed through Formspree's servers. <a href="https://formspree.io/legal/privacy-policy">Formspree's privacy policy</a></li>
-    <li><strong>Vercel</strong> — Website hosting and deployment. <a href="https://vercel.com/legal/privacy-policy">Vercel's privacy policy</a></li>
-    <li><strong>Vimeo</strong> — Video hosting and playback. <a href="https://vimeo.com/privacy">Vimeo's privacy policy</a></li>
+    <li><strong>Kit (formerly ConvertKit)</strong>, an email marketing platform that stores your name and email when you sign up for our free seminar or our marketing email. <a href="https://kit.com/privacy" target="_blank" rel="noopener noreferrer">Kit's privacy policy</a></li>
+    <li><strong>Formspree</strong>, a form processing service that routes contact form submissions to us. <a href="https://formspree.io/legal/privacy-policy" target="_blank" rel="noopener noreferrer">Formspree's privacy policy</a></li>
+    <li><strong>Vercel</strong>, our website hosting provider, which hosts and delivers the Site. <a href="https://vercel.com/legal/privacy-policy" target="_blank" rel="noopener noreferrer">Vercel's privacy policy</a></li>
+    <li><strong>Discord</strong>, which hosts our Lost Objects: After Hours community and receives the information you submit when you apply to join. <a href="https://discord.com/privacy" target="_blank" rel="noopener noreferrer">Discord's privacy policy</a></li>
   </ul>
-  <p>We do not sell, rent, or share your personal information with third parties for their own marketing purposes.</p>
+  <p>We do not sell, rent, or share your personal information with third parties for their own marketing purposes. You can unsubscribe from our marketing email at any time using the unsubscribe link in every message.</p>
+  <p>Our Free Lesson popup links to a seminar video hosted by Filmmakers Academy, a separate company. When you follow links to third party sites, including the seminar host, any information you provide there becomes subject to those sites' own privacy policies and terms, which Lost Objects does not control.</p>
+
+  <h2>The After Hours community</h2>
+  <p>Lost Objects operates a private, application based community called Lost Objects: After Hours, hosted on Discord. When you apply, we collect your name, email address, portfolio links, and a short bio. This application information is collected through and stored on Discord, so your use of the community is also subject to Discord's own <a href="https://discord.com/privacy" target="_blank" rel="noopener noreferrer">Privacy Policy</a>. As part of joining, applicants must read and agree to our community Server Rules.</p>
 
   <h2>Cookies</h2>
-  <p>Our website uses a small number of cookies and local storage values to remember your preferences, such as whether you've already signed up for our newsletter. We do not use third-party advertising or tracking cookies. Vimeo's embedded player may set its own cookies when a video is loaded.</p>
+  <p>Our website uses a small number of cookies and local storage values to remember your preferences, such as whether you have already signed up for our newsletter. We do not use third party advertising or tracking cookies. The embedded Vimeo player used for our homepage video may set its own cookies when the video loads. <a href="https://vimeo.com/privacy" target="_blank" rel="noopener noreferrer">Vimeo's privacy policy</a></p>
 
   <h2>Your rights</h2>
   <p>You have the right to:</p>
@@ -276,7 +355,7 @@
   <p>We retain your personal information only for as long as necessary to fulfill the purposes described in this policy, unless a longer retention period is required by law. If you request deletion, we will remove your data within 30 days.</p>
 
   <h2>Children's privacy</h2>
-  <p>Our website and services are not directed at individuals under the age of 16. We do not knowingly collect personal information from children.</p>
+  <p>Our website, services, and community are intended for adults 18 and over. We do not knowingly collect personal information from anyone under 18. If you believe someone under 18 has provided us with personal information, please contact us and we will delete it.</p>
 
   <h2>Changes to this policy</h2>
   <p>We may update this privacy policy from time to time. Any changes will be posted on this page with an updated revision date. Your continued use of our website after changes are posted constitutes your acceptance of the revised policy.</p>
@@ -289,12 +368,47 @@
 <!-- FOOTER -->
 <footer>
   <div class="foot-inner">
-    <div class="foot-logo">Lost Objects</div>
-    <a href="index.html" class="foot-back">&larr; Back to Home</a>
-    <div class="foot-copy">&copy; 2026 Lost Objects</div>
+    <div class="foot-top">
+      <a href="#top" class="foot-logo" aria-label="Lost Objects — back to top">
+        <img src="images/logo-nav.png" alt="Lost Objects">
+      </a>
+      <div class="foot-social">
+        <a href="https://www.instagram.com/wearelostobjects/" target="_blank" rel="noopener noreferrer" class="foot-ig" aria-label="Instagram">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="2" y="2" width="20" height="20" rx="5" stroke="#FF6666" stroke-width="1.5"/>
+            <circle cx="12" cy="12" r="5" stroke="#FF6666" stroke-width="1.5"/>
+            <circle cx="17.5" cy="6.5" r="1.2" fill="#FF6666"/>
+          </svg>
+        </a>
+        <a href="https://discord.gg/ZqGhVfJu2a" target="_blank" rel="noopener noreferrer" class="foot-ig" aria-label="Discord">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FF6666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="9" cy="12" r="1"/>
+            <circle cx="15" cy="12" r="1"/>
+            <path d="M7.5 7.5c3.5 -1 5.5 -1 9 0"/>
+            <path d="M7 16.5c3.5 1 6.5 1 10 0"/>
+            <path d="M15.5 17c0 1 1.5 3 2 3c1.5 0 2.833 -1.667 3.5 -3c.667 -1.667 .5 -5.833 -1.5 -11.5c-1.457 -1.015 -3 -1.34 -4.5 -1.5l-.972 1.923a11.913 11.913 0 0 0 -4.053 0l-.975 -1.923c-1.5 .16 -3.043 .485 -4.5 1.5c-2 5.667 -2.167 9.833 -1.5 11.5c.667 1.333 2 3 3.5 3c.5 0 2 -2 2 -3"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+    <div class="foot-bot">
+      <div class="foot-email">Email us at <a href="mailto:contact@wearelostobjects.com" class="foot-mail-lnk">contact@wearelostobjects.com</a></div>
+      <div class="foot-legal">
+        <a href="privacy.html" class="foot-lnk" target="_blank" rel="noopener noreferrer">Privacy</a>
+        <a href="terms.html" class="foot-lnk" target="_blank" rel="noopener noreferrer">Terms &amp; Conditions</a>
+      </div>
+      <div class="foot-copy">&copy; 2026 Lost Objects</div>
+    </div>
   </div>
 </footer>
 
+<script>
+  /* NAV SCROLL */
+  const navEl = document.querySelector('nav');
+  window.addEventListener('scroll', () => {
+    navEl.classList.toggle('scrolled', window.scrollY > 40);
+  });
+</script>
 <script src="cookie-notice.js"></script>
 <script src="lead-popup.js"></script>
 </body>

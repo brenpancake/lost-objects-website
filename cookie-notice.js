@@ -216,8 +216,8 @@
       '<p class="lo-privacy-body">' +
         'We use cookies to improve your experience. ' +
         'By continuing, you agree to our ' +
-        '<span class="lo-privacy-links"><a href="privacy.html">Privacy Policy</a> and ' +
-        '<a href="terms.html">Terms &amp; Conditions</a></span>.' +
+        '<span class="lo-privacy-links"><a href="privacy.html" target="_blank" rel="noopener noreferrer">Privacy Policy</a> and ' +
+        '<a href="terms.html" target="_blank" rel="noopener noreferrer">Terms &amp; Conditions</a></span>.' +
       '</p>' +
       '<div class="lo-privacy-actions">' +
         '<button class="lo-privacy-btn lo-privacy-btn-primary" type="button">Accept All</button>' +
