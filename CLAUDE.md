@@ -12,13 +12,15 @@ Open any `.html` file directly in a browser, or serve the directory with any sta
 
 ## Architecture
 
-Five standalone pages at the repo root, each a self-contained document:
+Three standalone pages at the repo root, each a self-contained document:
 
-- `index.html`, `about.html`, `services.html`, `work.html`, `contact.html`
+- `index.html` (the single-page marketing site), `privacy.html`, `terms.html`
 
-Each page is authored in a single file with **inlined CSS in a `<style>` block** and **inlined page-specific JS in a `<script>` block** near the bottom. There is no shared CSS file and no templating — nav, footer, and design tokens are **duplicated** across pages. When changing site-wide visuals (colors, nav, footer, typography), update all five HTML files.
+A separate CRM app lives under `crm/` (`crm/index.html`, `crm/share.html`, `crm/dataLayer.js`). The legacy `about.html`, `services.html`, `work.html`, and `contact.html` pages were archived; their routes now 301-redirect to `/` via `vercel.json` (see the merge-procedure section below).
 
-Shared design tokens live in each file's `:root` CSS variables (`--pink`, `--cream`, `--bg`, `--bg2`, `--fg*`, `--serif`, `--sans`, `--max`, `--pad`, `--nav-h`). Keep these consistent across pages when editing.
+Each page is authored in a single file with **inlined CSS in a `<style>` block** and **inlined page-specific JS in a `<script>` block** near the bottom. There is no shared CSS file and no templating — nav, footer, and design tokens are **duplicated** across pages. When changing site-wide visuals (colors, nav, footer, typography), update every root HTML page.
+
+Shared design tokens live in each file's `:root` CSS variables (`--pink`, `--cream`, `--bg`, `--bg2`, `--fg*`, `--display`, `--accent-serif`, `--sans`, `--max`, `--pad`, `--nav-h`). Keep these consistent across pages when editing.
 
 The **only shared JS asset** is `lead-popup.js`, included via `<script src="lead-popup.js">` on every page. It self-initializes as an IIFE, injects its own CSS and DOM, and renders a persistent collapsible lead-capture tab in the bottom-right. It posts to ConvertKit (Kit)'s **keyless public form-subscription endpoint** at `https://app.convertkit.com/forms/${KIT_FORM_ID}/subscriptions` (no API key in client code) and persists a `lo_signed_up` flag in `localStorage` to suppress re-prompts.
 
@@ -33,7 +35,7 @@ When editing these, do not replace the placeholder strings with real keys unless
 ## Conventions
 
 - Preserve the inlined-per-page structure; do not extract shared CSS/JS into new files unless asked. Duplication is intentional for this codebase.
-- The aesthetic is dark, film-grain, serif-display headings (`DM Serif Display`) + `Inter` body. A full-viewport SVG `.grain` layer and radial `.vignette` sit above content on every page — keep `z-index` below 9998 for page content.
+- The aesthetic is dark and film-grain. Display headings use **Built Titling** (`--display`, loaded from the local `.otf` files in `fonts/` via `fonts.css`); body copy uses **Inter** (`--sans`); **Fraunces** (`--accent-serif`, loaded from Google Fonts) is used for accent/quote serif text. The primary accent color is coral `--pink: #FF6666` over a near-black `--bg: #0f0e0d`. A full-viewport animated SVG `.grain` layer (`z-index: 9999`) and a radial `.vignette` (`z-index: 9998`) sit above content on every page — keep page content `z-index` below 9998.
 - Line endings and file sizes: HTML files are large (900–1500 lines) because of inlined styles. Prefer `Edit` over `Write` for changes.
 
 ## IMPORTANT: How to merge feature/crm-redesign
