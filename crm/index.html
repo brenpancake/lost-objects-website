@@ -6,7 +6,7 @@
 <title>Lost Objects — Client Tracker</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600&family=Space+Mono:wght@400;700&family=Playfair+Display:wght@400;600&family=Syne:wght@400;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600&family=Space+Mono:wght@400;700&family=Playfair+Display:wght@400;600&family=Syne:wght@400;600;700&family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet"/>
 <style>
 :root{
   --pink:#FF6666;--yellow:#FFCF5A;--accent:#E6958F;--green:#50b880;--blue:#6690e0;
@@ -23,22 +23,62 @@ body.font-mono{--fb:'Space Mono',monospace;}
 html{font-size:15px;-webkit-font-smoothing:antialiased;}
 body{font-family:var(--fb);background:var(--black);color:var(--text);min-height:100vh;overflow-x:hidden;transition:background .3s,color .3s;}
 
-/* LOGIN */
-#login-screen{position:fixed;inset:0;background:var(--black);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:2000;transition:opacity .4s,transform .4s;padding:20px;}
+/* ═══ LOST OBJECTS UNDERGROUND — login + 2FA (main-site design system) ═════════
+   Scoped to the login / verification screens only; the rest of the app keeps its
+   own tokens (Space Mono / DM Sans / rounded). Sharp corners, Built Titling
+   display, Inter body, coral #FF6666 accent, cream display text. */
+@font-face{font-family:'Built Titling';src:url('../fonts/built_titling_bd.otf') format('opentype');font-weight:700;font-style:normal;font-display:swap;}
+@font-face{font-family:'Built Titling';src:url('../fonts/built_titling_bd_it.otf') format('opentype');font-weight:700;font-style:italic;font-display:swap;}
+@font-face{font-family:'Built Titling';src:url('../fonts/built_titling_sb.otf') format('opentype');font-weight:600;font-style:normal;font-display:swap;}
+
+#login-screen{position:fixed;inset:0;z-index:2000;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;font-family:'Inter',system-ui,sans-serif;background:radial-gradient(ellipse at 50% -10%,#15130f 0%,#0f0e0d 55%,#0b0a08 100%);transition:opacity .4s,transform .4s;}
 #login-screen.hidden{opacity:0;pointer-events:none;transform:translateY(-10px);}
-.login-logo{display:flex;align-items:center;gap:12px;margin-bottom:32px;}
-.login-logo-wordmark{font-family:var(--fd);font-size:18px;font-weight:700;letter-spacing:.08em;color:var(--pink);text-transform:uppercase;}
-.login-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:28px;width:100%;max-width:340px;}
-.login-box h2{font-family:var(--fd);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:20px;}
-.lf{margin-bottom:11px;}
-.lf label{display:block;font-size:10px;font-weight:700;color:var(--muted);letter-spacing:.07em;text-transform:uppercase;margin-bottom:5px;}
-.lf input{width:100%;background:var(--s2);border:1px solid var(--b2);border-radius:var(--r);color:var(--text);font-family:var(--fb);font-size:14px;padding:10px 12px;outline:none;transition:border-color .2s;}
+
+.lu-back{position:absolute;top:22px;left:24px;display:inline-flex;align-items:center;gap:7px;background:none;border:none;text-decoration:none;cursor:pointer;font-family:'Inter',sans-serif;font-size:10px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:rgba(232,226,217,0.44);transition:color .2s ease;}
+.lu-back:hover{color:var(--pink);}
+.lu-back .lu-arrow{transition:transform .2s ease;}
+.lu-back:hover .lu-arrow{transform:translateX(-3px);}
+
+/* Logo presented like the main-site nav header — a transparent top bar with the
+   wordmark centered at ~14px. Logo only: no social icons, no nav links, no footer. */
+.lu-header{position:absolute;top:0;left:0;right:0;height:62px;display:flex;align-items:center;justify-content:center;padding:0 24px;}
+.lu-logo{display:block;height:14px;width:auto;max-width:min(150px,46vw);object-fit:contain;}
+.lu-head{display:flex;flex-direction:column;align-items:center;text-align:center;margin-bottom:28px;}
+.lu-title{font-family:'Built Titling','Arial Narrow',sans-serif;font-weight:700;text-transform:uppercase;font-size:clamp(42px,9vw,72px);line-height:.94;letter-spacing:.02em;color:#F0E8DC;}
+.lu-title em{font-style:italic;font-weight:700;color:var(--pink);}
+
+.login-box,.tf-card{width:100%;max-width:360px;background:#161514;border:1px solid rgba(242,236,225,0.10);border-radius:0;padding:30px 28px;box-shadow:0 22px 60px rgba(0,0,0,0.5);}
+.login-box h2,.tf-card h2{font-family:'Inter',sans-serif;font-size:9px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:rgba(232,226,217,0.44);margin-bottom:22px;text-align:center;}
+.lf{margin-bottom:15px;}
+.lf label{display:block;font-family:'Inter',sans-serif;font-size:9px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:rgba(232,226,217,0.44);margin-bottom:8px;}
+.lf input{width:100%;font-family:'Inter',sans-serif;font-size:15px;font-weight:300;color:#f2ece1;background:#0f0e0d;border:1px solid rgba(232,226,217,0.14);border-radius:0;padding:13px 14px;outline:none;transition:border-color .2s ease;}
+.lf input::placeholder{color:rgba(232,226,217,0.40);}
 .lf input:focus{border-color:var(--pink);}
-.login-btn{width:100%;margin-top:16px;background:var(--pink);color:#fff;border:none;border-radius:var(--r);font-family:var(--fd);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:13px;cursor:pointer;transition:all .15s;}
-.login-btn:hover{background:#ff5555;}
-.login-err{margin-top:9px;color:var(--accent);font-size:12px;text-align:center;min-height:16px;}
-.forgot-link{background:none;border:none;color:var(--muted);font-family:var(--fb);font-size:11px;cursor:pointer;margin-top:10px;transition:color .15s;display:block;text-align:center;width:100%;}
+
+.lu-checkrow{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 16px;margin:4px 0 2px;}
+.lu-check{display:inline-flex;align-items:center;gap:8px;cursor:pointer;user-select:none;font-family:'Inter',sans-serif;font-size:11px;color:rgba(232,226,217,0.72);}
+.lu-check input{position:absolute;opacity:0;width:0;height:0;}
+.lu-box{width:15px;height:15px;flex-shrink:0;border:1px solid rgba(232,226,217,0.30);background:transparent;display:inline-flex;align-items:center;justify-content:center;transition:background .15s ease,border-color .15s ease;}
+.lu-check:hover .lu-box{border-color:var(--pink);}
+.lu-check input:checked+.lu-box{background:var(--pink);border-color:var(--pink);}
+.lu-box svg{opacity:0;transition:opacity .15s ease;}
+.lu-check input:checked+.lu-box svg{opacity:1;}
+.lu-check input:focus-visible+.lu-box{border-color:var(--pink);box-shadow:0 0 0 2px rgba(255,102,102,0.35);}
+
+.login-btn{width:100%;margin-top:18px;font-family:'Inter',sans-serif;font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#0f0e0d;background:var(--pink);border:1px solid var(--pink);border-radius:0;padding:14px;cursor:pointer;transition:box-shadow .25s ease,filter .25s ease;}
+.login-btn:hover{filter:brightness(1.1) saturate(1.08);box-shadow:0 0 24px rgba(255,102,102,0.55),0 0 7px rgba(255,102,102,0.45);}
+
+.login-err{margin-top:12px;font-family:'Inter',sans-serif;font-size:12px;text-align:center;min-height:16px;color:var(--pink);}
+.forgot-link{display:block;width:100%;margin-top:14px;background:none;border:none;cursor:pointer;text-align:center;font-family:'Inter',sans-serif;font-size:11px;letter-spacing:.02em;color:rgba(232,226,217,0.44);transition:color .2s ease;}
 .forgot-link:hover{color:var(--pink);}
+.lu-note{margin-top:14px;font-family:'Inter',sans-serif;font-size:10.5px;line-height:1.55;text-align:center;color:rgba(232,226,217,0.34);}
+.lu-note strong{color:rgba(232,226,217,0.60);font-weight:500;}
+
+.tf-card{text-align:center;}
+.tf-lead{font-family:'Inter',sans-serif;font-size:12px;line-height:1.6;color:rgba(232,226,217,0.55);margin-bottom:20px;}
+.tf-digits{display:flex;gap:7px;margin-bottom:18px;}
+.tf-digit{flex:1 1 0;min-width:0;height:52px;text-align:center;font-family:'Built Titling','Arial Narrow',sans-serif;font-weight:700;font-size:24px;color:#f2ece1;background:#0f0e0d;border:1px solid rgba(232,226,217,0.14);border-radius:0;outline:none;transition:border-color .2s ease;}
+.tf-digit:focus{border-color:var(--pink);}
 
 /* APP */
 #app{display:none;min-height:100vh;flex-direction:column;}
@@ -717,18 +757,42 @@ select.de-input{cursor:pointer;}
 <body>
 
 <div id="login-screen">
-  <div class="login-logo">
-    <svg width="36" height="36" viewBox="0 0 52 52" fill="none"><rect width="52" height="52" rx="11" fill="#1A1A1A"/><text x="8" y="36" font-family="monospace" font-weight="700" font-size="22" fill="#FF6666">L</text><circle cx="36" cy="26" r="13" fill="#FF6666"/></svg>
-    <span class="login-logo-wordmark">Lost Objects</span>
+  <a class="lu-back" href="../index.html"><span class="lu-arrow">&larr;</span> Back to site</a>
+
+  <header class="lu-header"><img class="lu-logo" src="../images/logo-nav.png" alt="Lost Objects"/></header>
+
+  <div class="lu-head">
+    <h1 class="lu-title"><em>Underground</em></h1>
   </div>
+
   <div class="login-box">
-    <h2>Client Tracker — Private</h2>
-    <div class="lf"><label>Username</label><input type="text" id="login-user" placeholder="Username" autocomplete="off"/></div>
-    <div class="lf"><label>Password</label><input type="password" id="login-pass" placeholder="Password"/></div>
-    <label style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);cursor:pointer;margin-top:2px;user-select:none"><input type="checkbox" id="show-pass" onchange="document.getElementById('login-pass').type=this.checked?'text':'password'" style="accent-color:var(--pink);cursor:pointer"/> Show password</label>
+    <h2>Team Sign In</h2>
+    <div class="lf"><label>Username</label><input type="text" id="login-user" placeholder="Username" autocomplete="username"/></div>
+    <div class="lf"><label>Password</label><input type="password" id="login-pass" placeholder="Password" autocomplete="current-password"/></div>
+    <div class="lu-checkrow">
+      <label class="lu-check"><input type="checkbox" id="show-pass" onchange="document.getElementById('login-pass').type=this.checked?'text':'password'"/><span class="lu-box"><svg width="9" height="9" viewBox="0 0 12 12"><path d="M2 6.2l2.6 2.6L10 3" fill="none" stroke="#0f0e0d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span> Show password</label>
+      <label class="lu-check"><input type="checkbox" id="remember-me"/><span class="lu-box"><svg width="9" height="9" viewBox="0 0 12 12"><path d="M2 6.2l2.6 2.6L10 3" fill="none" stroke="#0f0e0d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span> Remember me</label>
+    </div>
     <button class="login-btn" onclick="tryLogin()">Sign In</button>
     <div class="login-err" id="login-err"></div>
     <button class="forgot-link" onclick="showForgotStep('email')">Forgot your password?</button>
+  </div>
+
+  <!-- Two-Factor Verification — visual placeholder; demo auto-passes, real check arrives with the backend -->
+  <div class="tf-card" id="twofa-box" style="display:none">
+    <h2>Two-Factor Verification</h2>
+    <p class="tf-lead">Enter the 6-digit code sent to your device.</p>
+    <div class="tf-digits">
+      <input class="tf-digit" maxlength="1" inputmode="numeric" aria-label="Digit 1" oninput="tfAdvance(this)" onkeydown="tfKey(event,this)"/>
+      <input class="tf-digit" maxlength="1" inputmode="numeric" aria-label="Digit 2" oninput="tfAdvance(this)" onkeydown="tfKey(event,this)"/>
+      <input class="tf-digit" maxlength="1" inputmode="numeric" aria-label="Digit 3" oninput="tfAdvance(this)" onkeydown="tfKey(event,this)"/>
+      <input class="tf-digit" maxlength="1" inputmode="numeric" aria-label="Digit 4" oninput="tfAdvance(this)" onkeydown="tfKey(event,this)"/>
+      <input class="tf-digit" maxlength="1" inputmode="numeric" aria-label="Digit 5" oninput="tfAdvance(this)" onkeydown="tfKey(event,this)"/>
+      <input class="tf-digit" maxlength="1" inputmode="numeric" aria-label="Digit 6" oninput="tfAdvance(this)" onkeydown="tfKey(event,this)"/>
+    </div>
+    <button class="login-btn" onclick="twoFactorPass()">Verify &amp; Enter</button>
+    <p class="lu-note"><strong>Two factor verification activates with the live backend.</strong><br/>Any code passes in demo mode.</p>
+    <button class="forgot-link" onclick="twoFactorBack()">&#x2190; Back to sign in</button>
   </div>
   <!-- Forgot Password Flow -->
   <div class="login-box" id="forgot-box" style="display:none">
@@ -739,6 +803,7 @@ select.de-input{cursor:pointer;}
       <div class="lf"><label>Email</label><input type="email" id="forgot-email-input" placeholder="you@example.com"/></div>
       <button class="login-btn" onclick="sendResetCode()">Send Reset Code</button>
       <div class="login-err" id="forgot-err"></div>
+      <p class="lu-note">Full account recovery arrives with the live backend.</p>
       <button class="forgot-link" onclick="hideForgot()">&#x2190; Back to sign in</button>
     </div>
     <!-- Step 2: Enter code -->
@@ -1177,8 +1242,45 @@ function tryLogin(){
   var u=document.getElementById('login-user').value.trim().toLowerCase();
   var p=document.getElementById('login-pass').value;
   var def=getAllUsers()[u];
-  if(def&&def.pass===p){sessionStorage.setItem('lo-auth',u);document.getElementById('login-err').textContent='';bootApp(u);}
+  if(def&&def.pass===p){
+    sessionStorage.setItem('lo-auth',u);
+    document.getElementById('login-err').textContent='';
+    // Remember me — persist the USERNAME ONLY (never the password) for next-visit prefill
+    var rm=document.getElementById('remember-me');
+    if(rm&&rm.checked)ls.set('lo-remember',u);else localStorage.removeItem('lo-remember');
+    // Credentials OK → hand off to the two-factor step (demo auto-passes; wired to backend later)
+    showTwoFactor(u);
+  }
   else{document.getElementById('login-err').textContent='Incorrect username or password.';document.getElementById('login-pass').value='';}
+}
+// ═══ TWO-FACTOR (visual placeholder — demo auto-passes; real verification arrives with the backend) ═══
+var pendingUser=null;
+function showTwoFactor(u){
+  pendingUser=u;
+  var card=document.querySelector('.login-box:not(#forgot-box)');if(card)card.style.display='none';
+  document.getElementById('forgot-box').style.display='none';
+  var box=document.getElementById('twofa-box');box.style.display='';
+  box.querySelectorAll('.tf-digit').forEach(function(d){d.value='';});
+  var f=box.querySelector('.tf-digit');if(f)f.focus();
+}
+function twoFactorPass(){
+  document.getElementById('twofa-box').style.display='none';
+  var u=pendingUser;pendingUser=null;
+  if(u)bootApp(u);
+}
+function twoFactorBack(){
+  document.getElementById('twofa-box').style.display='none';
+  var card=document.querySelector('.login-box:not(#forgot-box)');if(card)card.style.display='';
+  pendingUser=null;
+}
+function tfAdvance(el){
+  el.value=el.value.replace(/\D/g,'').slice(0,1);
+  if(el.value&&el.nextElementSibling&&el.nextElementSibling.classList.contains('tf-digit'))el.nextElementSibling.focus();
+  var done=true;document.querySelectorAll('#twofa-box .tf-digit').forEach(function(d){if(!d.value)done=false;});
+  if(done)setTimeout(twoFactorPass,260);
+}
+function tfKey(e,el){
+  if(e.key==='Backspace'&&!el.value&&el.previousElementSibling&&el.previousElementSibling.classList.contains('tf-digit')){el.previousElementSibling.focus();e.preventDefault();}
 }
 function logout(){clearPresence();sessionStorage.removeItem('lo-auth');currentUser=null;document.getElementById('login-screen').classList.remove('hidden');document.getElementById('app').classList.remove('visible');document.getElementById('login-user').value='';document.getElementById('login-pass').value='';closeRail();hideForgot();}
 
@@ -1266,6 +1368,8 @@ function updateHeaderUser(){
 }
 document.getElementById('login-pass').addEventListener('keydown',function(e){if(e.key==='Enter')tryLogin();});
 document.getElementById('login-user').addEventListener('keydown',function(e){if(e.key==='Enter')document.getElementById('login-pass').focus();});
+// Remember me — prefill the saved username and re-check the box on load
+(function(){var ru=ls.get('lo-remember');if(ru){var ui=document.getElementById('login-user');if(ui)ui.value=ru;var rm=document.getElementById('remember-me');if(rm)rm.checked=true;}})();
 
 // ═══ SEED DATA ═══════════════════════════════════════════════════════════════
 function uid(){return Math.random().toString(36).slice(2)+Date.now().toString(36);}
