@@ -87,19 +87,74 @@
       overflow-x: hidden;
     }
 
-    /* GRAIN */
+    /* BANDING DITHER — static fine-noise overlay
+       Breaks up 8-bit tonal steps in the large near-black gradients (hero
+       background, dark section washes, footer coral) so they read smooth on
+       wide-gamut / high-bit-depth / OLED panels, the way film grain hides
+       banding. SEPARATE from and additive to the animated .grain film texture
+       below: it does NOT animate (no flicker, no change to compositing) and
+       does NOT alter the gradients themselves. Higher noise frequency + very
+       low opacity than the grain keeps it invisible as texture while still
+       dithering the tonal steps. Tune via the opacity below — raise a touch if
+       banding still shows on very large panels, lower if the grain reads
+       heavier. */
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.04;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='d'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23d)'/%3E%3C/svg%3E");
+    }
+
+    /* GRAIN — living film grain via POSITION drift only. Opacity is CONSTANT
+       (0.048); nothing animates opacity or exposure, so there is no flicker or
+       edge popping on 4K / OLED. The drift is the COMPOUND of two GPU translate3d
+       animations with different, non-harmonic periods (7.3s on the layer, 11.9s
+       on its child) and irregular, non-uniform waypoints. Because those periods
+       only re-align every ~14 minutes, the combined motion never reads as a clean
+       repeating loop — it wanders erratically and organically, the way real grain
+       does. Max combined offset (~27px) stays far inside the 100px bleed, so the
+       grain edges never enter the viewport at any size (incl. portrait). Both
+       layers move only via translate3d (no repaint). Strength / coverage / mood
+       unchanged (opacity 0.048, same 400x400 desaturated fractal-noise tile). */
     .grain {
       position: fixed; inset: -100px;
       width: calc(100% + 200px); height: calc(100% + 200px);
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.78' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)'/%3E%3C/svg%3E");
       opacity: 0.048; pointer-events: none; z-index: 9999;
-      animation: grain 0.6s steps(1) infinite;
+      will-change: transform;
+      animation: grainDriftA 7.3s linear infinite;
     }
-    @keyframes grain {
-      0%{transform:translate(0,0)}10%{transform:translate(-3%,-4%)}20%{transform:translate(4%,2%)}
-      30%{transform:translate(-1%,5%)}40%{transform:translate(3%,-3%)}50%{transform:translate(-4%,1%)}
-      60%{transform:translate(2%,4%)}70%{transform:translate(-3%,-1%)}80%{transform:translate(1%,3%)}
-      90%{transform:translate(-2%,-4%)}100%{transform:translate(3%,0)}
+    .grain > i {
+      position: absolute; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.78' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)'/%3E%3C/svg%3E");
+      will-change: transform;
+      animation: grainDriftB 11.9s linear infinite;
+    }
+    /* Irregular, non-uniform waypoints (uneven % stops, varied offsets) so each
+       drift already avoids a clean rhythm; composed together they read as random. */
+    @keyframes grainDriftA {
+      0%   { transform: translate3d(0, 0, 0); }
+      13%  { transform: translate3d(-11px, 6px, 0); }
+      27%  { transform: translate3d(7px, 13px, 0); }
+      41%  { transform: translate3d(15px, -4px, 0); }
+      58%  { transform: translate3d(-6px, -12px, 0); }
+      69%  { transform: translate3d(-14px, 3px, 0); }
+      82%  { transform: translate3d(4px, 10px, 0); }
+      93%  { transform: translate3d(9px, -7px, 0); }
+      100% { transform: translate3d(0, 0, 0); }
+    }
+    @keyframes grainDriftB {
+      0%   { transform: translate3d(0, 0, 0); }
+      11%  { transform: translate3d(8px, -9px, 0); }
+      24%  { transform: translate3d(-5px, -3px, 0); }
+      39%  { transform: translate3d(-12px, 8px, 0); }
+      52%  { transform: translate3d(3px, 12px, 0); }
+      63%  { transform: translate3d(11px, 5px, 0); }
+      76%  { transform: translate3d(6px, -11px, 0); }
+      88%  { transform: translate3d(-9px, -6px, 0); }
+      100% { transform: translate3d(0, 0, 0); }
     }
 
     .vignette {
@@ -194,7 +249,10 @@
     .hero-overlay-base     { position: absolute; inset: 0; background: rgba(10,9,8,0.52); z-index: 2; }
     .hero-overlay-gradient {
       position: absolute; inset: 0; z-index: 3;
-      background: linear-gradient(to bottom, rgba(15,14,13,0.45) 0%, transparent 35%, transparent 65%, rgba(15,14,13,0.72) 100%);
+      /* Banding pass 2: same anchors (0.45@0, transparent 35–65, 0.72@100) so the
+         top and bottom darkening look identical; intermediate stops on a gentle
+         ease soften the slope kinks at 35% and 65% that read as distinct steps. */
+      background: linear-gradient(to bottom, rgba(15,14,13,0.45) 0%, rgba(15,14,13,0.3) 11%, rgba(15,14,13,0.15) 23%, rgba(15,14,13,0.05) 30%, transparent 35%, transparent 65%, rgba(15,14,13,0.06) 70%, rgba(15,14,13,0.2) 79%, rgba(15,14,13,0.42) 89%, rgba(15,14,13,0.72) 100%);
     }
     .hero-overlay-vignette {
       position: absolute; inset: 0; z-index: 4;
@@ -310,7 +368,19 @@
       opacity: 0.12;
       transform: scale(0.98);
       transition: opacity 0.6s ease, transform 0.7s ease;
-      will-change: opacity, transform;
+      /* Flicker pass (large 4K/OLED panels): `will-change: opacity, transform`
+         used to sit here permanently on EVERY .scene, forcing all the large
+         full-bleed sections to stay promoted as their own semi-transparent GPU
+         layers and be re-composited every frame. On a big high-DPI surface that
+         constant recompositing of huge alpha layers shimmered during scroll and
+         fade (imperceptible on a small laptop screen). Removed the permanent
+         hint so a scene is promoted only for the duration of its own fade —
+         opacity/transform transitions are composited automatically, so the
+         fade-in/out look is unchanged. Hero + Selected Work stay stably promoted
+         via the translateZ(0) below (their seam fix), now as STATIC layers the
+         browser no longer expects to change each frame, which is what stops the
+         repaint loop. Do not re-add a blanket will-change here; if a specific
+         element ever needs it, scope it and toggle it only while animating. */
     }
     .scene.in-focus {
       opacity: 1;
@@ -2261,7 +2331,11 @@
     .vcard-glow {
       position: absolute;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: linear-gradient(to top, rgba(255,102,102,0.28) 0%, rgba(255,102,102,0.17) 12%, rgba(255,102,102,0.08) 30%, rgba(255,102,102,0.025) 48%, transparent 64%);
+      /* Banding pass 2: same anchor alphas (0.28@0, 0.17@12, 0.08@30, 0.025@48)
+         so the coral rises to the same height and brightness, but with intermediate
+         stops filled in and the tail eased to transparent — removes the slope
+         kinks at the old 12/30/48/64% stops that read as distinct steps. */
+      background: linear-gradient(to top, rgba(255,102,102,0.28) 0%, rgba(255,102,102,0.225) 6%, rgba(255,102,102,0.17) 12%, rgba(255,102,102,0.12) 20%, rgba(255,102,102,0.08) 30%, rgba(255,102,102,0.05) 39%, rgba(255,102,102,0.025) 48%, rgba(255,102,102,0.012) 56%, rgba(255,102,102,0.004) 64%, transparent 72%);
       z-index: 0;
       pointer-events: none;
     }
@@ -2773,7 +2847,7 @@
 </head>
 <body>
 
-<div class="grain"></div>
+<div class="grain"><i></i></div>
 <div class="vignette"></div>
 
 <!-- NAV -->
