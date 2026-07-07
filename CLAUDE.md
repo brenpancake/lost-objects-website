@@ -35,3 +35,17 @@ When editing these, do not replace the placeholder strings with real keys unless
 - Preserve the inlined-per-page structure; do not extract shared CSS/JS into new files unless asked. Duplication is intentional for this codebase.
 - The aesthetic is dark, film-grain, serif-display headings (`DM Serif Display`) + `Inter` body. A full-viewport SVG `.grain` layer and radial `.vignette` sit above content on every page — keep `z-index` below 9998 for page content.
 - Line endings and file sizes: HTML files are large (900–1500 lines) because of inlined styles. Prefer `Edit` over `Write` for changes.
+
+## IMPORTANT: How to merge feature/crm-redesign
+
+`feature/crm-redesign` was branched **before** the legacy marketing pages were archived from `main`. Because of that, a plain `git merge feature/crm-redesign` into `main` would **undo today's cleanup**:
+
+- It would **resurrect the four deleted pages** — `about.html`, `services.html`, `work.html`, and `contact.html` — since those files still exist on that branch.
+- It would **strip the 301 redirects** for `/about`, `/services`, `/work`, and `/contact` from `vercel.json`, because that branch predates the `redirects` block.
+
+**Required procedure — do NOT do a plain merge.** Before bringing the CRM work into `main`, do one of the following so that *only* the CRM changes come across and the cleanup is preserved:
+
+- **Rebase** `feature/crm-redesign` onto the current `main` (`git rebase main`), resolve conflicts so the legacy pages stay deleted and the `vercel.json` redirects stay in place, then merge; **or**
+- **Cherry-pick only the `crm/index.html` changes** (the actual CRM work) onto a fresh branch off `main`, leaving everything else untouched.
+
+**Do NOT merge the CRM to `main` at all** until real backend authentication replaces the plaintext demo credentials currently in the CRM. The login is a front-end demo only and must not go live as-is.
