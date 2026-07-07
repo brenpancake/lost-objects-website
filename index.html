@@ -2037,15 +2037,6 @@
     .svc-back:hover { color: var(--pink); border-color: var(--pink); background: rgba(255,102,102,0.06); }
     .svc-back-arrow { transition: transform 0.2s ease; }
     .svc-back:hover .svc-back-arrow { transform: translateX(-3px); }
-    .svc-detail-tag {
-      font-family: var(--sans);
-      font-size: 9px;
-      font-weight: 500;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--pink);
-      text-align: right;
-    }
     .svc-detail .svc-panel { margin-top: 0; }
 
     /* Shared inline detail panel */
@@ -3481,7 +3472,6 @@
   <div class="svc-detail" id="svcDetail" hidden>
     <div class="svc-detail-bar">
       <button type="button" class="svc-back" id="svcBack"><span class="svc-back-arrow">&larr;</span> Change service</button>
-      <span class="svc-detail-tag" id="svcDetailTag"></span>
     </div>
   <div class="svc-panel" id="svcPanel">
     <div class="svc-panel-inner">
@@ -4420,7 +4410,6 @@
     const chooser     = document.getElementById('svcChooser');
     const detail      = document.getElementById('svcDetail');
     const backBtn     = document.getElementById('svcBack');
-    const detailTag   = document.getElementById('svcDetailTag');
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
     let animating = false;
     let onDetail  = false;
@@ -4673,7 +4662,6 @@
       submitBtn.disabled = false;
       submitBtn.textContent = 'Send it.';
       activeService = svc;
-      if (detailTag) detailTag.textContent = svc;
       // No bright "selected" flip on the card here — it's about to morph away, and
       // that instant coral pop was the click "flash". The smooth swap is the feedback.
       // Pre-hide the checklist + form rows so they can cascade in after the bloom
