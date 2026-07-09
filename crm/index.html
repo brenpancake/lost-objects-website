@@ -808,6 +808,129 @@ select.de-input{cursor:pointer;}
 .toast{position:fixed;bottom:16px;left:50%;transform:translateX(-50%) translateY(48px);background:var(--s2);border:1px solid var(--b2);border-radius:var(--r);color:var(--text);font-size:12px;padding:8px 14px;z-index:9999;transition:transform .25s;white-space:nowrap;display:flex;align-items:center;gap:6px;max-width:calc(100vw - 32px);pointer-events:none;}
 .toast.show{transform:translateX(-50%) translateY(0);}
 .toast-dot{width:5px;height:5px;border-radius:50%;background:var(--pink);flex-shrink:0;}
+
+/* ═══ INTAKE → ASSIGNMENT COMMAND CENTER ═══════════════════════════════════════
+   Primary shell view. Sharp corners, Underground panel tokens (#161514 panels,
+   Built Titling labels via --fd, Inter body via --fb, coral --pink accent). */
+.intake{display:grid;grid-template-columns:minmax(300px,380px) 1fr;gap:14px;align-items:start;}
+@media(max-width:820px){.intake{grid-template-columns:1fr;}}
+.ix-panel{background:#161514;border:1px solid rgba(242,236,225,0.10);border-radius:0;display:flex;flex-direction:column;overflow:hidden;}
+.ix-phdr{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:12px 15px;border-bottom:1px solid rgba(242,236,225,0.10);flex-shrink:0;}
+.ix-ptitle{font-family:var(--fd);font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#f2ece1;}
+.ix-pcount{font-family:var(--fb);font-size:9px;font-weight:700;background:rgba(255,102,102,.12);color:var(--pink);border-radius:0;padding:2px 7px;min-width:18px;text-align:center;}
+
+/* inbound queue */
+.ix-queue{max-height:calc(100vh - 220px);overflow-y:auto;}
+.iq-row{display:flex;flex-direction:column;gap:7px;padding:12px 15px;border-bottom:1px solid rgba(242,236,225,0.07);border-left:2px solid transparent;cursor:pointer;transition:background .14s,border-color .14s;}
+.iq-row:last-child{border-bottom:none;}
+.iq-row:hover{background:rgba(242,236,225,0.03);}
+.iq-row.sel{background:rgba(255,102,102,.06);border-left-color:var(--pink);}
+.iq-top{display:flex;align-items:baseline;justify-content:space-between;gap:8px;}
+.iq-name{font-family:var(--fb);font-size:14px;font-weight:600;letter-spacing:-.01em;color:#f2ece1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.iq-ago{font-family:var(--fb);font-size:10px;color:rgba(232,226,217,0.42);white-space:nowrap;flex-shrink:0;}
+.iq-svc{font-family:var(--fb);font-size:11px;color:rgba(232,226,217,0.58);line-height:1.35;}
+.iq-tags{display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+
+/* lane + stage chips (shared between queue and detail) */
+.lane-tag{font-family:var(--fb);font-size:9px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;padding:2px 7px;border:1px solid;border-radius:0;white-space:nowrap;}
+.lane-booking{color:#7fb0ff;border-color:rgba(127,176,255,.42);background:rgba(127,176,255,.09);}
+.lane-application{color:var(--pink);border-color:rgba(255,102,102,.42);background:rgba(255,102,102,.09);}
+.stage-pill{font-family:var(--fb);font-size:9px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;padding:2px 8px;border:1px solid;border-radius:0;white-space:nowrap;}
+.st-new{color:var(--pink);border-color:rgba(255,102,102,.42);background:rgba(255,102,102,.09);}
+.st-confirmed{color:var(--yellow);border-color:rgba(255,207,90,.42);background:rgba(255,207,90,.10);}
+.st-assigned{color:#7fb0ff;border-color:rgba(127,176,255,.42);background:rgba(127,176,255,.09);}
+.st-onboarding{color:#c79bff;border-color:rgba(199,155,255,.42);background:rgba(199,155,255,.10);}
+.st-active{color:var(--green);border-color:rgba(80,184,128,.45);background:rgba(80,184,128,.10);}
+
+/* detail + action panel */
+.ix-detail{min-height:calc(100vh - 220px);max-height:calc(100vh - 220px);}
+.ix-dbody{flex:1;min-height:0;overflow-y:auto;padding:0;}
+/* pinned top section — identity header + Set Stage, identical for every stage */
+.ix-top{position:sticky;top:0;z-index:3;background:#161514;padding:16px 20px 14px;border-bottom:1px solid rgba(242,236,225,0.10);}
+.ix-scrollbody{padding:16px 20px 22px;}
+.ix-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:70px 24px;color:rgba(232,226,217,0.40);font-family:var(--fb);font-size:13px;gap:8px;flex:1;min-height:calc(100vh - 260px);}
+.ix-empty .ix-empty-mark{font-family:var(--fd);font-size:34px;font-weight:700;color:rgba(242,236,225,0.12);letter-spacing:.04em;text-transform:uppercase;}
+.ix-dhead{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:4px;}
+.ix-dname{font-family:var(--fd);font-size:30px;font-weight:700;line-height:.98;letter-spacing:.01em;text-transform:uppercase;color:#F0E8DC;}
+.ix-dsub{font-family:var(--fb);font-size:12px;color:rgba(232,226,217,0.55);margin-top:6px;}
+.ix-dsub a{color:rgba(232,226,217,0.55);text-decoration:none;}
+.ix-dstatus{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin:14px 0 4px;}
+.ix-dmgr{font-family:var(--fb);font-size:11px;color:rgba(232,226,217,0.55);}
+.ix-dmgr strong{color:#f2ece1;font-weight:600;}
+
+/* intake meta grid */
+.ix-meta{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(242,236,225,0.10);border:1px solid rgba(242,236,225,0.10);margin:16px 0;}
+.ix-mcell{background:#161514;padding:10px 13px;}
+.ix-mlbl{font-family:var(--fb);font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(232,226,217,0.40);margin-bottom:4px;}
+.ix-mval{font-family:var(--fb);font-size:13px;color:#f2ece1;line-height:1.4;}
+.ix-mval .from{color:rgba(232,226,217,0.55);}
+.ix-msg{background:#0f0e0d;border:1px solid rgba(242,236,225,0.08);border-left:2px solid rgba(255,102,102,.5);padding:12px 14px;font-family:var(--fb);font-size:13px;line-height:1.6;color:rgba(240,240,240,0.86);margin:16px 0;}
+
+/* action sections */
+.ix-act{margin-top:20px;}
+.ix-albl{font-family:var(--fd);font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--pink);margin-bottom:3px;}
+.ix-ahint{font-family:var(--fb);font-size:10.5px;color:rgba(232,226,217,0.42);margin-bottom:10px;line-height:1.4;}
+.ix-lane-lbl{font-family:var(--fb);font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(232,226,217,0.44);margin:10px 0 6px;}
+.ix-opts{display:flex;flex-direction:column;gap:6px;}
+.ix-opt{display:flex;align-items:center;justify-content:space-between;gap:10px;text-align:left;font-family:var(--fb);font-size:12.5px;color:#f2ece1;background:transparent;border:1px solid rgba(232,226,217,0.14);border-radius:0;padding:9px 13px;cursor:pointer;transition:border-color .14s,color .14s,background .14s;}
+.ix-opt:hover{border-color:var(--pink);color:var(--pink);}
+.ix-opt .ix-opt-price{font-size:11px;color:rgba(232,226,217,0.48);flex-shrink:0;transition:color .14s;}
+.ix-opt:hover .ix-opt-price{color:var(--pink);}
+.ix-opt.on{background:var(--pink);color:#0f0e0d;border-color:var(--pink);font-weight:600;}
+.ix-opt.on .ix-opt-price{color:rgba(15,14,13,.7);}
+.ix-opt .req-flag{font-family:var(--fb);font-size:8px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(232,226,217,0.44);border:1px solid rgba(232,226,217,0.22);padding:1px 5px;margin-left:8px;}
+.ix-opt.on .req-flag{color:rgba(15,14,13,.75);border-color:rgba(15,14,13,.4);}
+.ix-btnrow{display:flex;flex-wrap:wrap;gap:6px;}
+.ix-btn{flex:1;min-width:82px;text-align:center;font-family:var(--fb);font-size:12px;color:#f2ece1;background:transparent;border:1px solid rgba(232,226,217,0.14);border-radius:0;padding:9px 10px;cursor:pointer;transition:border-color .14s,color .14s,background .14s;}
+.ix-btn:hover{border-color:var(--pink);color:var(--pink);}
+.ix-btn.on{background:var(--pink);color:#0f0e0d;border-color:var(--pink);font-weight:600;}
+.ix-stages{display:flex;gap:0;flex-wrap:wrap;}
+.ix-stage{flex:1;min-width:74px;position:relative;text-align:center;font-family:var(--fb);font-size:10px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:rgba(232,226,217,0.5);background:transparent;border:1px solid rgba(232,226,217,0.14);border-left:none;border-radius:0;padding:9px 6px;cursor:pointer;transition:all .14s;}
+.ix-stage:first-child{border-left:1px solid rgba(232,226,217,0.14);}
+.ix-stage:hover{color:var(--pink);border-color:var(--pink);}
+.ix-stage.on{background:var(--pink);color:#0f0e0d;border-color:var(--pink);}
+.ix-stage.done{color:#f2ece1;border-color:rgba(255,102,102,.4);background:rgba(255,102,102,.06);}
+.ix-note{font-family:var(--fb);font-size:10.5px;color:rgba(232,226,217,0.40);font-style:italic;margin-top:16px;line-height:1.5;}
+@media(min-width:1400px){.ix-queue{max-height:calc(100vh - 250px);}.ix-detail{min-height:calc(100vh - 250px);max-height:calc(100vh - 250px);}.ix-dname{font-size:36px;}}
+
+/* client record (opens for Onboarding / Active leads) */
+.cr-back{display:inline-flex;align-items:center;gap:7px;background:none;border:none;cursor:pointer;font-family:var(--fb);font-size:10px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:rgba(232,226,217,0.44);padding:0;margin-bottom:14px;transition:color .18s;}
+.cr-back:hover{color:var(--pink);}
+.cr-back .cr-arrow{transition:transform .18s;}
+.cr-back:hover .cr-arrow{transform:translateX(-3px);}
+.cr-head{border-bottom:1px solid rgba(242,236,225,0.10);padding-bottom:18px;margin-bottom:4px;}
+.cr-badges{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin:12px 0 16px;}
+.cr-owner{font-family:var(--fb);font-size:11px;color:rgba(232,226,217,0.55);}
+.cr-owner strong{color:#f2ece1;font-weight:600;}
+.cr-eng{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(242,236,225,0.10);border:1px solid rgba(242,236,225,0.10);margin:4px 0;}
+@media(max-width:560px){.cr-eng{grid-template-columns:1fr;}}
+/* onboarding checklist — live mechanic */
+.cr-chk{display:flex;flex-direction:column;gap:7px;}
+.cr-chk-item{display:flex;align-items:center;gap:11px;padding:11px 13px;background:#0f0e0d;border:1px solid rgba(242,236,225,0.08);cursor:pointer;transition:border-color .15s;}
+.cr-chk-item:hover{border-color:rgba(255,102,102,.42);}
+.cr-chk-item.on{border-color:rgba(255,102,102,.30);}
+.cr-check{width:18px;height:18px;flex-shrink:0;border:1px solid rgba(232,226,217,0.30);background:transparent;display:inline-flex;align-items:center;justify-content:center;transition:background .15s,border-color .15s;}
+.cr-chk-item.on .cr-check{background:var(--pink);border-color:var(--pink);}
+.cr-check svg{opacity:0;transition:opacity .15s;}
+.cr-chk-item.on .cr-check svg{opacity:1;}
+.cr-chk-lbl{font-family:var(--fb);font-size:13px;color:#f2ece1;}
+.cr-chk-item.on .cr-chk-lbl{color:rgba(232,226,217,0.55);text-decoration:line-through;}
+.cr-chk-done{display:flex;align-items:center;gap:12px;padding:14px 15px;background:rgba(80,184,128,.08);border:1px solid rgba(80,184,128,.35);}
+.cr-done-mark{width:22px;height:22px;background:var(--green);display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;}
+.cr-done-txt{font-family:var(--fb);font-size:12.5px;color:var(--green);font-weight:600;}
+.cr-done-sub{font-family:var(--fb);font-size:11px;color:rgba(232,226,217,0.5);margin-top:1px;}
+/* Active: onboarding collapsed to one quiet line */
+.cr-done-line{display:flex;align-items:center;gap:8px;font-family:var(--fb);font-size:11.5px;color:var(--green);letter-spacing:.01em;margin-bottom:18px;}
+.cr-done-line svg{flex-shrink:0;}
+/* container tiles */
+.cr-cons{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;}
+@media(max-width:560px){.cr-cons{grid-template-columns:1fr;}}
+.cr-con{background:#0f0e0d;border:1px solid rgba(242,236,225,0.08);padding:13px 14px;cursor:pointer;transition:border-color .15s;display:flex;flex-direction:column;gap:7px;}
+.cr-con:hover{border-color:rgba(255,102,102,.42);}
+.cr-con-top{display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.cr-con-name{font-family:var(--fd);font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:#f2ece1;}
+.cr-con-tool{font-family:var(--fb);font-size:8.5px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:rgba(232,226,217,0.36);border:1px solid rgba(232,226,217,0.14);padding:2px 6px;white-space:nowrap;flex-shrink:0;}
+.cr-con-status{font-family:var(--fb);font-size:12px;color:rgba(232,226,217,0.70);line-height:1.4;}
 </style>
 </head>
 <body>
@@ -906,7 +1029,8 @@ select.de-input{cursor:pointer;}
   </header>
 
   <nav class="nav">
-    <button class="ntab active" data-tab="feed" onclick="switchTab('feed')">&#x26A1; Dashboard</button>
+    <button class="ntab active" data-tab="intake" onclick="switchTab('intake')">&#x1F4E5; Intake <span class="tcnt" id="cnt-intake">0</span></button>
+    <button class="ntab" data-tab="feed" onclick="switchTab('feed')">&#x26A1; Dashboard</button>
     <button class="ntab" data-tab="companies" onclick="switchTab('companies')">Companies <span class="tcnt" id="cnt-companies">0</span></button>
     <button class="ntab" data-tab="all" onclick="switchTab('all')">All <span class="tcnt" id="cnt-all">0</span></button>
     <button class="ntab" data-tab="active" onclick="switchTab('active')">Active <span class="tcnt" id="cnt-active">0</span></button>
@@ -1675,12 +1799,12 @@ function createBin(){var inp=document.getElementById('new-bin-inp');var name=inp
 
 // ═══ INIT / TABS ═════════════════════════════════════════════════════════════
 var currentTab='feed',activeFilters=new Set(),fddOpen=false,editingId=null,detailId=null,shareId=null;
-function init(){seedFeed();seedChannel();seedDMs();seedNotifs();switchTab('feed');}
+function init(){seedFeed();seedChannel();seedDMs();seedNotifs();switchTab('intake');}
 function switchTab(tab){
   currentTab=tab;activeFilters.clear();closeFDD();
   document.querySelectorAll('.ntab').forEach(function(el){el.classList.toggle('active',el.dataset.tab===tab);});
-  // Hide toolbar on dashboard, show on other tabs
-  var tb=document.querySelector('.toolbar');if(tb)tb.style.display=tab==='feed'?'none':'';
+  // Hide toolbar on the self-contained views (dashboard, intake); show on list tabs
+  var tb=document.querySelector('.toolbar');if(tb)tb.style.display=(tab==='feed'||tab==='intake')?'none':'';
   updateCounts();renderMain();renderStats();buildFDD();
 }
 function liveContacts(){return contacts.filter(function(c){return!c.deletion_requested;});}
@@ -1692,11 +1816,12 @@ function updateCounts(){
   ['contacts','active','prospects','former'].forEach(function(cat){document.getElementById('cnt-'+cat).textContent=live.filter(function(c){return c.cat===cat;}).length;});
   document.getElementById('cnt-favorites').textContent=getFavIds().filter(function(id){return live.some(function(c){return c.id===id;});}).length;
   document.getElementById('cnt-trash').textContent=trashedContacts().length;
+  var ci=document.getElementById('cnt-intake');if(ci)ci.textContent=intakeLeads.length;
 }
 var CAT_LABELS={feed:'Dashboard',companies:'Companies',all:'All Contacts',contacts:'Contacts',active:'Active',prospects:'Prospects',former:'Former',favorites:'Favorites',trash:'Trash'};
 function renderStats(){
   var live=liveContacts();
-  if(currentTab==='feed'){document.getElementById('stats-bar').innerHTML='';return;}
+  if(currentTab==='feed'||currentTab==='intake'){document.getElementById('stats-bar').innerHTML='';return;}
   if(currentTab==='trash'){var tc=trashedContacts().length;document.getElementById('stats-bar').innerHTML='<div class="stat-card"><div class="stat-val">'+tc+'</div><div class="stat-lbl">In Trash</div></div>';return;}
   var sub=currentTab==='companies'?live:currentTab==='favorites'?live.filter(function(c){return isFav(c.id);}):currentTab==='all'?live:live.filter(function(c){return c.cat===currentTab;});
   var coCount=[...new Set(live.map(function(c){return c.company;}).filter(Boolean))].length;
@@ -1846,6 +1971,7 @@ function renderCards(sub,showPill){
 
 function renderMain(){
   var q=document.getElementById('search-input').value.toLowerCase();
+  if(currentTab==='intake'){renderIntake();return;}
   if(currentTab==='feed'){renderFeed();return;}
   if(currentTab==='trash'){renderTrash();return;}
   if(currentTab==='companies'){renderCompanies();return;}
@@ -1856,6 +1982,221 @@ function renderMain(){
   sub=sortContacts(sub);
   var showPill=currentTab==='all'||currentTab==='favorites';
   document.getElementById('main-content').innerHTML='<div class="cg">'+renderCards(sub,showPill)+'</div>';
+}
+
+// ═══ INTAKE → ASSIGNMENT COMMAND CENTER ══════════════════════════════════════
+// DEMO ONLY: state lives in a plain in-memory variable — no backend, no network,
+// no localStorage. Reloading the page resets the queue to the seed below.
+// The service menu mirrors the live marketing site exactly, in two lanes.
+var INTAKE_SERVICES={
+  booking:[
+    {id:'basic-audit',name:'Basic Social Media Audit',price:'from $500'},
+    {id:'premium-audit',name:'Premium Social Media Audit',price:'from $850'},
+    {id:'basic-strategy',name:'Basic Strategy Session',price:'from $500'},
+    {id:'premium-strategy',name:'Premium Strategy Session',price:'from $2,000'}
+  ],
+  application:[
+    {id:'full-management',name:'Full Management',price:'Selective · custom'}
+  ]
+};
+var INTAKE_LANE_LBL={booking:'Booking request',application:'Application'};
+var INTAKE_STAGES=['New','Confirmed','Assigned','Onboarding','Active'];
+var INTAKE_MANAGERS=['Brendan','Kyra','Julia'];
+function svcById(id){var all=INTAKE_SERVICES.booking.concat(INTAKE_SERVICES.application);for(var i=0;i<all.length;i++)if(all[i].id===id)return all[i];return null;}
+
+// Seed ~6 fictional leads across both lanes, every stage, several bookings + 2 applications.
+var _im=60000,_h=3600000,_d=86400000,_t0=Date.now();
+var intakeLeads=[
+  {id:'lead1',name:'Meridian Reef',handle:'@meridianreef',contact:'Dana Okafor',email:'dana@meridianreef.co',lane:'booking',requested:'premium-audit',service:null,manager:null,stage:'New',receivedAt:_t0-12*_im,
+   message:'Coastal skincare brand, ~18k on Instagram. Growth stalled since January and we’re posting into the void. Want a proper read on what’s working before we commit to a bigger engagement.'},
+  {id:'lead2',name:'Nocturne Pictures',handle:'@nocturnepics',contact:'Elias Vane',email:'elias@nocturnepictures.film',lane:'application',requested:'full-management',service:null,manager:null,stage:'New',receivedAt:_t0-38*_im,
+   message:'Indie horror production house with two features in festival circuit. We need someone to own social end-to-end through our next release. Applying for full management — open to a scoping call.'},
+  {id:'lead3',name:'Jonah Vance',handle:'@thekelpforest',contact:'Jonah Vance',email:'jonah@thekelpforest.com',lane:'booking',requested:'basic-strategy',service:'basic-strategy',manager:null,stage:'Confirmed',receivedAt:_t0-2*_h,
+   message:'Ocean documentary creator, 42k on YouTube. Confirmed I want a strategy session to map out a Shorts cadence for the next doc drop. Flexible on timing this week.'},
+  {id:'lead4',name:'Sable & Vane',handle:'@sableandvane',contact:'Priscilla Sable',email:'hello@sableandvane.com',lane:'booking',requested:'premium-strategy',service:'premium-strategy',manager:'Kyra',stage:'Assigned',receivedAt:_t0-1*_d-3*_h,
+   message:'Luxury slow-fashion label launching a capsule in the fall. Booked the premium strategy session — want a full channel + campaign plan around the drop. Kyra, looking forward to it.'},
+  {id:'lead5',name:'Priya Anand',handle:'@runwildmedia',contact:'Priya Anand',email:'priya@runwildmedia.co',lane:'booking',requested:'basic-audit',service:'basic-audit',manager:'Julia',stage:'Onboarding',receivedAt:_t0-3*_d,startedAt:_t0-3*_d,
+   message:'Adventure / outdoor creator, 65k across TikTok + IG. Audit is booked and I’ve sent over my logins. Ready to get started whenever Julia is.',
+   checklist:{assets:true,delivered:false},
+   containers:{agreement:'Signed · Jul 5',assets:'Logins received · 4 items',invoices:'Paid in full · $500',activity:'Audit kickoff scheduled'}},
+  {id:'lead6',name:'Halcyon Studios',handle:'@halcyongames',contact:'Rowan Ito',email:'rowan@halcyonstudios.gg',lane:'application',requested:'full-management',service:'full-management',manager:'Brendan',stage:'Active',receivedAt:_t0-6*_d,startedAt:_t0-6*_d,
+   message:'Indie game studio, first title shipping this quarter. Approved for full management — Brendan’s team is running our whole launch calendar. Kickoff is done, we’re live.',
+   checklist:{agreement:true,assets:true,kickoff:true},
+   containers:{agreement:'Signed · Jun 24',assets:'12 files · brand kit + logins',invoices:'Deposit paid · $2,400 of $6,000',project:'8 tasks · 3 in progress',activity:'Kickoff call logged'}}
+];
+var selectedLeadId=intakeLeads[0].id;
+
+function intakeAgo(ts){
+  var s=Math.max(0,Math.floor((Date.now()-ts)/1000));
+  if(s<60)return 'just now';
+  var m=Math.floor(s/60);if(m<60)return m+'m ago';
+  var h=Math.floor(m/60);if(h<24)return h+'h ago';
+  var d=Math.floor(h/24);return d+'d ago';
+}
+function stageCls(stage){return 'st-'+stage.toLowerCase();}
+
+// Client-record config. Onboarding checklist is lane-dependent: full management runs
+// the whole checklist; a booking runs a lighter "collect assets, then deliver".
+var CHECKLIST_ITEMS={
+  application:[{key:'agreement',label:'Agreement sent & signed'},{key:'assets',label:'Brand assets & logins collected'},{key:'kickoff',label:'Kickoff prep complete'}],
+  booking:[{key:'assets',label:'Brand assets & logins collected'},{key:'delivered',label:'Delivered'}]
+};
+// Five containers; Project work (Notion) is full-management only — a one-off booking needs no post board.
+var CONTAINER_META=[
+  {key:'agreement',label:'Agreement',tool:'DocuSign'},
+  {key:'assets',label:'Assets',tool:'Google Drive'},
+  {key:'invoices',label:'Invoices',tool:'QuickBooks'},
+  {key:'project',label:'Project work',tool:'Notion',fullOnly:true},
+  {key:'activity',label:'Activity',tool:'Slack'}
+];
+var MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+function fmtDate(ts){var d=new Date(ts);return MONTHS[d.getMonth()]+' '+d.getDate()+', '+d.getFullYear();}
+function checkSvg(c){return '<svg width="10" height="10" viewBox="0 0 12 12"><path d="M2 6.2l2.6 2.6L10 3" fill="none" stroke="'+c+'" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';}
+
+function renderIntake(){
+  document.getElementById('main-content').innerHTML=
+    '<div class="intake">'
+    +'<div class="ix-panel">'
+      +'<div class="ix-phdr"><span class="ix-ptitle">Inbound Queue</span><span class="ix-pcount">'+intakeLeads.length+'</span></div>'
+      +'<div class="ix-queue" id="ix-queue">'+intakeLeads.map(intakeRowHTML).join('')+'</div>'
+    +'</div>'
+    +'<div class="ix-panel ix-detail" id="ix-detail">'+intakeDetailHTML()+'</div>'
+    +'</div>';
+}
+function intakeRowHTML(l){
+  var svc=svcById(l.requested);
+  return '<div class="iq-row'+(l.id===selectedLeadId?' sel':'')+'" onclick="selectLead(\''+l.id+'\')">'
+    +'<div class="iq-top"><span class="iq-name">'+esc(l.name)+'</span><span class="iq-ago">'+intakeAgo(l.receivedAt)+'</span></div>'
+    +'<div class="iq-svc">'+esc(svc?svc.name:'—')+'</div>'
+    +'<div class="iq-tags"><span class="lane-tag lane-'+l.lane+'">'+INTAKE_LANE_LBL[l.lane]+'</span><span class="stage-pill '+stageCls(l.stage)+'">'+l.stage+'</span></div>'
+    +'</div>';
+}
+// STAGE-AWARE DETAIL — one view, not two layouts. The pinned top (identity + Set Stage) is
+// identical for every stage; only the body below changes. Lane flex preserved throughout.
+function intakeDetailHTML(){
+  var l=_curLead();
+  if(!l)return '<div class="ix-empty"><span class="ix-empty-mark">Inbound</span><div>Select a lead from the queue to review the intake and route it.</div></div>';
+  return '<div class="ix-dbody">'+ixTopHTML(l)+'<div class="ix-scrollbody">'+ixBodyHTML(l)+'</div></div>';
+}
+// Pinned header — back affordance, identity, stage pill + owner, then Set Stage. Same for all stages.
+function ixTopHTML(l){
+  var curIdx=INTAKE_STAGES.indexOf(l.stage);
+  var stageRow='<div class="ix-stages">'+INTAKE_STAGES.map(function(st,i){var cls=i===curIdx?'on':(i<curIdx?'done':'');return '<button class="ix-stage '+cls+'" onclick="setLeadStage(\''+st+'\')">'+st+'</button>';}).join('')+'</div>';
+  return '<div class="ix-top">'
+    +'<button class="cr-back" onclick="backToQueue()"><span class="cr-arrow">&#x2190;</span> Inbound Queue</button>'
+    +'<div class="ix-dhead"><div><div class="ix-dname">'+esc(l.name)+'</div>'
+      +'<div class="ix-dsub">'+esc(l.contact)+' &middot; '+esc(l.handle)+' &middot; <a href="mailto:'+esc(l.email)+'">'+esc(l.email)+'</a></div></div>'
+      +'<span class="lane-tag lane-'+l.lane+'">'+INTAKE_LANE_LBL[l.lane]+'</span></div>'
+    +'<div class="cr-badges"><span class="stage-pill '+stageCls(l.stage)+'">'+l.stage+'</span><span class="cr-owner">Owner: <strong>'+(l.manager||'Unassigned')+'</strong></span></div>'
+    +'<div class="ix-albl" style="margin-bottom:6px">Set stage</div>'+stageRow
+    +'</div>';
+}
+// Stage-aware body: two decisions (New/Confirmed/Assigned), setup (Onboarding), operating dashboard (Active).
+function ixBodyHTML(l){
+  if(l.stage==='Onboarding'||l.stage==='Active')return recordBodyHTML(l);
+  return deciderBodyHTML(l);
+}
+function deciderBodyHTML(l){
+  var reqSvc=svcById(l.requested),confSvc=l.service?svcById(l.service):null;
+  // service menu, grouped by the two live-site lanes
+  function optHTML(s){
+    var on=l.service===s.id,isReq=l.requested===s.id;
+    return '<button class="ix-opt'+(on?' on':'')+'" onclick="confirmService(\''+s.id+'\')">'
+      +'<span>'+esc(s.name)+(isReq?'<span class="req-flag">Requested</span>':'')+'</span>'
+      +'<span class="ix-opt-price">'+esc(s.price)+'</span>'
+      +'</button>';
+  }
+  var svcMenu='<div class="ix-lane-lbl">Booking request</div><div class="ix-opts">'+INTAKE_SERVICES.booking.map(optHTML).join('')+'</div>'
+    +'<div class="ix-lane-lbl">Application</div><div class="ix-opts">'+INTAKE_SERVICES.application.map(optHTML).join('')+'</div>';
+  var mgrRow='<div class="ix-btnrow">'+INTAKE_MANAGERS.map(function(m){return '<button class="ix-btn'+(l.manager===m?' on':'')+'" onclick="assignManager(\''+m+'\')">'+m+'</button>';}).join('')+'</div>';
+
+  // "Still deciding" body = intake context + the two decisions. Set Stage now lives in the pinned header.
+  return '<div class="ix-meta">'
+      +'<div class="ix-mcell"><div class="ix-mlbl">Received</div><div class="ix-mval">'+intakeAgo(l.receivedAt)+'</div></div>'
+      +'<div class="ix-mcell"><div class="ix-mlbl">Lane</div><div class="ix-mval">'+INTAKE_LANE_LBL[l.lane]+'</div></div>'
+      +'<div class="ix-mcell"><div class="ix-mlbl">Service requested</div><div class="ix-mval">'+esc(reqSvc?reqSvc.name:'—')+'</div></div>'
+      +'<div class="ix-mcell"><div class="ix-mlbl">Starting point</div><div class="ix-mval"><span class="from">'+esc(reqSvc?reqSvc.price:'—')+'</span></div></div>'
+    +'</div>'
+    +'<div class="ix-msg">'+esc(l.message)+'</div>'
+    +'<div class="ix-act"><div class="ix-albl">1 · Confirm service</div><div class="ix-ahint">'
+      +(confSvc?('Confirmed as <strong style="color:var(--pink)">'+esc(confSvc.name)+'</strong> — pricing is a starting point, final quote after scoping.'):'Awaiting confirmation. Pricing is a starting point, not a closed number.')
+      +'</div>'+svcMenu+'</div>'
+    +'<div class="ix-act"><div class="ix-albl">2 · Assign manager</div><div class="ix-ahint">Route this lead to a team member.</div>'+mgrRow+'</div>'
+    +'<div class="ix-note">Demo data — every lead is a request awaiting confirmation. Changes live in memory only and reset on reload.</div>';
+}
+
+// ── CLIENT RECORD BODY — lane-flexed; Onboarding = setup, Active = operating dashboard ──
+function recordBodyHTML(l){
+  var conf=l.service?svcById(l.service):svcById(l.requested);
+  // Scoped price: never a closed number — "To be quoted" for full management, starting-point price for bookings.
+  var priceTxt=l.lane==='application'?'To be quoted':(conf?conf.price:'—');
+  var engHTML='<div class="ix-act"><div class="ix-albl">Engagement</div><div class="cr-eng">'
+      +'<div class="ix-mcell"><div class="ix-mlbl">Confirmed service</div><div class="ix-mval">'+esc(conf?conf.name:'—')+'</div></div>'
+      +'<div class="ix-mcell"><div class="ix-mlbl">Scoped price</div><div class="ix-mval"><span class="from">'+esc(priceTxt)+'</span></div></div>'
+      +'<div class="ix-mcell"><div class="ix-mlbl">Started</div><div class="ix-mval">'+(l.startedAt?fmtDate(l.startedAt):'—')+'</div></div>'
+    +'</div></div>';
+  var items=CHECKLIST_ITEMS[l.lane],ck=l.checklist||{};
+  var doneCount=items.filter(function(it){return !!ck[it.key];}).length;
+  var allDone=doneCount===items.length;
+
+  if(l.stage==='Active'){
+    // Operating dashboard: onboarding collapses to one quiet line; workspace foregrounded, ops-priority order.
+    var doneLine='<div class="cr-done-line">'+checkSvg('#50b880')+'<span>Onboarding '+(allDone?'complete — all steps done':'· '+doneCount+' of '+items.length+' steps done')+'</span></div>';
+    var workspace='<div class="ix-act"><div class="ix-albl">Workspace</div><div class="ix-ahint">Live client workspace — stubbed; each opens its sub-view later.</div>'+containersHTML(l,true)+'</div>';
+    return doneLine+workspace+engHTML+'<div class="ix-note">Demo data — in memory only, resets on reload.</div>';
+  }
+  // Onboarding (setup): engagement, the active checklist, then the containers.
+  var onbHint=l.lane==='application'?'Agreement, assets, and kickoff. All three complete → client goes Active.':'Collect assets, then deliver. Both complete → client goes Active.';
+  var checklistHTML=allDone
+    ?'<div class="cr-chk-done"><span class="cr-done-mark">'+checkSvg('#0f0e0d')+'</span><div><div class="cr-done-txt">Onboarding complete</div><div class="cr-done-sub">All steps done — client is Active.</div></div></div>'
+    :'<div class="cr-chk">'+items.map(function(it){var on=!!ck[it.key];return '<div class="cr-chk-item'+(on?' on':'')+'" onclick="toggleChecklist(\''+it.key+'\')"><span class="cr-check">'+checkSvg('#0f0e0d')+'</span><span class="cr-chk-lbl">'+esc(it.label)+'</span></div>';}).join('')+'</div>';
+  return engHTML
+    +'<div class="ix-act"><div class="ix-albl">Onboarding</div><div class="ix-ahint">'+onbHint+'</div>'+checklistHTML+'</div>'
+    +'<div class="ix-act"><div class="ix-albl">Containers</div><div class="ix-ahint">Workspaces for this client — stubbed; each opens its sub-view later.</div>'+containersHTML(l,false)+'</div>'
+    +'<div class="ix-note">Demo data — in memory only, resets on reload.</div>';
+}
+// Container tiles. Lane flex: bookings hide Project work (Notion). Active reorders to operational priority.
+function containersHTML(l,active){
+  var cons=CONTAINER_META.filter(function(cm){return !(cm.fullOnly&&l.lane!=='application');});
+  if(active){var order=['project','activity','invoices','agreement','assets'];cons=cons.slice().sort(function(a,b){return order.indexOf(a.key)-order.indexOf(b.key);});}
+  return '<div class="cr-cons">'+cons.map(function(cm){var st=(l.containers||{})[cm.key]||'Not started';
+    return '<div class="cr-con" onclick="conStub(\''+esc2(cm.label)+'\',\''+esc2(cm.tool)+'\')"><div class="cr-con-top"><span class="cr-con-name">'+cm.label+'</span><span class="cr-con-tool">'+cm.tool+'</span></div><div class="cr-con-status">'+esc(st)+'</div></div>';
+  }).join('')+'</div>';
+}
+function toggleChecklist(key){
+  var l=_curLead();if(!l)return;
+  if(!l.checklist)l.checklist={};
+  l.checklist[key]=!l.checklist[key];
+  var items=CHECKLIST_ITEMS[l.lane];
+  var allDone=items.every(function(it){return !!l.checklist[it.key];});
+  var flipped=false;
+  if(allDone&&l.stage!=='Active'){l.stage='Active';flipped=true;}
+  _refreshDetail();
+  if(flipped)toast(l.name+' is now Active — onboarding complete.');
+  else{var it=items.find(function(x){return x.key===key;});toast((l.checklist[key]?'Done':'Cleared')+' · '+(it?it.label:key));}
+}
+function conStub(label,tool){toast(label+' → '+tool+' · connects later');}
+function backToQueue(){selectedLeadId=null;_refreshDetail();}
+function _curLead(){return intakeLeads.find(function(x){return x.id===selectedLeadId;});}
+function _refreshDetail(){var el=document.getElementById('ix-detail');if(el)el.innerHTML=intakeDetailHTML();var q=document.getElementById('ix-queue');if(q)q.innerHTML=intakeLeads.map(intakeRowHTML).join('');}
+function _advance(l,to){var from=INTAKE_STAGES.indexOf(l.stage),ti=INTAKE_STAGES.indexOf(to);if(ti>from){l.stage=to;return true;}return false;}
+function selectLead(id){selectedLeadId=id;_refreshDetail();}
+function confirmService(id){
+  var l=_curLead();if(!l)return;var s=svcById(id);l.service=id;
+  var bumped=_advance(l,'Confirmed');
+  _refreshDetail();
+  toast('Service confirmed — '+(s?s.name:'')+(bumped?' · moved to Confirmed':''));
+}
+function assignManager(m){
+  var l=_curLead();if(!l)return;l.manager=m;
+  var bumped=_advance(l,'Assigned');
+  _refreshDetail();
+  toast('Assigned to '+m+(bumped?' · moved to Assigned':''));
+}
+function setLeadStage(st){
+  var l=_curLead();if(!l)return;l.stage=st;
+  _refreshDetail();
+  toast('Stage set to '+st);
 }
 
 // ═══ FILTER ══════════════════════════════════════════════════════════════════
