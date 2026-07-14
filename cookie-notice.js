@@ -151,11 +151,14 @@
     }
     /* ── MOBILE — floating card, inset from the screen edges ─────────
        Insets 14px on the left, right, and bottom so the banner never touches an
-       edge, with 12px rounded corners and the base solid #14120f background +
-       full coral border + drop shadow, so it reads as a distinct popup card
-       floating above the page rather than a full-width system bar. The 14px
-       bottom inset is accounted for in --lo-cookie-h (see syncCookieMetrics) so
-       the lead-capture launcher still sits cleanly above the card. */
+       edge. Sharp 90° corners (border-radius: 0) + the base solid #14120f
+       background + full coral border read as a distinct popup card floating above
+       the page rather than a full-width system bar, in keeping with the site's
+       crisp sharp-edged aesthetic. The base drop shadow is dropped here
+       (box-shadow: none): its 60px-blur / 18px-down spill rendered as a soft dark
+       fade below the card's bottom edge — the coral border alone delineates the
+       card. The 14px bottom inset is accounted for in --lo-cookie-h (see
+       syncCookieMetrics) so the lead-capture launcher still sits above the card. */
     @media (max-width: 768px) {
       .lo-privacy-notice {
         left: 14px;
@@ -169,7 +172,8 @@
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
         z-index: 9000;
-        border-radius: 12px;
+        border-radius: 0;
+        box-shadow: none;
         /* Keep the base 1px coral border on all four sides (no edge-stripping)
            so the inset card is fully outlined. */
       }
@@ -255,12 +259,19 @@
   }
 
   let notice = null;
+  /* Set once the banner starts dismissing. syncCookieMetrics runs off a resize
+     listener and the banner lingers in the DOM through its 0.45s fade-out; a
+     resize during that window would otherwise re-publish the cookie metrics after
+     clearCookieMetrics() has already run, leaving body.cookie-active + --lo-cookie-h
+     stranded and the lead-popup launcher stuck in its lifted position (the ghost).
+     Guarding on this flag — and removing the listener in dismiss() — closes that race. */
+  let dismissed = false;
 
   /* Flag the page + publish the banner's height so other fixed-position
      UI (the Free Seminar tab in lead-popup.js) can lift itself clear of
      the banner on mobile via `body.cookie-active` + the --lo-cookie-h var. */
   function syncCookieMetrics() {
-    if (!notice) return;
+    if (!notice || dismissed) return;
     document.body.classList.add('cookie-active');
     /* Publish the banner's full footprint measured from the bottom of the
        viewport: its own border-box height PLUS its bottom inset (0 on desktop,
@@ -279,6 +290,11 @@
   }
 
   function dismiss() {
+    dismissed = true;
+    /* Tear down the resize listener immediately so it can't re-run
+       syncCookieMetrics (and re-strand cookie-active / --lo-cookie-h) while the
+       banner fades out. */
+    window.removeEventListener('resize', syncCookieMetrics);
     try { localStorage.setItem(STORAGE_KEY, '1'); } catch (e) { /* ignore */ }
     if (!notice) return;
     notice.classList.remove('visible');
