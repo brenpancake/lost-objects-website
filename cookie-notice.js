@@ -149,23 +149,29 @@
       color: #f2ece1;
       border-color: rgba(242,236,225,0.5);
     }
-    /* ── MOBILE — compact, bottom-anchored bar ─────── */
+    /* ── MOBILE — floating card, inset from the screen edges ─────────
+       Insets 14px on the left, right, and bottom so the banner never touches an
+       edge, with 12px rounded corners and the base solid #14120f background +
+       full coral border + drop shadow, so it reads as a distinct popup card
+       floating above the page rather than a full-width system bar. The 14px
+       bottom inset is accounted for in --lo-cookie-h (see syncCookieMetrics) so
+       the lead-capture launcher still sits cleanly above the card. */
     @media (max-width: 768px) {
       .lo-privacy-notice {
-        left: 0;
-        right: 0;
-        bottom: 0;
-        width: 100%;
-        max-width: 100%;
+        left: 14px;
+        right: 14px;
+        bottom: 14px;
+        width: auto;
+        max-width: none;
         transform: translateY(20px);
         padding: 16px;
         max-height: 45vh;
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
         z-index: 9000;
-        border-left: none;
-        border-right: none;
-        border-bottom: none;
+        border-radius: 12px;
+        /* Keep the base 1px coral border on all four sides (no edge-stripping)
+           so the inset card is fully outlined. */
       }
       .lo-privacy-notice.visible { transform: translateY(0); }
       .lo-privacy-notice.hiding { transform: translateY(16px); }
@@ -256,7 +262,15 @@
   function syncCookieMetrics() {
     if (!notice) return;
     document.body.classList.add('cookie-active');
-    document.documentElement.style.setProperty('--lo-cookie-h', notice.offsetHeight + 'px');
+    /* Publish the banner's full footprint measured from the bottom of the
+       viewport: its own border-box height PLUS its bottom inset (0 on desktop,
+       14px for the mobile floating card). offsetHeight and computed `bottom` are
+       both layout values, unaffected by the slide-in transform, so the number is
+       stable through the animation and self-adjusts across breakpoints. The
+       lead-popup launcher sits at calc(--lo-cookie-h + 8px), so it clears the top
+       edge of the inset card cleanly. */
+    const bottomInset = parseFloat(getComputedStyle(notice).bottom) || 0;
+    document.documentElement.style.setProperty('--lo-cookie-h', (notice.offsetHeight + bottomInset) + 'px');
   }
 
   function clearCookieMetrics() {
