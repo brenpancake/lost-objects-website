@@ -2791,11 +2791,18 @@
       .collage-card.is-open .collage-card-ig { opacity: 0.85; transform: translateY(0); }
       .collage-card.is-open .collage-card-label { opacity: 1; transform: translateY(0); }
       .collage-card.is-open .collage-card-rule { opacity: 0.6; transform: translateX(-50%) scaleX(1); }
-      /* Simplified, smaller stats on mobile — three metrics stay on one row */
-      .collage-card-stats { gap: 11px; max-width: calc(100% - 12px); }
-      .cstat-num { font-size: 17px; }
-      .cstat-ic { width: 14px; height: 14px; margin-bottom: 6px; }
-      .cstat-label { font-size: 7px; letter-spacing: 0.1em; }
+      /* Mobile: hide the wide uppercase labels (the icons already convey
+         likes / comments / reposts) so three metrics fit inside a ~155px tile.
+         Icon stays stacked and centered above the number, as on desktop. */
+      .cstat-label { display: none; }
+      .collage-card-stats {
+        gap: 14px;
+        max-width: 100%;
+        padding: 0 6px;
+        box-sizing: border-box;
+      }
+      .cstat-num { font-size: 13px; }
+      .cstat-ic { width: 15px; height: 15px; margin-bottom: 6px; }
       .collage-card-rule { bottom: 34px; }
 
       .svc-grid { grid-template-columns: 1fr; }
