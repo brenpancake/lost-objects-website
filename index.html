@@ -667,7 +667,7 @@
     }
     .collage-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(4, 1fr);
       gap: 12px;
       overflow: visible;
       padding: 16px;
@@ -802,7 +802,8 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 28px;
+      gap: 13px;
+      max-width: calc(100% - 16px);
       opacity: 0;
       transition: opacity 0.35s ease;
       pointer-events: none;
@@ -817,14 +818,14 @@
     }
     /* Minimal pink outline icon centered above each number */
     .cstat-ic {
-      width: 16px;
-      height: 16px;
-      margin-bottom: 8px;
+      width: 15px;
+      height: 15px;
+      margin-bottom: 7px;
     }
     .cstat-num {
       font-family: var(--sans);
       font-weight: 400;
-      font-size: 24px;
+      font-size: 19px;
       line-height: 1;
       color: rgba(255,255,255,1.0);
       text-shadow: 0 2px 12px rgba(0,0,0,0.6);
@@ -835,7 +836,7 @@
       font-size: 8px;
       font-weight: 500;
       text-transform: uppercase;
-      letter-spacing: 0.2em;
+      letter-spacing: 0.14em;
       color: rgba(255,255,255,0.65);
     }
     /* Short pink dash between the stats and the View on Instagram link */
@@ -872,11 +873,11 @@
     /* Mobile — tighter, smaller engagement stats so they stay inside the card */
     @media (max-width: 768px) {
       .collage-card-stats {
-        gap: 20px;
-        max-width: calc(100% - 24px);
+        gap: 12px;
+        max-width: calc(100% - 12px);
         flex-wrap: nowrap;
       }
-      .cstat-num { font-size: 18px; }
+      .cstat-num { font-size: 16px; }
     }
 
     /* CONTACT — STICKY SCROLL EXPANSION */
@@ -2790,10 +2791,11 @@
       .collage-card.is-open .collage-card-ig { opacity: 0.85; transform: translateY(0); }
       .collage-card.is-open .collage-card-label { opacity: 1; transform: translateY(0); }
       .collage-card.is-open .collage-card-rule { opacity: 0.6; transform: translateX(-50%) scaleX(1); }
-      /* Simplified, smaller stats on mobile */
-      .collage-card-stats { gap: 28px; }
-      .cstat-num { font-size: 28px; }
-      .cstat-label { font-size: 8px; letter-spacing: 0.16em; }
+      /* Simplified, smaller stats on mobile — three metrics stay on one row */
+      .collage-card-stats { gap: 11px; max-width: calc(100% - 12px); }
+      .cstat-num { font-size: 17px; }
+      .cstat-ic { width: 14px; height: 14px; margin-bottom: 6px; }
+      .cstat-label { font-size: 7px; letter-spacing: 0.1em; }
       .collage-card-rule { bottom: 34px; }
 
       .svc-grid { grid-template-columns: 1fr; }
@@ -2923,93 +2925,43 @@
     <span class="section-eyebrow-text">Selected Work</span>
   </div>
   <div class="collage-grid">
-    <a class="collage-card ratio-4x5" href="https://www.instagram.com/p/DFa-HggS_AN/?img_index=1" target="_blank" rel="noopener noreferrer" data-likes="51.4K" data-comments="132">
+    <a class="collage-card ratio-4x5" href="https://www.instagram.com/p/DVtWaeUDyJV/" target="_blank" rel="noopener noreferrer" data-likes="303.8K" data-comments="3.2K" data-reposts="23.4K">
       <div class="collage-card-inner">
-        <img src="images/475715696_18343415827198483_5935573091955911007_n.jpg" alt="Lost Objects — Instagram post" loading="lazy" decoding="async" />
+        <picture>
+          <source type="image/webp" srcset="images/work-01-ccc-born-x-raised-640.webp 640w, images/work-01-ccc-born-x-raised-1080.webp 1080w" sizes="(min-width: 1380px) 306px, (max-width: 900px) 45vw, 22vw" />
+          <source type="image/jpeg" srcset="images/work-01-ccc-born-x-raised-640.jpg 640w, images/work-01-ccc-born-x-raised-1080.jpg 1080w" sizes="(min-width: 1380px) 306px, (max-width: 900px) 45vw, 22vw" />
+          <img src="images/work-01-ccc-born-x-raised-1080.jpg" alt="Behind the scenes on the Born x Raised spot, a Collective Camera Cranes rig lifting an overhead light array above a baseball team on an East LA street" width="1080" height="1440" loading="lazy" decoding="async" />
+        </picture>
       </div>
       <div class="collage-card-overlay"></div>
       <div class="collage-card-stats">
         <div class="cstat cstat-likes">
           <svg class="cstat-ic" viewBox="0 0 24 24" fill="none" stroke="rgba(255,102,102,0.8)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-          <span class="cstat-num">51.4K</span>
+          <span class="cstat-num">303.8K</span>
           <span class="cstat-label">Likes</span>
         </div>
         <div class="cstat cstat-comments">
           <svg class="cstat-ic" viewBox="0 0 24 24" fill="none" stroke="rgba(255,102,102,0.8)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-          <span class="cstat-num">132</span>
+          <span class="cstat-num">3.2K</span>
           <span class="cstat-label">Comments</span>
+        </div>
+        <div class="cstat cstat-reposts">
+          <svg class="cstat-ic" viewBox="0 0 24 24" fill="none" stroke="rgba(255,102,102,0.8)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+          <span class="cstat-num">23.4K</span>
+          <span class="cstat-label">Reposts</span>
         </div>
       </div>
       <div class="collage-card-rule"></div>
       <div class="collage-card-ig"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="#fff" stroke-width="1.5"/><circle cx="12" cy="12" r="5" stroke="#fff" stroke-width="1.5"/><circle cx="17.5" cy="6.5" r="1.2" fill="#fff"/></svg></div>
       <div class="collage-card-label">View on Instagram &rarr;</div>
     </a>
-    <a class="collage-card ratio-1x1" href="https://www.instagram.com/p/DRhsrdEiYm1/" target="_blank" rel="noopener noreferrer" data-likes="19.6K" data-comments="143">
+    <a class="collage-card ratio-4x5" href="https://www.instagram.com/p/DOjClddEbzW/" target="_blank" rel="noopener noreferrer" data-likes="56.6K" data-comments="138" data-reposts="1.1K">
       <div class="collage-card-inner">
-        <img src="images/589102708_18382413772198483_6004977522962831426_n.jpg" alt="Lost Objects — Instagram post" loading="lazy" decoding="async" />
-      </div>
-      <div class="collage-card-overlay"></div>
-      <div class="collage-card-stats">
-        <div class="cstat cstat-likes">
-          <svg class="cstat-ic" viewBox="0 0 24 24" fill="none" stroke="rgba(255,102,102,0.8)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-          <span class="cstat-num">19.6K</span>
-          <span class="cstat-label">Likes</span>
-        </div>
-        <div class="cstat cstat-comments">
-          <svg class="cstat-ic" viewBox="0 0 24 24" fill="none" stroke="rgba(255,102,102,0.8)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-          <span class="cstat-num">143</span>
-          <span class="cstat-label">Comments</span>
-        </div>
-      </div>
-      <div class="collage-card-rule"></div>
-      <div class="collage-card-ig"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="#fff" stroke-width="1.5"/><circle cx="12" cy="12" r="5" stroke="#fff" stroke-width="1.5"/><circle cx="17.5" cy="6.5" r="1.2" fill="#fff"/></svg></div>
-      <div class="collage-card-label">View on Instagram &rarr;</div>
-    </a>
-    <a class="collage-card ratio-4x5" href="https://www.instagram.com/p/DWy91VEFCxG/?img_index=1" target="_blank" rel="noopener noreferrer" data-likes="12.2K" data-comments="50">
-      <div class="collage-card-inner">
-        <img src="images/659033416_18050557670720790_7937693999032787166_n.jpg" alt="Lost Objects — Instagram post" loading="lazy" decoding="async" />
-      </div>
-      <div class="collage-card-overlay"></div>
-      <div class="collage-card-stats">
-        <div class="cstat cstat-likes">
-          <svg class="cstat-ic" viewBox="0 0 24 24" fill="none" stroke="rgba(255,102,102,0.8)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-          <span class="cstat-num">12.2K</span>
-          <span class="cstat-label">Likes</span>
-        </div>
-        <div class="cstat cstat-comments">
-          <svg class="cstat-ic" viewBox="0 0 24 24" fill="none" stroke="rgba(255,102,102,0.8)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-          <span class="cstat-num">50</span>
-          <span class="cstat-label">Comments</span>
-        </div>
-      </div>
-      <div class="collage-card-rule"></div>
-      <div class="collage-card-ig"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="#fff" stroke-width="1.5"/><circle cx="12" cy="12" r="5" stroke="#fff" stroke-width="1.5"/><circle cx="17.5" cy="6.5" r="1.2" fill="#fff"/></svg></div>
-      <div class="collage-card-label">View on Instagram &rarr;</div>
-    </a>
-    <a class="collage-card ratio-1x1 standout" href="https://www.instagram.com/p/DVtWaeUDyJV/" target="_blank" rel="noopener noreferrer" data-likes="300K" data-comments="3.1K">
-      <div class="collage-card-inner">
-        <img src="images/701700692_18031508729803568_5676187629427121799_n.jpg" alt="Lost Objects — Instagram post" loading="lazy" decoding="async" />
-      </div>
-      <div class="collage-card-overlay"></div>
-      <div class="collage-card-stats">
-        <div class="cstat cstat-likes">
-          <svg class="cstat-ic" viewBox="0 0 24 24" fill="none" stroke="rgba(255,102,102,0.8)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-          <span class="cstat-num">300K</span>
-          <span class="cstat-label">Likes</span>
-        </div>
-        <div class="cstat cstat-comments">
-          <svg class="cstat-ic" viewBox="0 0 24 24" fill="none" stroke="rgba(255,102,102,0.8)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-          <span class="cstat-num">3.1K</span>
-          <span class="cstat-label">Comments</span>
-        </div>
-      </div>
-      <div class="collage-card-rule"></div>
-      <div class="collage-card-ig"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="#fff" stroke-width="1.5"/><circle cx="12" cy="12" r="5" stroke="#fff" stroke-width="1.5"/><circle cx="17.5" cy="6.5" r="1.2" fill="#fff"/></svg></div>
-      <div class="collage-card-label">View on Instagram &rarr;</div>
-    </a>
-    <a class="collage-card ratio-4x5" href="https://www.instagram.com/p/DOjClddEbzW/" target="_blank" rel="noopener noreferrer" data-likes="56.6K" data-comments="138">
-      <div class="collage-card-inner">
-        <img src="images/708653059_18057003821720790_6212212797853852108_n.jpg" alt="Lost Objects — Instagram post" loading="lazy" decoding="async" />
+        <picture>
+          <source type="image/webp" srcset="images/work-02-ccc-counterweight-640.webp 640w, images/work-02-ccc-counterweight-1080.webp 1080w" sizes="(min-width: 1380px) 306px, (max-width: 900px) 45vw, 22vw" />
+          <source type="image/jpeg" srcset="images/work-02-ccc-counterweight-640.jpg 640w, images/work-02-ccc-counterweight-1080.jpg 1080w" sizes="(min-width: 1380px) 306px, (max-width: 900px) 45vw, 22vw" />
+          <img src="images/work-02-ccc-counterweight-1080.jpg" alt="A Collective Camera Cranes crane arm counterweighted on a period interior set, operator silhouetted at the monitor" width="1080" height="1920" loading="lazy" decoding="async" />
+        </picture>
       </div>
       <div class="collage-card-overlay"></div>
       <div class="collage-card-stats">
@@ -3023,26 +2975,310 @@
           <span class="cstat-num">138</span>
           <span class="cstat-label">Comments</span>
         </div>
+        <div class="cstat cstat-reposts">
+          <svg class="cstat-ic" viewBox="0 0 24 24" fill="none" stroke="rgba(255,102,102,0.8)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+          <span class="cstat-num">1.1K</span>
+          <span class="cstat-label">Reposts</span>
+        </div>
       </div>
       <div class="collage-card-rule"></div>
       <div class="collage-card-ig"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="#fff" stroke-width="1.5"/><circle cx="12" cy="12" r="5" stroke="#fff" stroke-width="1.5"/><circle cx="17.5" cy="6.5" r="1.2" fill="#fff"/></svg></div>
       <div class="collage-card-label">View on Instagram &rarr;</div>
     </a>
-    <a class="collage-card ratio-1x1" href="https://www.instagram.com/p/DIyyLh2Mivm/?img_index=1" target="_blank" rel="noopener noreferrer" data-likes="18.5K" data-comments="74">
+    <a class="collage-card ratio-4x5" href="https://www.instagram.com/p/DaS9L4ulKeI/?img_index=1" target="_blank" rel="noopener noreferrer" data-likes="10.4K" data-comments="1.7K" data-reposts="413">
       <div class="collage-card-inner">
-        <img src="images/702637885_18056050304720790_485156073056251602_n.jpg" alt="Lost Objects — Instagram post" loading="lazy" decoding="async" />
+        <picture>
+          <source type="image/webp" srcset="images/work-03-look-of-obsession-640.webp 640w, images/work-03-look-of-obsession-1080.webp 1080w" sizes="(min-width: 1380px) 306px, (max-width: 900px) 45vw, 22vw" />
+          <source type="image/jpeg" srcset="images/work-03-look-of-obsession-640.jpg 640w, images/work-03-look-of-obsession-1080.jpg 1080w" sizes="(min-width: 1380px) 306px, (max-width: 900px) 45vw, 22vw" />
+          <img src="images/work-03-look-of-obsession-1080.jpg" alt="The Look of Obsession, a camera assistant holding a slate on set beneath the film's neon title treatment" width="1080" height="1350" loading="lazy" decoding="async" />
+        </picture>
       </div>
       <div class="collage-card-overlay"></div>
       <div class="collage-card-stats">
         <div class="cstat cstat-likes">
           <svg class="cstat-ic" viewBox="0 0 24 24" fill="none" stroke="rgba(255,102,102,0.8)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-          <span class="cstat-num">18.5K</span>
+          <span class="cstat-num">10.4K</span>
           <span class="cstat-label">Likes</span>
         </div>
         <div class="cstat cstat-comments">
           <svg class="cstat-ic" viewBox="0 0 24 24" fill="none" stroke="rgba(255,102,102,0.8)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-          <span class="cstat-num">74</span>
+          <span class="cstat-num">1.7K</span>
           <span class="cstat-label">Comments</span>
+        </div>
+        <div class="cstat cstat-reposts">
+          <svg class="cstat-ic" viewBox="0 0 24 24" fill="none" stroke="rgba(255,102,102,0.8)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+          <span class="cstat-num">413</span>
+          <span class="cstat-label">Reposts</span>
+        </div>
+      </div>
+      <div class="collage-card-rule"></div>
+      <div class="collage-card-ig"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="#fff" stroke-width="1.5"/><circle cx="12" cy="12" r="5" stroke="#fff" stroke-width="1.5"/><circle cx="17.5" cy="6.5" r="1.2" fill="#fff"/></svg></div>
+      <div class="collage-card-label">View on Instagram &rarr;</div>
+    </a>
+    <a class="collage-card ratio-4x5" href="https://www.instagram.com/p/DFa-HggS_AN/?img_index=1" target="_blank" rel="noopener noreferrer" data-likes="51.3K" data-comments="133" data-reposts="41">
+      <div class="collage-card-inner">
+        <picture>
+          <source type="image/webp" srcset="images/work-04-psychology-of-color-640.webp 640w, images/work-04-psychology-of-color-1080.webp 1080w" sizes="(min-width: 1380px) 306px, (max-width: 900px) 45vw, 22vw" />
+          <source type="image/jpeg" srcset="images/work-04-psychology-of-color-640.jpg 640w, images/work-04-psychology-of-color-1080.jpg 1080w" sizes="(min-width: 1380px) 306px, (max-width: 900px) 45vw, 22vw" />
+          <img src="images/work-04-psychology-of-color-1080.jpg" alt="The Psychology of Color in Film, a symmetrical ensemble frame used to explain color harmony" width="1080" height="1350" loading="lazy" decoding="async" />
+        </picture>
+      </div>
+      <div class="collage-card-overlay"></div>
+      <div class="collage-card-stats">
+        <div class="cstat cstat-likes">
+          <svg class="cstat-ic" viewBox="0 0 24 24" fill="none" stroke="rgba(255,102,102,0.8)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          <span class="cstat-num">51.3K</span>
+          <span class="cstat-label">Likes</span>
+        </div>
+        <div class="cstat cstat-comments">
+          <svg class="cstat-ic" viewBox="0 0 24 24" fill="none" stroke="rgba(255,102,102,0.8)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span class="cstat-num">133</span>
+          <span class="cstat-label">Comments</span>
+        </div>
+        <div class="cstat cstat-reposts">
+          <svg class="cstat-ic" viewBox="0 0 24 24" fill="none" stroke="rgba(255,102,102,0.8)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+          <span class="cstat-num">41</span>
+          <span class="cstat-label">Reposts</span>
+        </div>
+      </div>
+      <div class="collage-card-rule"></div>
+      <div class="collage-card-ig"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="#fff" stroke-width="1.5"/><circle cx="12" cy="12" r="5" stroke="#fff" stroke-width="1.5"/><circle cx="17.5" cy="6.5" r="1.2" fill="#fff"/></svg></div>
+      <div class="collage-card-label">View on Instagram &rarr;</div>
+    </a>
+    <a class="collage-card ratio-4x5" href="https://www.instagram.com/p/DRhsrdEiYm1/" target="_blank" rel="noopener noreferrer" data-likes="32.7K" data-comments="291" data-reposts="306">
+      <div class="collage-card-inner">
+        <picture>
+          <source type="image/webp" srcset="images/work-05-nd-hard-grad-640.webp 640w, images/work-05-nd-hard-grad-1080.webp 1080w" sizes="(min-width: 1380px) 306px, (max-width: 900px) 45vw, 22vw" />
+          <source type="image/jpeg" srcset="images/work-05-nd-hard-grad-640.jpg 640w, images/work-05-nd-hard-grad-1080.jpg 1080w" sizes="(min-width: 1380px) 306px, (max-width: 900px) 45vw, 22vw" />
+          <img src="images/work-05-nd-hard-grad-1080.jpg" alt="ND hard grad demonstration, a cinematographer operating an ARRI camera with a matte box on set" width="1080" height="1920" loading="lazy" decoding="async" />
+        </picture>
+      </div>
+      <div class="collage-card-overlay"></div>
+      <div class="collage-card-stats">
+        <div class="cstat cstat-likes">
+          <svg class="cstat-ic" viewBox="0 0 24 24" fill="none" stroke="rgba(255,102,102,0.8)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          <span class="cstat-num">32.7K</span>
+          <span class="cstat-label">Likes</span>
+        </div>
+        <div class="cstat cstat-comments">
+          <svg class="cstat-ic" viewBox="0 0 24 24" fill="none" stroke="rgba(255,102,102,0.8)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span class="cstat-num">291</span>
+          <span class="cstat-label">Comments</span>
+        </div>
+        <div class="cstat cstat-reposts">
+          <svg class="cstat-ic" viewBox="0 0 24 24" fill="none" stroke="rgba(255,102,102,0.8)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+          <span class="cstat-num">306</span>
+          <span class="cstat-label">Reposts</span>
+        </div>
+      </div>
+      <div class="collage-card-rule"></div>
+      <div class="collage-card-ig"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="#fff" stroke-width="1.5"/><circle cx="12" cy="12" r="5" stroke="#fff" stroke-width="1.5"/><circle cx="17.5" cy="6.5" r="1.2" fill="#fff"/></svg></div>
+      <div class="collage-card-label">View on Instagram &rarr;</div>
+    </a>
+    <a class="collage-card ratio-4x5" href="https://www.instagram.com/p/DWy91VEFCxG/?img_index=1" target="_blank" rel="noopener noreferrer" data-likes="12.2K" data-comments="50" data-reposts="308">
+      <div class="collage-card-inner">
+        <picture>
+          <source type="image/webp" srcset="images/work-06-which-diffusion-640.webp 640w, images/work-06-which-diffusion-1080.webp 1080w" sizes="(min-width: 1380px) 306px, (max-width: 900px) 45vw, 22vw" />
+          <source type="image/jpeg" srcset="images/work-06-which-diffusion-640.jpg 640w, images/work-06-which-diffusion-1080.jpg 1080w" sizes="(min-width: 1380px) 306px, (max-width: 900px) 45vw, 22vw" />
+          <img src="images/work-06-which-diffusion-1080.jpg" alt="A large overhead diffusion frame rigged against open sky, used to soften harsh daylight on an exterior" width="1080" height="1350" loading="lazy" decoding="async" />
+        </picture>
+      </div>
+      <div class="collage-card-overlay"></div>
+      <div class="collage-card-stats">
+        <div class="cstat cstat-likes">
+          <svg class="cstat-ic" viewBox="0 0 24 24" fill="none" stroke="rgba(255,102,102,0.8)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          <span class="cstat-num">12.2K</span>
+          <span class="cstat-label">Likes</span>
+        </div>
+        <div class="cstat cstat-comments">
+          <svg class="cstat-ic" viewBox="0 0 24 24" fill="none" stroke="rgba(255,102,102,0.8)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span class="cstat-num">50</span>
+          <span class="cstat-label">Comments</span>
+        </div>
+        <div class="cstat cstat-reposts">
+          <svg class="cstat-ic" viewBox="0 0 24 24" fill="none" stroke="rgba(255,102,102,0.8)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+          <span class="cstat-num">308</span>
+          <span class="cstat-label">Reposts</span>
+        </div>
+      </div>
+      <div class="collage-card-rule"></div>
+      <div class="collage-card-ig"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="#fff" stroke-width="1.5"/><circle cx="12" cy="12" r="5" stroke="#fff" stroke-width="1.5"/><circle cx="17.5" cy="6.5" r="1.2" fill="#fff"/></svg></div>
+      <div class="collage-card-label">View on Instagram &rarr;</div>
+    </a>
+    <a class="collage-card ratio-4x5" href="https://www.instagram.com/reel/DRm11OriTfv/" target="_blank" rel="noopener noreferrer" data-likes="15.7K" data-comments="59" data-reposts="79">
+      <div class="collage-card-inner">
+        <picture>
+          <source type="image/webp" srcset="images/work-07-david-liebling-dwts-640.webp 640w, images/work-07-david-liebling-dwts-1080.webp 1080w" sizes="(min-width: 1380px) 306px, (max-width: 900px) 45vw, 22vw" />
+          <source type="image/jpeg" srcset="images/work-07-david-liebling-dwts-640.jpg 640w, images/work-07-david-liebling-dwts-1080.jpg 1080w" sizes="(min-width: 1380px) 306px, (max-width: 900px) 45vw, 22vw" />
+          <img src="images/work-07-david-liebling-dwts-1080.jpg" alt="David Liebling operating a Steadicam through haze on the Dancing with the Stars set" width="1080" height="1920" loading="lazy" decoding="async" />
+        </picture>
+      </div>
+      <div class="collage-card-overlay"></div>
+      <div class="collage-card-stats">
+        <div class="cstat cstat-likes">
+          <svg class="cstat-ic" viewBox="0 0 24 24" fill="none" stroke="rgba(255,102,102,0.8)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          <span class="cstat-num">15.7K</span>
+          <span class="cstat-label">Likes</span>
+        </div>
+        <div class="cstat cstat-comments">
+          <svg class="cstat-ic" viewBox="0 0 24 24" fill="none" stroke="rgba(255,102,102,0.8)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span class="cstat-num">59</span>
+          <span class="cstat-label">Comments</span>
+        </div>
+        <div class="cstat cstat-reposts">
+          <svg class="cstat-ic" viewBox="0 0 24 24" fill="none" stroke="rgba(255,102,102,0.8)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+          <span class="cstat-num">79</span>
+          <span class="cstat-label">Reposts</span>
+        </div>
+      </div>
+      <div class="collage-card-rule"></div>
+      <div class="collage-card-ig"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="#fff" stroke-width="1.5"/><circle cx="12" cy="12" r="5" stroke="#fff" stroke-width="1.5"/><circle cx="17.5" cy="6.5" r="1.2" fill="#fff"/></svg></div>
+      <div class="collage-card-label">View on Instagram &rarr;</div>
+    </a>
+    <a class="collage-card ratio-4x5" href="https://www.instagram.com/p/DZ8GFF0PVui/" target="_blank" rel="noopener noreferrer" data-likes="9.4K" data-comments="59" data-reposts="91">
+      <div class="collage-card-inner">
+        <picture>
+          <source type="image/webp" srcset="images/work-08-legacy-grip-old-navy-640.webp 640w, images/work-08-legacy-grip-old-navy-1080.webp 1080w" sizes="(min-width: 1380px) 306px, (max-width: 900px) 45vw, 22vw" />
+          <source type="image/jpeg" srcset="images/work-08-legacy-grip-old-navy-640.jpg 640w, images/work-08-legacy-grip-old-navy-1080.jpg 1080w" sizes="(min-width: 1380px) 306px, (max-width: 900px) 45vw, 22vw" />
+          <img src="images/work-08-legacy-grip-old-navy-1080.jpg" alt="A Legacy Grip overhead silk suspended above a pool on the Old Navy commercial, softening midday sun" width="1080" height="1440" loading="lazy" decoding="async" />
+        </picture>
+      </div>
+      <div class="collage-card-overlay"></div>
+      <div class="collage-card-stats">
+        <div class="cstat cstat-likes">
+          <svg class="cstat-ic" viewBox="0 0 24 24" fill="none" stroke="rgba(255,102,102,0.8)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          <span class="cstat-num">9.4K</span>
+          <span class="cstat-label">Likes</span>
+        </div>
+        <div class="cstat cstat-comments">
+          <svg class="cstat-ic" viewBox="0 0 24 24" fill="none" stroke="rgba(255,102,102,0.8)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span class="cstat-num">59</span>
+          <span class="cstat-label">Comments</span>
+        </div>
+        <div class="cstat cstat-reposts">
+          <svg class="cstat-ic" viewBox="0 0 24 24" fill="none" stroke="rgba(255,102,102,0.8)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+          <span class="cstat-num">91</span>
+          <span class="cstat-label">Reposts</span>
+        </div>
+      </div>
+      <div class="collage-card-rule"></div>
+      <div class="collage-card-ig"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="#fff" stroke-width="1.5"/><circle cx="12" cy="12" r="5" stroke="#fff" stroke-width="1.5"/><circle cx="17.5" cy="6.5" r="1.2" fill="#fff"/></svg></div>
+      <div class="collage-card-label">View on Instagram &rarr;</div>
+    </a>
+    <a class="collage-card ratio-4x5" href="https://www.instagram.com/filmmakers_academy/p/DJE4GLkJezA/" target="_blank" rel="noopener noreferrer" data-likes="37.4K" data-comments="70" data-reposts="37">
+      <div class="collage-card-inner">
+        <picture>
+          <source type="image/webp" srcset="images/work-09-color-orange-640.webp 640w, images/work-09-color-orange-1080.webp 1080w" sizes="(min-width: 1380px) 306px, (max-width: 900px) 45vw, 22vw" />
+          <source type="image/jpeg" srcset="images/work-09-color-orange-640.jpg 640w, images/work-09-color-orange-1080.jpg 1080w" sizes="(min-width: 1380px) 306px, (max-width: 900px) 45vw, 22vw" />
+          <img src="images/work-09-color-orange-1080.jpg" alt="The Color Orange in Film, a grid of orange graded film frames from the Filmmakers Academy color series" width="1080" height="1350" loading="lazy" decoding="async" />
+        </picture>
+      </div>
+      <div class="collage-card-overlay"></div>
+      <div class="collage-card-stats">
+        <div class="cstat cstat-likes">
+          <svg class="cstat-ic" viewBox="0 0 24 24" fill="none" stroke="rgba(255,102,102,0.8)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          <span class="cstat-num">37.4K</span>
+          <span class="cstat-label">Likes</span>
+        </div>
+        <div class="cstat cstat-comments">
+          <svg class="cstat-ic" viewBox="0 0 24 24" fill="none" stroke="rgba(255,102,102,0.8)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span class="cstat-num">70</span>
+          <span class="cstat-label">Comments</span>
+        </div>
+        <div class="cstat cstat-reposts">
+          <svg class="cstat-ic" viewBox="0 0 24 24" fill="none" stroke="rgba(255,102,102,0.8)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+          <span class="cstat-num">37</span>
+          <span class="cstat-label">Reposts</span>
+        </div>
+      </div>
+      <div class="collage-card-rule"></div>
+      <div class="collage-card-ig"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="#fff" stroke-width="1.5"/><circle cx="12" cy="12" r="5" stroke="#fff" stroke-width="1.5"/><circle cx="17.5" cy="6.5" r="1.2" fill="#fff"/></svg></div>
+      <div class="collage-card-label">View on Instagram &rarr;</div>
+    </a>
+    <a class="collage-card ratio-4x5" href="https://www.instagram.com/p/DKC0iv-JL39/?img_index=1" target="_blank" rel="noopener noreferrer" data-likes="32K" data-comments="149" data-reposts="6">
+      <div class="collage-card-inner">
+        <picture>
+          <source type="image/webp" srcset="images/work-10-studio-bts-640.webp 640w, images/work-10-studio-bts-1080.webp 1080w" sizes="(min-width: 1380px) 306px, (max-width: 900px) 45vw, 22vw" />
+          <source type="image/jpeg" srcset="images/work-10-studio-bts-640.jpg 640w, images/work-10-studio-bts-1080.jpg 1080w" sizes="(min-width: 1380px) 306px, (max-width: 900px) 45vw, 22vw" />
+          <img src="images/work-10-studio-bts-1080.jpg" alt="Behind the scenes on The Studio, a camera car rig mounted to a vintage convertible with two actors in the front seat" width="1080" height="1350" loading="lazy" decoding="async" />
+        </picture>
+      </div>
+      <div class="collage-card-overlay"></div>
+      <div class="collage-card-stats">
+        <div class="cstat cstat-likes">
+          <svg class="cstat-ic" viewBox="0 0 24 24" fill="none" stroke="rgba(255,102,102,0.8)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          <span class="cstat-num">32K</span>
+          <span class="cstat-label">Likes</span>
+        </div>
+        <div class="cstat cstat-comments">
+          <svg class="cstat-ic" viewBox="0 0 24 24" fill="none" stroke="rgba(255,102,102,0.8)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span class="cstat-num">149</span>
+          <span class="cstat-label">Comments</span>
+        </div>
+        <div class="cstat cstat-reposts">
+          <svg class="cstat-ic" viewBox="0 0 24 24" fill="none" stroke="rgba(255,102,102,0.8)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+          <span class="cstat-num">6</span>
+          <span class="cstat-label">Reposts</span>
+        </div>
+      </div>
+      <div class="collage-card-rule"></div>
+      <div class="collage-card-ig"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="#fff" stroke-width="1.5"/><circle cx="12" cy="12" r="5" stroke="#fff" stroke-width="1.5"/><circle cx="17.5" cy="6.5" r="1.2" fill="#fff"/></svg></div>
+      <div class="collage-card-label">View on Instagram &rarr;</div>
+    </a>
+    <a class="collage-card ratio-4x5" href="https://www.instagram.com/p/C1pws28visI/" target="_blank" rel="noopener noreferrer" data-likes="37.7K" data-comments="364" data-reposts="1">
+      <div class="collage-card-inner">
+        <picture>
+          <source type="image/webp" srcset="images/work-11-strada-beast-mode-640.webp 640w, images/work-11-strada-beast-mode-1080.webp 1080w" sizes="(min-width: 1380px) 306px, (max-width: 900px) 45vw, 22vw" />
+          <source type="image/jpeg" srcset="images/work-11-strada-beast-mode-640.jpg 640w, images/work-11-strada-beast-mode-1080.jpg 1080w" sizes="(min-width: 1380px) 306px, (max-width: 900px) 45vw, 22vw" />
+          <img src="images/work-11-strada-beast-mode-1080.jpg" alt="Strada Beast Mode, an iPhone 15 built out on a full cinema rig with wireless video and matte box" width="1080" height="1663" loading="lazy" decoding="async" />
+        </picture>
+      </div>
+      <div class="collage-card-overlay"></div>
+      <div class="collage-card-stats">
+        <div class="cstat cstat-likes">
+          <svg class="cstat-ic" viewBox="0 0 24 24" fill="none" stroke="rgba(255,102,102,0.8)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          <span class="cstat-num">37.7K</span>
+          <span class="cstat-label">Likes</span>
+        </div>
+        <div class="cstat cstat-comments">
+          <svg class="cstat-ic" viewBox="0 0 24 24" fill="none" stroke="rgba(255,102,102,0.8)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span class="cstat-num">364</span>
+          <span class="cstat-label">Comments</span>
+        </div>
+        <div class="cstat cstat-reposts">
+          <svg class="cstat-ic" viewBox="0 0 24 24" fill="none" stroke="rgba(255,102,102,0.8)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+          <span class="cstat-num">1</span>
+          <span class="cstat-label">Reposts</span>
+        </div>
+      </div>
+      <div class="collage-card-rule"></div>
+      <div class="collage-card-ig"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="#fff" stroke-width="1.5"/><circle cx="12" cy="12" r="5" stroke="#fff" stroke-width="1.5"/><circle cx="17.5" cy="6.5" r="1.2" fill="#fff"/></svg></div>
+      <div class="collage-card-label">View on Instagram &rarr;</div>
+    </a>
+    <a class="collage-card ratio-4x5" href="https://www.instagram.com/p/DV9AJV7lJHN/?img_index=1" target="_blank" rel="noopener noreferrer" data-likes="11.6K" data-comments="57" data-reposts="377">
+      <div class="collage-card-inner">
+        <picture>
+          <source type="image/webp" srcset="images/work-12-autumn-durald-640.webp 640w, images/work-12-autumn-durald-1080.webp 1080w" sizes="(min-width: 1380px) 306px, (max-width: 900px) 45vw, 22vw" />
+          <source type="image/jpeg" srcset="images/work-12-autumn-durald-640.jpg 640w, images/work-12-autumn-durald-1080.jpg 1080w" sizes="(min-width: 1380px) 306px, (max-width: 900px) 45vw, 22vw" />
+          <img src="images/work-12-autumn-durald-1080.jpg" alt="Three frames from Autumn Durald Arkapaw's cinematography, a lantern at night, a church interior, and a close up" width="1080" height="1350" loading="lazy" decoding="async" />
+        </picture>
+      </div>
+      <div class="collage-card-overlay"></div>
+      <div class="collage-card-stats">
+        <div class="cstat cstat-likes">
+          <svg class="cstat-ic" viewBox="0 0 24 24" fill="none" stroke="rgba(255,102,102,0.8)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          <span class="cstat-num">11.6K</span>
+          <span class="cstat-label">Likes</span>
+        </div>
+        <div class="cstat cstat-comments">
+          <svg class="cstat-ic" viewBox="0 0 24 24" fill="none" stroke="rgba(255,102,102,0.8)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span class="cstat-num">57</span>
+          <span class="cstat-label">Comments</span>
+        </div>
+        <div class="cstat cstat-reposts">
+          <svg class="cstat-ic" viewBox="0 0 24 24" fill="none" stroke="rgba(255,102,102,0.8)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+          <span class="cstat-num">377</span>
+          <span class="cstat-label">Reposts</span>
         </div>
       </div>
       <div class="collage-card-rule"></div>
