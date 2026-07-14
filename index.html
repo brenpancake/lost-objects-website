@@ -204,9 +204,15 @@
     @media (max-width: 1024px) {
       nav,
       nav.scrolled {
-        background: var(--bg);
+        /* TEMP DEBUG (debug/header-visual): lime = nav body, magenta = nav::before
+           safe-area strip. Diagnostic only — REVERT before this stays in prod. */
+        background: #00FF00;
         backdrop-filter: none;
         -webkit-backdrop-filter: none;
+      }
+      nav::before {
+        /* TEMP DEBUG (debug/header-visual): REVERT. */
+        background: #FF00FF;
       }
     }
     .nav-inner {
