@@ -201,10 +201,16 @@
     @media (max-width: 1024px) {
       nav,
       nav.scrolled {
-        /* TEMP DEBUG (debug/header-stacking): lime nav + forced GPU layer above
-           the grain/vignette overlays, to test whether iOS Safari is compositing
-           the .scene layers over the header. Diagnostic only — REVERT. */
-        background: #00FF00;
+        /* Mobile/tablet: solid opaque bar forced into its own top GPU layer.
+           iOS Safari was compositing the GPU-promoted .scene sections
+           (transform: translateZ(0) / backface-visibility: hidden) ABOVE the
+           header's z-index: 200, so page content painted over a bar that is
+           provably solid #0f0e0d. Raising z-index above the grain/vignette
+           overlays, promoting the nav to its own layer (translateZ(0) +
+           will-change) and isolating its stacking context keeps it painted on
+           top at every scroll position. Applies only <=1024px; desktop keeps
+           its original z-index: 200 and no GPU promotion. */
+        background: var(--bg);
         backdrop-filter: none;
         -webkit-backdrop-filter: none;
         z-index: 10000;
