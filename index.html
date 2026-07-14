@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Lost Objects — Social Media Strategy for the Creative Industry</title>
   <meta name="description" content="Lost Objects. Social media strategy and full management for filmmakers, creators, and entertainment brands. Something new is coming." />
   <link rel="canonical" href="https://wearelostobjects.com/" />
@@ -166,10 +166,26 @@
     /* NAV */
     nav {
       position: fixed; top: 0; left: 0; right: 0;
-      z-index: 200; height: var(--nav-h);
+      z-index: 200;
+      /* Extend the fixed header up through the iPhone status bar / notch strip.
+         Reserve the safe-area inset as padding-top and add the same inset to the
+         height, so the bar area below the notch stays exactly var(--nav-h) and
+         nothing about desktop changes (env() resolves to 0 off-notch). */
+      height: calc(var(--nav-h) + env(safe-area-inset-top, 0px));
+      padding-top: env(safe-area-inset-top, 0px);
       background: transparent;
       border-bottom: 1px solid transparent;
       transition: background 0.4s, border-color 0.4s, backdrop-filter 0.4s;
+    }
+    /* Always-opaque fill across the status-bar / notch strip so page content can
+       never show through above or behind the header. Zero height off-notch. */
+    nav::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: env(safe-area-inset-top, 0px);
+      background: var(--bg);
+      pointer-events: none;
     }
     nav.scrolled {
       background: rgba(15,14,13,0.9);
@@ -938,7 +954,7 @@
        the eyebrow *behind* the nav bar and hide it. */
     .contact-section .section-eyebrow {
       position: absolute;
-      top: calc(var(--nav-h) + 16px);
+      top: calc(var(--nav-h) + env(safe-area-inset-top, 0px) + 16px);
       left: var(--pad);
       z-index: 70;
       margin-bottom: 0;
