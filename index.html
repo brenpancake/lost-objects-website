@@ -193,6 +193,22 @@
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
     }
+    /* Mobile + tablet (<=1024px): the header is ALWAYS a fully opaque solid bar.
+       iOS Safari cannot reliably composite backdrop-filter over the GPU-promoted
+       .scene sections (transform: scale()/translateZ(0)), which let page content
+       bleed through the semi-opaque bar while scrolling. A solid background needs
+       no blur, so drop backdrop-filter entirely and use the same var(--bg) as
+       nav::before so the safe-area strip and the bar read as one seamless bar.
+       Both states (top + scrolled) are overridden; nav.scrolled is matched so its
+       higher specificity can't reinstate the translucent background. */
+    @media (max-width: 1024px) {
+      nav,
+      nav.scrolled {
+        background: var(--bg);
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+      }
+    }
     .nav-inner {
       max-width: var(--max);
       margin: 0 auto;
