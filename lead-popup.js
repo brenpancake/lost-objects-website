@@ -633,10 +633,14 @@
 
     /* ── MOBILE — coexist cleanly with the cookie banner ── */
     @media (max-width: 768px) {
-      /* Normal resting position when no cookie banner is showing */
+      /* Normal resting position when no cookie banner is showing.
+         z-index 10001 keeps the launcher above the mobile/tablet nav, which is
+         promoted to its own top GPU layer at z-index 10000 (<=1024px, in
+         index.html) to fix iOS bleed-through. Mirrors the desktop pattern of the
+         overlay sitting one step above the launcher, both above the nav. */
       #lo-launcher {
         bottom: 16px;
-        z-index: 8500;
+        z-index: 10001;
         transition: bottom 0.35s ease;
       }
       /* While the cookie banner is active, lift the tab to sit directly
@@ -644,14 +648,19 @@
       body.cookie-active #lo-launcher {
         bottom: calc(var(--lo-cookie-h, 0px) + 8px);
       }
-      /* The modal overlay stays below the cookie banner (9000) in z-order. To
-         stop the two overlapping, when the banner is up we reserve its height at
-         the bottom of the overlay and cap the modal, so the whole popup — incl.
-         the submit button and legal links — sits ABOVE the banner rather than
-         behind it. --lo-cookie-h is published by cookie-notice.js. These rules
-         only apply while the banner is active AND the modal is open; with either
-         absent they do nothing, so each element's normal behavior is preserved. */
-      #lo-overlay { z-index: 8500; }
+      /* z-index 10002 keeps the user-initiated modal above the mobile/tablet nav
+         (10000, promoted to its own top GPU layer in index.html to fix iOS
+         bleed-through) so the header can't clip the popup — one step above the
+         launcher (10001). This also puts the modal above the cookie banner
+         (9000), which is fine: the banner-height reservation below already keeps
+         the two from visually colliding while the banner is active, and the modal
+         is user-initiated so it legitimately covers the banner. When the banner is
+         up we reserve its height at the bottom of the overlay and cap the modal so
+         the whole popup — incl. the submit button and legal links — sits above it.
+         --lo-cookie-h is published by cookie-notice.js. The reservation rules only
+         apply while the banner is active AND the modal is open; with either absent
+         they do nothing, so each element's normal behavior is preserved. */
+      #lo-overlay { z-index: 10002; }
       body.cookie-active #lo-overlay {
         padding-bottom: calc(var(--lo-cookie-h, 0px) + 12px);
       }

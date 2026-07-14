@@ -190,33 +190,43 @@
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
     }
-    /* Mobile + tablet (<=1024px): the header is ALWAYS a fully opaque solid bar.
-       iOS Safari cannot reliably composite backdrop-filter over the GPU-promoted
-       .scene sections (transform: scale()/translateZ(0)), which let page content
-       bleed through the semi-opaque bar while scrolling. A solid background needs
-       no blur, so drop backdrop-filter entirely and use the same var(--bg) as
-       nav::before so the safe-area strip and the bar read as one seamless bar.
-       Both states (top + scrolled) are overridden; nav.scrolled is matched so its
-       higher specificity can't reinstate the translucent background. */
+    /* Mobile + tablet (<=1024px): the header matches desktop behavior —
+       transparent over the hero at the top, solid var(--bg) once scrolled past
+       40px. iOS Safari cannot reliably composite backdrop-filter over the
+       GPU-promoted .scene sections (transform: scale()/translateZ(0)), which let
+       page content bleed through a semi-opaque bar while scrolling, so the
+       scrolled state uses a SOLID background with no blur (same var(--bg) as
+       nav::before, so the safe-area strip and the bar read as one seamless bar).
+       The bleed-through fix is the GPU LAYER PROMOTION (z-index 10000 +
+       translateZ(0) + will-change + isolation), which is applied to BOTH states
+       and is independent of background: layer order, not fill, is what keeps the
+       nav painted on top of the .scene sections. A transparent resting bar is
+       therefore safe — at the top the nav sits over the hero, and by the time the
+       animated .scene sections scroll under it the bar is already in its solid
+       .scrolled state. */
     @media (max-width: 1024px) {
+      /* Both states: keep the nav in its own top GPU compositing layer so the
+         GPU-promoted .scene sections can't paint over it, and kill the blur
+         (iOS can't composite backdrop-filter over those sections). Applies only
+         <=1024px; desktop keeps its original z-index: 200 and no GPU promotion. */
       nav,
       nav.scrolled {
-        /* Mobile/tablet: solid opaque bar forced into its own top GPU layer.
-           iOS Safari was compositing the GPU-promoted .scene sections
-           (transform: translateZ(0) / backface-visibility: hidden) ABOVE the
-           header's z-index: 200, so page content painted over a bar that is
-           provably solid #0f0e0d. Raising z-index above the grain/vignette
-           overlays, promoting the nav to its own layer (translateZ(0) +
-           will-change) and isolating its stacking context keeps it painted on
-           top at every scroll position. Applies only <=1024px; desktop keeps
-           its original z-index: 200 and no GPU promotion. */
-        background: var(--bg);
-        backdrop-filter: none;
-        -webkit-backdrop-filter: none;
         z-index: 10000;
         transform: translateZ(0);
         will-change: transform;
         isolation: isolate;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+      }
+      /* Resting state: transparent over the hero, matching desktop. */
+      nav {
+        background: transparent;
+      }
+      /* Scrolled state: solid opaque bar (higher specificity than nav above, so
+         it wins once .scrolled is toggled on; source order beats the translucent
+         base nav.scrolled rule). */
+      nav.scrolled {
+        background: var(--bg);
       }
       /* Fixed 100px overhang above the bar: extends the opaque header background
          upward past the top of the viewport so the status bar / Dynamic Island

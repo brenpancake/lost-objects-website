@@ -14,6 +14,15 @@
   /* ---------- CSS ---------- */
   const CSS = `
     .lo-game-overlay { display: none; position: fixed; inset: 0; background: rgba(10,9,8,0.94); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+    /* On mobile/tablet (<=1024px) the nav is promoted to its own top GPU layer at
+       z-index 10000 (in index.html) to fix iOS bleed-through, which would clip the
+       top of this full-screen modal. Raise the overlay above it there. Scoped to
+       <=1024px only, so desktop keeps its original z-index 1000 stacking (below
+       the grain/vignette overlays) unchanged — desktop nav is only 200, so 1000
+       already sits above it. */
+    @media (max-width: 1024px) {
+      .lo-game-overlay { z-index: 10002; }
+    }
     .lo-game-overlay.open { display: flex; }
     .lo-game-modal { position: relative; background: #14120f; border: 1px solid rgba(255,102,102,0.3); display: flex; flex-direction: column; max-width: 95vw; box-shadow: 0 28px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,102,102,0.06); }
     .lo-game-header { padding: 14px 18px; border-bottom: 1px solid rgba(255,102,102,0.18); display: flex; justify-content: space-between; align-items: center; gap: 20px; }
