@@ -38,6 +38,12 @@ When editing these, do not replace the placeholder strings with real keys unless
 - The aesthetic is dark and film-grain. Display headings use **Built Titling** (`--display`, loaded from the local `.otf` files in `fonts/` via `fonts.css`); body copy uses **Inter** (`--sans`); **Fraunces** (`--accent-serif`, loaded from Google Fonts) is used for accent/quote serif text. The primary accent color is coral `--pink: #FF6666` over a near-black `--bg: #0f0e0d`. A full-viewport animated SVG `.grain` layer (`z-index: 9999`) and a radial `.vignette` (`z-index: 9998`) sit above content on every page — keep page content `z-index` below 9998.
 - Line endings and file sizes: HTML files are large (900–1500 lines) because of inlined styles. Prefer `Edit` over `Write` for changes.
 
+## Mobile fixed header — GPU compositing (do not remove)
+
+On iOS Safari, the animated scroll sections (.scene, .hero, .collage-section) are GPU-promoted via transform: translateZ(0) / backface-visibility: hidden. These promoted layers paint OVER the fixed nav even though the nav has a higher z-index — z-index and GPU layer order are not the same thing on WebKit. This caused page content to bleed through the header on iPhone.
+
+The fix lives in the @media (max-width: 1024px) nav block: z-index 10000, transform translateZ(0), will-change transform, and isolation isolate promote the nav into its own compositing layer so it stays on top. Do NOT remove these thinking they are redundant — a solid background alone does not fix it, and desktop (>1024px) deliberately keeps the original z-index 200 with no GPU promotion. Also note env(safe-area-inset-top) resolves to 0 on real iPhones here, so the status-bar band is covered by a fixed 100px nav::before overhang, not by env().
+
 ## IMPORTANT: How to merge feature/crm-redesign
 
 `feature/crm-redesign` was branched **before** the legacy marketing pages were archived from `main`. Because of that, a plain `git merge feature/crm-redesign` into `main` would **undo today's cleanup**:
