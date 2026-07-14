@@ -201,9 +201,16 @@
     @media (max-width: 1024px) {
       nav,
       nav.scrolled {
-        background: var(--bg);
+        /* TEMP DEBUG (debug/header-stacking): lime nav + forced GPU layer above
+           the grain/vignette overlays, to test whether iOS Safari is compositing
+           the .scene layers over the header. Diagnostic only — REVERT. */
+        background: #00FF00;
         backdrop-filter: none;
         -webkit-backdrop-filter: none;
+        z-index: 10000;
+        transform: translateZ(0);
+        will-change: transform;
+        isolation: isolate;
       }
       /* Fixed 100px overhang above the bar: extends the opaque header background
          upward past the top of the viewport so the status bar / Dynamic Island
