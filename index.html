@@ -158,13 +158,7 @@
     }
 
     .vignette {
-      /* Oversize 120px past every viewport edge (mirroring .grain) so the
-         gradient's darkest bottom edge sits off-screen in every iOS Safari
-         toolbar state. inset:0 pinned that edge to a static viewport bottom
-         (above the floating toolbar), leaving a lighter strip below it and a
-         visible horizontal seam at the toolbar's top edge. Pushing the edge
-         off-screen removes the seam without tracking the dynamic viewport. */
-      position: fixed; inset: -120px;
+      position: fixed; inset: 0;
       background: radial-gradient(ellipse at 50% 0%, transparent 45%, rgba(10,9,8,0.6) 100%);
       pointer-events: none; z-index: 9998;
     }
@@ -291,7 +285,8 @@
     .hero {
       position: relative;
       width: 100%;
-      height: 100svh;
+      height: 100vh;
+      height: 100lvh;
       min-height: 600px;
       overflow: hidden;
       display: flex;
