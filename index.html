@@ -313,10 +313,17 @@
     .hero-overlay-base     { position: absolute; inset: 0; background: rgba(10,9,8,0.52); z-index: 2; }
     .hero-overlay-gradient {
       position: absolute; inset: 0; z-index: 3;
-      /* Banding pass 2: same anchors (0.45@0, transparent 35–65, 0.72@100) so the
-         top and bottom darkening look identical; intermediate stops on a gentle
-         ease soften the slope kinks at 35% and 65% that read as distinct steps. */
-      background: linear-gradient(to bottom, rgba(15,14,13,0.45) 0%, rgba(15,14,13,0.3) 11%, rgba(15,14,13,0.15) 23%, rgba(15,14,13,0.05) 30%, transparent 35%, transparent 65%, rgba(15,14,13,0.06) 70%, rgba(15,14,13,0.2) 79%, rgba(15,14,13,0.42) 89%, rgba(15,14,13,0.72) 100%);
+      /* Same top anchor (0.45@0) and eased mid-stops as before. The BOTTOM tail now
+         ramps to fully-opaque var(--bg) (the page background) by 93% and HOLDS solid
+         to 100%, so the hero's lower edge resolves to solid page-background: no light
+         from the video shows through the overlay near the bottom (the old 0.72@100
+         let ~28% through, reading as a brighter strip), and because it fades UP into
+         that solid floor there is no hard line — it seals seamlessly into the next
+         section, whose ::before also starts at var(--bg). The overlays are inset:0,
+         coextensive with the .hero-video-wrap background and clipped together by
+         .hero overflow:hidden, so a strip can only come from opacity, not geometry —
+         hence a solid opacity floor here rather than an inset/overshoot change. */
+      background: linear-gradient(to bottom, rgba(15,14,13,0.45) 0%, rgba(15,14,13,0.3) 11%, rgba(15,14,13,0.15) 23%, rgba(15,14,13,0.05) 30%, transparent 35%, transparent 65%, rgba(15,14,13,0.06) 70%, rgba(15,14,13,0.2) 79%, rgba(15,14,13,0.55) 86%, var(--bg) 93%, var(--bg) 100%);
     }
     .hero-overlay-vignette {
       position: absolute; inset: 0; z-index: 4;
