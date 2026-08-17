@@ -19,13 +19,29 @@ The centralized internal system for Lost Objects. One place that carries a clien
 
 ---
 
+## Design direction
+
+Cross-cutting. These apply to **every** surface built from here on, not to a single phase — retrofitting them later costs more than building them in.
+
+**Theming.** Dark default plus a *real* light mode — not an afterthought inversion. Framed as wellbeing: eye strain, focus, and matching the user's environment. Every new surface must honor the active theme from the moment it is written. Practically: no hard-coded colours in new work, only the `:root` tokens; check both themes before calling a surface done.
+
+**Personalized welcome per role** (Crextio's "Hello [name]" pattern). The landing surface answers *what does this person need to do, consider, and engage with today* — not a generic dashboard. This is role-shaped by definition, so it lands with Phase 2 and deepens as freelancer and client roles arrive. The existing welcome bar is the seed of this, but it currently greets everyone identically.
+
+**Gamification = progress made legible.** Completion states, visible momentum, the satisfaction of a clean queue. Explicitly **not** vanity points, leaderboards, or manipulative streaks. The onboarding checklist and the intake queue emptying are the model: the reward is the work visibly moving, not a score.
+
+**Reference:** Crextio — clean, calm, engaged multi-user management.
+
+---
+
 ## Phases
 
 ### 1. UNIFY — ✅ **COMPLETE**
 
+> **✅ PHASE 1 DONE — views rewired to unified model, compatibility layer removed, verified. Data has one source of truth; lifecycle-memory problem solved at the data layer.**
+
 - ✅ **Module split** — 33 files, provable zero behavior change (`36c768d`, `18bf5f0`).
 - ✅ **Unified model** — companies carry lifecycle (6-state ladder incl. Dormant + Network), contacts reference companies, intake as graduating sub-object, Halcyon as merged proof case (`1cf76d8`).
-- ✅ **Views rewired** onto the model; **compatibility layer removed** (`1aef5be` + this commit). No mirror fields, no projection, no legacy shape anywhere — the seed itself is unified.
+- ✅ **Views rewired** onto the model; **compatibility layer removed** (`1aef5be`, `5968c22`). No mirror fields, no projection, no legacy shape anywhere — the seed itself is unified.
 - ✅ Intake is now a view of a record's early life: `intakeQueue()` = Lead/Prospect with a non-graduated intake. Graduating flips lifecycle to Active and drops the card from the queue.
 - ✅ Tab counts are true: intake 9 (was a constant 6), companies 20, all 42, active 5, prospects 8, network 17, past 1.
 - ✅ Intake now **persists** — the old `intakeLeads` was in-memory only and reset on reload.
@@ -136,4 +152,5 @@ Then: all assets 200, `node --check` on every module, and a functional pass over
 
 - **2026-08-16** — Phase 1: module split landed. `crm/index.html` 2,960 → 477 lines; CSS into 10 files, JS into 23. Byte-identical concatenation proof, 71/71 functional checks green. Next up: unify the two datasets.
 - **2026-08-16** — Phase 1: unified data model landed in `js/data.js` (20 companies, 42 contacts, 68 comments preserved, contact ids untouched). Views still read through the compatibility layer. 71/71 green. Next up: rewire views onto the model and delete the compatibility layer.
+- **2026-08-16** — Design direction recorded (theming as wellbeing, per-role personalized welcome, gamification as legible progress; Crextio as reference). Cross-cutting — applies to every surface from here.
 - **2026-08-16** — **Phase 1 COMPLETE.** All views rewired onto the unified model; compatibility layer removed entirely (mirror fields, `intakeLeads` projection, name-keyed company store, legacy translation tables — all gone, seed regenerated in unified shape). Added a company detail panel and a Past view with Former/Dormant chips. 83/83 checks green, zero console errors, intake persists across reload. Next up: **Phase 2 — roles.** Open question carried forward: Network is split across company `lifecycle` and contact `role` (17 network people, 0 network companies); decide whether it stays that way.
