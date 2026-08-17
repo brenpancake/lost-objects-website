@@ -43,3 +43,26 @@ if(!contacts.length){
   ];
   ls.set(CK,contacts);
 }
+
+// ── Pipeline intake seed ─────────────────────────────────────────────────────
+// Six inbound leads across both lanes. data.js migrates these into companies +
+// primary contacts on first run; after that the unified model is the record.
+var _im=60000,_h=3600000,_d=86400000,_t0=Date.now();
+var INTAKE_SEED=[
+  {id:'lead1',name:'Meridian Reef',handle:'@meridianreef',contact:'Dana Okafor',email:'dana@meridianreef.co',lane:'booking',requested:'premium-audit',service:null,manager:null,stage:'New',receivedAt:_t0-12*_im,
+   message:'Coastal skincare brand, ~18k on Instagram. Growth stalled since January and we’re posting into the void. Want a proper read on what’s working before we commit to a bigger engagement.'},
+  {id:'lead2',name:'Nocturne Pictures',handle:'@nocturnepics',contact:'Elias Vane',email:'elias@nocturnepictures.film',lane:'application',requested:'full-management',service:null,manager:null,stage:'New',receivedAt:_t0-38*_im,
+   message:'Indie horror production house with two features in festival circuit. We need someone to own social end-to-end through our next release. Applying for full management — open to a scoping call.'},
+  {id:'lead3',name:'Jonah Vance',handle:'@thekelpforest',contact:'Jonah Vance',email:'jonah@thekelpforest.com',lane:'booking',requested:'basic-strategy',service:'basic-strategy',manager:null,stage:'Confirmed',receivedAt:_t0-2*_h,
+   message:'Ocean documentary creator, 42k on YouTube. Confirmed I want a strategy session to map out a Shorts cadence for the next doc drop. Flexible on timing this week.'},
+  {id:'lead4',name:'Sable & Vane',handle:'@sableandvane',contact:'Priscilla Sable',email:'hello@sableandvane.com',lane:'booking',requested:'premium-strategy',service:'premium-strategy',manager:'Kyra',stage:'Assigned',receivedAt:_t0-1*_d-3*_h,
+   message:'Luxury slow-fashion label launching a capsule in the fall. Booked the premium strategy session — want a full channel + campaign plan around the drop. Kyra, looking forward to it.'},
+  {id:'lead5',name:'Priya Anand',handle:'@runwildmedia',contact:'Priya Anand',email:'priya@runwildmedia.co',lane:'booking',requested:'basic-audit',service:'basic-audit',manager:'Julia',stage:'Onboarding',receivedAt:_t0-3*_d,startedAt:_t0-3*_d,
+   message:'Adventure / outdoor creator, 65k across TikTok + IG. Audit is booked and I’ve sent over my logins. Ready to get started whenever Julia is.',
+   checklist:{assets:true,delivered:false},
+   containers:{agreement:'Signed · Jul 5',assets:'Logins received · 4 items',invoices:'Paid in full · $500',activity:'Audit kickoff scheduled'}},
+  {id:'lead6',name:'Halcyon Studios',handle:'@halcyongames',contact:'Rowan Ito',email:'rowan@halcyonstudios.gg',lane:'application',requested:'full-management',service:'full-management',manager:'Brendan',stage:'Active',receivedAt:_t0-6*_d,startedAt:_t0-6*_d,
+   message:'Indie game studio, first title shipping this quarter. Approved for full management — Brendan’s team is running our whole launch calendar. Kickoff is done, we’re live.',
+   checklist:{agreement:true,assets:true,kickoff:true},
+   containers:{agreement:'Signed · Jun 24',assets:'12 files · brand kit + logins',invoices:'Deposit paid · $2,400 of $6,000',project:'8 tasks · 3 in progress',activity:'Kickoff call logged'}}
+];

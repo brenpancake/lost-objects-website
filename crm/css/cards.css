@@ -103,3 +103,20 @@
 .tag-on-hold{background:rgba(150,150,150,.12);color:#909090;}
 .tag-wishlist{background:rgba(200,180,120,.12);color:#b89860;}
 
+
+/* ═══ UNIFIED MODEL — lifecycle pills, solo flag, Past sub-filter ═════════════ */
+.lc-pill{font-size:9px;font-weight:700;padding:2px 7px;border-radius:20px;letter-spacing:.05em;text-transform:uppercase;white-space:nowrap;}
+.lc-lead{background:rgba(181,101,29,.16);color:#d08a3c;}
+.lc-prospect{background:rgba(255,207,90,.12);color:#c8a000;}
+.lc-active{background:rgba(255,102,102,.12);color:var(--pink);}
+.lc-former{background:rgba(120,120,120,.15);color:#8a8a8a;}
+.lc-dormant{background:rgba(102,144,224,.12);color:#7f9fe0;}
+.lc-network{background:rgba(100,100,100,.15);color:#888;}
+.pill-l{background:rgba(181,101,29,.16);color:#d08a3c;}
+.pill-d{background:rgba(102,144,224,.12);color:#7f9fe0;}
+.solo-flag{font-size:8.5px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);border:1px solid var(--b2);border-radius:20px;padding:1px 6px;vertical-align:middle;margin-left:4px;}
+.past-chips{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap;}
+.past-chip{font-family:var(--fb);font-size:11px;padding:5px 11px;border-radius:20px;border:1px solid var(--b2);background:transparent;color:var(--muted);cursor:pointer;transition:all .14s;display:inline-flex;align-items:center;gap:6px;}
+.past-chip:hover{border-color:var(--pink);color:var(--pink);}
+.past-chip.on{background:var(--pink);border-color:var(--pink);color:#fff;}
+.past-chip span{font-size:10px;opacity:.75;}

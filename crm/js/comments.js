@@ -35,5 +35,5 @@ function toggleLike(cid,idx){
   logAct({type:'like',ts:Date.now(),text:'Liked a comment on '+c.first+' '+c.last});
   ls.set(CK,contacts);document.getElementById('cmts-list').innerHTML=renderCmts(c);
 }
-function closeDet(){document.getElementById('det-ov').classList.remove('open');detailId=null;}
+function closeDet(){document.getElementById('det-ov').classList.remove('open');detailId=null;detailCompanyId=null;}
 function handleDetOvClick(e){if(e.target===document.getElementById('det-ov'))closeDet();}

@@ -120,8 +120,8 @@
     <button class="ntab" data-tab="all" onclick="switchTab('all')">All <span class="tcnt" id="cnt-all">0</span></button>
     <button class="ntab" data-tab="active" onclick="switchTab('active')">Active <span class="tcnt" id="cnt-active">0</span></button>
     <button class="ntab" data-tab="prospects" onclick="switchTab('prospects')">Prospects <span class="tcnt" id="cnt-prospects">0</span></button>
-    <button class="ntab" data-tab="contacts" onclick="switchTab('contacts')">Contacts <span class="tcnt" id="cnt-contacts">0</span></button>
-    <button class="ntab" data-tab="former" onclick="switchTab('former')">Former <span class="tcnt" id="cnt-former">0</span></button>
+    <button class="ntab" data-tab="contacts" onclick="switchTab('contacts')">Network <span class="tcnt" id="cnt-contacts">0</span></button>
+    <button class="ntab" data-tab="former" onclick="switchTab('former')">Past <span class="tcnt" id="cnt-former">0</span></button>
     <button class="ntab" data-tab="favorites" onclick="switchTab('favorites')">&#9733; <span class="tcnt" id="cnt-favorites">0</span></button>
     <button class="ntab" data-tab="trash" onclick="switchTab('trash')" id="trash-tab" style="display:none">&#x1F5D1; Trash <span class="tcnt" id="cnt-trash">0</span></button>
   </nav>
@@ -339,16 +339,18 @@
       <div class="frow"><div class="fg2"><label>Company</label><input type="text" id="f-company" placeholder="Company name"/></div><div class="fg2"><label>Title</label><input type="text" id="f-title" placeholder="Head of Marketing&hellip;"/></div></div>
       <div class="frow"><div class="fg2"><label>Email</label><input type="email" id="f-email" placeholder="email@example.com" inputmode="email"/></div><div class="fg2"><label>Phone</label><input type="tel" id="f-phone" placeholder="+1 (555) 000-0000" inputmode="tel"/></div></div>
       <div class="frow"><div class="fg2"><label>Website / Social</label><input type="text" id="f-website" placeholder="@handle or URL"/></div><div class="fg2"><label>Last Contact</label><input type="date" id="f-lastcontact"/></div></div>
-      <div class="fg2"><label>Category</label>
+      <div class="fg2"><label>Company Lifecycle</label>
         <select id="f-cat" onchange="toggleCatFields()">
-          <option value="contacts">General Contact</option>
+          <option value="network">Network Contact</option>
+          <option value="lead">Lead</option>
+          <option value="prospect">Prospect</option>
           <option value="active">Active Client</option>
-          <option value="prospects">Prospect / Wishlist</option>
+          <option value="dormant">Dormant</option>
           <option value="former">Former Client</option>
         </select>
       </div>
       <div class="fg2" id="svc-field" style="display:none"><label>Service / Retainer</label><input type="text" id="f-service" placeholder="Social Media Retainer&hellip;"/></div>
-      <div class="fg2" id="former-field" style="display:none"><label>Status / Reason</label><input type="text" id="f-former" placeholder="Audit only &mdash; went dormant"/></div>
+      <div class="fg2" id="former-field" style="display:none"><label>Company Notes</label><input type="text" id="f-former" placeholder="Audit only &mdash; went dormant"/></div>
       <div class="fg2"><label>Tags</label><div class="tag-sel-wrap" id="tag-sel"></div></div>
       <div class="fg2"><label>Notes</label><textarea id="f-notes" placeholder="Context, notes, next steps&hellip;"></textarea></div>
       <div class="modal-acts">

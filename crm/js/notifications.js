@@ -37,6 +37,7 @@ function handleNotifClick(idx){
     return;
   }
   // Contact-related notification → open detail popout
+  if(n.companyId&&getCompany(n.companyId)){openCompanyDet(n.companyId);return;}
   if(n.contactId){
     var c=contacts.find(function(x){return x.id===n.contactId;});
     if(c){openDashEdit(n.contactId);return;}

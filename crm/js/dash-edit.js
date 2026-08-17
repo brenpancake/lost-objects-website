@@ -3,10 +3,11 @@
 var dashEditId=null;
 function openDashEdit(id){
   var c=contacts.find(function(x){return x.id===id;});if(!c)return;dashEditId=id;
-  var avBg=c.company?getCoColor(c.company):(AV_BG[c.cat]||'#444');
+  var dco=companyOfContact(c);
+  var avBg=dco?companyColor(dco):(AV_BG[c.role]||'#444');
   document.getElementById('de-av').textContent=ini(c);document.getElementById('de-av').style.background=avBg;
   document.getElementById('de-name').textContent=c.first+' '+c.last;
-  document.getElementById('de-co').textContent=(c.title?c.title+' \u00B7 ':'')+(c.company||'');
+  document.getElementById('de-co').textContent=(c.title?c.title+' \u00B7 ':'')+(dco?dco.name:'');
   var tags=(c.tags||[]).map(function(t){return '<span class="de-tag">'+(TAG_MAP[t]||t)+'</span>';}).join('');
   var h='';
   // Contact info
@@ -34,7 +35,7 @@ function openDashEdit(id){
   if(tags)h+='<div class="de-field"><span class="de-label">Tags</span><div class="de-tags">'+tags+'</div></div>';
   // Editable fields
   h+='<div class="de-row">';
-  h+='<div class="de-field"><label class="de-label">Category</label><select class="de-input" id="de-cat"><option value="contacts"'+(c.cat==='contacts'?' selected':'')+'>Contact</option><option value="active"'+(c.cat==='active'?' selected':'')+'>Active</option><option value="prospects"'+(c.cat==='prospects'?' selected':'')+'>Prospect</option><option value="former"'+(c.cat==='former'?' selected':'')+'>Former</option></select></div>';
+  h+='<div class="de-field"><span class="de-label">Company lifecycle</span><div>'+(dco?'<span class="lc-pill lc-'+dco.lifecycle+'">'+LIFECYCLE_LBL[dco.lifecycle]+'</span> <a href="#" style="font-size:11px;color:var(--muted)" onclick="event.preventDefault();closeDashEdit();openCompanyDet(\''+dco.id+'\')">open company &#x2197;</a>':'<span style="font-size:12px;color:var(--muted)">No company</span>')+'</div></div>';
   h+='<div class="de-field"><label class="de-label">Last Contact</label><input type="date" class="de-input" id="de-lastcontact" value="'+(c.lastContact||'')+'"/></div>';
   h+='</div>';
   h+='<div class="de-row">';
@@ -62,7 +63,6 @@ function openDashEdit(id){
 function closeDashEdit(){document.getElementById('de-ov').classList.remove('open');dashEditId=null;}
 function saveDashEdit(){
   if(!dashEditId)return;var c=contacts.find(function(x){return x.id===dashEditId;});if(!c)return;
-  c.cat=document.getElementById('de-cat').value;
   c.lastContact=document.getElementById('de-lastcontact').value;
   c.service=document.getElementById('de-service').value.trim();
   c.website=document.getElementById('de-website').value.trim();

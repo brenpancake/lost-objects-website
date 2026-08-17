@@ -25,10 +25,10 @@ var TAG_MAP={};TAG_GROUPS.forEach(function(g){g.tags.forEach(function(t){TAG_MAP
 var CK='lo-contacts-v3',PK='lo-prefs-v1',NK='lo-notifs-v1',UK='lo-users-v1',DK='lo-dms-v1',PRK='lo-presence-v1',ECK='lo-email-cfg',COK='lo-companies-v1';
 
 // Card/pill presentation maps — shared by views, dashboard, dash-edit, trash, detail.
-var AV_BG={active:'#CC3333',prospects:'#A8892A',former:'#333',contacts:'#444'};
-var PILL_CLS={contacts:'pill-c',active:'pill-a',prospects:'pill-p',former:'pill-f'};
-var PILL_LBL={contacts:'Contact',active:'Active',prospects:'Prospect',former:'Former'};
-var CAT_LABELS={feed:'Dashboard',companies:'Companies',all:'All Contacts',contacts:'Contacts',active:'Active',prospects:'Prospects',former:'Former',favorites:'Favorites',trash:'Trash'};
+// Avatar fallback when a contact has no company (should not happen post-migration).
+var AV_BG={primary:'#CC3333',stakeholder:'#A8892A',network:'#444'};
+var PILL_CLS={network:'pill-c',active:'pill-a',prospect:'pill-p',lead:'pill-l',former:'pill-f',dormant:'pill-d'};
+var CAT_LABELS={feed:'Dashboard',companies:'Companies',all:'All Contacts',contacts:'Network',active:'Active',prospects:'Prospects',former:'Past',favorites:'Favorites',trash:'Trash'};
 
 // ═══ UNIFIED MODEL — lifecycle constants ═════════════════════════════════════
 // Companies carry lifecycle. Ladder: Lead -> Prospect -> Active -> Former,

@@ -1,9 +1,15 @@
 
 // ═══ FILTER ══════════════════════════════════════════════════════════════════
 function buildFDD(){
-  var live=liveContacts();
-  var sub=currentTab==='companies'?live:currentTab==='favorites'?live.filter(function(c){return isFav(c.id);}):currentTab==='all'?live:live.filter(function(c){return c.cat===currentTab;});
-  var used=new Set(sub.reduce(function(a,c){return a.concat(c.tags||[]);},[]));
+  var live=liveContacts(),sub;
+  if(currentTab==='companies')sub=liveCompanies();
+  else if(currentTab==='active')sub=companiesByLifecycle('active');
+  else if(currentTab==='prospects')sub=companiesByLifecycle('prospect');
+  else if(currentTab==='former')sub=pastCompanies();
+  else if(currentTab==='contacts')sub=networkContacts();
+  else if(currentTab==='favorites')sub=live.filter(function(c){return isFav(c.id);});
+  else sub=live;
+  var used=new Set(sub.reduce(function(a,r){return a.concat(r.tags||[]);},[]));
   var h='';TAG_GROUPS.forEach(function(g){var gt=g.tags.filter(function(t){return used.has(t.key);});if(!gt.length)return;h+='<div class="fg"><div class="fgl">'+g.label+'</div><div class="fgc">'+gt.map(function(t){return '<button class="fchip'+(activeFilters.has(t.key)?' on':'')+'" onclick="toggleFilter(\''+t.key+'\')">'+t.label+'</button>';}).join('')+'</div></div>';});
   if(!h)h='<div style="font-size:12px;color:var(--muted)">No tags here.</div>';
   document.getElementById('fdd-body').innerHTML=h;
@@ -19,23 +25,25 @@ var FEED_KEY='lo-feed-v1',CH_KEY='lo-channel-v1';
 function getFeedItems(){return ls.get(FEED_KEY)||[];}
 function saveFeedItems(items){ls.set(FEED_KEY,items);}
 function addFeedItem(item){var items=getFeedItems();item.id=item.id||uid();item.ts=item.ts||Date.now();items.unshift(item);if(items.length>100)items=items.slice(0,100);saveFeedItems(items);}
-function getOverdueContacts(){
-  var live=liveContacts(),now=Date.now(),cutoff=72*3600000,overdue=[];
-  live.forEach(function(c){
-    if(c.cat!=='active'&&c.cat!=='prospects')return;if(!c.lastContact)return;
-    var last=new Date(c.lastContact).getTime();if(isNaN(last))return;var diff=now-last;if(diff<=cutoff)return;
-    var recentCmt=false;(c.comments||[]).forEach(function(cm){if(cm.ts&&(now-cm.ts)<cutoff)recentCmt=true;});
-    if(!recentCmt)overdue.push({contact:c,daysSince:Math.floor(diff/86400000)});
+function getOverdueCompanies(){
+  var now=Date.now(),cutoff=72*3600000,overdue=[];
+  liveCompanies().forEach(function(co){
+    if(co.lifecycle!=='active'&&co.lifecycle!=='prospect')return;
+    if(!co.lastContact)return;
+    var last=new Date(co.lastContact).getTime();if(isNaN(last))return;
+    var diff=now-last;if(diff<=cutoff)return;
+    var recent=commentsOfCompany(co.id).some(function(x){return x.comment.ts&&(now-x.comment.ts)<cutoff;});
+    if(!recent)overdue.push({company:co,daysSince:Math.floor(diff/86400000)});
   });
   return overdue.sort(function(a,b){return b.daysSince-a.daysSince;});
 }
 function buildFeedItems(){
   var items=getFeedItems();
-  var ov=getOverdueContacts().map(function(o){return{type:'overdue',contactId:o.contact.id,text:'Follow up needed \u2014 <strong>'+esc(o.contact.first)+' '+esc(o.contact.last)+'</strong>'+(o.contact.company?' at '+esc(o.contact.company):''),detail:'Last contact '+o.daysSince+' days ago',ts:Date.now(),_generated:true};});
+  var ov=getOverdueCompanies().map(function(o){return{type:'overdue',companyId:o.company.id,text:'Follow up needed \u2014 <strong>'+esc(o.company.name)+'</strong>',detail:'Last contact '+o.daysSince+' days ago',ts:Date.now(),_generated:true};});
   return ov.concat(items.sort(function(a,b){return(b.ts||0)-(a.ts||0);}));
 }
 function feedIcon(type){return{intake:'\uD83D\uDCE8',overdue:'\u23F0',comment:'\uD83D\uDCAC',deletion:'\uD83D\uDDD1'}[type]||'\u26A1';}
-function feedIntake(c){addFeedItem({type:'intake',contactId:c.id,text:'New inquiry from <strong>'+esc(c.first)+' '+esc(c.last)+'</strong>',detail:(c.company?esc(c.company)+' \u00B7 ':'')+(c.service||'General inquiry')});}
+function feedIntake(co){var p=primaryContactOf(co.id);addFeedItem({type:'intake',companyId:co.id,text:'New inquiry from <strong>'+esc(co.name)+'</strong>',detail:(p?esc((p.first+' '+p.last).trim())+' \u00B7 ':'')+((co.engagements[0]&&co.engagements[0].name)||(co.intake&&co.intake.formType)||'General inquiry')});}
 function feedComment(contactId,author,contactName,commentText){var p=commentText.length>60?commentText.slice(0,60)+'\u2026':commentText;addFeedItem({type:'comment',contactId:contactId,text:'<strong>'+esc(author)+'</strong> commented on '+esc(contactName),detail:'\u201C'+esc(p)+'\u201D'});}
 function feedDeletion(editorName,contactId,contactName){addFeedItem({type:'deletion',contactId:contactId,text:'<strong>'+esc(editorName)+'</strong> requested deletion of '+esc(contactName)});}
 function feedActivity(text,contactId){addFeedItem({type:'activity',contactId:contactId||'',text:text});}
@@ -44,8 +52,9 @@ function feedActivity(text,contactId){addFeedItem({type:'activity',contactId:con
 function renderFeed(){renderDashboard();}
 
 function renderDashboard(){
-  var live=liveContacts(),overdue=getOverdueContacts(),intakes=live.filter(function(c){return(c.tags||[]).indexOf('website-inquiry')>-1;}).sort(function(a,b){return(b.created||0)-(a.created||0);});
-  var stale=live.filter(function(c){return c.lastContact;}).sort(function(a,b){return new Date(a.lastContact)-new Date(b.lastContact);}).slice(0,15);
+  var live=liveContacts(),overdue=getOverdueCompanies();
+  var intakes=intakeQueue().slice().sort(function(a,b){return(b.intake.receivedAt||0)-(a.intake.receivedAt||0);});
+  var stale=liveCompanies().filter(function(co){return co.lastContact;}).sort(function(a,b){return new Date(a.lastContact)-new Date(b.lastContact);}).slice(0,15);
   var feedItems=buildFeedItems().slice(0,20);
   var h='<div class="dash">';
   h+=renderWelcomeBar(overdue,intakes);
@@ -81,13 +90,13 @@ function renderWelcomeBar(overdue,intakes){
 
 function renderOverduePanel(overdue){
   var h='<div class="dp-sub"><span class="dp-sub-title red"><span class="overdue-dot"></span>Overdue Follow-ups</span><div class="dp-sub-line"></div></div>';
-  if(!overdue.length)return h+'<div style="padding:8px 14px;font-size:11px;color:var(--muted)">No overdue contacts</div>';
-  overdue.forEach(function(o){var c=o.contact;
-    h+='<div class="dash-row" onclick="openDashEdit(\''+c.id+'\')">'
-      +'<div class="dr-av" style="background:'+(AV_BG[c.cat]||'#444')+'">'+ini(c)+'</div>'
-      +'<div class="dr-body"><div class="dr-name">'+esc(c.first)+' '+esc(c.last)+'</div><div class="dr-meta">'+esc(c.company||c.title||'')+'</div></div>'
+  if(!overdue.length)return h+'<div style="padding:8px 14px;font-size:11px;color:var(--muted)">No overdue clients</div>';
+  overdue.forEach(function(o){var co=o.company;
+    h+='<div class="dash-row" onclick="openCompanyDet(\''+co.id+'\')">'
+      +'<div class="dr-av" style="background:'+companyColor(co)+'">'+esc(co.name.slice(0,2).toUpperCase())+'</div>'
+      +'<div class="dr-body"><div class="dr-name">'+esc(co.name)+'</div><div class="dr-meta">'+LIFECYCLE_LBL[co.lifecycle]+'</div></div>'
       +'<span class="dr-badge overdue">'+o.daysSince+'d</span>'
-      +'<button class="dr-action" onclick="event.stopPropagation();markContacted(\''+c.id+'\')">&#x2713; Contacted</button>'
+      +'<button class="dr-action" onclick="event.stopPropagation();markContacted(\''+co.id+'\')">&#x2713; Contacted</button>'
       +'</div>';
   });
   return h;
@@ -96,11 +105,12 @@ function renderOverduePanel(overdue){
 function renderIntakePanel(intakes){
   var h='<div class="dp-sub"><span class="dp-sub-title pink">&#x1F4E8; New Intake</span><div class="dp-sub-line"></div></div>';
   if(!intakes.length)return h+'<div style="padding:8px 14px;font-size:11px;color:var(--muted)">No new inquiries</div>';
-  intakes.forEach(function(c){
-    h+='<div class="dash-row" onclick="openDashEdit(\''+c.id+'\')">'
-      +'<div class="dr-av" style="background:var(--pink)">'+ini(c)+'</div>'
-      +'<div class="dr-body"><div class="dr-name">'+esc(c.first)+' '+esc(c.last)+'</div><div class="dr-meta">'+esc(c.company||'')+(c.service?' \u00B7 '+esc(c.service):'')+'</div></div>'
-      +'<span class="dr-badge new">'+fmt(c.created)+'</span>'
+  intakes.forEach(function(co){
+    var svc=svcById(co.intake.requested);
+    h+='<div class="dash-row" onclick="switchTab(\'intake\');selectLead(\''+co.id+'\')">'
+      +'<div class="dr-av" style="background:var(--pink)">'+esc(co.name.slice(0,2).toUpperCase())+'</div>'
+      +'<div class="dr-body"><div class="dr-name">'+esc(co.name)+'</div><div class="dr-meta">'+cap(co.intake.stage)+(svc?' \u00B7 '+esc(svc.name):'')+'</div></div>'
+      +'<span class="dr-badge new">'+fmt(co.intake.receivedAt)+'</span>'
       +'</div>';
   });
   return h;
@@ -108,15 +118,15 @@ function renderIntakePanel(intakes){
 
 var dashStaleExpanded=false;
 function renderStalePanel(stale){
-  var h='<div class="dp-sub"><span class="dp-sub-title muted">&#x1F4C5; Oldest Contacts</span><div class="dp-sub-line"></div></div>';
-  if(!stale.length)return h+'<div style="padding:8px 14px;font-size:11px;color:var(--muted)">All contacts are fresh</div>';
+  var h='<div class="dp-sub"><span class="dp-sub-title muted">&#x1F4C5; Oldest Contact</span><div class="dp-sub-line"></div></div>';
+  if(!stale.length)return h+'<div style="padding:8px 14px;font-size:11px;color:var(--muted)">All clients are fresh</div>';
   var show=dashStaleExpanded?stale:stale.slice(0,8);
   var now=Date.now();
-  show.forEach(function(c){
-    var days=Math.floor((now-new Date(c.lastContact).getTime())/86400000);
-    h+='<div class="dash-row" onclick="openDashEdit(\''+c.id+'\')">'
-      +'<div class="dr-av" style="background:'+(AV_BG[c.cat]||'#444')+'">'+ini(c)+'</div>'
-      +'<div class="dr-body"><div class="dr-name">'+esc(c.first)+' '+esc(c.last)+'</div><div class="dr-meta">'+esc(c.company||'')+'</div></div>'
+  show.forEach(function(co){
+    var days=Math.floor((now-new Date(co.lastContact).getTime())/86400000);
+    h+='<div class="dash-row" onclick="openCompanyDet(\''+co.id+'\')">'
+      +'<div class="dr-av" style="background:'+companyColor(co)+'">'+esc(co.name.slice(0,2).toUpperCase())+'</div>'
+      +'<div class="dr-body"><div class="dr-name">'+esc(co.name)+'</div><div class="dr-meta">'+LIFECYCLE_LBL[co.lifecycle]+'</div></div>'
       +'<span class="dr-badge stale">'+days+'d ago</span>'
       +'</div>';
   });
@@ -129,7 +139,7 @@ function renderDashFeed(items){
   var h='';
   items.forEach(function(item){
     var cid=item.contactId||'';
-    var click=cid?' onclick="openDashEdit(\''+cid+'\')"':'';
+    var click=item.companyId?' onclick="openCompanyDet(\''+item.companyId+'\')"':(cid?' onclick="openDashEdit(\''+cid+'\')"':'');
     h+='<div class="feed-card type-'+(item.type||'activity')+'"'+click+'><div class="feed-top"><div class="feed-icon">'+feedIcon(item.type)+'</div><div class="feed-body"><div class="feed-hl">'+(item.type==='overdue'?'<span class="overdue-dot"></span>':'')+item.text+'</div>'+(item.detail?'<div class="feed-detail">'+item.detail+'</div>':'')+'</div><div class="feed-time">'+fmt(item.ts)+'</div></div></div>';
   });
   return h;
@@ -206,25 +216,25 @@ function sendDashDM(){
 
 // ── QUICK STATS ─────────────────────────────────────────────────────────────
 function renderQuickStats(live,overdue){
-  var act=live.filter(function(c){return c.cat==='active';}).length;
-  var pros=live.filter(function(c){return c.cat==='prospects';}).length;
-  var intake=live.filter(function(c){return(c.tags||[]).indexOf('website-inquiry')>-1;}).length;
+  var act=companiesByLifecycle('active').length;
+  var pros=companiesByLifecycle('prospect').length;
+  var intake=intakeQueue().length;
   return '<div class="dash-stats">'
     +'<div class="ds-card"><div class="ds-val">'+act+'</div><div class="ds-lbl">Active Clients</div></div>'
     +'<div class="ds-card"><div class="ds-val">'+pros+'</div><div class="ds-lbl">Prospects</div></div>'
     +'<div class="ds-card"><div class="ds-val" style="color:#e07840">'+overdue.length+'</div><div class="ds-lbl">Overdue</div></div>'
-    +'<div class="ds-card"><div class="ds-val">'+intake+'</div><div class="ds-lbl">Website Inquiries</div></div>'
-    +'<div class="ds-card"><div class="ds-val">'+live.length+'</div><div class="ds-lbl">Total Contacts</div></div>'
+    +'<div class="ds-card"><div class="ds-val">'+intake+'</div><div class="ds-lbl">In Intake</div></div>'
+    +'<div class="ds-card"><div class="ds-val">'+liveCompanies().length+'</div><div class="ds-lbl">Companies</div></div>'
     +'</div>';
 }
 
 // ── MARK CONTACTED ──────────────────────────────────────────────────────────
 function markContacted(id){
-  var c=contacts.find(function(x){return x.id===id;});if(!c)return;
-  c.lastContact=new Date().toISOString().slice(0,10);
-  ls.set(CK,contacts);
+  var co=getCompany(id);if(!co)return;
+  co.lastContact=new Date().toISOString().slice(0,10);
+  saveCompanies();
   var def=getUserDef(currentUser);
-  feedActivity('<strong>'+esc(def?def.displayName:currentUser)+'</strong> marked '+esc(c.first)+' '+esc(c.last)+' as contacted',c.id);
+  feedActivity('<strong>'+esc(def?def.displayName:currentUser)+'</strong> marked '+esc(co.name)+' as contacted');
   if(currentTab==='feed')renderDashboard();else{updateCounts();renderMain();renderStats();}
   toast('Marked as contacted.');
 }
