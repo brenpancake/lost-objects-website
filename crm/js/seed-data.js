@@ -1,6 +1,5 @@
 
 // ═══ SEED DATA ═══════════════════════════════════════════════════════════════
-function uid(){return Math.random().toString(36).slice(2)+Date.now().toString(36);}
 if(!contacts.length){
   var now=Date.now();
   contacts=[

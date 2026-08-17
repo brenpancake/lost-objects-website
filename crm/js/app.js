@@ -20,7 +20,6 @@ function updateCounts(){
   document.getElementById('cnt-trash').textContent=trashedContacts().length;
   var ci=document.getElementById('cnt-intake');if(ci)ci.textContent=intakeLeads.length;
 }
-var CAT_LABELS={feed:'Dashboard',companies:'Companies',all:'All Contacts',contacts:'Contacts',active:'Active',prospects:'Prospects',former:'Former',favorites:'Favorites',trash:'Trash'};
 function renderStats(){
   var live=liveContacts();
   if(currentTab==='feed'||currentTab==='intake'){document.getElementById('stats-bar').innerHTML='';return;}
@@ -35,4 +34,18 @@ function renderStats(){
   h+='<div class="stat-card"><div class="stat-val">'+sr+'</div><div class="stat-lbl">Social Retainer</div></div>';
   h+='<div class="stat-card"><div class="stat-val">'+mr+'</div><div class="stat-lbl">Mktg Retainer</div></div>';
   document.getElementById('stats-bar').innerHTML=h;
+}
+function renderMain(){
+  var q=document.getElementById('search-input').value.toLowerCase();
+  if(currentTab==='intake'){renderIntake();return;}
+  if(currentTab==='feed'){renderFeed();return;}
+  if(currentTab==='trash'){renderTrash();return;}
+  if(currentTab==='companies'){renderCompanies();return;}
+  var live=liveContacts();
+  var sub=currentTab==='favorites'?live.filter(function(c){return isFav(c.id);}):currentTab==='all'?live:live.filter(function(c){return c.cat===currentTab;});
+  if(q)sub=sub.filter(function(c){return[c.first,c.last,c.company,c.title,c.email,c.service,c.website].concat(c.tags||[]).concat([c.notes]).join(' ').toLowerCase().indexOf(q)>-1;});
+  if(activeFilters.size)sub=sub.filter(function(c){return[...activeFilters].some(function(f){return(c.tags||[]).indexOf(f)>-1;});});
+  sub=sortContacts(sub);
+  var showPill=currentTab==='all'||currentTab==='favorites';
+  document.getElementById('main-content').innerHTML='<div class="cg">'+renderCards(sub,showPill)+'</div>';
 }

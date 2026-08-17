@@ -64,9 +64,6 @@ var CONTAINER_META=[
   {key:'project',label:'Project work',tool:'Notion',fullOnly:true},
   {key:'activity',label:'Activity',tool:'Slack'}
 ];
-var MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-function fmtDate(ts){var d=new Date(ts);return MONTHS[d.getMonth()]+' '+d.getDate()+', '+d.getFullYear();}
-function checkSvg(c){return '<svg width="10" height="10" viewBox="0 0 12 12"><path d="M2 6.2l2.6 2.6L10 3" fill="none" stroke="'+c+'" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';}
 
 function renderIntake(){
   document.getElementById('main-content').innerHTML=

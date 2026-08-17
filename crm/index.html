@@ -446,10 +446,12 @@
 
 <div class="toast" id="toast"><span class="toast-dot"></span><span id="toast-msg"></span></div>
 
-<!-- Load order is significant: config before storage, storage before seed-data,
+<!-- Load order is significant: utils before seed-data (seed calls uid() at top
+     level), config before storage, storage before seed-data,
      intake before boot, and boot.js LAST (it calls bootApp on session restore).
      Plain classic scripts only — NOT type="module": the markup relies on 257
      inline on*= handlers that require these functions on window. -->
+<script src="js/utils.js"></script>
 <script src="js/config.js"></script>
 <script src="js/storage.js"></script>
 <script src="js/users.js"></script>
@@ -471,7 +473,6 @@
 <script src="js/contact-modal.js"></script>
 <script src="js/rail.js"></script>
 <script src="js/pacman.js"></script>
-<script src="js/utils.js"></script>
 <script src="js/boot.js"></script>
 </body>
 </html>

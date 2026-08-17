@@ -102,9 +102,6 @@ function sortContacts(arr){
     return 0;
   });
 }
-var AV_BG={active:'#CC3333',prospects:'#A8892A',former:'#333',contacts:'#444'};
-var PILL_CLS={contacts:'pill-c',active:'pill-a',prospects:'pill-p',former:'pill-f'};
-var PILL_LBL={contacts:'Contact',active:'Active',prospects:'Prospect',former:'Former'};
 
 function renderCards(sub,showPill){
   if(!sub.length)return'<div class="empty-state"><p>No contacts found</p></div>';
@@ -133,17 +130,3 @@ function renderCards(sub,showPill){
   }).join('');
 }
 
-function renderMain(){
-  var q=document.getElementById('search-input').value.toLowerCase();
-  if(currentTab==='intake'){renderIntake();return;}
-  if(currentTab==='feed'){renderFeed();return;}
-  if(currentTab==='trash'){renderTrash();return;}
-  if(currentTab==='companies'){renderCompanies();return;}
-  var live=liveContacts();
-  var sub=currentTab==='favorites'?live.filter(function(c){return isFav(c.id);}):currentTab==='all'?live:live.filter(function(c){return c.cat===currentTab;});
-  if(q)sub=sub.filter(function(c){return[c.first,c.last,c.company,c.title,c.email,c.service,c.website].concat(c.tags||[]).concat([c.notes]).join(' ').toLowerCase().indexOf(q)>-1;});
-  if(activeFilters.size)sub=sub.filter(function(c){return[...activeFilters].some(function(f){return(c.tags||[]).indexOf(f)>-1;});});
-  sub=sortContacts(sub);
-  var showPill=currentTab==='all'||currentTab==='favorites';
-  document.getElementById('main-content').innerHTML='<div class="cg">'+renderCards(sub,showPill)+'</div>';
-}

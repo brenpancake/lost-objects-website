@@ -37,4 +37,3 @@ function toggleLike(cid,idx){
 }
 function closeDet(){document.getElementById('det-ov').classList.remove('open');detailId=null;}
 function handleDetOvClick(e){if(e.target===document.getElementById('det-ov'))closeDet();}
-function logAct(a){var p=ls.get(PK)||{};if(!p[currentUser])p[currentUser]={};if(!p[currentUser].activity)p[currentUser].activity=[];p[currentUser].activity.unshift(a);if(p[currentUser].activity.length>30)p[currentUser].activity=p[currentUser].activity.slice(0,30);ls.set(PK,p);}
