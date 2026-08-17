@@ -29,3 +29,24 @@ var AV_BG={active:'#CC3333',prospects:'#A8892A',former:'#333',contacts:'#444'};
 var PILL_CLS={contacts:'pill-c',active:'pill-a',prospects:'pill-p',former:'pill-f'};
 var PILL_LBL={contacts:'Contact',active:'Active',prospects:'Prospect',former:'Former'};
 var CAT_LABELS={feed:'Dashboard',companies:'Companies',all:'All Contacts',contacts:'Contacts',active:'Active',prospects:'Prospects',former:'Former',favorites:'Favorites',trash:'Trash'};
+
+// ═══ UNIFIED MODEL — lifecycle constants ═════════════════════════════════════
+// Companies carry lifecycle. Ladder: Lead -> Prospect -> Active -> Former,
+// plus Dormant (completed a-la-carte work, the re-engagement pool) and
+// Network (industry relationships not in a sales motion).
+var UCK='lo-companies-v2';                       // unified company store
+var PREMIGRATION_KEY='lo-contacts-v3-premigration'; // one-time rollback copy
+var LIFECYCLE=['lead','prospect','active','former','dormant','network'];
+var LIFECYCLE_LBL={lead:'Lead',prospect:'Prospect',active:'Active',former:'Former',dormant:'Dormant',network:'Network'};
+// Intake now has FOUR stages: 'Active' was a duplicate of the lifecycle status
+// and becomes lifecycle=active + intake.graduated=true.
+var INTAKE_SUBSTAGES=['new','confirmed','assigned','onboarding'];
+// Legacy contact.cat <-> lifecycle. Rank picks a company's status from its people.
+var CAT_RANK={active:4,prospects:3,former:2,contacts:1};
+var CAT_TO_LIFECYCLE={active:'active',prospects:'prospect',former:'former',contacts:'network'};
+var LIFECYCLE_TO_CAT={active:'active',prospect:'prospects',lead:'prospects',former:'former',dormant:'former',network:'contacts'};
+// Companies whose derived status needs a human override (see PLAN.md migration map).
+var LIFECYCLE_OVERRIDES={'DJI':'dormant'};
+// Intake manager display names <-> user keys.
+var MANAGER_KEYS={Brendan:'brendan',Kyra:'kyra',Julia:'juliaroberts'};
+var MANAGER_NAMES={brendan:'Brendan',kyra:'Kyra',juliaroberts:'Julia'};

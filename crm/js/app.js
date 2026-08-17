@@ -12,6 +12,7 @@ function switchTab(tab){
 function liveContacts(){return contacts.filter(function(c){return!c.deletion_requested;});}
 function trashedContacts(){return contacts.filter(function(c){return!!c.deletion_requested;});}
 function updateCounts(){
+  if(typeof syncUnifiedModel==='function')syncUnifiedModel();
   var live=liveContacts();
   document.getElementById('cnt-all').textContent=live.length;
   document.getElementById('cnt-companies').textContent=[...new Set(live.map(function(c){return c.company;}).filter(Boolean))].length;
