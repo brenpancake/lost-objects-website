@@ -24,7 +24,8 @@ The centralized internal system for Lost Objects. One place that carries a clien
 ### 1. UNIFY — *in progress*
 
 - ✅ **Module split complete** — 33 files, provable zero behavior change (`36c768d`, `18bf5f0`).
-- ⬜ **NEXT: merge the two datasets.** Intake leads and companies/contacts are currently separate in-memory/localStorage worlds with no shared identifier and no conversion path. Collapse them into **one unified record model with a lifecycle status**.
+- ✅ **Unified model live** — companies carry lifecycle (6-state ladder incl. Dormant + Network), contacts reference companies, intake as graduating sub-object, Halcyon as merged proof case, compatibility layer in place (`1cf76d8`).
+- ⬜ **NEXT: rewire views to read the model directly and remove the compatibility layer — closes Phase 1.**
 - ⬜ Intake becomes a *view of a record's early life*, not a parallel dataset.
 - ⬜ Tab counts become true (today `cnt-intake` is a constant 6 — leads never leave the queue).
 
@@ -61,7 +62,7 @@ The centralized internal system for Lost Objects. One place that carries a clien
 
 ## Current state
 
-`crm/index.html` is a 477-line shell — markup only. All CSS lives in `crm/css/` (10 files), all JS in `crm/js/` (23 files).
+`crm/index.html` is a 477-line shell — markup only. All CSS lives in `crm/css/` (10 files), all JS in `crm/js/` (24 files).
 
 ### JS load order — do not reorder casually
 
@@ -99,6 +100,7 @@ Scripts are **plain classic `<script>` tags**, loaded at the end of `<body>`.
 | `contact-modal.js` | Add/edit contact, copy/share |
 | `rail.js` | Side rail, profile view |
 | `pacman.js` | Easter egg |
+| `data.js` | **Unified model** — company/contact/intake/engagement schema, migration, compatibility read layer, `intakeLeads` projection |
 | `boot.js` | Global listeners + session restore |
 
 CSS files are contiguous slices linked in source order: `tokens, login, shell, cards, rail, overlays, dashboard, comments, responsive, intake`. **Link order must equal source order** — several same-specificity rules rely on later-wins (`.dash-scroll`, `.modal`). Font paths in `login.css` are `../../fonts/` — relative to `crm/css/`, not `crm/`.
@@ -130,3 +132,4 @@ Then: all assets 200, `node --check` on every module, and a functional pass over
 ## Progress log
 
 - **2026-08-16** — Phase 1: module split landed. `crm/index.html` 2,960 → 477 lines; CSS into 10 files, JS into 23. Byte-identical concatenation proof, 71/71 functional checks green. Next up: unify the two datasets.
+- **2026-08-16** — Phase 1: unified data model landed in `js/data.js` (20 companies, 42 contacts, 68 comments preserved, contact ids untouched). Views still read through the compatibility layer. 71/71 green. Next up: rewire views onto the model and delete the compatibility layer.
