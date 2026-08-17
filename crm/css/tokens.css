@@ -1,0 +1,15 @@
+:root{
+  --pink:#FF6666;--yellow:#FFCF5A;--accent:#E6958F;--green:#50b880;--blue:#6690e0;
+  --black:#0A0A0A;--dark:#111;--surface:#181818;--s2:#222;--s3:#2a2a2a;
+  --border:#2A2A2A;--b2:#333;--text:#F0F0F0;--muted:#888;
+  --r:10px;--rl:16px;--fb:'Inter','DM Sans',sans-serif;--fd:'Built Titling','Arial Narrow',sans-serif;
+  --nh:54px;--th:40px;--rw:340px;
+}
+body.light{--black:#F5F3F0;--dark:#EDEAE6;--surface:#FFF;--s2:#F0EDE9;--s3:#E8E4DF;--border:#E0DBD5;--b2:#D4CFC8;--text:#1A1A1A;--muted:#777;}
+body.font-syne{--fb:'Syne',sans-serif;}
+body.font-playfair{--fd:'Playfair Display',serif;}
+body.font-mono{--fb:'Space Mono',monospace;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{font-size:15px;-webkit-font-smoothing:antialiased;}
+body{font-family:var(--fb);background:var(--black);color:var(--text);min-height:100vh;overflow-x:hidden;transition:background .3s,color .3s;}
+

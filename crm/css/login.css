@@ -1,0 +1,59 @@
+/* ═══ LOST OBJECTS UNDERGROUND — login + 2FA (main-site design system) ═════════
+   Scoped to the login / verification screens only; the rest of the app keeps its
+   own tokens (Space Mono / DM Sans / rounded). Sharp corners, Built Titling
+   display, Inter body, coral #FF6666 accent, cream display text. */
+@font-face{font-family:'Built Titling';src:url('../../fonts/built_titling_bd.otf') format('opentype');font-weight:700;font-style:normal;font-display:swap;}
+@font-face{font-family:'Built Titling';src:url('../../fonts/built_titling_bd_it.otf') format('opentype');font-weight:700;font-style:italic;font-display:swap;}
+@font-face{font-family:'Built Titling';src:url('../../fonts/built_titling_sb.otf') format('opentype');font-weight:600;font-style:normal;font-display:swap;}
+@font-face{font-family:'Built Titling';src:url('../../fonts/built_titling_rg.otf') format('opentype');font-weight:400;font-style:normal;font-display:swap;}
+@font-face{font-family:'Built Titling';src:url('../../fonts/built_titling_lt.otf') format('opentype');font-weight:300;font-style:normal;font-display:swap;}
+
+#login-screen{position:fixed;inset:0;z-index:2000;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;font-family:'Inter',system-ui,sans-serif;background:radial-gradient(ellipse at 50% -10%,#15130f 0%,#0f0e0d 55%,#0b0a08 100%);transition:opacity .4s,transform .4s;}
+#login-screen.hidden{opacity:0;pointer-events:none;transform:translateY(-10px);}
+
+.lu-back{position:absolute;top:22px;left:24px;display:inline-flex;align-items:center;gap:7px;background:none;border:none;text-decoration:none;cursor:pointer;font-family:'Inter',sans-serif;font-size:10px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:rgba(232,226,217,0.44);transition:color .2s ease;}
+.lu-back:hover{color:var(--pink);}
+.lu-back .lu-arrow{transition:transform .2s ease;}
+.lu-back:hover .lu-arrow{transform:translateX(-3px);}
+
+/* Logo presented like the main-site nav header — a transparent top bar with the
+   wordmark centered at ~14px. Logo only: no social icons, no nav links, no footer. */
+.lu-header{position:absolute;top:0;left:0;right:0;height:62px;display:flex;align-items:center;justify-content:center;padding:0 24px;}
+.lu-logo{display:block;height:14px;width:auto;max-width:min(150px,46vw);object-fit:contain;}
+.lu-head{display:flex;flex-direction:column;align-items:center;text-align:center;margin-bottom:28px;}
+.lu-title{font-family:'Built Titling','Arial Narrow',sans-serif;font-weight:700;text-transform:uppercase;font-size:clamp(42px,9vw,72px);line-height:.94;letter-spacing:.02em;color:#F0E8DC;}
+.lu-title em{font-style:italic;font-weight:700;color:var(--pink);}
+
+.login-box,.tf-card{width:100%;max-width:360px;background:#161514;border:1px solid rgba(242,236,225,0.10);border-radius:0;padding:30px 28px;box-shadow:0 22px 60px rgba(0,0,0,0.5);}
+.login-box h2,.tf-card h2{font-family:'Inter',sans-serif;font-size:9px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:rgba(232,226,217,0.44);margin-bottom:22px;text-align:center;}
+.lf{margin-bottom:15px;}
+.lf label{display:block;font-family:'Inter',sans-serif;font-size:9px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:rgba(232,226,217,0.44);margin-bottom:8px;}
+.lf input{width:100%;font-family:'Inter',sans-serif;font-size:15px;font-weight:300;color:#f2ece1;background:#0f0e0d;border:1px solid rgba(232,226,217,0.14);border-radius:0;padding:13px 14px;outline:none;transition:border-color .2s ease;}
+.lf input::placeholder{color:rgba(232,226,217,0.40);}
+.lf input:focus{border-color:var(--pink);}
+
+.lu-checkrow{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 16px;margin:4px 0 2px;}
+.lu-check{display:inline-flex;align-items:center;gap:8px;cursor:pointer;user-select:none;font-family:'Inter',sans-serif;font-size:11px;color:rgba(232,226,217,0.72);}
+.lu-check input{position:absolute;opacity:0;width:0;height:0;}
+.lu-box{width:15px;height:15px;flex-shrink:0;border:1px solid rgba(232,226,217,0.30);background:transparent;display:inline-flex;align-items:center;justify-content:center;transition:background .15s ease,border-color .15s ease;}
+.lu-check:hover .lu-box{border-color:var(--pink);}
+.lu-check input:checked+.lu-box{background:var(--pink);border-color:var(--pink);}
+.lu-box svg{opacity:0;transition:opacity .15s ease;}
+.lu-check input:checked+.lu-box svg{opacity:1;}
+.lu-check input:focus-visible+.lu-box{border-color:var(--pink);box-shadow:0 0 0 2px rgba(255,102,102,0.35);}
+
+.login-btn{width:100%;margin-top:18px;font-family:'Inter',sans-serif;font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#0f0e0d;background:var(--pink);border:1px solid var(--pink);border-radius:0;padding:14px;cursor:pointer;transition:box-shadow .25s ease,filter .25s ease;}
+.login-btn:hover{filter:brightness(1.1) saturate(1.08);box-shadow:0 0 24px rgba(255,102,102,0.55),0 0 7px rgba(255,102,102,0.45);}
+
+.login-err{margin-top:12px;font-family:'Inter',sans-serif;font-size:12px;text-align:center;min-height:16px;color:var(--pink);}
+.forgot-link{display:block;width:100%;margin-top:14px;background:none;border:none;cursor:pointer;text-align:center;font-family:'Inter',sans-serif;font-size:11px;letter-spacing:.02em;color:rgba(232,226,217,0.44);transition:color .2s ease;}
+.forgot-link:hover{color:var(--pink);}
+.lu-note{margin-top:14px;font-family:'Inter',sans-serif;font-size:10.5px;line-height:1.55;text-align:center;color:rgba(232,226,217,0.34);}
+.lu-note strong{color:rgba(232,226,217,0.60);font-weight:500;}
+
+.tf-card{text-align:center;}
+.tf-lead{font-family:'Inter',sans-serif;font-size:12px;line-height:1.6;color:rgba(232,226,217,0.55);margin-bottom:20px;}
+.tf-digits{display:flex;gap:7px;margin-bottom:18px;}
+.tf-digit{flex:1 1 0;min-width:0;height:52px;text-align:center;font-family:'Built Titling','Arial Narrow',sans-serif;font-weight:700;font-size:24px;color:#f2ece1;background:#0f0e0d;border:1px solid rgba(232,226,217,0.14);border-radius:0;outline:none;transition:border-color .2s ease;}
+.tf-digit:focus{border-color:var(--pink);}
+

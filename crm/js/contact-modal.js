@@ -1,0 +1,50 @@
+
+// ═══ COPY / SHARE ════════════════════════════════════════════════════════════
+function copyContactTxt(id){var c=contacts.find(function(x){return x.id===id;});if(!c)return;var lines=[c.first+' '+c.last,c.title,c.company,c.email?'Email: '+c.email:'',c.phone?'Phone: '+c.phone:'',c.website?'Web: '+c.website:''].filter(Boolean).join('\n');navigator.clipboard.writeText(lines).then(function(){toast('Copied!');}).catch(function(){toast('Copy failed.');});}
+function openShare(id){
+  shareId=id;var c=contacts.find(function(x){return x.id===id;});if(!c)return;
+  var base=window.location.href.replace(/\/[^/]*$|index\.html$/,'').replace(/\/?$/,'/');var url=base+'share.html?id='+id;
+  document.getElementById('share-body').innerHTML='<div style="font-size:17px;font-weight:600;margin-bottom:2px">'+esc(c.first)+' '+esc(c.last)+'</div><div style="font-size:12px;color:var(--muted);margin-bottom:10px">'+esc(c.title?c.title+' &middot; '+c.company:c.company||'')+'</div>'+(c.email?'<div style="font-size:12px;margin-bottom:5px">'+mailSvg()+' '+esc(c.email)+'</div>':'')+(c.phone?'<div style="font-size:12px;margin-bottom:5px">'+phoneSvg()+' '+esc(c.phone)+'</div>':'')+'<div class="share-url-box">'+url+'</div>';
+  document.getElementById('share-ov').classList.add('open');
+}
+function copyShareUrl(){var base=window.location.href.replace(/\/[^/]*$|index\.html$/,'').replace(/\/?$/,'/');navigator.clipboard.writeText(base+'share.html?id='+shareId).then(function(){toast('Copied!');}).catch(function(){toast('Copy failed.');});}
+function openSharePage(){var base=window.location.href.replace(/\/[^/]*$|index\.html$/,'').replace(/\/?$/,'/');window.open(base+'share.html?id='+shareId,'_blank');}
+function closeShare(){document.getElementById('share-ov').classList.remove('open');}
+
+// ═══ ADD / EDIT MODAL ════════════════════════════════════════════════════════
+function buildTagSel(sel){document.getElementById('tag-sel').innerHTML=TAG_GROUPS.map(function(g){return '<div class="tgs"><div class="tgs-title">'+g.label+'</div><div class="tgs-row">'+g.tags.map(function(t){return '<button type="button" class="topt'+(sel.indexOf(t.key)>-1?' selected':'')+'" data-key="'+t.key+'" onclick="this.classList.toggle(\'selected\')">'+t.label+'</button>';}).join('')+'</div></div>';}).join('');}
+function getSelTags(){return[].slice.call(document.querySelectorAll('#tag-sel .topt.selected')).map(function(b){return b.dataset.key;});}
+function toggleCatFields(){var cat=document.getElementById('f-cat').value;document.getElementById('svc-field').style.display=cat==='active'?'block':'none';document.getElementById('former-field').style.display=cat==='former'?'block':'none';}
+function openAddModal(){
+  if(!canDo('canAdd'))return;editingId=null;document.getElementById('modal-title').textContent='Add Contact';document.getElementById('del-btn').style.display='none';
+  ['f-first','f-last','f-company','f-title','f-email','f-phone','f-website','f-service','f-former','f-notes','f-lastcontact'].forEach(function(id){document.getElementById(id).value='';});
+  document.getElementById('f-cat').value=['all','favorites','companies'].indexOf(currentTab)>-1?'contacts':currentTab;
+  toggleCatFields();buildTagSel([]);document.getElementById('modal-ov').classList.add('open');setTimeout(function(){document.getElementById('f-first').focus();},100);
+}
+function openEditModal(id){
+  if(!canDo('canEdit'))return;var c=contacts.find(function(x){return x.id===id;});if(!c)return;editingId=id;
+  document.getElementById('modal-title').textContent='Edit Contact';document.getElementById('del-btn').style.display=canDo('canDelete')?'inline-flex':'none';
+  document.getElementById('f-first').value=c.first||'';document.getElementById('f-last').value=c.last||'';document.getElementById('f-company').value=c.company||'';document.getElementById('f-title').value=c.title||'';document.getElementById('f-email').value=c.email||'';document.getElementById('f-phone').value=c.phone||'';document.getElementById('f-website').value=c.website||'';document.getElementById('f-cat').value=c.cat||'contacts';document.getElementById('f-service').value=c.service||'';document.getElementById('f-former').value=c.formerReason||'';document.getElementById('f-lastcontact').value=c.lastContact||'';document.getElementById('f-notes').value=c.notes||'';
+  toggleCatFields();buildTagSel(c.tags||[]);document.getElementById('modal-ov').classList.add('open');
+}
+function closeModal(){document.getElementById('modal-ov').classList.remove('open');editingId=null;}
+function handleMoClick(e){if(e.target===document.getElementById('modal-ov'))closeModal();}
+function saveContact(){
+  var first=document.getElementById('f-first').value.trim(),last=document.getElementById('f-last').value.trim();
+  if(!first&&!last){document.getElementById('f-first').focus();return;}
+  var data={first:first,last:last,company:document.getElementById('f-company').value.trim(),title:document.getElementById('f-title').value.trim(),email:document.getElementById('f-email').value.trim(),phone:document.getElementById('f-phone').value.trim(),website:document.getElementById('f-website').value.trim(),cat:document.getElementById('f-cat').value,service:document.getElementById('f-service').value.trim(),formerReason:document.getElementById('f-former').value.trim(),lastContact:document.getElementById('f-lastcontact').value,tags:getSelTags(),notes:document.getElementById('f-notes').value.trim()};
+  if(editingId){var idx=contacts.findIndex(function(c){return c.id===editingId;});if(idx>-1)Object.assign(contacts[idx],data);}
+  else contacts.push({id:uid(),created:Date.now(),comments:[],...data});
+  var actorName=(getUserDef(currentUser)||{}).displayName||currentUser;
+  logAct({type:editingId?'edit':'add',ts:Date.now(),text:(editingId?'Edited':'Added')+' '+data.first+' '+data.last});
+  if(!editingId){
+    var newC=contacts[contacts.length-1];
+    if((data.tags||[]).indexOf('website-inquiry')>-1)feedIntake(newC);
+    else feedActivity('<strong>'+esc(actorName)+'</strong> added '+esc(data.first)+' '+esc(data.last)+(data.company?' \u2014 '+esc(data.company):''),newC.id);
+  } else {
+    feedActivity('<strong>'+esc(actorName)+'</strong> updated '+esc(data.first)+' '+esc(data.last),editingId);
+  }
+  ls.set(CK,contacts);closeModal();updateCounts();renderMain();renderStats();toast(editingId?'Updated.':'Added!');
+  if(data.company)expandedCos.add(data.company);
+}
+function deleteContact(){if(!canDo('canDelete'))return;if(!confirm('Delete this contact?'))return;contacts=contacts.filter(function(c){return c.id!==editingId;});ls.set(CK,contacts);closeModal();updateCounts();renderMain();renderStats();toast('Deleted.');}
