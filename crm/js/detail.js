@@ -1,10 +1,11 @@
 
 // ═══ WEBSITE INQUIRY RENDERER ════════════════════════════════════════════════
 function renderInquiry(c){
-  var inq=c.inquiry;if(!inq)return '';
+  // questionnaire answers live on the company's intake sub-object now
+  var ico=companyOfContact(c);var inq=(ico&&ico.intake)?ico.intake.answers:null;if(!inq)return '';
   var h='<div class="det-slbl" style="color:var(--pink)">&#x1F4E8; Website Inquiry</div>';
   h+='<div class="det-inq" style="background:var(--s2);border:1px solid var(--border);border-radius:var(--r);padding:10px 12px;margin-bottom:10px;font-size:12px;line-height:1.7;">';
-  h+='<div style="font-size:10px;color:var(--muted);margin-bottom:6px;letter-spacing:.06em;text-transform:uppercase;">'+esc(inq.formType)+' &middot; '+new Date(inq.submitted).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})+'</div>';
+  h+='<div style="font-size:10px;color:var(--muted);margin-bottom:6px;letter-spacing:.06em;text-transform:uppercase;">'+esc(inq.formType||(ico.intake.formType||'Inquiry'))+' &middot; '+new Date(inq.submitted||ico.intake.receivedAt).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})+'</div>';
   if(inq.presence)h+='<div><strong style="color:var(--muted)">Social Presence:</strong> '+esc(inq.presence)+'</div>';
   if(inq.challenges&&inq.challenges.length)h+='<div><strong style="color:var(--muted)">Challenges:</strong> '+esc(inq.challenges.join(', '))+'</div>';
   if(inq.platforms&&inq.platforms.length)h+='<div><strong style="color:var(--muted)">Platforms:</strong> '+esc(inq.platforms.join(', '))+'</div>';

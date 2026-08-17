@@ -270,9 +270,12 @@
 const params = new URLSearchParams(window.location.search);
 const contactId = params.get('id');
 
-// Load contacts from localStorage (same key as main app)
-let contacts = [];
-try { contacts = JSON.parse(localStorage.getItem('lo-contacts-v3')) || []; } catch {}
+// Load contacts from localStorage (same key as main app).
+// Unified model: a contact's company is resolved via companyId.
+let contacts = [], companies = [];
+try { contacts  = JSON.parse(localStorage.getItem('lo-contacts-v4'))  || []; } catch {}
+try { companies = JSON.parse(localStorage.getItem('lo-companies-v3')) || []; } catch {}
+function companyNameOf(c){ const co = companies.find(x => x.id === c.companyId); return co ? co.name : ''; }
 
 const TAG_LABELS = {
   'social-retainer':'Social Media Retainer','marketing-retainer':'Marketing Retainer',
@@ -314,7 +317,7 @@ function render(c) {
     </div>
     <div class="card-name-block">
       <div class="card-name">${esc(c.first)} ${esc(c.last)}</div>
-      <div class="card-company">${esc(c.company||'')}</div>
+      <div class="card-company">${esc(companyNameOf(c))}</div>
       ${badge}
     </div>
     <div class="card-info">
@@ -372,8 +375,9 @@ function downloadVCard() {
     `FN:${c.first||''} ${c.last||''}`.trim(),
     `N:${c.last||''};${c.first||''};;;`,
   ];
-  if (c.company) {
-    const parts = c.company.split(/[—\-–]/);
+  const coName = companyNameOf(c);
+  if (coName) {
+    const parts = coName.split(/[—\-–]/);
     lines.push(`ORG:${parts[0].trim()}`);
     if (parts[1]) lines.push(`TITLE:${parts[1].trim()}`);
   }
@@ -398,7 +402,7 @@ function copyAll() {
   if (!c) return;
   const lines = [
     `${c.first} ${c.last}`.trim(),
-    c.company||'',
+    companyNameOf(c),
     c.email   ? `Email: ${c.email}` : '',
     c.phone   ? `Phone: ${c.phone}` : '',
     c.website ? `Web: ${c.website}` : '',

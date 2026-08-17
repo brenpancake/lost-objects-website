@@ -22,7 +22,7 @@ var TAG_GROUPS=[
   {label:'Source',tags:[{key:'website-inquiry',label:'Website Inquiry'}]}
 ];
 var TAG_MAP={};TAG_GROUPS.forEach(function(g){g.tags.forEach(function(t){TAG_MAP[t.key]=t.label;});});
-var CK='lo-contacts-v3',PK='lo-prefs-v1',NK='lo-notifs-v1',UK='lo-users-v1',DK='lo-dms-v1',PRK='lo-presence-v1',ECK='lo-email-cfg',COK='lo-companies-v1';
+var CK='lo-contacts-v4',PK='lo-prefs-v1',NK='lo-notifs-v1',UK='lo-users-v1',DK='lo-dms-v1',PRK='lo-presence-v1',ECK='lo-email-cfg';
 
 // Card/pill presentation maps — shared by views, dashboard, dash-edit, trash, detail.
 // Avatar fallback when a contact has no company (should not happen post-migration).
@@ -34,19 +34,12 @@ var CAT_LABELS={feed:'Dashboard',companies:'Companies',all:'All Contacts',contac
 // Companies carry lifecycle. Ladder: Lead -> Prospect -> Active -> Former,
 // plus Dormant (completed a-la-carte work, the re-engagement pool) and
 // Network (industry relationships not in a sales motion).
-var UCK='lo-companies-v2';                       // unified company store
-var PREMIGRATION_KEY='lo-contacts-v3-premigration'; // one-time rollback copy
+var UCK='lo-companies-v3';   // unified company store
 var LIFECYCLE=['lead','prospect','active','former','dormant','network'];
 var LIFECYCLE_LBL={lead:'Lead',prospect:'Prospect',active:'Active',former:'Former',dormant:'Dormant',network:'Network'};
 // Intake now has FOUR stages: 'Active' was a duplicate of the lifecycle status
 // and becomes lifecycle=active + intake.graduated=true.
 var INTAKE_SUBSTAGES=['new','confirmed','assigned','onboarding'];
-// Legacy contact.cat <-> lifecycle. Rank picks a company's status from its people.
-var CAT_RANK={active:4,prospects:3,former:2,contacts:1};
-var CAT_TO_LIFECYCLE={active:'active',prospects:'prospect',former:'former',contacts:'network'};
-var LIFECYCLE_TO_CAT={active:'active',prospect:'prospects',lead:'prospects',former:'former',dormant:'former',network:'contacts'};
-// Companies whose derived status needs a human override (see PLAN.md migration map).
-var LIFECYCLE_OVERRIDES={'DJI':'dormant'};
 // Intake manager display names <-> user keys.
 var MANAGER_KEYS={Brendan:'brendan',Kyra:'kyra',Julia:'juliaroberts'};
 var MANAGER_NAMES={brendan:'Brendan',kyra:'Kyra',juliaroberts:'Julia'};

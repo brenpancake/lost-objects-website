@@ -19,10 +19,11 @@ function openDashEdit(id){
     h+='</div>';
   }
   // Inquiry data
-  if(c.inquiry){
-    var inq=c.inquiry;
+  var iqc=(dco&&dco.intake)?dco.intake.answers:null;
+  if(iqc){
+    var inq=iqc;
     h+='<div style="background:var(--s2);border:1px solid var(--border);border-radius:var(--r);padding:8px 10px;font-size:11px;line-height:1.6">';
-    h+='<div style="font-size:9px;color:var(--pink);font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px">&#x1F4E8; '+esc(inq.formType||'Inquiry')+'</div>';
+    h+='<div style="font-size:9px;color:var(--pink);font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px">&#x1F4E8; '+esc(inq.formType||(dco.intake.formType)||'Inquiry')+'</div>';
     if(inq.presence)h+='<div><strong style="color:var(--muted)">Presence:</strong> '+esc(inq.presence)+'</div>';
     if(inq.serviceInterest)h+='<div><strong style="color:var(--muted)">Service:</strong> '+esc(inq.serviceInterest)+'</div>';
     if(inq.budget)h+='<div><strong style="color:var(--muted)">Budget:</strong> '+esc(inq.budget)+'</div>';
