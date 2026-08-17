@@ -17,6 +17,8 @@ The centralized internal system for Lost Objects. One place that carries a clien
 
 **Demo-first on simulated data.** Live integrations (Slack, Notion, Drive, Kit, Cowork) come *after* the demo proves the flow. Do not wire a real service until the thing it plugs into is clickable and approved.
 
+Also post-demo: **QuickBooks** (revenue / invoice sync) and **Claude Cowork email scan** — the latter surfacing *action-required* emails into the Needs-you-now queue, action items only, never a full inbox. **Design the action queue now so external sources slot in later**: whatever shape the queue takes, an item must be able to originate outside the CRM.
+
 ---
 
 ## Design direction
@@ -28,6 +30,10 @@ Cross-cutting. These apply to **every** surface built from here on, not to a sin
 **Personalized welcome per role** (Crextio's "Hello [name]" pattern). The landing surface answers *what does this person need to do, consider, and engage with today* — not a generic dashboard. This is role-shaped by definition, so it lands with Phase 2 and deepens as freelancer and client roles arrive. The existing welcome bar is the seed of this, but it currently greets everyone identically.
 
 **Gamification = progress made legible.** Completion states, visible momentum, the satisfaction of a clean queue. Explicitly **not** vanity points, leaderboards, or manipulative streaks. The onboarding checklist and the intake queue emptying are the model: the reward is the work visibly moving, not a score.
+
+**Owner welcome includes a revenue pulse** — who's paid, what's outstanding, a cashflow signal. **Owner-only by default**, with a read-only toggle for select accounts via the role system. Simulated data until the QuickBooks integration lands post-demo. Depends on Phase 1.5: the pulse totals per-project fees.
+
+**"Tagged for you" feed** on each role's welcome — a query over the existing `@mentions`, which already generate notifications with `contactId` / `companyId` routing. No new capture mechanism needed; this is a view over data the app already produces.
 
 **Reference:** Crextio — clean, calm, engaged multi-user management.
 
@@ -45,6 +51,22 @@ Cross-cutting. These apply to **every** surface built from here on, not to a sin
 - ✅ Intake is now a view of a record's early life: `intakeQueue()` = Lead/Prospect with a non-graduated intake. Graduating flips lifecycle to Active and drops the card from the queue.
 - ✅ Tab counts are true: intake 9 (was a constant 6), companies 20, all 42, active 5, prospects 8, network 17, past 1.
 - ✅ Intake now **persists** — the old `intakeLeads` was in-memory only and reset on reload.
+
+### 1.5 PROJECTS
+
+Add **Engagement / Project as a child entity of Company** — retainer, campaign, à la carte upsell — each with its own fee, status, and assignee.
+
+Clients are **containers of engagements**: a systematized retainer with unique projects layered on top.
+
+- ⬜ Promote `engagements[]` into a first-class child entity. Phase 1 already put the array on every company with `status` (proposed / active / completed / paused), `price`, and `manager` — this is a promotion, not a new build: give it its own id-addressable record, views, and lifecycle.
+- ⬜ Distinguish the systematized retainer from layered one-off projects.
+- ⬜ Fee, status, assignee per engagement (assignee currently exists as `manager`, a user key).
+
+**Prerequisite for three later phases** — this is why it jumps the queue:
+
+- **Job board** (Phase 3): freelancers claim *projects*, not clients.
+- **Revenue view**: invoices attach to *projects*.
+- **Owner welcome**: the revenue pulse needs per-project fees to total.
 
 ### 2. ROLES
 
@@ -152,5 +174,6 @@ Then: all assets 200, `node --check` on every module, and a functional pass over
 
 - **2026-08-16** — Phase 1: module split landed. `crm/index.html` 2,960 → 477 lines; CSS into 10 files, JS into 23. Byte-identical concatenation proof, 71/71 functional checks green. Next up: unify the two datasets.
 - **2026-08-16** — Phase 1: unified data model landed in `js/data.js` (20 companies, 42 contacts, 68 comments preserved, contact ids untouched). Views still read through the compatibility layer. 71/71 green. Next up: rewire views onto the model and delete the compatibility layer.
-- **2026-08-16** — Design direction recorded (theming as wellbeing, per-role personalized welcome, gamification as legible progress; Crextio as reference). Cross-cutting — applies to every surface from here.
 - **2026-08-16** — **Phase 1 COMPLETE.** All views rewired onto the unified model; compatibility layer removed entirely (mirror fields, `intakeLeads` projection, name-keyed company store, legacy translation tables — all gone, seed regenerated in unified shape). Added a company detail panel and a Past view with Former/Dormant chips. 83/83 checks green, zero console errors, intake persists across reload. Next up: **Phase 2 — roles.** Open question carried forward: Network is split across company `lifecycle` and contact `role` (17 network people, 0 network companies); decide whether it stays that way.
+- **2026-08-16** — Design direction recorded (theming as wellbeing, per-role personalized welcome, gamification as legible progress; Crextio as reference). Cross-cutting — applies to every surface from here.
+- **2026-08-16** — Roadmap expanded: Phase 1.5 (Projects as a child entity of Company) inserted as a prerequisite for the job board, revenue view and Owner welcome; revenue pulse and "tagged for you" feed added to design direction; QuickBooks and Cowork email scan recorded as post-demo with a now-shaped action queue.
