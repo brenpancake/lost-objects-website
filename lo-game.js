@@ -1,10 +1,18 @@
-/* Lost Objects — hidden easter-egg game.
- * Self-initializing IIFE. Injects its own overlay/CSS, listens for
- * clicks on any `.lo-icon` element in the page, and runs a lightweight
- * pacman-ish game on a canvas. Exposes `window.LOGame = { open, close }`.
+/* Lost Objects — AFTER HOURS SNAKE (hidden easter-egg game).
+ * Self-initializing IIFE. Injects its own overlay/CSS, stays dormant until
+ * triggered, and runs a dependency-free snake game on a canvas.
+ * Exposes `window.LOGame = { open, close }`.
  *
- * The `.lo-icon` element itself is rendered inline on each page so it
- * paints immediately with the rest of the nav (no layout shift).
+ * TRIGGER — the whole "Lost Objects: After Hours" chip in the Join the
+ * Community section (`.ah-kicker`, logo + text together, in index.html):
+ * a single click or tap. It glows coral on hover and takes a pointer cursor.
+ * The chip is a plain <div> with no href, so nothing is being overridden; the
+ * Discord invite stays reachable from the death screen's closing link.
+ * A legacy `.lo-icon` click delegate is kept too, so re-adding that nav icon
+ * would light the game up again with no change here.
+ *
+ * The modal shell, blur backdrop, open/close machinery, lazy DOM build and
+ * z-index stacking below are carried over unchanged from the previous game.
  */
 (function () {
   'use strict';
@@ -29,7 +37,7 @@
     .lo-game-title { font-size: 10px; font-weight: 600; letter-spacing: 0.26em; text-transform: uppercase; color: rgba(232,226,217,0.55); white-space: nowrap; }
     .lo-game-title span { color: #FF6666; }
     .lo-game-score { font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(232,226,217,0.55); white-space: nowrap; display: flex; align-items: baseline; gap: 9px; }
-    .lo-game-score b { color: #F0E8DC; font-family: "DM Serif Display", serif; font-size: 16px; font-weight: 400; letter-spacing: 0.04em; }
+    .lo-game-score b { color: #F0E8DC; font-family: 'Built Titling', 'Arial Narrow', sans-serif; font-size: 18px; font-weight: 700; letter-spacing: 0.04em; }
     .lo-game-close { width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 500; line-height: 1; color: rgba(240,232,220,0.75); cursor: pointer; background: rgba(255,102,102,0.06); border: 1px solid rgba(255,102,102,0.35); border-radius: 2px; padding: 0; transition: color 0.2s, background 0.2s, border-color 0.2s; flex-shrink: 0; }
     .lo-game-close:hover { color: #0c0a08; background: #FF6666; border-color: #FF6666; }
     #lo-game-canvas { display: block; background: #13110f; }
@@ -37,415 +45,396 @@
     .lo-game-hint { font-size: 8px; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(232,226,217,0.4); }
     .lo-game-start { font-size: 9px; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: #FF6666; border: 1px solid rgba(255,102,102,0.5); padding: 8px 20px; cursor: pointer; background: none; transition: background 0.2s, color 0.2s; }
     .lo-game-start:hover { background: #FF6666; color: #13110f; }
+
+    /* ---- Title / death cards. DOM rather than canvas text, so Built Titling
+            and the Discord link come for free and stay accessible. ---- */
+    .lo-game-stage { position: relative; line-height: 0; touch-action: none; }
+    .lo-game-panel { position: absolute; inset: 0; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 18px; background: rgba(17,15,13,0.9); line-height: 1.4; }
+    .lo-game-panel.show { display: flex; }
+    .lo-game-big { font-family: 'Built Titling', 'Arial Narrow', sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: 0.02em; line-height: 0.92; color: #F0E8DC; font-size: 58px; }
+    .lo-game-big em { font-style: normal; color: #FF6666; }
+    .lo-game-rule { width: 40px; height: 2px; background: #FF6666; margin: 14px 0 0; box-shadow: 0 0 12px rgba(255,102,102,0.55); }
+    .lo-game-sub { margin-top: 14px; font-size: 9px; letter-spacing: 0.24em; text-transform: uppercase; color: rgba(232,226,217,0.42); }
+    .lo-game-tally { margin-top: 16px; display: flex; gap: 26px; align-items: baseline; }
+    .lo-game-tally div { font-size: 8px; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(232,226,217,0.42); }
+    .lo-game-tally b { display: block; margin-top: 5px; font-family: 'Built Titling', 'Arial Narrow', sans-serif; font-size: 26px; font-weight: 700; letter-spacing: 0.03em; color: #F0E8DC; }
+    .lo-game-tally b.hot { color: #FF6666; }
+    .lo-game-again { margin-top: 20px; font-size: 9px; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: #FF6666; border: 1px solid rgba(255,102,102,0.5); padding: 9px 22px; cursor: pointer; background: none; transition: background 0.2s, color 0.2s; }
+    .lo-game-again:hover { background: #FF6666; color: #13110f; }
+    .lo-game-note { margin-top: 16px; font-size: 8px; letter-spacing: 0.16em; text-transform: uppercase; }
+    .lo-game-note a { color: rgba(232,226,217,0.4); text-decoration: none; border-bottom: 1px solid rgba(255,102,102,0.35); padding-bottom: 2px; transition: color 0.2s, border-color 0.2s; }
+    .lo-game-note a:hover { color: #FF6666; border-bottom-color: #FF6666; }
+
+    /* NEW BEST badge — flashes in the header the moment the record falls */
+    .lo-game-nb { font-size: 8px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: #FF6666; border: 1px solid rgba(255,102,102,0.45); padding: 3px 8px; opacity: 0; pointer-events: none; }
+    .lo-game-nb.flash { animation: loNbFlash 1.6s ease-out; }
+    @keyframes loNbFlash {
+      0%   { opacity: 0; transform: scale(0.9); }
+      12%  { opacity: 1; transform: scale(1); }
+      70%  { opacity: 1; }
+      100% { opacity: 0; }
+    }
+
+    @media (max-width: 640px) {
+      .lo-game-big { font-size: 40px; }
+      .lo-game-tally b { font-size: 21px; }
+      .lo-game-header, .lo-game-footer { padding-left: 12px; padding-right: 12px; }
+      .lo-game-hint { font-size: 7px; letter-spacing: 0.14em; }
+    }
+
+    /* Easter-egg trigger: the whole After Hours chip (logo + text). Glyph-shaped
+       coral glow via drop-shadow rather than box-shadow, since the chip has no
+       fill or border to cast a rectangle from — the two-layer radius mirrors the
+       hero button's 0 0 24px / 0 0 7px coral glow convention, so it reads as
+       the same family of interaction. Layout is untouched. */
+    .ah-kicker {
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      -webkit-user-select: none;
+      transition: filter 0.25s ease;
+    }
+    .ah-kicker:hover {
+      filter: brightness(1.12)
+              drop-shadow(0 0 10px rgba(255,102,102,0.55))
+              drop-shadow(0 0 3px rgba(255,102,102,0.45));
+    }
+    @media (hover: none) {
+      /* No hover on touch — don't leave the glow stuck after a tap. */
+      .ah-kicker:hover { filter: none; }
+    }
   `;
   const styleEl = document.createElement('style');
   styleEl.textContent = CSS;
   document.head.appendChild(styleEl);
 
   /* ---------- Constants ---------- */
-  const PC = '#FF6666';
-  const CC = '#F0E8DC';
+  const PC = '#FF6666';          // coral
+  const CC = '#F0E8DC';          // cream
   const GRID = 20;
   const COLS = 27;
   const ROWS = 20;
-  const CANVAS_W = COLS * GRID; // 540
-  const CANVAS_H = ROWS * GRID; // 400
-  const MOVE_INTERVAL = 5;   // player moves every 5 frames  (12/sec @ 60fps)
-  const GHOST_INTERVAL = 8;  // ghosts move every 8 frames   (7.5/sec @ 60fps)
-  const FRAME_MS = 1000 / 60;
+  const CANVAS_W = COLS * GRID;  // 540
+  const CANVAS_H = ROWS * GRID;  // 400
+  const BG = '#13110f';
 
-  /* ---------- Maze (packed Uint8Array) ---------- */
-  const WALLS = new Uint8Array(COLS * ROWS);
-  const rawWalls = [
-    [2,2],[3,2],[4,2],[5,2],[6,2],[8,2],[9,2],[10,2],[11,2],[15,2],[16,2],[17,2],[18,2],[20,2],[21,2],[22,2],[23,2],[24,2],
-    [2,4],[6,4],[8,4],[11,4],[15,4],[18,4],[20,4],[24,4],[2,5],[6,5],[8,5],[11,5],[15,5],[18,5],[20,5],[24,5],
-    [2,6],[3,6],[4,6],[6,6],[8,6],[9,6],[10,6],[11,6],[15,6],[16,6],[17,6],[18,6],[20,6],[22,6],[23,6],[24,6],
-    [4,8],[5,8],[6,8],[8,8],[11,8],[12,8],[13,8],[14,8],[15,8],[18,8],[20,8],[21,8],[22,8],
-    [2,10],[3,10],[4,10],[6,10],[8,10],[11,10],[15,10],[18,10],[20,10],[23,10],[24,10],
-    [6,11],[8,11],[11,11],[15,11],[18,11],[20,11],
-    [2,12],[3,12],[4,12],[6,12],[8,12],[9,12],[10,12],[15,12],[16,12],[17,12],[20,12],[22,12],[23,12],[24,12],
-    [4,14],[6,14],[11,14],[12,14],[13,14],[14,14],[15,14],[20,14],[22,14],
-    [2,16],[3,16],[4,16],[6,16],[8,16],[9,16],[10,16],[11,16],[15,16],[16,16],[17,16],[18,16],[20,16],[22,16],[23,16],[24,16],
-    [2,17],[6,17],[20,17],[24,17],
-    [2,18],[3,18],[4,18],[6,18],[7,18],[8,18],[9,18],[10,18],[11,18],[15,18],[16,18],[17,18],[18,18],[19,18],[20,18],[21,18],[22,18],[23,18],[24,18]
-  ];
-  for (let i = 0; i < rawWalls.length; i++) {
-    const w = rawWalls[i];
-    WALLS[w[1] * COLS + w[0]] = 1;
-  }
-  for (let c = 0; c < COLS; c++) { WALLS[c] = 1; WALLS[(ROWS - 1) * COLS + c] = 1; }
-  for (let r = 0; r < ROWS; r++) { WALLS[r * COLS] = 1; WALLS[r * COLS + (COLS - 1)] = 1; }
+  const DISCORD = 'https://discord.gg/ZqGhVfJu2a';
+  const BEST_KEY = 'lo_snake_best';
+
+  // Gentle speed ramp: one step every STEP_START ms, easing down to STEP_MIN.
+  const STEP_START = 138;
+  const STEP_MIN = 66;
+  const STEP_RAMP = 2.4;         // ms shaved per object recovered
+
+  const SWIPE_MIN = 24;          // px before a swipe counts
 
   /* ---------- State ---------- */
   let overlay = null;
   let canvas = null;
   let ctx = null;
-  let mazeCache = null;
+  let stageEl = null;
   let scoreEl = null;
+  let bestEl = null;
   let startEl = null;
+  let titleEl = null;
+  let deadEl = null;
+  let nbEl = null;
+  let finalScoreEl = null;
+  let finalBestEl = null;
+  let deadHeadEl = null;
 
   let raf = 0;
   let lastTs = 0;
-  let frameCount = 0;
+  let acc = 0;
 
-  let score = 0;
-  let lives = 3;
-  let gState = 'ready'; // 'ready' | 'playing' | 'over' | 'win'
-
-  let playerC = 13, playerR = 15;
-  let dirX = 0, dirY = 0;
+  let gState = 'title';          // 'title' | 'playing' | 'dead'
+  let snake = null;              // array of {x,y}; head at index 0
+  let occupied = null;           // Uint8Array collision map, no per-step scans
+  let dirX = 1, dirY = 0;
   let nDirX = 1, nDirY = 0;
-  let ang = 0;
+  let food = null;               // {x, y, kind}
+  let score = 0;
+  let best = 0;
+  let grow = 0;
+  let beatBest = false;
 
-  // Pellets: Map<packedIndex, type> where type 1 = small, 2 = big
-  let pelletMap = null;
-  let pelletCount = 0;
+  let grainPattern = null;
 
-  // Ghosts: simple object array, no allocations in the hot path
-  let ghosts = null;
-
-  /* ---------- Pre-render the maze once per session ---------- */
-  function buildMazeCache() {
-    mazeCache = document.createElement('canvas');
-    mazeCache.width = CANVAS_W;
-    mazeCache.height = CANVAS_H;
-    const mcx = mazeCache.getContext('2d', { alpha: false });
-    mcx.fillStyle = '#13110f';
-    mcx.fillRect(0, 0, CANVAS_W, CANVAS_H);
-    mcx.fillStyle = 'rgba(255,102,102,0.13)';
-    mcx.strokeStyle = 'rgba(255,102,102,0.42)';
-    mcx.lineWidth = 1;
-    for (let r = 0; r < ROWS; r++) {
-      for (let c = 0; c < COLS; c++) {
-        if (WALLS[r * COLS + c]) {
-          const x = c * GRID;
-          const y = r * GRID;
-          mcx.fillRect(x, y, GRID, GRID);
-          mcx.strokeRect(x + 0.5, y + 0.5, GRID - 1, GRID - 1);
-        }
-      }
-    }
+  /* ---------- Persistent best ---------- */
+  function loadBest() {
+    try {
+      const v = parseInt(localStorage.getItem(BEST_KEY), 10);
+      best = (isFinite(v) && v > 0) ? v : 0;
+    } catch (e) { best = 0; }
+  }
+  function saveBest() {
+    try { localStorage.setItem(BEST_KEY, String(best)); } catch (e) {}
   }
 
-  /* ---------- Init / Reset ---------- */
+  /* ---------- Film-grain tile, built once ---------- */
+  function buildGrain() {
+    const t = document.createElement('canvas');
+    t.width = t.height = 96;
+    const g = t.getContext('2d');
+    const img = g.createImageData(96, 96);
+    const d = img.data;
+    for (let i = 0; i < d.length; i += 4) {
+      const v = (Math.random() * 255) | 0;
+      d[i] = d[i + 1] = d[i + 2] = v;
+      d[i + 3] = 255;
+    }
+    g.putImageData(img, 0, 0);
+    grainPattern = ctx.createPattern(t, 'repeat');
+  }
+
+  /* ---------- Collectibles: small white film-gear line sprites ---------- */
+  function sprLens(cx, cy, s) {
+    ctx.beginPath();
+    ctx.arc(cx, cy, s * 0.46, 0, Math.PI * 2);
+    ctx.moveTo(cx + s * 0.26, cy);
+    ctx.arc(cx, cy, s * 0.26, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(cx, cy, s * 0.1, 0, Math.PI * 2);
+    ctx.stroke();
+  }
+  function sprClapper(cx, cy, s) {
+    const w = s * 0.92, h = s * 0.62;
+    const x = cx - w / 2, y = cy - h / 2 + s * 0.14;
+    ctx.strokeRect(x, y, w, h - s * 0.06);
+    // hinged top bar
+    ctx.beginPath();
+    ctx.moveTo(x, y - s * 0.06);
+    ctx.lineTo(x + w, y - s * 0.22);
+    ctx.lineTo(x + w, y - s * 0.04);
+    ctx.lineTo(x, y + s * 0.1);
+    ctx.closePath();
+    ctx.stroke();
+    // two slate stripes
+    ctx.beginPath();
+    ctx.moveTo(x + w * 0.3, y - s * 0.03); ctx.lineTo(x + w * 0.22, y + s * 0.09);
+    ctx.moveTo(x + w * 0.68, y - s * 0.11); ctx.lineTo(x + w * 0.6, y + s * 0.02);
+    ctx.stroke();
+  }
+  function sprTape(cx, cy, s) {
+    ctx.beginPath();
+    ctx.arc(cx, cy, s * 0.44, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(cx, cy, s * 0.17, 0, Math.PI * 2);
+    ctx.stroke();
+    // peeling end
+    ctx.beginPath();
+    ctx.moveTo(cx + s * 0.42, cy + s * 0.14);
+    ctx.lineTo(cx + s * 0.62, cy + s * 0.3);
+    ctx.stroke();
+  }
+  const SPRITES = [sprLens, sprClapper, sprTape];
+
+  /* ---------- Game setup ---------- */
+  function idx(x, y) { return y * COLS + x; }
+
   function initGame() {
-    score = 0;
-    lives = 3;
-    frameCount = 0;
-    ang = 0;
-    playerC = 13;
-    playerR = 15;
-    dirX = 0; dirY = 0;
-    nDirX = 1; nDirY = 0;
-    scoreEl.textContent = '0';
-
-    pelletMap = new Map();
-    pelletCount = 0;
-    for (let r = 1; r < ROWS - 1; r++) {
-      for (let c = 1; c < COLS - 1; c++) {
-        if (WALLS[r * COLS + c]) continue;
-        const big = (r === 2 && c === 2) ||
-                    (r === 2 && c === COLS - 3) ||
-                    (r === ROWS - 3 && c === 2) ||
-                    (r === ROWS - 3 && c === COLS - 3);
-        pelletMap.set(r * COLS + c, big ? 2 : 1);
-        pelletCount++;
-      }
-    }
-
-    ghosts = [
-      { c: 13, r: 8, dx:  1, dy:  0, color: 'rgba(255,102,102,0.92)', scared: false, ft: 0 },
-      { c: 14, r: 8, dx: -1, dy:  0, color: 'rgba(255,170,150,0.9)',  scared: false, ft: 0 },
-      { c: 13, r: 9, dx:  0, dy:  1, color: 'rgba(140,180,200,0.9)',  scared: false, ft: 0 },
-      { c: 14, r: 9, dx:  0, dy: -1, color: 'rgba(240,232,220,0.82)', scared: false, ft: 0 }
-    ];
+    snake = [{ x: 13, y: 10 }, { x: 12, y: 10 }, { x: 11, y: 10 }];
+    occupied = new Uint8Array(COLS * ROWS);
+    for (let i = 0; i < snake.length; i++) occupied[idx(snake[i].x, snake[i].y)] = 1;
+    dirX = 1; dirY = 0; nDirX = 1; nDirY = 0;
+    score = 0; grow = 0; beatBest = false;
+    acc = 0;
+    placeFood();
+    syncHud();
   }
 
-  /* ---------- Per-frame game logic ---------- */
-  function tick() {
-    frameCount++;
-    ang += 0.11;
-
-    // ----- Player movement (every MOVE_INTERVAL frames) -----
-    if (frameCount % MOVE_INTERVAL === 0) {
-      // Try buffered direction first
-      let tc = playerC + nDirX;
-      let tr = playerR + nDirY;
-      if (tc < 0) tc += COLS; else if (tc >= COLS) tc -= COLS;
-      if (tr < 0) tr += ROWS; else if (tr >= ROWS) tr -= ROWS;
-      if (!WALLS[tr * COLS + tc]) {
-        dirX = nDirX;
-        dirY = nDirY;
-      }
-
-      // Move in current direction
-      let mc = playerC + dirX;
-      let mr = playerR + dirY;
-      if (mc < 0) mc += COLS; else if (mc >= COLS) mc -= COLS;
-      if (mr < 0) mr += ROWS; else if (mr >= ROWS) mr -= ROWS;
-      if (!WALLS[mr * COLS + mc]) {
-        playerC = mc;
-        playerR = mr;
-      }
-
-      // Eat pellet (O(1) lookup)
-      const k = playerR * COLS + playerC;
-      const p = pelletMap.get(k);
-      if (p !== undefined) {
-        pelletMap.delete(k);
-        pelletCount--;
-        if (p === 2) {
-          score += 50;
-          for (let i = 0; i < 4; i++) {
-            ghosts[i].scared = true;
-            ghosts[i].ft = 0;
-          }
-        } else {
-          score += 10;
-        }
-        scoreEl.textContent = score;
-        if (pelletCount === 0) gState = 'win';
+  function placeFood() {
+    const free = COLS * ROWS - snake.length;
+    if (free <= 0) { food = null; return; }
+    let n = (Math.random() * free) | 0;
+    for (let i = 0; i < COLS * ROWS; i++) {
+      if (occupied[i]) continue;
+      if (n-- === 0) {
+        food = { x: i % COLS, y: (i / COLS) | 0, kind: (Math.random() * SPRITES.length) | 0 };
+        return;
       }
     }
+  }
 
-    // ----- Ghost movement (every GHOST_INTERVAL frames) -----
-    if (frameCount % GHOST_INTERVAL === 0) {
-      for (let i = 0; i < 4; i++) {
-        const g = ghosts[i];
-        if (g.scared) {
-          g.ft++;
-          if (g.ft > 40) { g.scared = false; g.ft = 0; }
-        }
+  function stepMs() {
+    return Math.max(STEP_MIN, STEP_START - score * STEP_RAMP);
+  }
 
-        // Enumerate valid forward/side dirs (exclude reverse)
-        // dirCandidates reused as stack allocation — 4 entries max
-        const valid = [];
-        // right
-        if (!(g.dx === -1 && g.dy === 0)) {
-          let c = g.c + 1, r = g.r;
-          if (c >= COLS) c -= COLS;
-          if (!WALLS[r * COLS + c]) valid.push(1, 0);
-        }
-        // left
-        if (!(g.dx === 1 && g.dy === 0)) {
-          let c = g.c - 1, r = g.r;
-          if (c < 0) c += COLS;
-          if (!WALLS[r * COLS + c]) valid.push(-1, 0);
-        }
-        // down
-        if (!(g.dx === 0 && g.dy === -1)) {
-          let c = g.c, r = g.r + 1;
-          if (r >= ROWS) r -= ROWS;
-          if (!WALLS[r * COLS + c]) valid.push(0, 1);
-        }
-        // up
-        if (!(g.dx === 0 && g.dy === 1)) {
-          let c = g.c, r = g.r - 1;
-          if (r < 0) r += ROWS;
-          if (!WALLS[r * COLS + c]) valid.push(0, -1);
-        }
+  /* ---------- One simulation step ---------- */
+  function step() {
+    // Apply the queued turn, rejecting 180s against the direction actually travelled
+    if (!(nDirX === -dirX && nDirY === -dirY)) { dirX = nDirX; dirY = nDirY; }
 
-        let chX, chY;
-        if (valid.length === 0) {
-          chX = -g.dx; chY = -g.dy;
-        } else if (g.scared || Math.random() < 0.22) {
-          // Random move (scared or occasional wandering)
-          const idx = ((Math.random() * (valid.length / 2)) | 0) * 2;
-          chX = valid[idx]; chY = valid[idx + 1];
-        } else {
-          // Greedy toward player
-          let bestD = 1e9, bX = valid[0], bY = valid[1];
-          for (let j = 0; j < valid.length; j += 2) {
-            let tc = g.c + valid[j];
-            let tr = g.r + valid[j + 1];
-            if (tc < 0) tc += COLS; else if (tc >= COLS) tc -= COLS;
-            if (tr < 0) tr += ROWS; else if (tr >= ROWS) tr -= ROWS;
-            const d = Math.abs(tc - playerC) + Math.abs(tr - playerR);
-            if (d < bestD) { bestD = d; bX = valid[j]; bY = valid[j + 1]; }
-          }
-          chX = bX; chY = bY;
-        }
+    const hx = snake[0].x + dirX;
+    const hy = snake[0].y + dirY;
 
-        g.dx = chX; g.dy = chY;
-        let nc = g.c + chX;
-        let nr = g.r + chY;
-        if (nc < 0) nc += COLS; else if (nc >= COLS) nc -= COLS;
-        if (nr < 0) nr += ROWS; else if (nr >= ROWS) nr -= ROWS;
-        g.c = nc;
-        g.r = nr;
+    if (hx < 0 || hy < 0 || hx >= COLS || hy >= ROWS) return die();
+    // Walking into the current tail tile is legal — it moves out of the way.
+    const tail = snake[snake.length - 1];
+    const intoTail = (grow === 0 && hx === tail.x && hy === tail.y);
+    if (occupied[idx(hx, hy)] && !intoTail) return die();
 
-        // Collision
-        if (g.c === playerC && g.r === playerR) {
-          if (g.scared) {
-            g.scared = false;
-            g.c = 13; g.r = 8;
-            score += 200;
-            scoreEl.textContent = score;
-          } else {
-            lives--;
-            if (lives <= 0) {
-              gState = 'over';
-            } else {
-              playerC = 13;
-              playerR = 15;
-              dirX = 0; dirY = 0;
-              nDirX = 1; nDirY = 0;
-            }
-          }
-        }
+    snake.unshift({ x: hx, y: hy });
+    occupied[idx(hx, hy)] = 1;
+
+    if (food && hx === food.x && hy === food.y) {
+      score++;
+      grow += 2;
+      if (score > best) {
+        best = score;
+        if (!beatBest) { beatBest = true; flashNewBest(); }
       }
+      placeFood();
+      syncHud();
     }
+
+    if (grow > 0) { grow--; }
+    else {
+      const t = snake.pop();
+      occupied[idx(t.x, t.y)] = 0;
+    }
+  }
+
+  function die() {
+    gState = 'dead';
+    if (beatBest) saveBest();
+    finalScoreEl.textContent = score;
+    finalBestEl.textContent = best;
+    finalScoreEl.className = beatBest ? 'hot' : '';
+    deadHeadEl.innerHTML = beatBest ? 'New <em>Best.</em>' : 'Object <em>Lost.</em>';
+    setPanel();
+    startEl.textContent = 'Restart';
   }
 
   /* ---------- Drawing ---------- */
-  function drawPlayer(px, py, size, angle) {
-    ctx.save();
-    ctx.translate(px, py);
-    ctx.rotate(angle);
-    ctx.beginPath();
-    ctx.moveTo(0, -size);
-    ctx.bezierCurveTo(size * 0.8, -size * 0.6, size, size * 0.3, size * 0.3, size * 0.8);
-    ctx.bezierCurveTo(0, size, -size * 0.3, size * 0.8, -size * 0.3, size * 0.8);
-    ctx.bezierCurveTo(-size, size * 0.3, -size * 0.8, -size * 0.6, 0, -size);
-    ctx.closePath();
-    ctx.fillStyle = 'rgba(255,102,102,0.32)';
-    ctx.fill();
-    ctx.strokeStyle = PC;
-    ctx.lineWidth = 1.6;
-    ctx.stroke();
-    ctx.beginPath();
-    ctx.arc(0, 0, size * 0.14, 0, Math.PI * 2);
-    ctx.fillStyle = PC;
-    ctx.fill();
-    ctx.restore();
-  }
-
-  function drawGhost(g) {
-    const px = g.c * GRID + GRID / 2;
-    const py = g.r * GRID + GRID / 2;
-    const s = GRID * 0.4;
-    ctx.save();
-    ctx.translate(px, py);
-    ctx.beginPath();
-    ctx.arc(0, -s * 0.1, s, Math.PI, 0);
-    ctx.lineTo(s, s * 0.9);
-    ctx.lineTo(s * 0.55, s * 0.55);
-    ctx.lineTo(s * 0.15, s * 0.9);
-    ctx.lineTo(-s * 0.15, s * 0.55);
-    ctx.lineTo(-s * 0.55, s * 0.9);
-    ctx.lineTo(-s, s * 0.9);
-    ctx.closePath();
-    ctx.fillStyle = g.scared ? 'rgba(140,180,220,0.85)' : g.color;
-    ctx.fill();
-    // Eyes (simpler when scared)
-    if (g.scared) {
-      ctx.fillStyle = '#F0E8DC';
-      ctx.beginPath(); ctx.arc(-s * 0.28, -s * 0.05, s * 0.1, 0, Math.PI * 2); ctx.fill();
-      ctx.beginPath(); ctx.arc( s * 0.28, -s * 0.05, s * 0.1, 0, Math.PI * 2); ctx.fill();
-    } else {
-      ctx.fillStyle = '#F0E8DC';
-      ctx.beginPath(); ctx.arc(-s * 0.32, -s * 0.1, s * 0.22, 0, Math.PI * 2); ctx.fill();
-      ctx.beginPath(); ctx.arc( s * 0.32, -s * 0.1, s * 0.22, 0, Math.PI * 2); ctx.fill();
-      ctx.fillStyle = '#0c0a08';
-      ctx.beginPath(); ctx.arc(-s * 0.26, -s * 0.08, s * 0.1, 0, Math.PI * 2); ctx.fill();
-      ctx.beginPath(); ctx.arc( s * 0.38, -s * 0.08, s * 0.1, 0, Math.PI * 2); ctx.fill();
-    }
-    ctx.restore();
-  }
-
   function draw() {
-    // Maze background (pre-rendered)
-    ctx.drawImage(mazeCache, 0, 0);
+    ctx.fillStyle = BG;
+    ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
 
-    // Small pellets — single batched path
-    ctx.fillStyle = 'rgba(240,232,220,0.62)';
-    ctx.beginPath();
-    for (const [k, t] of pelletMap) {
-      if (t !== 1) continue;
-      const c = k % COLS;
-      const r = (k / COLS) | 0;
-      const x = c * GRID + GRID / 2;
-      const y = r * GRID + GRID / 2;
-      ctx.moveTo(x + 2.2, y);
-      ctx.arc(x, y, 2.2, 0, Math.PI * 2);
+    // hairline field border, matching the site's keyline language
+    ctx.strokeStyle = 'rgba(255,102,102,0.1)';
+    ctx.lineWidth = 1;
+    ctx.strokeRect(0.5, 0.5, CANVAS_W - 1, CANVAS_H - 1);
+
+    // collectible
+    if (food) {
+      ctx.strokeStyle = CC;
+      ctx.lineWidth = 1.4;
+      ctx.lineJoin = 'round';
+      ctx.lineCap = 'round';
+      SPRITES[food.kind](food.x * GRID + GRID / 2, food.y * GRID + GRID / 2, GRID * 0.74);
     }
-    ctx.fill();
 
-    // Big pellets — separate batch (different color/size)
-    ctx.fillStyle = CC;
-    ctx.beginPath();
-    for (const [k, t] of pelletMap) {
-      if (t !== 2) continue;
-      const c = k % COLS;
-      const r = (k / COLS) | 0;
-      const x = c * GRID + GRID / 2;
-      const y = r * GRID + GRID / 2;
-      ctx.moveTo(x + 4, y);
-      ctx.arc(x, y, 4, 0, Math.PI * 2);
+    // snake — coral, head brightest, body easing back
+    for (let i = snake.length - 1; i >= 0; i--) {
+      const s = snake[i];
+      const t = 1 - (i / Math.max(snake.length, 1)) * 0.55;
+      ctx.globalAlpha = 0.45 + t * 0.55;
+      ctx.fillStyle = PC;
+      const pad = i === 0 ? 2 : 3;
+      ctx.fillRect(s.x * GRID + pad, s.y * GRID + pad, GRID - pad * 2, GRID - pad * 2);
     }
-    ctx.fill();
+    ctx.globalAlpha = 1;
 
-    // Ghosts
-    for (let i = 0; i < 4; i++) drawGhost(ghosts[i]);
+    // head glow
+    if (snake.length) {
+      const h = snake[0];
+      ctx.save();
+      ctx.globalAlpha = 0.28;
+      ctx.shadowColor = PC;
+      ctx.shadowBlur = 16;
+      ctx.fillStyle = PC;
+      ctx.fillRect(h.x * GRID + 2, h.y * GRID + 2, GRID - 4, GRID - 4);
+      ctx.restore();
+    }
 
-    // Player
-    drawPlayer(playerC * GRID + GRID / 2, playerR * GRID + GRID / 2, GRID * 0.44, ang * 0.6);
-
-    // Lives HUD
-    for (let i = 0; i < lives; i++) drawPlayer(14 + i * 18, CANVAS_H - 10, 5, ang * 0.3);
-
-    // State overlay
-    if (gState !== 'playing') {
-      ctx.fillStyle = 'rgba(12,11,10,0.82)';
-      ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
-      ctx.textAlign = 'center';
-      let title, sub, color;
-      if (gState === 'ready') {
-        title = 'Lost Object'; sub = 'PRESS START TO PLAY'; color = PC;
-      } else if (gState === 'over') {
-        title = 'You got lost.'; sub = 'SCORE: ' + score + '  —  PRESS START TO RETRY'; color = PC;
-      } else if (gState === 'win') {
-        title = 'Found.'; sub = 'SCORE: ' + score + '  —  ALL OBJECTS RECOVERED'; color = CC;
-      }
-      if (title) {
-        ctx.fillStyle = color;
-        ctx.globalAlpha = 0.95;
-        ctx.font = 'italic 28px "DM Serif Display", serif';
-        ctx.fillText(title, CANVAS_W / 2, CANVAS_H / 2 - 14);
-        ctx.globalAlpha = 1;
-        ctx.fillStyle = 'rgba(232,226,217,0.55)';
-        ctx.font = '9px Inter, sans-serif';
-        ctx.fillText(sub, CANVAS_W / 2, CANVAS_H / 2 + 14);
-      }
+    // the site's grain, drawn into the canvas so it reads identically on
+    // desktop (where the page's .grain sits above the modal) and mobile (where
+    // the modal sits above it).
+    if (grainPattern) {
+      const ox = -((Math.random() * 96) | 0);
+      const oy = -((Math.random() * 96) | 0);
+      ctx.save();
+      ctx.globalAlpha = 0.05;
+      ctx.globalCompositeOperation = 'overlay';
+      ctx.translate(ox, oy);
+      ctx.fillStyle = grainPattern;
+      ctx.fillRect(0, 0, CANVAS_W - ox, CANVAS_H - oy);
+      ctx.restore();
     }
   }
 
-  /* ---------- Frame loop (60fps render, gated tick) ---------- */
+  /* ---------- Loop ---------- */
   function frame(ts) {
-    if (!raf) return;
-    if (ts - lastTs >= FRAME_MS - 1) {
-      lastTs = ts;
-      if (gState === 'playing') tick();
-      draw();
+    if (!lastTs) lastTs = ts;
+    let dt = ts - lastTs;
+    lastTs = ts;
+    if (dt > 250) dt = 250;      // tab was backgrounded; don't fast-forward
+
+    if (gState === 'playing') {
+      acc += dt;
+      const iv = stepMs();
+      while (acc >= iv && gState === 'playing') { acc -= iv; step(); }
     }
+    draw();
     raf = requestAnimationFrame(frame);
+  }
+
+  /* ---------- HUD ---------- */
+  function syncHud() {
+    scoreEl.textContent = score;
+    bestEl.textContent = best;
+  }
+  function flashNewBest() {
+    nbEl.classList.remove('flash');
+    void nbEl.offsetWidth;       // restart the animation
+    nbEl.classList.add('flash');
+  }
+  function setPanel() {
+    titleEl.classList.toggle('show', gState === 'title');
+    deadEl.classList.toggle('show', gState === 'dead');
   }
 
   /* ---------- Build DOM (lazy, idempotent) ---------- */
   function build() {
     if (overlay) return;
+    loadBest();
     overlay = document.createElement('div');
     overlay.className = 'lo-game-overlay';
     overlay.innerHTML =
       '<div class="lo-game-modal">' +
         '<div class="lo-game-header">' +
-          '<div class="lo-game-title">Lost Object — <span>The Game</span></div>' +
-          '<div class="lo-game-score">Score <b id="lo-game-score-val">0</b></div>' +
+          '<div class="lo-game-title">After Hours — <span>Snake</span></div>' +
+          '<div class="lo-game-score">' +
+            '<span class="lo-game-nb" id="lo-game-nb">New Best</span>' +
+            'Score <b id="lo-game-score-val">0</b>' +
+            'Best <b id="lo-game-best-val">0</b>' +
+          '</div>' +
           '<button class="lo-game-close" type="button" aria-label="Close game">&#x2715;</button>' +
         '</div>' +
-        '<canvas id="lo-game-canvas" width="' + CANVAS_W + '" height="' + CANVAS_H + '"></canvas>' +
+        '<div class="lo-game-stage">' +
+          '<canvas id="lo-game-canvas" width="' + CANVAS_W + '" height="' + CANVAS_H + '"></canvas>' +
+          '<div class="lo-game-panel show" id="lo-game-title-panel">' +
+            '<div class="lo-game-big">After <em>Hours</em></div>' +
+            '<div class="lo-game-rule"></div>' +
+            '<div class="lo-game-sub">Arrows / WASD / Swipe</div>' +
+          '</div>' +
+          '<div class="lo-game-panel" id="lo-game-dead-panel">' +
+            '<div class="lo-game-big" id="lo-game-dead-head">Object <em>Lost.</em></div>' +
+            '<div class="lo-game-tally">' +
+              '<div>Recovered<b id="lo-game-final">0</b></div>' +
+              '<div>Best<b id="lo-game-finalbest">0</b></div>' +
+            '</div>' +
+            '<button class="lo-game-again" type="button">Run it back</button>' +
+            '<div class="lo-game-note">' +
+              '<a href="' + DISCORD + '" target="_blank" rel="noopener noreferrer">Built for the ones still here after hours</a>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
         '<div class="lo-game-footer">' +
-          '<span class="lo-game-hint">Arrow keys or WASD — collect the lost objects</span>' +
+          '<span class="lo-game-hint">Arrows or WASD — recover the lost objects · Esc to quit</span>' +
           '<button class="lo-game-start" type="button">Start</button>' +
         '</div>' +
       '</div>';
@@ -453,22 +442,40 @@
 
     canvas = overlay.querySelector('#lo-game-canvas');
     ctx = canvas.getContext('2d', { alpha: false });
+    stageEl = overlay.querySelector('.lo-game-stage');
     scoreEl = overlay.querySelector('#lo-game-score-val');
+    bestEl = overlay.querySelector('#lo-game-best-val');
     startEl = overlay.querySelector('.lo-game-start');
+    titleEl = overlay.querySelector('#lo-game-title-panel');
+    deadEl = overlay.querySelector('#lo-game-dead-panel');
+    nbEl = overlay.querySelector('#lo-game-nb');
+    finalScoreEl = overlay.querySelector('#lo-game-final');
+    finalBestEl = overlay.querySelector('#lo-game-finalbest');
+    deadHeadEl = overlay.querySelector('#lo-game-dead-head');
 
     overlay.querySelector('.lo-game-close').addEventListener('click', close);
+    overlay.querySelector('.lo-game-again').addEventListener('click', startGame);
     startEl.addEventListener('click', startGame);
 
-    buildMazeCache();
+    buildGrain();
     initGame();
-    gState = 'ready';
+    gState = 'title';
+    setPanel();
   }
 
   /* ---------- Controls ---------- */
   function startGame() {
     initGame();
     gState = 'playing';
+    setPanel();
     startEl.textContent = 'Restart';
+  }
+
+  function turn(x, y) {
+    if (gState === 'title') { startGame(); }
+    else if (gState !== 'playing') return;
+    if (x === -dirX && y === -dirY) return;   // no 180s
+    nDirX = x; nDirY = y;
   }
 
   function open() {
@@ -486,11 +493,47 @@
       cancelAnimationFrame(raf);
       raf = 0;
     }
+    // Esc / X quits outright — come back to a clean title card.
+    if (overlay) {
+      gState = 'title';
+      initGame();
+      setPanel();
+      startEl.textContent = 'Start';
+    }
   }
+
+  function isOpen() { return !!overlay && overlay.classList.contains('open'); }
 
   window.LOGame = { open: open, close: close };
 
-  /* ---------- Click delegation on .lo-icon ---------- */
+  /* ---------- Trigger: the After Hours chip in Join the Community ---------- */
+  /* One click or tap on the whole zone — logo and text alike. A tap fires a
+     click on every mobile browser, so this covers touch with no extra handlers
+     (and the game's own touch listeners all gate on isOpen(), so they can't
+     swallow the opening tap). */
+  function armTrigger(el) {
+    if (!el || el.__loArmed) return;
+    el.__loArmed = true;
+    el.addEventListener('click', function (e) {
+      if (isOpen()) return;
+      // Defensive: the chip has no href today, but if a link is ever nested
+      // here the game takes the click and the Discord invite stays reachable
+      // from the death screen's closing line.
+      e.preventDefault();
+      open();
+    });
+  }
+
+  function armAll() {
+    armTrigger(document.querySelector('.ah-kicker'));
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', armAll);
+  } else {
+    armAll();
+  }
+
+  /* Legacy: a `.lo-icon` anywhere in the page still opens the game. */
   document.addEventListener('click', function (e) {
     const t = e.target.closest && e.target.closest('.lo-icon');
     if (t) open();
@@ -498,37 +541,42 @@
 
   /* ---------- Keyboard ---------- */
   const KM = {
-    ArrowUp:    [0, -1], ArrowDown: [0, 1], ArrowLeft: [-1, 0], ArrowRight: [1, 0],
+    ArrowUp: [0, -1], ArrowDown: [0, 1], ArrowLeft: [-1, 0], ArrowRight: [1, 0],
     w: [0, -1], s: [0, 1], a: [-1, 0], d: [1, 0],
     W: [0, -1], S: [0, 1], A: [-1, 0], D: [1, 0]
   };
   document.addEventListener('keydown', function (e) {
-    if (!overlay || !overlay.classList.contains('open')) return;
+    if (!isOpen()) return;
+    if (e.key === 'Escape') { close(); return; }
     const km = KM[e.key];
     if (km) {
-      nDirX = km[0];
-      nDirY = km[1];
+      turn(km[0], km[1]);
+      e.preventDefault();          // keep arrows/WASD from scrolling the page
+    } else if (e.key === ' ' || e.key === 'Spacebar') {
+      if (gState !== 'playing') startGame();
       e.preventDefault();
-    } else if (e.key === 'Escape') {
-      close();
     }
   });
 
-  /* ---------- Touch swipe ---------- */
+  /* ---------- Touch: swipe to steer, and no page scroll while open ---------- */
   let touchStart = null;
   document.addEventListener('touchstart', function (e) {
-    if (!overlay || !overlay.classList.contains('open')) return;
+    if (!isOpen()) return;
     touchStart = { x: e.touches[0].clientX, y: e.touches[0].clientY };
   }, { passive: true });
+
+  document.addEventListener('touchmove', function (e) {
+    if (!isOpen()) return;
+    if (e.cancelable) e.preventDefault();   // lock the page behind the modal
+  }, { passive: false });
+
   document.addEventListener('touchend', function (e) {
-    if (!touchStart || !overlay || !overlay.classList.contains('open')) return;
+    if (!touchStart || !isOpen()) return;
     const dx = e.changedTouches[0].clientX - touchStart.x;
     const dy = e.changedTouches[0].clientY - touchStart.y;
-    if (Math.abs(dx) > Math.abs(dy)) {
-      nDirX = dx > 0 ? 1 : -1; nDirY = 0;
-    } else {
-      nDirX = 0; nDirY = dy > 0 ? 1 : -1;
-    }
     touchStart = null;
+    if (Math.abs(dx) < SWIPE_MIN && Math.abs(dy) < SWIPE_MIN) return;
+    if (Math.abs(dx) > Math.abs(dy)) turn(dx > 0 ? 1 : -1, 0);
+    else turn(0, dy > 0 ? 1 : -1);
   }, { passive: true });
 })();
