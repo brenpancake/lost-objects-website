@@ -2301,6 +2301,51 @@
       border-color: var(--pink);
     }
     .fit-chip input:focus-visible + span { box-shadow: 0 0 0 2px rgba(255,102,102,0.3); }
+    /* Newsletter opt-in — the same control lead-popup.js already uses
+       (.lo-checkbox: sharp corners, coral fill + CSS-drawn tick when checked),
+       rebuilt on this page's design tokens. The row carries .fit-field as well,
+       so it inherits the staggered reveal for free; .fit-optin only flips that
+       column layout to a row. Fine print follows the .svc-booking-note scale. */
+    .fit-optin {
+      flex-direction: row;
+      align-items: flex-start;
+      gap: 10px;
+      cursor: pointer;
+    }
+    .fit-checkbox {
+      width: 15px;
+      height: 15px;
+      min-width: 15px;
+      margin-top: 1px;
+      background: var(--bg);
+      border: 1px solid var(--fg4);
+      border-radius: 0;
+      appearance: none;
+      -webkit-appearance: none;
+      position: relative;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: background 0.2s ease, border-color 0.2s ease;
+    }
+    .fit-optin:hover .fit-checkbox { border-color: rgba(255,102,102,0.5); }
+    .fit-checkbox:checked { background: var(--pink); border-color: var(--pink); }
+    .fit-checkbox:checked::after {
+      content: '';
+      position: absolute;
+      top: 2px; left: 4px;
+      width: 4px; height: 7px;
+      border: 1.5px solid var(--bg);
+      border-top: none; border-left: none;
+      transform: rotate(40deg);
+    }
+    .fit-checkbox:focus-visible { outline: none; box-shadow: 0 0 0 2px rgba(255,102,102,0.3); }
+    .fit-optin-text {
+      font-size: 11px;
+      font-weight: 300;
+      line-height: 1.6;
+      letter-spacing: 0.02em;
+      color: var(--fg3);
+    }
     .fit-error { font-size: 12px; color: var(--pink); }
     .fit-error[hidden] { display: none; }
 
@@ -3835,6 +3880,10 @@
             <label class="fit-label" for="fit-message">Anything else <span class="fit-opt">(optional)</span></label>
             <textarea class="fit-input fit-textarea" id="fit-message" name="message" placeholder="Tell us a little more" rows="2"></textarea>
           </div>
+          <label class="fit-field fit-optin">
+            <input class="fit-checkbox" type="checkbox" id="fitOptIn" name="newsletter" value="yes" />
+            <span class="fit-optin-text">Send me social media insights, updates, and opportunities from Lost Objects.</span>
+          </label>
           <button type="submit" class="fit-submit" id="fitSubmit">Send it.</button>
           <div class="fit-error" id="fitError" hidden></div>
         </form>
@@ -4768,6 +4817,7 @@
     const successMsg  = document.getElementById('fitSuccessMsg');
     const errorEl     = document.getElementById('fitError');
     const submitBtn   = document.getElementById('fitSubmit');
+    const optInEl     = document.getElementById('fitOptIn');
     const triggers    = section.querySelectorAll('[data-service]');
     let activeService = null;
 
@@ -5097,12 +5147,19 @@
       submitBtn.textContent = 'Sending...';
       submitBtn.disabled = true;
 
+      const optIn = !!(optInEl && optInEl.checked);
       const fd = new FormData(form);
+      // Record opt-in status on every lead. An unchecked box posts nothing of
+      // its own, so set the value explicitly for both states (set() also
+      // collapses the checked box's own 'yes' entry, so it never doubles up).
+      fd.set('newsletter', optIn ? 'yes' : 'no');
 
       try {
         const res = await fetch(FORMSPREE, { method:'POST', body:fd, headers:{ 'Accept':'application/json' } });
         if (res.ok) {
-          subscribeKit(name, email);
+          // Kit is opt-in only — Formspree always receives the lead, but nobody
+          // joins the mailing list unless they ticked the box.
+          if (optIn) subscribeKit(name, email);
           var svc = serviceFld.value;
           var scfg = SERVICES[svc];
           if (scfg && scfg.confirm) {
