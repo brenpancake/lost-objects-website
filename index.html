@@ -2980,7 +2980,7 @@
     <h1 class="hero-hl">Your work deserves<br>to be <em>found.</em></h1>
     <p class="hero-desc">A boutique agency built by creatives, for the people who make the work and rarely get seen for it.</p>
     <div class="hero-cta">
-      <a href="#services" class="btn-p">Let's talk</a>
+      <a href="#services" class="btn-p">Services</a>
       <a href="#after-hours" class="btn-o">Join the Community</a>
     </div>
   </div>
@@ -4715,6 +4715,7 @@
         booking: "This is a booking request — we'll confirm your date and time once you submit.",
         included: ['Pre-shoot prep meeting & creative planning','Full shoot day with the Lost Objects team','Starts at 8 pieces of ready-to-post content — scoped to your goals','Shot on the right system for the content, from iPhone to RED','Shooting + editing, or shooting only — your call','Access to the Lost Objects: After Hours community'],
         scopeNote: "Every shoot is custom scoped — the content count and final quote follow your vision.",
+        confirm: "Request received. We'll reach out to talk through your vision and scope your shoot.",
         fields: [
           { type:'text', name:'handles', label:'Handle(s)', placeholder:'@yourbrand' },
           { type:'chips', name:'platforms', label:'Platforms this content is for', options:['Instagram','TikTok','YouTube','LinkedIn'] },
@@ -5103,10 +5104,17 @@
         if (res.ok) {
           subscribeKit(name, email);
           var svc = serviceFld.value;
-          var subject = (svc === 'Full Management') ? 'Full Management' : 'your ' + svc;
-          // Keep "within 48 hours." together so it never orphans onto its own line.
-          successMsg.innerHTML = "We'll be in touch about " + escHtml(subject) +
-            " <span style=\"white-space:nowrap\">within 48 hours.</span>";
+          var scfg = SERVICES[svc];
+          if (scfg && scfg.confirm) {
+            // Service supplies its own confirmation line — same element, same
+            // .fit-success-line styling, same swapToSuccess motion as the rest.
+            successMsg.textContent = scfg.confirm;
+          } else {
+            var subject = (svc === 'Full Management') ? 'Full Management' : 'your ' + svc;
+            // Keep "within 48 hours." together so it never orphans onto its own line.
+            successMsg.innerHTML = "We'll be in touch about " + escHtml(subject) +
+              " <span style=\"white-space:nowrap\">within 48 hours.</span>";
+          }
           // Cross-dissolve the form panel out and the confirmation in — the same
           // motion as selecting a service, just the next beat.
           swapToSuccess();
