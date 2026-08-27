@@ -2025,6 +2025,25 @@
     }
     .svc-premium:hover { background: rgba(255,102,102,0.09); box-shadow: inset 2px 0 0 var(--pink), 0 0 26px rgba(255,102,102,0.2); }
     .svc-premium.active { background: rgba(255,102,102,0.12); box-shadow: inset 2px 0 0 var(--pink), 0 0 34px rgba(255,102,102,0.28); }
+    /* Standard-treatment full-width row — same bar structure, but the neutral
+       card palette (flat bg, hairline border, coral keyline on hover). The coral
+       tint + left spine stay unique to Full Management. Same specificity as the
+       rules above, so this must stay AFTER them to win on source order. */
+    .svc-premium-plain {
+      background: var(--bg);
+      border-color: var(--fg4);
+      box-shadow: none;
+    }
+    .svc-premium-plain:hover {
+      background: var(--bg2);
+      z-index: 3;
+      box-shadow: inset 0 0 0 1px var(--pink), 0 0 22px rgba(255,102,102,0.16);
+    }
+    .svc-premium-plain:hover .svc-premium-name { color: var(--pink); }
+    .svc-premium-plain.active {
+      background: var(--bg2);
+      box-shadow: inset 0 0 0 1px var(--pink), 0 0 34px rgba(255,102,102,0.28);
+    }
     .svc-premium-main {
       display: flex;
       flex-direction: column;
@@ -3759,6 +3778,16 @@
     </button>
   </div>
 
+  <!-- Content Shoots — full-width row, standard card treatment -->
+  <button type="button" class="svc-premium svc-premium-plain" data-service="Content Shoots">
+    <span class="svc-premium-main">
+      <span class="svc-tag">Production · Full day · from $2,000+</span>
+      <span class="svc-premium-name">Content Shoots</span>
+      <span class="svc-desc">A full production day with the Lost Objects team. Prep meeting, shoot, and ready-to-post content, custom scoped to your goals &mdash; starting at 8 pieces.</span>
+    </span>
+    <span class="svc-select">Select &rarr;</span>
+  </button>
+
   <!-- Full Management — premium full-width row -->
   <button type="button" class="svc-premium" data-service="Full Management">
     <span class="svc-premium-main">
@@ -3787,6 +3816,7 @@
         <h3 class="svc-panel-title" id="svcPanelTitle"></h3>
         <div class="svc-panel-price" id="svcPanelPrice" hidden></div>
         <ul class="svc-incl" id="svcInclList"></ul>
+        <p class="svc-booking-note" id="svcScopeNote" hidden></p>
         <p class="svc-booking-note" id="svcBookingNote" hidden></p>
       </div>
       <div class="svc-panel-right">
@@ -4614,6 +4644,23 @@
     if (!section) return;
     const FORMSPREE = 'https://formspree.io/f/xgoqdyyd';
 
+    // Newsletter subscribe on a successful send — the SAME keyless public Kit
+    // endpoint + payload shape lead-popup.js uses (no API key in client code).
+    // Fire-and-forget: it can never block, delay, or fail the confirmation.
+    const KIT_FORM_ID = '9497290';
+    function subscribeKit(name, email){
+      try {
+        const kfd = new FormData();
+        kfd.append('email_address', email);
+        kfd.append('fields[first_name]', name);
+        fetch('https://app.convertkit.com/forms/' + KIT_FORM_ID + '/subscriptions', {
+          method: 'POST', headers: { 'Accept':'application/json' }, body: kfd
+        }).then(function(){
+          try { localStorage.setItem('lo_signed_up', '1'); } catch (e) {}
+        }).catch(function(){});
+      } catch (e) {}
+    }
+
     const SERVICES = {
       'Basic Social Media Audit': {
         kicker: "What's included",
@@ -4662,6 +4709,24 @@
           { type:'text', name:'niche', label:'Your niche or who you serve', placeholder:'e.g. indie filmmakers' }
         ]
       },
+      'Content Shoots': {
+        kicker: "What's included",
+        price: "From $2,000+",
+        booking: "This is a booking request — we'll confirm your date and time once you submit.",
+        included: ['Pre-shoot prep meeting & creative planning','Full shoot day with the Lost Objects team','Starts at 8 pieces of ready-to-post content — scoped to your goals','Shot on the right system for the content, from iPhone to RED','Shooting + editing, or shooting only — your call','Access to the Lost Objects: After Hours community'],
+        scopeNote: "Every shoot is custom scoped — the content count and final quote follow your vision.",
+        fields: [
+          { type:'text', name:'handles', label:'Handle(s)', placeholder:'@yourbrand' },
+          { type:'chips', name:'platforms', label:'Platforms this content is for', options:['Instagram','TikTok','YouTube','LinkedIn'] },
+          { type:'textarea', name:'vision', label:'The vision', placeholder:"What are we making? Describe the content you're picturing" },
+          { type:'select', name:'content_volume', label:'How much content are you picturing?', options:['8–10 pieces','11–16 pieces','17–24 pieces',"Let's talk bigger",'Not sure yet'] },
+          { type:'radio', name:'scope', label:'Scope', options:['Shooting + editing','Shooting only'] },
+          { type:'select', name:'location', label:'Location', options:['Have a location','Need help finding one','Not sure yet'] },
+          { type:'select', name:'timeline', label:'Timeline', options:['ASAP','Next month','This quarter','Flexible'] },
+          { type:'select', name:'investment', label:'Investment range', options:['$2,000–2,500','$2,500–3,500','$3,500+','Not sure yet'] },
+          { type:'radio', name:'current_client', label:'Current Lost Objects client?', options:['Yes','No'] }
+        ]
+      },
       'Full Management': {
         kicker: "What's included",
         price: "Custom",
@@ -4693,6 +4758,7 @@
     const titleEl     = document.getElementById('svcPanelTitle');
     const priceEl     = document.getElementById('svcPanelPrice');
     const inclEl      = document.getElementById('svcInclList');
+    const scopeEl     = document.getElementById('svcScopeNote');
     const bookingEl   = document.getElementById('svcBookingNote');
     const dynamic     = document.getElementById('fitDynamic');
     const serviceFld  = document.getElementById('fitService');
@@ -4940,6 +5006,15 @@
             chips.appendChild(lb);
           });
           wrap.appendChild(chips);
+        } else if (f.type === 'textarea') {
+          // Same control as the static "Anything else" field — .fit-input for the
+          // shared frame, .fit-textarea for the resize handle + min-height.
+          lab.setAttribute('for', fid);
+          const ta = el('textarea','fit-input fit-textarea');
+          ta.id = fid; ta.name = f.name;
+          ta.placeholder = f.placeholder || '';
+          ta.rows = 2;
+          wrap.appendChild(ta);
         } else {
           lab.setAttribute('for', fid);
           const inp = el('input','fit-input');
@@ -4958,6 +5033,7 @@
       titleEl.textContent = svc;
       inclEl.innerHTML = cfg.included.map(function(i){ return '<li>' + escHtml(i) + '</li>'; }).join('');
       if (priceEl)   { priceEl.textContent = cfg.price || ''; priceEl.hidden = !cfg.price; }
+      if (scopeEl)   { scopeEl.textContent = cfg.scopeNote || ''; scopeEl.hidden = !cfg.scopeNote; }
       if (bookingEl) { bookingEl.textContent = cfg.booking || ''; bookingEl.hidden = !cfg.booking; }
       if (panelInner) panelInner.hidden = false;
       buildFields(cfg);
@@ -5025,6 +5101,7 @@
       try {
         const res = await fetch(FORMSPREE, { method:'POST', body:fd, headers:{ 'Accept':'application/json' } });
         if (res.ok) {
+          subscribeKit(name, email);
           var svc = serviceFld.value;
           var subject = (svc === 'Full Management') ? 'Full Management' : 'your ' + svc;
           // Keep "within 48 hours." together so it never orphans onto its own line.
@@ -5052,6 +5129,7 @@
       '#services-premium-audit':'Premium Social Media Audit',
       '#services-strategy':'Basic Social Media Strategy Session',
       '#services-premium-strategy':'Premium Social Media Strategy Session',
+      '#services-content-shoots':'Content Shoots',
       '#services-full-management':'Full Management'
     };
     function openFromHash(){
