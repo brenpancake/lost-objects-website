@@ -4704,8 +4704,14 @@
         kfd.append('fields[first_name]', name);
         fetch('https://app.convertkit.com/forms/' + KIT_FORM_ID + '/subscriptions', {
           method: 'POST', headers: { 'Accept':'application/json' }, body: kfd
-        }).then(function(){
-          try { localStorage.setItem('lo_signed_up', '1'); } catch (e) {}
+        }).then(function(res){
+          // Only suppress the Free Lesson popup when Kit ACTUALLY accepted the
+          // subscribe. A 4xx/5xx still RESOLVES the promise, so treating any
+          // response as success would hide the popup from someone who never
+          // made it onto the list. Mirrors lead-popup.js's own if (res.ok).
+          if (res && res.ok) {
+            try { localStorage.setItem('lo_signed_up', '1'); } catch (e) {}
+          }
         }).catch(function(){});
       } catch (e) {}
     }
