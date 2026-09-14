@@ -2221,6 +2221,10 @@
       color: var(--fg3);
     }
     .fit-opt { color: var(--fg4); letter-spacing: 0.1em; }
+    /* Required marker - the counterpart to .fit-opt's "(optional)". Same
+       span-inside-the-label convention, coral instead of grey, dialled back
+       so it reads as a mark rather than a second word in the label. */
+    .fit-req { color: var(--pink); opacity: 0.7; letter-spacing: 0; }
     .fit-input {
       position: relative;
       z-index: 1;
@@ -2301,6 +2305,25 @@
       border-color: var(--pink);
     }
     .fit-chip input:focus-visible + span { box-shadow: 0 0 0 2px rgba(255,102,102,0.3); }
+    /* Conditional write-in row (referral name / "other" source). Collapsed all
+       the way to display:none so the form's 18px flex gap never leaves a phantom
+       slot, then expanded with the same expo ease + 10px rise the staggered panel
+       reveal uses, so it arrives in the form's motion language.
+       The [hidden] rule is required: .fit-field's author-level display:flex would
+       otherwise beat the UA sheet's [hidden] { display: none } - the same reason
+       .fit-error[hidden] and .fit-success[hidden] exist further down. */
+    .fit-reveal {
+      overflow: hidden;
+      max-height: 0;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: max-height 0.6s cubic-bezier(0.16,1,0.3,1),
+                  opacity 0.5s ease,
+                  transform 0.6s cubic-bezier(0.16,1,0.3,1);
+    }
+    .fit-reveal.is-open { max-height: 160px; opacity: 1; transform: none; }
+    .fit-reveal[hidden] { display: none; }
+    @media (prefers-reduced-motion: reduce) { .fit-reveal { transition: none; } }
     /* Newsletter opt-in — the same control lead-popup.js already uses
        (.lo-checkbox: sharp corners, coral fill + CSS-drawn tick when checked),
        rebuilt on this page's design tokens. The row carries .fit-field as well,
@@ -3868,17 +3891,49 @@
         <form class="fit-form" id="fitForm" novalidate>
           <input type="hidden" name="service" id="fitService" value="" />
           <div class="fit-field">
-            <label class="fit-label" for="fit-name">Your name</label>
+            <label class="fit-label" for="fit-name">Your name <span class="fit-req">*</span></label>
             <input class="fit-input" type="text" id="fit-name" name="name" placeholder="First and last name" autocomplete="name" />
           </div>
           <div class="fit-field">
-            <label class="fit-label" for="fit-email">Email</label>
+            <label class="fit-label" for="fit-email">Email <span class="fit-req">*</span></label>
             <input class="fit-input" type="email" id="fit-email" name="email" placeholder="Email address" autocomplete="email" />
           </div>
           <div id="fitDynamic"></div>
           <div class="fit-field">
             <label class="fit-label" for="fit-message">Anything else <span class="fit-opt">(optional)</span></label>
             <textarea class="fit-input fit-textarea" id="fit-message" name="message" placeholder="Tell us a little more" rows="2"></textarea>
+          </div>
+          <!-- Attribution - asked on all seven services, so it lives in the static
+               markup next to name/email rather than in #fitDynamic. Single-select
+               via the same coral chip-group convention buildFields() renders for a
+               { type:'radio' } field. -->
+          <div class="fit-field">
+            <label class="fit-label" id="fitHeardLabel">How did you hear about us? <span class="fit-req">*</span></label>
+            <div class="fit-chips" id="fitHeard" role="radiogroup" aria-labelledby="fitHeardLabel">
+              <label class="fit-chip"><input type="radio" name="heard_about" value="Referral" /><span>Referral</span></label>
+              <label class="fit-chip"><input type="radio" name="heard_about" value="A brand or client we've worked with" /><span>A brand or client we&rsquo;ve worked with</span></label>
+              <label class="fit-chip"><input type="radio" name="heard_about" value="Google or search" /><span>Google or search</span></label>
+              <label class="fit-chip"><input type="radio" name="heard_about" value="Instagram" /><span>Instagram</span></label>
+              <label class="fit-chip"><input type="radio" name="heard_about" value="YouTube" /><span>YouTube</span></label>
+              <label class="fit-chip"><input type="radio" name="heard_about" value="TikTok" /><span>TikTok</span></label>
+              <label class="fit-chip"><input type="radio" name="heard_about" value="Industry event" /><span>Industry event</span></label>
+              <label class="fit-chip"><input type="radio" name="heard_about" value="Other" /><span>Other</span></label>
+            </div>
+          </div>
+          <!-- Write-ins: revealed one at a time by the three chips that take one.
+               All post under heard_about_detail; the hidden ones are disabled, so only
+               the live answer is ever in the FormData. -->
+          <div class="fit-field fit-reveal" id="fitHeardReferral" hidden>
+            <label class="fit-label" for="fit-heard-referral">Who sent you?</label>
+            <input class="fit-input" type="text" id="fit-heard-referral" name="heard_about_detail" placeholder="Name or company" disabled />
+          </div>
+          <div class="fit-field fit-reveal" id="fitHeardBrand" hidden>
+            <label class="fit-label" for="fit-heard-brand">Which brand or client? <span class="fit-opt">(optional)</span></label>
+            <input class="fit-input" type="text" id="fit-heard-brand" name="heard_about_detail" placeholder="Name of the brand or client" disabled />
+          </div>
+          <div class="fit-field fit-reveal" id="fitHeardOther" hidden>
+            <label class="fit-label" for="fit-heard-other">Where&rsquo;d you hear about us?</label>
+            <input class="fit-input" type="text" id="fit-heard-other" name="heard_about_detail" placeholder="Tell us where" disabled />
           </div>
           <label class="fit-field fit-optin">
             <input class="fit-checkbox" type="checkbox" id="fitOptIn" name="newsletter" value="yes" />
@@ -4853,7 +4908,7 @@
     //    has bloomed, so the content feels like it assembles itself. ──
     function staggerTargets(){
       return Array.prototype.slice.call(
-        detail.querySelectorAll('.svc-incl li, .fit-field, .fit-submit')
+        detail.querySelectorAll('.svc-incl li, .fit-field:not(.fit-reveal), .fit-submit')
       );
     }
     function prepStagger(){
@@ -5136,6 +5191,57 @@
 
     function showError(msg){ errorEl.textContent = msg; errorEl.hidden = false; }
 
+    // -- Attribution write-ins --
+    // Three of the chips reveal a text input, and only ever one at a time: the
+    // change handler opens the picked value's row and closes every other, which
+    // clears AND disables it, so a stale answer can never ride along in the
+    // payload. Keyed by radio value, so adding a chip here is the whole change.
+    const heardGroup = document.getElementById('fitHeard');
+    const heardWraps = {
+      'Referral':                            document.getElementById('fitHeardReferral'),
+      "A brand or client we've worked with": document.getElementById('fitHeardBrand'),
+      'Other':                               document.getElementById('fitHeardOther')
+    };
+
+    function openReveal(wrap){
+      if (!wrap) return;
+      const inp = wrap.querySelector('.fit-input');
+      if (inp) inp.disabled = false;
+      wrap.hidden = false;
+      if (reduceMotion.matches) { wrap.classList.add('is-open'); return; }
+      void wrap.offsetHeight; // reflow, so the collapsed state is the transition's start
+      requestAnimationFrame(function(){ wrap.classList.add('is-open'); });
+    }
+    function closeReveal(wrap, immediate){
+      if (!wrap || wrap.hidden) return;
+      const inp = wrap.querySelector('.fit-input');
+      if (inp) { inp.value = ''; inp.disabled = true; }
+      wrap.classList.remove('is-open');
+      if (immediate || reduceMotion.matches) { wrap.hidden = true; return; }
+      // Re-hide only once the collapse has played out, and only if it wasn't
+      // re-opened in the meantime.
+      window.setTimeout(function(){
+        if (!wrap.classList.contains('is-open')) wrap.hidden = true;
+      }, 600);
+    }
+
+    if (heardGroup) {
+      heardGroup.addEventListener('change', function(e){
+        if (!e.target || e.target.name !== 'heard_about') return;
+        const picked = e.target.value;
+        // Strictly one row on screen at a time. When another row is taking the
+        // slot, the outgoing one leaves at once instead of collapsing underneath
+        // it — otherwise both sit in the form together for the whole 600ms
+        // collapse, and their heights fight over the space. Stepping down to a
+        // plain option still gets the graceful collapse, since nothing replaces it.
+        const replacing = !!heardWraps[picked];
+        Object.keys(heardWraps).forEach(function(key){
+          if (key === picked) openReveal(heardWraps[key]);
+          else closeReveal(heardWraps[key], replacing);
+        });
+      });
+    }
+
     // Submit — FormData(form) captures the hidden "service" field, name, email,
     // every dynamic field, the checkbox chips, and the optional message by their
     // name attributes, and POSTs to the original Formspree endpoint unchanged.
@@ -5146,9 +5252,13 @@
       const name    = nameEl.value.trim();
       const email   = emailEl.value.trim();
 
+      // The three required fields - everything else on the form stays optional.
+      const heardEl = form.querySelector('input[name="heard_about"]:checked');
+
       errorEl.hidden = true;
       if (!name) { showError('Please add your name.'); return; }
       if (!email || !emailEl.checkValidity()) { showError('Please add a valid email.'); return; }
+      if (!heardEl) { showError('Please let us know how you heard about us.'); return; }
 
       submitBtn.textContent = 'Sending...';
       submitBtn.disabled = true;
@@ -5159,6 +5269,12 @@
       // its own, so set the value explicitly for both states (set() also
       // collapses the checked box's own 'yes' entry, so it never doubles up).
       fd.set('newsletter', optIn ? 'yes' : 'no');
+      // heard_about rides along on the radio's own name attribute. Its write-in
+      // goes under a fixed key for both states, same reasoning as newsletter above,
+      // so every lead lands with the same shape whether or not one applied.
+      const heardWrap  = heardWraps[heardEl.value];
+      const heardInput = heardWrap ? heardWrap.querySelector('.fit-input') : null;
+      fd.set('heard_about_detail', heardInput ? heardInput.value.trim() : '');
 
       try {
         const res = await fetch(FORMSPREE, { method:'POST', body:fd, headers:{ 'Accept':'application/json' } });
