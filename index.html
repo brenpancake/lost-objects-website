@@ -2980,18 +2980,75 @@
     .foot-ig {
       display: flex;
       align-items: center;
-      color: rgba(232,226,217,0.5);
-      transition: color 0.2s;
     }
-    .foot-ig:hover { color: var(--pink); }
+    /* Footer marks — the .ah-kicker treatment from lo-game.js: a glyph-shaped
+       coral drop-shadow rather than box-shadow, because none of these have a
+       fill or border to cast a rectangle from (the wordmark is an RGBA PNG and
+       the icons are open SVG strokes). Scaled down from the chip's 10px/3px to
+       8px/3px so the glow reads on an 11px wordmark and 16px icons without
+       blooming. Resting appearance is deliberately untouched.
+
+       NOTE: .foot-ig had `color` + `transition: color` and a
+       `:hover { color: var(--pink) }` rule that could never do anything — both
+       footer SVGs hardcode stroke/fill="#FF6666" and contain no currentColor,
+       and the anchors hold no text, so nothing consumed the colour. That dead
+       pair is removed rather than left next to a working hover. */
+    .foot-logo,
+    .foot-ig { transition: filter 0.25s ease; }
+    .foot-logo:hover,
+    .foot-logo:focus-visible,
+    .foot-ig:hover,
+    .foot-ig:focus-visible {
+      filter: brightness(1.12)
+              drop-shadow(0 0 8px rgba(255,102,102,0.55))
+              drop-shadow(0 0 3px rgba(255,102,102,0.45));
+    }
+    /* Keyboard focus gets the same glow instead of the UA ring. */
+    .foot-logo:focus-visible,
+    .foot-ig:focus-visible { outline: none; }
+    /* No hover on touch — don't leave the glow stuck after a tap. */
+    @media (hover: none) {
+      .foot-logo:hover, .foot-ig:hover { filter: none; }
+    }
     .foot-social { display: flex; align-items: center; gap: 14px; }
     .foot-bot { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; padding-top: 20px; }
     .foot-email { font-size: 9px; letter-spacing: 0.1em; color: rgba(232,226,217,0.55); }
-    .foot-mail-lnk { color: rgba(232,226,217,0.75); border-bottom: none; transition: color 0.2s; }
-    .foot-mail-lnk:hover { color: var(--pink); }
+    /* Email address — an inline link inside a sentence, so it follows the
+       .vcard-dc-note a convention: a faint resting rule underneath so it reads
+       as a link before you touch it (it had `border-bottom: none`, which is why
+       it looked like plain text), brightening to coral on hover. The coral hover
+       itself is unchanged. */
+    .foot-mail-lnk {
+      color: rgba(232,226,217,0.75);
+      border-bottom: 1px solid rgba(232,226,217,0.18);
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .foot-mail-lnk:hover,
+    .foot-mail-lnk:focus-visible {
+      color: var(--pink);
+      border-bottom-color: rgba(255,102,102,0.5);
+      outline: none;
+    }
     .foot-legal { display: flex; gap: 22px; flex-wrap: wrap; }
-    .foot-lnk { font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(232,226,217,0.5); transition: color 0.2s; }
-    .foot-lnk:hover { color: var(--fg2); }
+    /* Privacy / Terms — standalone uppercase micro-labels, the same shape as
+       .vcard-bio-meta-link, so they take that convention: coral plus a
+       3px-offset underline on hover. The old rule only lifted the cream from
+       0.5 to 0.72 alpha, a change too small to register as a response. Resting
+       state stays bare: a permanent underline on a legal row would shout. */
+    .foot-lnk {
+      font-size: 9px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(232,226,217,0.5);
+      transition: color 0.2s;
+    }
+    .foot-lnk:hover,
+    .foot-lnk:focus-visible {
+      color: var(--pink);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      outline: none;
+    }
     .foot-copy { font-size: 9px; letter-spacing: 0.1em; color: rgba(232,226,217,0.4); }
 
     /* REVEAL ANIMATION */
