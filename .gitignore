@@ -8,3 +8,15 @@ node_modules/
 .idea/
 *.swp
 Thumbs.db
+
+# Original camera masters (12-22MB each). The site only ever serves the
+# optimized variants generated from them, and git blobs are permanent, so
+# these stay in the working folder but never enter history.
+# Globs cover both the spaced and underscored forms of the filenames.
+images/KYRA_PHOTO*.jpg
+images/BREN_PHOTO*.jpg
+images/BREN_KYRA_PHOTO*.jpg
+
+# Gallery masters (~183MB of 4000x6000 originals). Same rule as the camera
+# masters above: the site only serves the optimized variants in images/.
+gallery-src/
