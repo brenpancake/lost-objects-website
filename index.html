@@ -2602,72 +2602,579 @@
       text-align: center;
     }
     .vcard-intro .svc-intro-rule { margin-bottom: 0; }
-    .vcard-cards {
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;   /* each card sizes to its own content; expanding one won't stretch the other */
-      gap: 24px;
-      margin-bottom: 36px;
-      flex-wrap: wrap;
+    /* ── Triptych ──────────────────────────────────────────────────────
+       Three equal 2:3 panels (matching the portrait masters) that expand in
+       place into a wide detail view. The swap reuses the Services section's
+       crossfade + height-morph rather than an overlay, so the page is never
+       blacked out; the controller is duplicated into its own IIFE per the
+       repo convention that duplication beats extraction here. */
+    /* Bottom margin replaces the one the .vcard-about paragraph used to
+       carry before it moved into the agency panel. It clears the detail
+       panel's 0 0 30px glow with room to spare, so the "Save us to your
+       phone" block can never collide with the triptych or an expansion. */
+    .lo-stage {
+      position: relative;
+      width: 100%;
+      margin-bottom: clamp(56px, 8vh, 96px);
     }
-    .vcard-card {
-      background: var(--bg2);
-      border: 1px solid rgba(255,102,102,0.15);
-      border-radius: 0;
-      padding: 32px;
-      width: clamp(220px, 28vw, 320px);
-      transition: transform 0.3s, border-color 0.3s;
-      text-align: left;
+    .lo-triptych, .lo-detail { width: 100%; }
+    .lo-triptych[hidden], .lo-detail[hidden] { display: none; }
+    /* Centre column is ~26% wider than the flanks. The side panels keep the
+       2:3 portrait ratio and therefore set the row height; the agency panel
+       drops its ratio and stretches to that same height, so all three finish
+       flush while the middle one reads as deliberately dominant. */
+    .lo-triptych {
+      display: grid;
+      grid-template-columns: 1fr 1.26fr 1fr;
+      gap: clamp(14px, 1.8vw, 24px);
+      align-items: stretch;
     }
-    .vcard-card:hover {
-      transform: translateY(-2px);
-      border-color: rgba(255,102,102,0.3);
-    }
-    /* Square portrait — same treatment as the testimonials (sharp corners,
-       1px coral border, gently desaturated). No border-radius remains. */
-    .vcard-avatar {
-      width: 88px; height: 88px;
-      border-radius: 0;
-      border: 1px solid var(--pink);
-      overflow: hidden;
-      background: #1a1a1a;
-      margin-bottom: 16px;
-    }
-    .vcard-photo {
+    /* Panel = the whole click target. Image dominates; chrome is the hairline
+       frame and the label scrim only. */
+    .lo-panel {
+      position: relative;
       display: block;
+      width: 100%;
+      aspect-ratio: 2 / 3;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background: var(--bg2);
+      border: 1px solid rgba(232,226,217,0.22);
+      border-radius: 0;
+      cursor: pointer;
+      text-align: left;
+      font-family: var(--sans);
+      /* 0.35s transform matches .collage-card, the site's other image tile;
+         plain `ease` because every hover on the site uses it — the expo curve
+         is reserved for the big settle motions (crossfade, height morph). */
+      transition: transform 0.35s ease,
+                  border-color 0.25s ease, box-shadow 0.25s ease,
+                  opacity 0.35s ease, filter 0.35s ease;
+    }
+    /* The agency panel is the coral one — it reads as the odd one out on
+       purpose, so the two cream portraits frame it. */
+    .lo-panel-agency {
+      border-color: var(--pink);
+      /* Height comes from the flanking 2:3 panels, not from its own ratio. */
+      aspect-ratio: auto;
+    }
+    /* The image is taken out of flow so it contributes NO intrinsic height.
+       Otherwise the agency panel (which drops its aspect-ratio so it can
+       stretch) derived 2:3 from its own photo, became the tallest item, and
+       stretched the two flanking panels off their 2:3 instead — the inverse
+       of what is wanted. With the images absolute, only the flanks' ratio
+       sets the row height and the wider centre panel stretches to match it.
+       0.35s / ease matches .collage-card, the site's other image tile. */
+    .lo-panel picture { display: block; position: absolute; inset: 0; }
+    .lo-panel-img {
+      display: block;
+      position: absolute;
+      inset: 0;
       width: 100%;
       height: 100%;
       object-fit: cover;
-      filter: saturate(0.85);
+      filter: saturate(0.9);
+      transition: transform 0.35s ease, filter 0.25s ease;
     }
-    .vcard-name {
+    /* Lift + coral glow. A panel has a real box, so this is box-shadow — the
+       drop-shadow form used on .ah-kicker and the footer marks is for glyphs
+       with nothing to cast from. Radii follow .svc-card:hover / .active. */
+    .lo-panel:hover,
+    .lo-panel:focus-visible {
+      transform: translateY(-6px);
+      border-color: var(--pink);
+      box-shadow: 0 0 28px rgba(255,102,102,0.22);
+      outline: none;
+      z-index: 2;
+    }
+    /* Focus ring — the site's only real one (.fit-chip / .fit-checkbox
+       :focus-visible), layered over the hover glow so keyboard focus is
+       distinguishable from a mouse hover. */
+    .lo-panel:focus-visible {
+      box-shadow: 0 0 0 2px rgba(255,102,102,0.35), 0 0 28px rgba(255,102,102,0.22);
+    }
+    /* Spotlight: hovering one panel dims the other two. Same 0.35s/ease as
+       the lift so the whole group moves as one gesture. */
+    .lo-triptych:hover .lo-panel,
+    .lo-triptych:focus-within .lo-panel {
+      opacity: 0.55;
+      filter: saturate(0.6);
+    }
+    /* Un-dim on :focus, not :focus-visible. Closing a detail with the mouse
+       returns focus to its panel, which fires :focus-within on the group —
+       with :focus-visible here, all three would dim and none would recover. */
+    .lo-triptych:hover .lo-panel:hover,
+    .lo-triptych:focus-within .lo-panel:focus {
+      opacity: 1;
+      filter: none;
+    }
+    /* "+" affordance, bottom-right, fades in on hover/focus. */
+    .lo-panel-plus {
+      position: absolute;
+      right: clamp(12px, 1.4vw, 18px);
+      bottom: clamp(12px, 1.4vw, 18px);
+      z-index: 3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 26px;
+      height: 26px;
+      font-family: var(--sans);
+      font-size: 17px;
+      font-weight: 300;
+      line-height: 1;
+      color: var(--pink);
+      border: 1px solid rgba(255,102,102,0.55);
+      background: rgba(15,14,13,0.55);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s ease;
+    }
+    .lo-panel:hover .lo-panel-plus,
+    .lo-panel:focus .lo-panel-plus { opacity: 1; }
+    .lo-panel:hover .lo-panel-img,
+    .lo-panel:focus-visible .lo-panel-img { transform: scale(1.03); filter: saturate(1); }
+    .lo-panel-agency:hover,
+    .lo-panel-agency:focus-visible {
+      box-shadow: 0 0 48px rgba(255,102,102,0.42), 0 0 14px rgba(255,102,102,0.3);
+    }
+    /* Label sits on the frame, over a scrim so it stays legible on any crop. */
+    .lo-panel-label {
+      position: absolute;
+      left: 0; right: 0; bottom: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      padding: clamp(16px, 2vw, 24px);
+      background: linear-gradient(to top, rgba(15,14,13,0.92) 0%, rgba(15,14,13,0.72) 45%, transparent 100%);
+      pointer-events: none;
+    }
+    .lo-panel-name {
       font-family: var(--display);
-      font-size: 22px;
+      font-size: clamp(16px, 1.7vw, 23px);
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      line-height: 1.0;
+      text-transform: uppercase;
+      color: var(--fg);
+      transition: color 0.25s ease;
+    }
+    .lo-panel-agency .lo-panel-name { color: var(--pink); }
+    .lo-panel:hover .lo-panel-name,
+    .lo-panel:focus-visible .lo-panel-name { color: var(--pink); }
+    .lo-panel-role {
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      line-height: 1.5;
+      text-transform: uppercase;
+      color: var(--fg3);
+    }
+
+    /* ── Detail view ──────────────────────────────────────────────────── */
+    .lo-detail-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .lo-detail-nav { display: flex; align-items: center; gap: 8px; }
+    /* Same control as .svc-back on the services panel. */
+    .lo-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--sans);
+      font-size: 10px;
       font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--fg2);
+      background: transparent;
+      border: 1px solid var(--fg4);
+      padding: 11px 18px;
+      cursor: pointer;
+      transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+    }
+    .lo-back:hover, .lo-back:focus-visible {
+      color: var(--pink); border-color: var(--pink);
+      background: rgba(255,102,102,0.06); outline: none;
+    }
+    .lo-back-arrow { transition: transform 0.2s ease; }
+    .lo-back:hover .lo-back-arrow { transform: translateX(-3px); }
+    /* Prev/next share the .lo-back chassis (itself a copy of .svc-back), so
+       the three controls in the bar are one family. Arrow nudge matches
+       .svc-back-arrow's 3px translate. */
+    /* Named steppers use the contact-chip chassis (.lo-chip), so the arrow
+       pair and the chips read as one family. Arrow nudge is .svc-back-arrow's. */
+    .lo-step { gap: 7px; }
+    .lo-step-arrow { display: inline-block; transition: transform 0.2s ease; }
+    .lo-step-prev:hover .lo-step-arrow,
+    .lo-step-prev:focus-visible .lo-step-arrow { transform: translateX(-3px); }
+    .lo-step-next:hover .lo-step-arrow,
+    .lo-step-next:focus-visible .lo-step-arrow { transform: translateX(3px); }
+    .lo-person {
+      display: grid;
+      /* Copy gets the larger share: the portrait already dominates the
+         triptych, so the detail is where the writing should lead. */
+      /* 0.7fr: the hero must be tall enough to bound the card height once the
+         gallery strip is in the body. Below ~1200px even an empty strip cannot
+         make the copy fit a 2:3 hero in this column, so the layout stacks there
+         instead of cropping the portrait. */
+      grid-template-columns: minmax(0, 0.7fr) minmax(0, 1.3fr);
+      align-items: start;
+      border: 1px solid var(--fg4);
+      background: var(--bg2);
+      box-shadow: inset 2px 0 0 var(--pink), 0 0 30px rgba(255,102,102,0.12);
+      text-align: left;
+    }
+    .lo-person[hidden] { display: none; }
+    /* The media box carries the source's own 2:3, so object-fit has nothing
+       to crop and the whole subject reads — heads and feet included. Capping
+       the height instead (the previous approach) always clipped one end or
+       the other, because the box ratio never matched the photo's.
+       align-self:start keeps it from stretching when the copy runs taller. */
+    .lo-person-media {
+      position: relative;
+      overflow: hidden;
+      background: var(--bg);
+      aspect-ratio: 2 / 3;
+      align-self: start;
+    }
+    .lo-person-media img {
+      display: block; width: 100%; height: 100%;
+      object-fit: cover; object-position: center center;
+      filter: saturate(0.9);
+    }
+    /* Editorial split: prose on the left, a considered rail on the right.
+       Both top-aligned. Mirrors .svc-panel-inner, the site's other two-column
+       panel body. Collapses to one column at the tablet breakpoint. */
+    .lo-person-body {
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr);
+      /* Row 1: prose | rail.  Row 2: the gallery strip, spanning both.
+         1fr on row 1 pushes the strip to the bottom of the content area, so
+         its bottom inset is the body's own padding — equal to the top inset
+         above the name. */
+      grid-template-rows: minmax(0, 1fr) auto;
+      /* stretch (not start) so the rail's keyline runs the full height of the
+         content area down to the strip, instead of stopping at the bottom of
+         whichever column happens to be shorter. */
+      align-items: stretch;
+      /* Row gap is 0 so the space above the strip keyline is set by the
+         strip's own margin, letting it match the space below it exactly. */
+      column-gap: clamp(26px, 3vw, 44px);
+      row-gap: 0;
+      padding: clamp(28px, 3vw, 44px);
+    }
+    /* Columns still top-align their own content inside the stretched cell. */
+    .lo-person-main, .lo-person-rail { justify-content: flex-start; }
+    .lo-person-main,
+    .lo-person-rail {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 16px;
+      min-width: 0;
+    }
+    /* Hairline separates the rail from the prose, the same 1px --fg4 keyline
+       .svc-panel-left uses between the two halves of the services panel. */
+    .lo-person-rail {
+      border-left: 1px solid var(--fg4);
+      padding-left: clamp(20px, 2.2vw, 32px);
+      /* Rhythm tightens with the quote so the rail sheds height before the
+         strip has to. */
+      gap: clamp(12px, 1.15vw, 18px);
+    }
+    .lo-person-name {
+      font-family: var(--display);
+      font-size: clamp(26px, 3.2vw, 44px);
+      font-weight: 700;
       letter-spacing: 0.01em;
       line-height: 0.98;
-      color: #e8e2d9;
-      margin-bottom: 4px;
+      text-transform: uppercase;
+      color: var(--fg);
+      margin: 0;
     }
-    .vcard-title {
-      font-size: 11px;
+    .lo-person-agency .lo-person-name { color: var(--pink); }
+    .lo-person-role {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--fg3);
+    }
+    /* Wider measure and a step up in size — the detail column is roughly
+       960px here, and a 60ch column at 13.5px left a third of it empty. */
+    .lo-person-bio {
+      font-size: 15px;
       font-weight: 300;
-      color: rgba(232,226,217,0.65);
-      margin-bottom: 4px;
+      line-height: 1.8;
+      color: var(--fg2);
+      margin: 0;
+      max-width: 64ch;
     }
-    /* Secondary creative title — same size, visually secondary (muted, tag-style) */
-    .vcard-role2 {
-      font-size: 11px;
+    /* Pull quote — the .wc-quote convention: Fraunces italic, coral keyline. */
+    /* The coral bar moves to the <blockquote> so it encloses the quote AND
+       its attribution — one unit semantically and visually, and one beat in
+       the stagger. The bar's own values (2px coral, 16px inset, 46ch, 4px
+       margin) are unchanged from when they lived on .lo-quote. */
+    .lo-quote-block {
+      max-width: 46ch;
+      margin: 4px 0;
+      padding-left: 16px;
+      border-left: 2px solid var(--pink);
+    }
+    .lo-quote {
+      font-family: var(--accent-serif);
+      font-style: italic;
+      font-weight: 400;
+      /* Fluid across the desktop range rather than pinned at 27px from ~1350
+         up: the rail is what should give first when space is tight, so the
+         quote steps down through 1320-1512 and the gallery thumbs keep their
+         size. Lands ~23px at 1440 against 27px at 1920.*/
+      font-size: clamp(19px, 1.6vw, 27px);
+      line-height: 1.35;
+      color: var(--fg);
+      margin: 0;
+    }
+    /* Attribution — the same small-caps role line as the COMFORT FILM line
+       beneath it. <cite> is italic by UA default, so that is reset here; the
+       accented glyph in "Joë" is Latin-1 (U+00EB -> U+00CB uppercased), which
+       Inter covers, so it stays in the tracked face rather than falling back. */
+    .lo-quote-cite {
+      display: block;
+      margin-top: clamp(7px, 0.7vw, 10px);
+      font-family: var(--sans);
+      font-style: normal;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      line-height: 1.6;
+      text-transform: uppercase;
+      color: var(--fg3);
+    }
+    .lo-person-meta {
+      font-size: 10px;
       font-weight: 500;
       letter-spacing: 0.16em;
       text-transform: uppercase;
       color: var(--fg3);
-      margin-bottom: 16px;
+      margin: 0;
     }
-    .vcard-divider {
-      height: 1px;
-      background: rgba(232,226,217,0.12);
-      margin-bottom: 16px;
+    /* CTA uses .ah-cta ("Apply to join") unchanged — this rule only spaces it. */
+    .lo-cta { margin-top: 4px; }
+    .lo-signoff {
+      font-family: var(--accent-serif);
+      font-style: italic;
+      font-size: 15px;
+      color: var(--fg3);
+      margin: 4px 0 0;
+    }
+    /* Staggered reveal — the same prepStagger/runStagger shape the Services
+       panel uses for its checklist and form rows: pre-hide, then cascade with
+       a per-item delay. Inline styles are cleared afterwards so nothing
+       lingers for the next open. */
+    .lo-stagger { will-change: opacity, transform; }
+    /* ── Gallery strip ────────────────────────────────────────────────
+       Sits in row 2 of the body grid, spanning both columns, separated by
+       the same 1px --fg4 keyline that divides prose from rail. */
+    .lo-gallery {
+      grid-column: 1 / -1;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 12px;
+      min-width: 0;
+      /* Equal breathing room either side of the keyline: the margin is the
+         space above it, the padding the space below. */
+      margin-top: clamp(22px, 2.4vw, 32px);
+      border-top: 1px solid var(--fg4);
+      padding-top: clamp(22px, 2.4vw, 32px);
+    }
+    .lo-gallery[hidden] { display: none; }
+    /* Kicker row: label left, frame counter right. */
+    .lo-gallery-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 16px;
+      width: 100%;
+    }
+    /* Six equal columns spanning the full content width — the thumbs are
+       sized by the column, never by a fixed pixel width. */
+    .lo-thumbs {
+      display: grid;
+      /* --lo-thumb-w is unset normally, so the six columns share the width
+         equally. The controller only sets it when the body would otherwise
+         outgrow the hero: the thumbs are what give way, never the portrait. */
+      grid-template-columns: repeat(6, minmax(0, var(--lo-thumb-w, 1fr)));
+      justify-content: start;
+      gap: 16px;
+      width: 100%;
+      min-width: 0;
+    }
+    .lo-thumb {
+      position: relative;
+      display: block;
+      width: 100%;
+      min-width: 0;
+      aspect-ratio: 2 / 3;
+      padding: 0;
+      margin: 0;
+      overflow: hidden;
+      background: var(--bg2);
+      border: 1px solid var(--fg4);
+      border-radius: 0;
+      cursor: pointer;
+      /* Same dim/desaturate the triptych spotlight uses for its off panels. */
+      opacity: 0.55;
+      filter: saturate(0.6);
+      transition: opacity 0.35s ease, filter 0.35s ease, border-color 0.25s ease;
+    }
+    /* Scale matches .collage-card (1.06 over 0.35s ease). Applied to the image
+       rather than the tile so it is clipped by the tile's overflow. */
+    .lo-thumb img {
+      display: block; width: 100%; height: 100%; object-fit: cover;
+      transition: transform 0.35s ease;
+    }
+    .lo-thumb:hover img,
+    .lo-thumb:focus-visible img { transform: scale(1.06); }
+    .lo-thumb:hover,
+    .lo-thumb:focus-visible { opacity: 1; filter: none; outline: none; }
+    .lo-thumb:focus-visible { box-shadow: 0 0 0 2px rgba(255,102,102,0.35); }
+    .lo-thumb.is-active {
+      opacity: 1;
+      filter: none;
+      border-color: var(--pink);
+    }
+    /* Placeholder slot — not a button, not focusable, aria-hidden. */
+    .lo-thumb-ph {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      min-width: 0;
+      aspect-ratio: 2 / 3;
+      background: var(--bg2);
+      border: 1px solid var(--fg4);
+      font-family: var(--sans);
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--fg3);
+      opacity: 0.55;
+    }
+    /* Hero swap uses the site crossfade curve; the media box never resizes. */
+    .lo-person-media img {
+      transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .lo-person-media img.is-swapping { opacity: 0; }
+    /* The hero keeps its own 2:3 box; the strip is what gives if space runs
+       short, so the portrait is never cropped and the card never outgrows it. */
+    .lo-person-body { min-height: 0; }
+    .lo-gallery, .lo-thumbs, .lo-thumb { min-height: 0; }
+
+    /* Contact chips — the .pill-label chip from the Join Community section
+       (.ah-tags): coral 1px outline at 0.4 alpha, square corners, 9px/0.2em
+       uppercase. Gap matches .ah-tags' 9px. Padding is a touch taller than
+       .pill-label's 5px because these carry an icon and are real tap targets.
+       Icons inherit currentColor so they invert with the label on hover. */
+    .lo-chips { display: flex; flex-wrap: wrap; gap: 9px; width: 100%; }
+    .lo-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--sans);
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--pink);
+      background: transparent;
+      border: 1px solid rgba(255,102,102,0.4);
+      border-radius: 0;
+      padding: 8px 14px;
+      /* 0.2s ease — the hover duration .svc-help-btn and .btn-o use. */
+      transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+    }
+    .lo-chip svg { width: 13px; height: 13px; flex-shrink: 0; }
+    .lo-chip:hover,
+    .lo-chip:focus-visible {
+      background: var(--pink);
+      color: var(--bg);
+      border-color: var(--pink);
+    }
+    .lo-chip:focus-visible { outline: none; box-shadow: 0 0 0 2px rgba(255,102,102,0.35); }
+
+    @media (prefers-reduced-motion: reduce) {
+      /* End states only: no dim/lift transition, no stagger. */
+      .lo-panel, .lo-panel-img, .lo-panel-plus,
+      .lo-triptych:hover .lo-panel { transition: none; }
+      /* Hero frame swaps instantly; thumbs do not animate their dim. */
+      .lo-person-media img, .lo-thumb, .lo-thumb img { transition: none; }
+      .lo-thumb:hover img, .lo-thumb:focus-visible img { transform: none; }
+      .lo-panel:hover, .lo-panel:focus-visible { transform: none; }
+    }
+
+    /* Tablet: the detail stacks so the portrait never gets squeezed. */
+    /* Three regimes:
+         >=1320  hero | prose | rail
+         900-1319 hero | content, content collapsed to a single column
+         <900    hero full width on top, content beneath
+       Only the phone/tablet regime puts the hero on top; the desktop step
+       down just folds the rail under the prose beside it. */
+    @media (max-width: 1319px) {
+      /* Rail folds under the prose below tablet; keyline becomes a top rule. */
+      /* row-gap stays 0 so the strip's own margin/padding keep the keyline
+         evenly spaced here too. */
+      .lo-person-body { grid-template-columns: minmax(0, 1fr); column-gap: 22px; row-gap: 0; }
+      .lo-person-main { margin-bottom: 22px; }
+      /* Grid items need an explicit zero minimum too, or the scroll row still
+         reports its max-content width up the tree. */
+      .lo-gallery, .lo-thumbs { min-width: 0; max-width: 100%; }
+      .lo-gallery { grid-column: 1; }
+      .lo-person-rail {
+        border-left: none;
+        border-top: 1px solid var(--fg4);
+        padding-left: 0;
+        padding-top: 22px;
+      }
+      .lo-person-media { aspect-ratio: 2 / 3; max-height: 60vh; }
+    }
+
+    /* Phone + tablet only: hero goes full width on top. */
+    @media (max-width: 899px) {
+      .lo-person { grid-template-columns: minmax(0, 1fr); }
+    }
+    /* Mobile: triptych stacks Lost Objects -> Kyra -> Brendan. DOM order stays
+       Kyra / Agency / Brendan for a left-to-right desktop reading order, so the
+       stack order is set here rather than by reordering the markup. */
+    @media (max-width: 768px) {
+      .lo-triptych { grid-template-columns: 1fr; gap: 16px; align-items: start; }
+      .lo-panel-kyra    { order: 2; }
+      .lo-panel-agency  { order: 1; }
+      .lo-panel-brendan { order: 3; }
+      .lo-panel, .lo-panel-agency { aspect-ratio: 3 / 4; }
+      .lo-person-media { aspect-ratio: 2 / 3; max-height: 64vh; }
+      /* Strip becomes a horizontal scroll row under the hero image, with
+         bigger thumbs so they are comfortably tappable. */
+      .lo-thumbs {
+        display: flex;
+        grid-template-columns: none;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        width: 100%;
+        gap: 12px;
+        padding-bottom: 2px;
+      }
+      .lo-thumbs::-webkit-scrollbar { display: none; }
+      .lo-thumb, .lo-thumb-ph { flex: 0 0 96px; width: 96px; }
     }
     .vcard-row {
       display: flex;
@@ -2691,72 +3198,6 @@
     /* LinkedIn row — coral icon in the same treatment as the Instagram and Discord
        icons; label links to the profile. */
     .vcard-row.li svg { opacity: 0.8; }
-    /* Read More / Less trigger — styled like the site's coral arrow links */
-    .vcard-more {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      margin-top: 16px;
-      padding: 0;
-      background: transparent;
-      border: none;
-      cursor: pointer;
-      font-family: var(--sans);
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--pink);
-      opacity: 0.85;
-      transition: opacity 0.2s ease, text-shadow 0.25s ease, transform 0.25s ease;
-    }
-    /* Coral glow on hover — clearly interactive, matches the site's button/active glow */
-    .vcard-more:hover {
-      opacity: 1;
-      text-shadow: 0 0 14px rgba(255,102,102,0.6), 0 0 6px rgba(255,102,102,0.45);
-      transform: translateY(-1px);
-    }
-    /* Closed arrow points DOWN (signals the card expands downward); UP when open */
-    .vcard-more-arrow {
-      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-      transform: rotate(90deg);
-    }
-    .vcard-more.is-open .vcard-more-arrow { transform: rotate(-90deg); }
-    /* Mobile: comfortable tap target (>=44px tall) via padding — text size unchanged */
-    @media (max-width: 768px) {
-      .vcard-more { margin-top: 4px; padding: 16px 8px; }
-    }
-    /* Expandable bio — max-height transition on the Services easing; JS sets the
-       open height to the exact content height for a clean, smooth reveal. */
-    .vcard-bio {
-      max-height: 0;
-      overflow: hidden;
-      opacity: 0;
-      transition: max-height 0.7s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease;
-    }
-    .vcard-bio.open { opacity: 1; }
-    .vcard-bio-text {
-      margin: 14px 0 0;
-      padding-top: 14px;
-      border-top: 1px solid rgba(232,226,217,0.12);
-      font-family: var(--sans);
-      font-size: 12px;
-      font-weight: 300;
-      line-height: 1.7;
-      color: rgba(232,226,217,0.6);
-      text-align: left;
-    }
-    /* Personal detail line inside the bio — tag styling (uppercase, spaced, muted) */
-    .vcard-bio-meta {
-      margin: 14px 0 0;
-      font-family: var(--sans);
-      font-size: 10px;
-      font-weight: 500;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: var(--fg3);
-      text-align: left;
-    }
     /* Linked film title — inherits the quiet metadata treatment; coral + underline on hover */
     .vcard-bio-meta-link {
       color: inherit;
@@ -2782,25 +3223,6 @@
       transition: color 0.2s, border-color 0.2s;
     }
     .vcard-dc-note a:hover { color: var(--fg2); border-color: rgba(232,226,217,0.4); }
-    @media (prefers-reduced-motion: reduce) {
-      /* Opacity-only fallbacks: no height animation, no hover glow/lift */
-      .vcard-bio { transition: opacity 0.3s ease; }
-      .vcard-more { transition: opacity 0.2s ease; }
-      .vcard-more:hover { text-shadow: none; transform: none; }
-      .vcard-more-arrow { transition: none; }
-    }
-    /* Company paragraph — quiet body copy between the cards and the tagline.
-       Same muted Inter treatment as the card bios, centered, comfortable measure. */
-    .vcard-about {
-      max-width: 640px;
-      margin: 0 auto clamp(28px, 4.5vh, 44px);
-      font-family: var(--sans);
-      font-size: 13px;
-      font-weight: 300;
-      line-height: 1.75;
-      color: rgba(232,226,217,0.6);
-      text-align: center;
-    }
     .vcard-tagline {
       font-family: var(--display);
       font-size: clamp(16px, 2vw, 20px);
@@ -3119,8 +3541,6 @@
       .svc-panel-inner { grid-template-columns: 1fr; }
       .svc-panel-left { border-right: none; border-bottom: 1px solid var(--fg4); }
       .fit-submit { width: 100%; text-align: center; }
-      .vcard-cards { flex-direction: column; align-items: center; }
-      .vcard-card { width: 100%; max-width: 400px; }
       .vcard-btn { display: block; width: 100%; text-align: center; }
 
       .foot-top, .foot-bot {
@@ -4157,107 +4577,679 @@
       <div class="svc-intro-rule"></div>
     </div>
 
-    <div class="vcard-cards">
-      <!-- Kyra -->
-      <div class="vcard-card">
-        <div class="vcard-avatar"><img class="vcard-photo" src="images/kyra_400.jpg" alt="Kyra Sweeney" decoding="async"></div>
-        <div class="vcard-name">Kyra Sweeney</div>
-        <div class="vcard-title">Co-Founder, Lost Objects</div>
-        <div class="vcard-role2">Actor, Producer</div>
-        <div class="vcard-divider"></div>
-        <div class="vcard-row">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 4l10 9 10-9"/></svg>
-          <a href="mailto:kyra@wearelostobjects.com">kyra@wearelostobjects.com</a>
-        </div>
-        <div class="vcard-row ig">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="#FF6666" stroke-width="1.5"/><circle cx="12" cy="12" r="4" stroke="#FF6666" stroke-width="1.5"/><circle cx="17.5" cy="6.5" r="1" fill="#FF6666"/></svg>
-          <a href="https://www.instagram.com/kyragracee" target="_blank" rel="noopener noreferrer">@kyragracee</a>
-        </div>
-        <div class="vcard-row dc">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FF6666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="12" r="1"/><circle cx="15" cy="12" r="1"/><path d="M7.5 7.5c3.5 -1 5.5 -1 9 0"/><path d="M7 16.5c3.5 1 6.5 1 10 0"/><path d="M15.5 17c0 1 1.5 3 2 3c1.5 0 2.833 -1.667 3.5 -3c.667 -1.667 .5 -5.833 -1.5 -11.5c-1.457 -1.015 -3 -1.34 -4.5 -1.5l-.972 1.923a11.913 11.913 0 0 0 -4.053 0l-.975 -1.923c-1.5 .16 -3.043 .485 -4.5 1.5c-2 5.667 -2.167 9.833 -1.5 11.5c.667 1.333 2 3 3.5 3c.5 0 2 -2 2 -3"/></svg>
-          <span>kyragracee</span>
-        </div>
-        <div class="vcard-row li">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FF6666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
-          <a href="https://www.linkedin.com/in/kyra-hurlbut/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-        </div>
-        <p class="vcard-dc-note">Find us in <a href="#after-hours">Lost Objects: After Hours</a>.</p>
-        <button class="vcard-more" type="button" aria-expanded="false" aria-controls="vcard-bio-kyra">
-          <span class="vcard-more-label">Read More</span>
-          <span class="vcard-more-arrow" aria-hidden="true">&rarr;</span>
+    <!-- Triptych: three 2:3 panels that expand in place into a wide detail
+         view. The panels are the click targets; the detail blocks below are
+         pre-rendered and revealed one at a time by the controller. -->
+    <div class="lo-stage" id="loStage">
+
+      <div class="lo-triptych" id="loTriptych">
+        <button type="button" class="lo-panel lo-panel-kyra" data-person="kyra" aria-expanded="false" aria-controls="lo-person-kyra" aria-label="Kyra Sweeney — open profile">
+          <picture>
+            <source type="image/webp" srcset="images/kyra-portrait-800.webp 800w, images/kyra-portrait-1600.webp 1600w" sizes="(max-width: 768px) 92vw, (min-width: 1440px) 450px, 31vw" />
+            <img class="lo-panel-img" src="images/kyra-portrait-800.jpg" width="800" height="1200" loading="lazy" decoding="async" alt="Kyra Sweeney" />
+          </picture>
+          <span class="lo-panel-label">
+            <span class="lo-panel-name">Kyra Sweeney</span>
+            <span class="lo-panel-role">Co-Founder &middot; Actor, Producer</span>
+          <span class="lo-panel-plus" aria-hidden="true">+</span>
+          </span>
         </button>
-        <div class="vcard-bio" id="vcard-bio-kyra">
-          <p class="vcard-bio-text">I grew up on set watching my father, Shane Hurlbut, ASC, paint with light, and I fell in love with performance early. After training at the Marni Cooper School of Acting and earning my BFA from AMDA, I appeared in Netflix's Holidate and Tall Girl 2 and Kacey Musgraves' Star Crossed film, and I recently booked a lead role in an unannounced AAA video game. Lost Objects is where I bring that same artistic sensibility to helping filmmakers and creative brands build strong, authentic digital presences.</p>
-          <p class="vcard-bio-meta">COMFORT FILM &middot; <a class="vcard-bio-meta-link" href="https://www.imdb.com/title/tt14905854/" target="_blank" rel="noopener noreferrer">HAMNET (2025)</a></p>
-        </div>
+
+        <button type="button" class="lo-panel lo-panel-agency" data-person="agency" aria-expanded="false" aria-controls="lo-person-agency" aria-label="Lost Objects — open profile">
+          <picture>
+            <source type="image/webp" srcset="images/brendan-kyra-800.webp 800w, images/brendan-kyra-1600.webp 1600w" sizes="(max-width: 768px) 92vw, (min-width: 1440px) 450px, 31vw" />
+            <img class="lo-panel-img" src="images/brendan-kyra-800.jpg" width="800" height="1200" loading="lazy" decoding="async" alt="Kyra and Brendan Sweeney, founders of Lost Objects" />
+          </picture>
+          <span class="lo-panel-label">
+            <span class="lo-panel-name">Lost Objects</span>
+            <span class="lo-panel-role">West Hollywood &middot; Since 2023</span>
+          <span class="lo-panel-plus" aria-hidden="true">+</span>
+          </span>
+        </button>
+
+        <button type="button" class="lo-panel lo-panel-brendan" data-person="brendan" aria-expanded="false" aria-controls="lo-person-brendan" aria-label="Brendan Sweeney — open profile">
+          <picture>
+            <source type="image/webp" srcset="images/brendan-portrait-800.webp 800w, images/brendan-portrait-1600.webp 1600w" sizes="(max-width: 768px) 92vw, (min-width: 1440px) 450px, 31vw" />
+            <img class="lo-panel-img" src="images/brendan-portrait-800.jpg" width="800" height="1200" loading="lazy" decoding="async" alt="Brendan Sweeney" />
+          </picture>
+          <span class="lo-panel-label">
+            <span class="lo-panel-name">Brendan Sweeney</span>
+            <span class="lo-panel-role">Co-Founder &middot; Director, Producer</span>
+          <span class="lo-panel-plus" aria-hidden="true">+</span>
+          </span>
+        </button>
       </div>
 
-      <!-- Brendan -->
-      <div class="vcard-card">
-        <div class="vcard-avatar"><img class="vcard-photo" src="images/brendan_400.jpg" alt="Brendan Sweeney" decoding="async"></div>
-        <div class="vcard-name">Brendan Sweeney</div>
-        <div class="vcard-title">Co-Founder, Lost Objects</div>
-        <div class="vcard-role2">Director, Producer</div>
-        <div class="vcard-divider"></div>
-        <div class="vcard-row">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 4l10 9 10-9"/></svg>
-          <a href="mailto:brendan@wearelostobjects.com">brendan@wearelostobjects.com</a>
+      <div class="lo-detail" id="loDetail" role="region" aria-label="Profile" tabindex="-1" hidden>
+        <div class="lo-detail-bar">
+          <button type="button" class="lo-back" id="loBack"><span class="lo-back-arrow" aria-hidden="true">&larr;</span> Back</button>
+          <div class="lo-detail-nav">
+            <button type="button" class="lo-chip lo-step lo-step-prev" id="loPrev"><span class="lo-step-arrow" aria-hidden="true">&larr;</span><span id="loPrevLabel">Previous</span></button>
+            <button type="button" class="lo-chip lo-step lo-step-next" id="loNext"><span id="loNextLabel">Next</span><span class="lo-step-arrow" aria-hidden="true">&rarr;</span></button>
+          </div>
         </div>
-        <div class="vcard-row ig">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="#FF6666" stroke-width="1.5"/><circle cx="12" cy="12" r="4" stroke="#FF6666" stroke-width="1.5"/><circle cx="17.5" cy="6.5" r="1" fill="#FF6666"/></svg>
-          <a href="https://www.instagram.com/brenpancake" target="_blank" rel="noopener noreferrer">@brenpancake</a>
-        </div>
-        <div class="vcard-row dc">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FF6666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="12" r="1"/><circle cx="15" cy="12" r="1"/><path d="M7.5 7.5c3.5 -1 5.5 -1 9 0"/><path d="M7 16.5c3.5 1 6.5 1 10 0"/><path d="M15.5 17c0 1 1.5 3 2 3c1.5 0 2.833 -1.667 3.5 -3c.667 -1.667 .5 -5.833 -1.5 -11.5c-1.457 -1.015 -3 -1.34 -4.5 -1.5l-.972 1.923a11.913 11.913 0 0 0 -4.053 0l-.975 -1.923c-1.5 .16 -3.043 .485 -4.5 1.5c-2 5.667 -2.167 9.833 -1.5 11.5c.667 1.333 2 3 3.5 3c.5 0 2 -2 2 -3"/></svg>
-          <span>brenpancake</span>
-        </div>
-        <div class="vcard-row li">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FF6666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
-          <a href="https://www.linkedin.com/in/brendan-sweeney-b6806a271" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-        </div>
-        <p class="vcard-dc-note">Find us in <a href="#after-hours">Lost Objects: After Hours</a>.</p>
-        <button class="vcard-more" type="button" aria-expanded="false" aria-controls="vcard-bio-brendan">
-          <span class="vcard-more-label">Read More</span>
-          <span class="vcard-more-arrow" aria-hidden="true">&rarr;</span>
-        </button>
-        <div class="vcard-bio" id="vcard-bio-brendan">
-          <p class="vcard-bio-text">I came up as a filmmaker, and Lost Objects is my way back to it. As Co-Founder with my wife and partner Kyra, I'm building a creative boutique that brings cinematic craft to social media, working with cinematographers, grip and lighting companies, production houses, and film industry brands on campaigns as considered as the work our clients make on set. After leading Filmmakers Academy as CEO, I've returned to directing and producing with sharper instincts, better systems, and a clearer sense of what I want to make.</p>
-          <p class="vcard-bio-meta">COMFORT FILM &middot; <a class="vcard-bio-meta-link" href="https://www.imdb.com/title/tt11003218/" target="_blank" rel="noopener noreferrer">PIG (2021)</a></p>
-        </div>
-      </div>
-    </div>
 
-    <p class="vcard-about">Lost Objects is a boutique social media agency built from inside the film industry. Founded in 2023 by Kyra and Brendan Sweeney in West Hollywood, we help cinematographers, production companies, grip and lighting houses, and creative brands show up online with the same craft they bring to set. Every strategy is built by people who speak the language of this industry, because we came up in it.</p>
+        <article class="lo-person lo-person-kyra" id="lo-person-kyra" aria-label="Kyra Sweeney" hidden>
+          <div class="lo-person-media">
+            <picture>
+              <source type="image/webp" srcset="images/kyra-portrait-800.webp 800w, images/kyra-portrait-1600.webp 1600w" sizes="(max-width: 900px) 92vw, 40vw" />
+              <img class="" src="images/kyra-portrait-800.jpg" width="800" height="1200" loading="lazy" decoding="async" alt="Kyra Sweeney" />
+            </picture>
+          </div>
+          <div class="lo-person-body">
+            <div class="lo-person-main">
+              <h3 class="lo-person-name lo-stagger">Kyra Sweeney</h3>
+              <div class="lo-person-role lo-stagger">Co-Founder &middot; Actor, Producer</div>
+              <p class="lo-person-bio lo-stagger">I grew up on set watching my father, Shane Hurlbut, ASC, paint with light, and I fell in love with performance early. After training at the Marni Cooper School of Acting and earning my BFA from AMDA, I appeared in Netflix's Holidate and Tall Girl 2 and Kacey Musgraves' Star Crossed film, and I recently booked a lead role in an unannounced AAA video game. Lost Objects is where I bring that same artistic sensibility to helping filmmakers and creative brands build strong, authentic digital presences.</p>
+            </div>
+            <div class="lo-person-rail">
+              <blockquote class="lo-quote-block lo-stagger">
+                <p class="lo-quote">Attention is the rarest and purest form of generosity.</p>
+                <cite class="lo-quote-cite">Simone Weil &middot; Letter to Jo&euml; Bousquet, 1942</cite>
+              </blockquote>
+              <p class="lo-person-meta lo-stagger">Comfort film &middot; <a class="vcard-bio-meta-link" href="https://www.imdb.com/title/tt14905854/" target="_blank" rel="noopener noreferrer">Hamnet (2025)</a></p>
+              <div class="lo-chips lo-stagger">
+              <a class="lo-chip" href="mailto:kyra@wearelostobjects.com" aria-label="Email Kyra"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 4l10 9 10-9"/></svg><span>Email</span></a>
+              <a class="lo-chip" href="https://www.instagram.com/kyragracee" target="_blank" rel="noopener noreferrer" aria-label="Kyra on Instagram"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.5"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg><span>Instagram</span></a>
+              <a class="lo-chip" href="https://discord.gg/ZqGhVfJu2a" target="_blank" rel="noopener noreferrer" aria-label="Kyra on Discord: kyragracee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="12" r="1"/><circle cx="15" cy="12" r="1"/><path d="M7.5 7.5c3.5 -1 5.5 -1 9 0"/><path d="M7 16.5c3.5 1 6.5 1 10 0"/><path d="M15.5 17c0 1 1.5 3 2 3c1.5 0 2.833 -1.667 3.5 -3c.667 -1.667 .5 -5.833 -1.5 -11.5c-1.457 -1.015 -3 -1.34 -4.5 -1.5l-.972 1.923a11.913 11.913 0 0 0 -4.053 0l-.975 -1.923c-1.5 .16 -3.043 .485 -4.5 1.5c-2 5.667 -2.167 9.833 -1.5 11.5c.667 1.333 2 3 3.5 3c.5 0 2 -2 2 -3"/></svg><span>Discord</span></a>
+              <a class="lo-chip" href="https://www.linkedin.com/in/kyra-hurlbut/" target="_blank" rel="noopener noreferrer" aria-label="Kyra on LinkedIn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg><span>LinkedIn</span></a>
+              <a class="lo-chip" href="#after-hours" aria-label="Lost Objects: After Hours"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="12" r="1"/><circle cx="15" cy="12" r="1"/><path d="M7.5 7.5c3.5 -1 5.5 -1 9 0"/><path d="M7 16.5c3.5 1 6.5 1 10 0"/><path d="M15.5 17c0 1 1.5 3 2 3c1.5 0 2.833 -1.667 3.5 -3c.667 -1.667 .5 -5.833 -1.5 -11.5c-1.457 -1.015 -3 -1.34 -4.5 -1.5l-.972 1.923a11.913 11.913 0 0 0 -4.053 0l-.975 -1.923c-1.5 .16 -3.043 .485 -4.5 1.5c-2 5.667 -2.167 9.833 -1.5 11.5c.667 1.333 2 3 3.5 3c.5 0 2 -2 2 -3"/></svg><span>After Hours</span></a>
+              </div>
+            </div>
+            <div class="lo-gallery" data-gallery="kyra">
+              <div class="lo-gallery-head">
+                <div class="lo-person-role">Off set</div>
+                <div class="lo-person-role lo-counter" aria-live="polite">01 / 01</div>
+              </div>
+              <div class="lo-thumbs" role="group" aria-label="Kyra, photo frames">
+                <button type="button" class="lo-thumb is-active" data-frame="1" data-stem="kyra-portrait" aria-label="Kyra, frame 1 of 6">
+                  <picture>
+                    <source type="image/webp" srcset="images/kyra-portrait-160.webp 160w, images/kyra-portrait-800.webp 800w" sizes="(max-width: 768px) 96px, 140px" />
+                    <img src="images/kyra-portrait-160.jpg" srcset="images/kyra-portrait-160.jpg 160w, images/kyra-portrait-800.jpg 800w" sizes="(max-width: 768px) 96px, 140px" width="160" height="240" loading="lazy" decoding="async" alt="" />
+                  </picture>
+                </button>
+                <button type="button" class="lo-thumb" data-frame="2" data-stem="kyra-02" aria-label="Kyra, frame 2 of 6">
+                  <picture>
+                    <source type="image/webp" srcset="images/kyra-02-160.webp 160w, images/kyra-02-800.webp 800w" sizes="(max-width: 768px) 96px, 140px" />
+                    <img src="images/kyra-02-160.jpg" srcset="images/kyra-02-160.jpg 160w, images/kyra-02-800.jpg 800w" sizes="(max-width: 768px) 96px, 140px" width="160" height="240" loading="lazy" decoding="async" alt="" />
+                  </picture>
+                </button>
+                <button type="button" class="lo-thumb" data-frame="3" data-stem="kyra-03" aria-label="Kyra, frame 3 of 6">
+                  <picture>
+                    <source type="image/webp" srcset="images/kyra-03-160.webp 160w, images/kyra-03-800.webp 800w" sizes="(max-width: 768px) 96px, 140px" />
+                    <img src="images/kyra-03-160.jpg" srcset="images/kyra-03-160.jpg 160w, images/kyra-03-800.jpg 800w" sizes="(max-width: 768px) 96px, 140px" width="160" height="240" loading="lazy" decoding="async" alt="" />
+                  </picture>
+                </button>
+                <button type="button" class="lo-thumb" data-frame="4" data-stem="kyra-04" aria-label="Kyra, frame 4 of 6">
+                  <picture>
+                    <source type="image/webp" srcset="images/kyra-04-160.webp 160w, images/kyra-04-800.webp 800w" sizes="(max-width: 768px) 96px, 140px" />
+                    <img src="images/kyra-04-160.jpg" srcset="images/kyra-04-160.jpg 160w, images/kyra-04-800.jpg 800w" sizes="(max-width: 768px) 96px, 140px" width="160" height="240" loading="lazy" decoding="async" alt="" />
+                  </picture>
+                </button>
+                <button type="button" class="lo-thumb" data-frame="5" data-stem="kyra-05" aria-label="Kyra, frame 5 of 6">
+                  <picture>
+                    <source type="image/webp" srcset="images/kyra-05-160.webp 160w, images/kyra-05-800.webp 800w" sizes="(max-width: 768px) 96px, 140px" />
+                    <img src="images/kyra-05-160.jpg" srcset="images/kyra-05-160.jpg 160w, images/kyra-05-800.jpg 800w" sizes="(max-width: 768px) 96px, 140px" width="160" height="240" loading="lazy" decoding="async" alt="" />
+                  </picture>
+                </button>
+                <button type="button" class="lo-thumb" data-frame="6" data-stem="kyra-06" aria-label="Kyra, frame 6 of 6">
+                  <picture>
+                    <source type="image/webp" srcset="images/kyra-06-160.webp 160w, images/kyra-06-800.webp 800w" sizes="(max-width: 768px) 96px, 140px" />
+                    <img src="images/kyra-06-160.jpg" srcset="images/kyra-06-160.jpg 160w, images/kyra-06-800.jpg 800w" sizes="(max-width: 768px) 96px, 140px" width="160" height="240" loading="lazy" decoding="async" alt="" />
+                  </picture>
+                </button>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="lo-person lo-person-agency" id="lo-person-agency" aria-label="Lost Objects" hidden>
+          <div class="lo-person-media">
+            <picture>
+              <source type="image/webp" srcset="images/brendan-kyra-800.webp 800w, images/brendan-kyra-1600.webp 1600w" sizes="(max-width: 900px) 92vw, 40vw" />
+              <img class="" src="images/brendan-kyra-800.jpg" width="800" height="1200" loading="lazy" decoding="async" alt="Kyra and Brendan Sweeney, founders of Lost Objects" />
+            </picture>
+          </div>
+          <div class="lo-person-body">
+            <div class="lo-person-main">
+              <span class="svc-tag svc-tag-pink lo-stagger">Lost Objects</span>
+              <h3 class="lo-person-name lo-stagger">We Were Lost Too.</h3>
+              <p class="lo-person-bio lo-stagger">We are all lost objects at some point &mdash; people, brands, ideas that haven&rsquo;t been found yet. Being lost isn&rsquo;t a weakness. It&rsquo;s a starting point.</p>
+              <p class="lo-person-bio lo-stagger">Lost Objects is a boutique social media agency built from inside the film industry. Founded in 2023 by Kyra and Brendan Sweeney in West Hollywood, we help cinematographers, production companies, grip and lighting houses, and creative brands show up online with the same craft they bring to set. Every strategy is built by people who speak the language of this industry, because we came up in it.</p>
+              <p class="lo-signoff lo-stagger">Kyra &amp; Brendan, West Hollywood.</p>
+            </div>
+            <div class="lo-person-rail">
+              <div class="lo-person-role lo-stagger">Say hello</div>
+              <div class="lo-chips lo-stagger">
+              <a class="lo-chip" href="mailto:contact@wearelostobjects.com" aria-label="Email Lost Objects"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 4l10 9 10-9"/></svg><span>Email</span></a>
+              <a class="lo-chip" href="https://www.instagram.com/wearelostobjects/" target="_blank" rel="noopener noreferrer" aria-label="Lost Objects on Instagram"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.5"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg><span>Instagram</span></a>
+              <a class="lo-chip" href="https://discord.gg/ZqGhVfJu2a" target="_blank" rel="noopener noreferrer" aria-label="Lost Objects on Discord"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="12" r="1"/><circle cx="15" cy="12" r="1"/><path d="M7.5 7.5c3.5 -1 5.5 -1 9 0"/><path d="M7 16.5c3.5 1 6.5 1 10 0"/><path d="M15.5 17c0 1 1.5 3 2 3c1.5 0 2.833 -1.667 3.5 -3c.667 -1.667 .5 -5.833 -1.5 -11.5c-1.457 -1.015 -3 -1.34 -4.5 -1.5l-.972 1.923a11.913 11.913 0 0 0 -4.053 0l-.975 -1.923c-1.5 .16 -3.043 .485 -4.5 1.5c-2 5.667 -2.167 9.833 -1.5 11.5c.667 1.333 2 3 3.5 3c.5 0 2 -2 2 -3"/></svg><span>Discord</span></a>
+              </div>
+              <a class="ah-cta lo-cta lo-stagger" href="#services" id="loTalk">Let&rsquo;s talk</a>
+            </div>
+            <div class="lo-gallery" hidden data-gallery="agency">
+              <div class="lo-gallery-head">
+                <div class="lo-person-role">Off set</div>
+                <div class="lo-person-role lo-counter" aria-live="polite">01 / 01</div>
+              </div>
+              <div class="lo-thumbs" role="group" aria-label="Lost Objects, photo frames">
+                <button type="button" class="lo-thumb is-active" data-frame="1" data-stem="brendan-kyra" aria-label="Lost Objects, frame 1 of 1">
+                  <picture>
+                    <source type="image/webp" srcset="images/brendan-kyra-160.webp 160w, images/brendan-kyra-800.webp 800w" sizes="(max-width: 768px) 96px, 140px" />
+                    <img src="images/brendan-kyra-160.jpg" srcset="images/brendan-kyra-160.jpg 160w, images/brendan-kyra-800.jpg 800w" sizes="(max-width: 768px) 96px, 140px" width="160" height="240" loading="lazy" decoding="async" alt="" />
+                  </picture>
+                </button>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="lo-person lo-person-brendan" id="lo-person-brendan" aria-label="Brendan Sweeney" hidden>
+          <div class="lo-person-media">
+            <picture>
+              <source type="image/webp" srcset="images/brendan-portrait-800.webp 800w, images/brendan-portrait-1600.webp 1600w" sizes="(max-width: 900px) 92vw, 40vw" />
+              <img class="" src="images/brendan-portrait-800.jpg" width="800" height="1200" loading="lazy" decoding="async" alt="Brendan Sweeney" />
+            </picture>
+          </div>
+          <div class="lo-person-body">
+            <div class="lo-person-main">
+              <h3 class="lo-person-name lo-stagger">Brendan Sweeney</h3>
+              <div class="lo-person-role lo-stagger">Co-Founder &middot; Director, Producer</div>
+              <p class="lo-person-bio lo-stagger">I came up as a filmmaker, and Lost Objects is my way back to it. As Co-Founder with my wife and partner Kyra, I'm building a creative boutique that brings cinematic craft to social media, working with cinematographers, grip and lighting companies, production houses, and film industry brands on campaigns as considered as the work our clients make on set. After leading Filmmakers Academy as CEO, I've returned to directing and producing with sharper instincts, better systems, and a clearer sense of what I want to make.</p>
+            </div>
+            <div class="lo-person-rail">
+              <blockquote class="lo-quote-block lo-stagger">
+                <p class="lo-quote">There are no facts, only interpretations.</p>
+                <cite class="lo-quote-cite">Friedrich Nietzsche &middot; Notebooks, 1886</cite>
+              </blockquote>
+              <p class="lo-person-meta lo-stagger">Comfort film &middot; <a class="vcard-bio-meta-link" href="https://www.imdb.com/title/tt11003218/" target="_blank" rel="noopener noreferrer">Pig (2021)</a></p>
+              <div class="lo-chips lo-stagger">
+              <a class="lo-chip" href="mailto:brendan@wearelostobjects.com" aria-label="Email Brendan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 4l10 9 10-9"/></svg><span>Email</span></a>
+              <a class="lo-chip" href="https://www.instagram.com/brenpancake" target="_blank" rel="noopener noreferrer" aria-label="Brendan on Instagram"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.5"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg><span>Instagram</span></a>
+              <a class="lo-chip" href="https://discord.gg/ZqGhVfJu2a" target="_blank" rel="noopener noreferrer" aria-label="Brendan on Discord: brenpancake"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="12" r="1"/><circle cx="15" cy="12" r="1"/><path d="M7.5 7.5c3.5 -1 5.5 -1 9 0"/><path d="M7 16.5c3.5 1 6.5 1 10 0"/><path d="M15.5 17c0 1 1.5 3 2 3c1.5 0 2.833 -1.667 3.5 -3c.667 -1.667 .5 -5.833 -1.5 -11.5c-1.457 -1.015 -3 -1.34 -4.5 -1.5l-.972 1.923a11.913 11.913 0 0 0 -4.053 0l-.975 -1.923c-1.5 .16 -3.043 .485 -4.5 1.5c-2 5.667 -2.167 9.833 -1.5 11.5c.667 1.333 2 3 3.5 3c.5 0 2 -2 2 -3"/></svg><span>Discord</span></a>
+              <a class="lo-chip" href="https://www.linkedin.com/in/brendan-sweeney-b6806a271" target="_blank" rel="noopener noreferrer" aria-label="Brendan on LinkedIn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg><span>LinkedIn</span></a>
+              <a class="lo-chip" href="#after-hours" aria-label="Lost Objects: After Hours"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="12" r="1"/><circle cx="15" cy="12" r="1"/><path d="M7.5 7.5c3.5 -1 5.5 -1 9 0"/><path d="M7 16.5c3.5 1 6.5 1 10 0"/><path d="M15.5 17c0 1 1.5 3 2 3c1.5 0 2.833 -1.667 3.5 -3c.667 -1.667 .5 -5.833 -1.5 -11.5c-1.457 -1.015 -3 -1.34 -4.5 -1.5l-.972 1.923a11.913 11.913 0 0 0 -4.053 0l-.975 -1.923c-1.5 .16 -3.043 .485 -4.5 1.5c-2 5.667 -2.167 9.833 -1.5 11.5c.667 1.333 2 3 3.5 3c.5 0 2 -2 2 -3"/></svg><span>After Hours</span></a>
+              </div>
+            </div>
+            <div class="lo-gallery" data-gallery="brendan">
+              <div class="lo-gallery-head">
+                <div class="lo-person-role">Off set</div>
+                <div class="lo-person-role lo-counter" aria-live="polite">01 / 01</div>
+              </div>
+              <div class="lo-thumbs" role="group" aria-label="Brendan, photo frames">
+                <button type="button" class="lo-thumb is-active" data-frame="1" data-stem="brendan-portrait" aria-label="Brendan, frame 1 of 3">
+                  <picture>
+                    <source type="image/webp" srcset="images/brendan-portrait-160.webp 160w, images/brendan-portrait-800.webp 800w" sizes="(max-width: 768px) 96px, 140px" />
+                    <img src="images/brendan-portrait-160.jpg" srcset="images/brendan-portrait-160.jpg 160w, images/brendan-portrait-800.jpg 800w" sizes="(max-width: 768px) 96px, 140px" width="160" height="240" loading="lazy" decoding="async" alt="" />
+                  </picture>
+                </button>
+                <button type="button" class="lo-thumb" data-frame="2" data-stem="brendan-02" aria-label="Brendan, frame 2 of 3">
+                  <picture>
+                    <source type="image/webp" srcset="images/brendan-02-160.webp 160w, images/brendan-02-800.webp 800w" sizes="(max-width: 768px) 96px, 140px" />
+                    <img src="images/brendan-02-160.jpg" srcset="images/brendan-02-160.jpg 160w, images/brendan-02-800.jpg 800w" sizes="(max-width: 768px) 96px, 140px" width="160" height="240" loading="lazy" decoding="async" alt="" />
+                  </picture>
+                </button>
+                <button type="button" class="lo-thumb" data-frame="3" data-stem="brendan-03" aria-label="Brendan, frame 3 of 3">
+                  <picture>
+                    <source type="image/webp" srcset="images/brendan-03-160.webp 160w, images/brendan-03-800.webp 800w" sizes="(max-width: 768px) 96px, 140px" />
+                    <img src="images/brendan-03-160.jpg" srcset="images/brendan-03-160.jpg 160w, images/brendan-03-800.jpg 800w" sizes="(max-width: 768px) 96px, 140px" width="160" height="240" loading="lazy" decoding="async" alt="" />
+                  </picture>
+                </button>
+                <!-- TODO: replace these three placeholders when the missing frames land —
+                     BRENDAN_CAROSEL_03, BRENDAN_CAROSEL_04, BRENDAN_CAROSEL_05.
+                     Swapping one in is a one-line change: delete its <span> and add a
+                     <button class="lo-thumb" data-frame="N" data-stem="brendan-0N"> block
+                     in the same position; the "frame X of Y" counts are rebuilt by JS. -->
+                <span class="lo-thumb-ph" data-placeholder="4" aria-hidden="true">04</span>
+                <span class="lo-thumb-ph" data-placeholder="5" aria-hidden="true">05</span>
+                <span class="lo-thumb-ph" data-placeholder="6" aria-hidden="true">06</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+      </div><!-- /.lo-detail -->
+    </div><!-- /.lo-stage -->
+
     <p class="vcard-tagline">Save us to your phone. We'll be there when you're ready.</p>
     <a href="lost-objects-team.vcf" download class="vcard-btn">Add Lost Objects</a>
-    <p class="vcard-note">Adds Kyra &amp; Brendan as separate contacts &middot; Works on iPhone, Android, and desktop</p>
+    <p class="vcard-note">Adds one Lost Objects contact &mdash; both emails, our studio line, and the West Hollywood address &middot; Works on iPhone, Android, and desktop</p>
 
     <script>
-    /* Stay Connected — independent Read More / Less bio expanders. Sets the open
-       height to the exact content height so the max-height transition is smooth;
-       reduced-motion falls back to an opacity-only reveal (handled in CSS). */
+    /* ═══════════════════════════════════════════
+       STAY CONNECTED — triptych <-> detail controller
+       The crossfade/height-morph/glide helpers below are deliberate copies of
+       the Services section's, not a shared import: CLAUDE.md states the
+       duplication in this codebase is intentional and that shared CSS/JS must
+       not be extracted into new files unless asked. Keeping a local copy also
+       means tuning this section can never regress the services panel.
+       ═══════════════════════════════════════════ */
     (function () {
       'use strict';
-      var cards = document.querySelectorAll('.vcard-cards .vcard-card');
-      cards.forEach(function (card) {
-        var btn = card.querySelector('.vcard-more');
-        var bio = card.querySelector('.vcard-bio');
-        var label = btn && btn.querySelector('.vcard-more-label');
-        if (!btn || !bio) return;
-        var open = false;
-        btn.addEventListener('click', function () {
-          open = !open;
-          btn.classList.toggle('is-open', open);
-          btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-          if (label) label.textContent = open ? 'Read Less' : 'Read More';
-          if (open) { bio.classList.add('open'); bio.style.maxHeight = bio.scrollHeight + 'px'; }
-          else { bio.classList.remove('open'); bio.style.maxHeight = '0'; }
+      var stage = document.getElementById('loStage');
+      if (!stage) return;
+      var triptych = document.getElementById('loTriptych');
+      var detail   = document.getElementById('loDetail');
+      var backBtn  = document.getElementById('loBack');
+      var panels   = stage.querySelectorAll('.lo-panel');
+      var people   = stage.querySelectorAll('.lo-person');
+      var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+      var animating = false;
+      var onDetail  = false;
+
+      /* Glide the page so the active view sits centered below the fixed nav. */
+      function glideToCenter(topDoc, viewH) {
+        var navH = 62; // --nav-h
+        var avail = window.innerHeight - navH;
+        var desiredTop = (viewH <= avail - 32) ? navH + (avail - viewH) * 0.4 : navH + 20;
+        var targetY = Math.max(0, Math.round(topDoc - desiredTop));
+        if (Math.abs(targetY - window.scrollY) < 24) return;
+        animateScrollTo(targetY, 1000);
+      }
+
+      /* Eased scroll on the same curve as the bloom, bowing out the moment the
+         user grabs the wheel so it never feels like a hijack. */
+      var scrollRAF = null;
+      function animateScrollTo(targetY, duration) {
+        if (scrollRAF) { cancelAnimationFrame(scrollRAF); scrollRAF = null; }
+        var startY = window.scrollY;
+        var dist = targetY - startY;
+        if (Math.abs(dist) < 2) return;
+        if (reduceMotion.matches) { window.scrollTo(0, targetY); return; }
+        var easeOutExpo = function (t) { return t >= 1 ? 1 : 1 - Math.pow(2, -10 * t); };
+        var startTs = null;
+        function stop() {
+          if (scrollRAF) { cancelAnimationFrame(scrollRAF); scrollRAF = null; }
+          window.removeEventListener('wheel', stop);
+          window.removeEventListener('touchstart', stop);
+        }
+        window.addEventListener('wheel', stop, { passive: true });
+        window.addEventListener('touchstart', stop, { passive: true });
+        function step(ts) {
+          if (startTs === null) startTs = ts;
+          var t = Math.min(1, (ts - startTs) / duration);
+          window.scrollTo(0, Math.round(startY + dist * easeOutExpo(t)));
+          if (t < 1) scrollRAF = requestAnimationFrame(step); else stop();
+        }
+        scrollRAF = requestAnimationFrame(step);
+      }
+
+      /* Cross-dissolve + height-morph. Outgoing view floats absolute and melts
+         away; incoming blooms up from blur; the stage height animates between
+         the two so the page is never blacked out by an overlay. */
+      function crossfade(cur, nxt, heightEl, onDone) {
+        var reduce = reduceMotion.matches;
+        var EASE = 'cubic-bezier(0.16, 1, 0.3, 1)';
+        var startH = heightEl.offsetHeight;
+        var anchorTopDoc = heightEl.getBoundingClientRect().top + window.scrollY;
+        nxt.hidden = false;
+        nxt.style.pointerEvents = '';
+        nxt.style.opacity = '0';
+        nxt.style.transform = reduce ? 'none' : 'scale(0.94)';
+        nxt.style.filter    = reduce ? 'none' : 'blur(12px)';
+        cur.style.position = 'absolute';
+        cur.style.top = '0'; cur.style.left = '0'; cur.style.right = '0';
+        cur.style.pointerEvents = 'none';
+        var endH = heightEl.offsetHeight;
+
+        heightEl.style.overflow = 'hidden';
+        heightEl.style.height = startH + 'px';
+        void heightEl.offsetHeight; // reflow
+        heightEl.style.transition = 'height ' + (reduce ? '0.5s ease' : '0.9s ' + EASE);
+        heightEl.style.height = endH + 'px';
+
+        cur.style.transition = reduce
+          ? 'opacity 0.45s ease'
+          : 'opacity 0.65s ease, transform 0.7s ' + EASE + ', filter 0.65s ease';
+        cur.style.opacity = '0';
+        if (!reduce) { cur.style.transform = 'scale(0.992)'; cur.style.filter = 'blur(8px)'; }
+        requestAnimationFrame(function () {
+          nxt.style.transition = reduce
+            ? 'opacity 0.55s ease 0.1s'
+            : 'opacity 0.55s ease 0.06s, transform 1.15s ' + EASE + ' 0.06s, filter 0.95s ease 0.08s';
+          nxt.style.opacity = '1';
+          nxt.style.transform = 'none';
+          nxt.style.filter = reduce ? 'none' : 'blur(0px)';
+          glideToCenter(anchorTopDoc, endH);
         });
-        /* Keep the open height correct if the layout reflows (e.g. rotate/resize) */
-        window.addEventListener('resize', function () {
-          if (open) bio.style.maxHeight = bio.scrollHeight + 'px';
-        }, { passive: true });
+
+        window.setTimeout(function () {
+          cur.hidden = true;
+          cur.style.position = ''; cur.style.top = ''; cur.style.left = ''; cur.style.right = '';
+          cur.style.opacity = ''; cur.style.transform = ''; cur.style.filter = ''; cur.style.transition = '';
+          cur.style.pointerEvents = '';
+          nxt.style.opacity = ''; nxt.style.transform = ''; nxt.style.filter = ''; nxt.style.transition = '';
+          nxt.style.pointerEvents = '';
+          heightEl.style.height = ''; heightEl.style.transition = ''; heightEl.style.overflow = '';
+          if (onDone) onDone();
+        }, reduce ? 700 : 1400);
+      }
+
+      /* ── Order + hash routing ──────────────────────────────────────────
+         Hashes make each profile linkable and make browser back/forward step
+         through them. A guard flag keeps our own hash writes from re-entering
+         the hashchange handler. */
+      var ORDER = ['kyra', 'agency', 'brendan'];
+      var HASH = { kyra: '#kyra', agency: '#lost-objects', brendan: '#brendan' };
+      var BY_HASH = {};
+      Object.keys(HASH).forEach(function (k) { BY_HASH[HASH[k]] = k; });
+      var LABEL = { kyra: 'Kyra Sweeney', agency: 'Lost Objects', brendan: 'Brendan Sweeney' };
+      var current = null;         // key of the open profile, or null
+      var lastTrigger = null;     // panel to hand focus back to on close
+      var suppressHash = false;
+
+      function setHash(v) {
+        suppressHash = true;
+        if (v) {
+          if (location.hash !== v) history.pushState(null, '', v);
+        } else if (location.hash) {
+          history.pushState(null, '', location.pathname + location.search);
+        }
+        window.setTimeout(function () { suppressHash = false; }, 0);
+      }
+
+      /* ── Staggered reveal ──────────────────────────────────────────────
+         Same prepStagger/runStagger shape the Services panel uses: pre-hide,
+         cascade with a per-item delay, then strip the inline styles so nothing
+         lingers for the next open. Only ever runs opening or stepping, never
+         on the return to the triptych. */
+      var staggerTimer = null;
+      function staggerItems(person) {
+        return Array.prototype.slice.call(person.querySelectorAll('.lo-stagger'));
+      }
+      function prepStagger(person) {
+        if (reduceMotion.matches) return;
+        staggerItems(person).forEach(function (el) {
+          el.style.transition = 'none';
+          el.style.opacity = '0';
+          el.style.transform = 'translateY(8px)';
+        });
+      }
+      function runStagger(person) {
+        if (reduceMotion.matches) return;
+        var items = staggerItems(person);
+        requestAnimationFrame(function () {
+          items.forEach(function (el, i) {
+            var d = (0.06 * i).toFixed(2);
+            el.style.transition = 'opacity 0.45s ease ' + d + 's, transform 0.45s ease ' + d + 's';
+            el.style.opacity = '1';
+            el.style.transform = 'none';
+          });
+        });
+        if (staggerTimer) window.clearTimeout(staggerTimer);
+        staggerTimer = window.setTimeout(function () {
+          items.forEach(function (el) {
+            el.style.transition = ''; el.style.opacity = ''; el.style.transform = '';
+          });
+        }, Math.round((0.06 * items.length + 0.45) * 1000) + 120);
+      }
+
+      /* ── Gallery strip ────────────────────────────────────────────────
+         Thumbnails swap the hero image inside the media column. The <img>
+         keeps its width/height and the media box keeps its aspect-ratio, so
+         the swap is a pure opacity crossfade with zero height change. Only
+         Enter/Space activate (they are buttons); arrow keys are left alone
+         because they already step between panels. */
+      var SWAP_MS = 450;   // matches the .lo-person-media img transition
+      var preloaded = {};
+      function preload(src) {
+        if (!src || preloaded[src]) return;
+        preloaded[src] = true;
+        var i = new Image();
+        i.decoding = 'async';
+        i.src = src;
+      }
+      function heroSources(stem) {
+        return { webp: 'images/' + stem + '-800.webp 800w, images/' + stem + '-1600.webp 1600w',
+                 jpg: 'images/' + stem + '-800.jpg' };
+      }
+      /* Warm the neighbours so stepping through the strip is instant. */
+      function preloadNeighbours(thumbs, idx) {
+        [idx - 1, idx + 1].forEach(function (j) {
+          if (j < 0 || j >= thumbs.length) return;
+          var stem = thumbs[j].dataset.stem;
+          preload('images/' + stem + '-800.webp');
+          preload('images/' + stem + '-1600.webp');
+        });
+      }
+      function setFrame(person, idx, opts) {
+        opts = opts || {};
+        var gal = person.querySelector('.lo-gallery');
+        if (!gal) return;
+        var thumbs = Array.prototype.slice.call(gal.querySelectorAll('.lo-thumb'));
+        if (!thumbs.length || idx < 0 || idx >= thumbs.length) return;
+        var media = person.querySelector('.lo-person-media');
+        var img = media.querySelector('img');
+        var src = media.querySelector('source');
+        var stem = thumbs[idx].dataset.stem;
+        var next = heroSources(stem);
+        thumbs.forEach(function (t, i) {
+          t.classList.toggle('is-active', i === idx);
+        });
+        /* Counter shows real frames only — placeholders are not counted. */
+        var counter = gal.querySelector('.lo-counter');
+        if (counter) {
+          var pad = function (n) { return (n < 10 ? '0' : '') + n; };
+          counter.textContent = pad(idx + 1) + ' / ' + pad(thumbs.length);
+        }
+        preloadNeighbours(thumbs, idx);
+        function apply() {
+          if (src) src.srcset = next.webp;
+          img.src = next.jpg;
+        }
+        if (opts.instant || reduceMotion.matches) { apply(); return; }
+        img.classList.add('is-swapping');
+        window.setTimeout(function () {
+          apply();
+          /* Wait for the new frame to be ready before fading back in, so the
+             crossfade never reveals a half-decoded image. */
+          var show = function () {
+            requestAnimationFrame(function () {
+              img.classList.remove('is-swapping');
+            });
+          };
+          if (img.decode) { img.decode().then(show).catch(show); } else { show(); }
+        }, SWAP_MS * 0.5);
+      }
+      /* Shrink valve. Priority is explicit: the thumbs give way first, the
+         hero is never cropped, and the card never outgrows the hero. Only
+         engages when the copy plus a full-width strip would exceed the hero;
+         floors at 64px so the thumbs stay usable rather than vanishing. */
+      var THUMB_FLOOR = 64;
+      function fitStrip(person) {
+        var thumbs = person.querySelector('.lo-thumbs');
+        var media = person.querySelector('.lo-person-media');
+        var body = person.querySelector('.lo-person-body');
+        if (!thumbs || !media || !body) return;
+        thumbs.style.removeProperty('--lo-thumb-w');
+        /* Stacked layouts have no hero to bound against. */
+        if (getComputedStyle(body).gridTemplateColumns.split(' ').length < 2) return;
+        var heroH = media.getBoundingClientRect().height;
+        var over = body.getBoundingClientRect().height - heroH;
+        if (over <= 0) return;
+        var stripH = thumbs.getBoundingClientRect().height;
+        var targetH = Math.max(THUMB_FLOOR * 1.5, stripH - over);
+        thumbs.style.setProperty('--lo-thumb-w', (targetH / 1.5).toFixed(1) + 'px');
+      }
+      function fitAllStrips() {
+        people.forEach(function (per) { if (!per.hidden) fitStrip(per); });
+      }
+      window.addEventListener('resize', function () { fitAllStrips(); }, { passive: true });
+
+      function resetFrames() {
+        people.forEach(function (per) {
+          var gal = per.querySelector('.lo-gallery');
+          if (!gal) return;
+          setFrame(per, 0, { instant: true });
+        });
+      }
+      stage.addEventListener('click', function (e) {
+        var t = e.target.closest ? e.target.closest('.lo-thumb') : null;
+        if (!t || !stage.contains(t)) return;
+        var person = t.closest('.lo-person');
+        var thumbs = Array.prototype.slice.call(person.querySelectorAll('.lo-thumb'));
+        setFrame(person, thumbs.indexOf(t));
       });
+
+      function showPerson(key) {
+        people.forEach(function (el) {
+          el.hidden = (el.id !== 'lo-person-' + key);
+        });
+        /* Opening a different panel (or closing) always starts on frame 01. */
+        resetFrames();
+        updateSteppers(key);
+        /* Re-fit after the swap paints, once the new body has real dimensions. */
+        requestAnimationFrame(function () { requestAnimationFrame(fitAllStrips); });
+        panels.forEach(function (pnl) {
+          pnl.setAttribute('aria-expanded', pnl.dataset.person === key ? 'true' : 'false');
+        });
+        if (key && detail) {
+          detail.setAttribute('aria-label', LABEL[key] + ' profile');
+        }
+      }
+
+      /* Steppers name the panel they lead to, and update whenever the open
+         panel changes. Visible label and accessible name are the same string. */
+      var prevLabel = document.getElementById('loPrevLabel');
+      var nextLabel = document.getElementById('loNextLabel');
+      function updateSteppers(key) {
+        if (!key || !prevLabel || !nextLabel) return;
+        var i = ORDER.indexOf(key);
+        if (i < 0) return;
+        var prevKey = ORDER[(i - 1 + ORDER.length) % ORDER.length];
+        var nextKey = ORDER[(i + 1) % ORDER.length];
+        prevLabel.textContent = LABEL[prevKey];
+        nextLabel.textContent = LABEL[nextKey];
+        var pb = document.getElementById('loPrev');
+        var nb = document.getElementById('loNext');
+        if (pb) pb.setAttribute('aria-label', LABEL[prevKey]);
+        if (nb) nb.setAttribute('aria-label', LABEL[nextKey]);
+      }
+
+      function swapView(toDetail, key) {
+        if (toDetail === onDetail || animating) return;
+        onDetail = toDetail;
+        animating = true;
+        if (toDetail) {
+          current = key;
+          showPerson(key);
+          prepStagger(document.getElementById('lo-person-' + key));
+        }
+        crossfade(toDetail ? triptych : detail,
+                  toDetail ? detail : triptych,
+                  stage,
+                  function () {
+                    animating = false;
+                    if (toDetail) {
+                      /* Focus the labelled region so it is announced, then run the
+                         cascade now that the height morph has settled. */
+                      detail.focus({ preventScroll: true });
+                      runStagger(document.getElementById('lo-person-' + current));
+                    } else {
+                      showPerson(null);
+                      current = null;
+                      if (lastTrigger) lastTrigger.focus({ preventScroll: true });
+                    }
+                  });
+      }
+
+      function openPanel(key, opts) {
+        opts = opts || {};
+        if (!LABEL[key]) return;
+        if (onDetail) { step(key, opts); return; }
+        lastTrigger = stage.querySelector('.lo-panel[data-person="' + key + '"]') || lastTrigger;
+        swapView(true, key);
+        if (!opts.fromHash) setHash(HASH[key]);
+      }
+
+      /* Stepping while open: swap content in place. All three details are the
+         same height (the 2:3 media column drives the row), so there is no height
+         to morph — just re-run the cascade. */
+      function step(key, opts) {
+        opts = opts || {};
+        if (!LABEL[key] || key === current || animating) return;
+        current = key;
+        showPerson(key);
+        var person = document.getElementById('lo-person-' + key);
+        prepStagger(person);
+        lastTrigger = stage.querySelector('.lo-panel[data-person="' + key + '"]') || lastTrigger;
+        requestAnimationFrame(function () { runStagger(person); });
+        if (!opts.fromHash) setHash(HASH[key]);
+      }
+
+      function stepBy(delta) {
+        if (!current) return;
+        var i = ORDER.indexOf(current);
+        step(ORDER[(i + delta + ORDER.length) % ORDER.length]);
+      }
+
+      function closeDetail(opts) {
+        opts = opts || {};
+        if (!onDetail) return;
+        swapView(false);
+        if (!opts.fromHash) setHash(null);
+      }
+
+      panels.forEach(function (panel) {
+        panel.addEventListener('click', function () {
+          lastTrigger = panel;
+          openPanel(panel.dataset.person);
+        });
+      });
+      if (backBtn) backBtn.addEventListener('click', function () { closeDetail(); });
+      var prevBtn = document.getElementById('loPrev');
+      var nextBtn = document.getElementById('loNext');
+      if (prevBtn) prevBtn.addEventListener('click', function () { stepBy(-1); });
+      if (nextBtn) nextBtn.addEventListener('click', function () { stepBy(1); });
+
+      /* Agency CTA — close the profile, then glide to the Services section, which
+         is where the old standalone "Let's Talk" form now lives. Reuses this
+         section's animateScrollTo, so it honours reduced motion and bows out if
+         the user grabs the wheel. */
+      var talkBtn = document.getElementById('loTalk');
+      if (talkBtn) {
+        talkBtn.addEventListener('click', function (e) {
+          e.preventDefault();
+          var target = document.getElementById('services');
+          closeDetail();
+          if (!target) return;
+          window.setTimeout(function () {
+            var navH = 62;
+            var y = Math.max(0, Math.round(target.getBoundingClientRect().top + window.scrollY - navH - 20));
+            animateScrollTo(y, 1000);
+          }, reduceMotion.matches ? 60 : 420);
+        });
+      }
+
+      /* Keyboard: Escape closes, left/right step while a profile is open. */
+      document.addEventListener('keydown', function (e) {
+        if (!onDetail) return;
+        if (e.key === 'Escape') { e.preventDefault(); closeDetail(); return; }
+        var t = e.target;
+        var typing = t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable);
+        if (typing) return;
+        if (e.key === 'ArrowLeft')  { e.preventDefault(); stepBy(-1); }
+        if (e.key === 'ArrowRight') { e.preventDefault(); stepBy(1); }
+      });
+
+      /* Deep links: open on load and on every hash change, so back/forward walk
+         the profiles and a pasted #kyra link lands on the right one. */
+      function syncFromHash() {
+        var key = BY_HASH[location.hash];
+        if (key) {
+          if (key !== current) openPanel(key, { fromHash: true });
+        } else if (onDetail) {
+          closeDetail({ fromHash: true });
+        }
+      }
+      window.addEventListener('hashchange', function () {
+        if (suppressHash) return;
+        syncFromHash();
+      });
+      window.addEventListener('popstate', function () { syncFromHash(); });
+      if (BY_HASH[location.hash]) {
+        window.setTimeout(function () { syncFromHash(); }, 400);
+      }
     })();
     </script>
   </div>
