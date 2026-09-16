@@ -1676,12 +1676,17 @@
       .whois-tab { flex: 0 0 auto; }
     }
 
-    /* TESTIMONIALS — rotating quote stage. Mirrors the section rhythm and the
-       Services panel crossfade language (same cubic-bezier(0.16,1,0.3,1) ease
-       with an opacity + scale + blur bloom). One slide shows at a time; slides
-       are stacked in a single grid cell so the stage auto-sizes to the tallest
-       quote (no height jump between slides). Section is a .scene, so it inherits
-       the scroll-focus fade and gets its own left-rail dot in DOM order. */
+    /* TESTIMONIALS — rotating quote stage. Crossfade + small rise on the site
+       settle curve (cubic-bezier(0.16,1,0.3,1)) at 0.65s, the same duration as
+       the Stay Connected crossfade. Slides stack in a single grid cell so the
+       stage never changes height; the quote inside each slide is additionally
+       given a JS-measured min-height equal to the TALLEST of the three at the
+       current width, because the stage being stable is not enough on its own —
+       each slide is a flex column, so a shorter quote used to pull the portrait,
+       name and role up by a whole line (measured: 24-31px at 1024/640/480/390/
+       360, sub-pixel at 1440/1280/900/768 only by coincidence of line counts).
+       Section is a .scene, so it inherits the scroll-focus fade and gets its own
+       left-rail dot in DOM order. */
     .testimonials-section {
       position: relative;
       max-width: var(--max);
@@ -1702,32 +1707,24 @@
       justify-content: flex-start;
       text-align: center;
       opacity: 0;
-      transform: scale(0.985);
-      filter: blur(6px);
+      transform: translateY(8px);
       pointer-events: none;
-      transition: opacity 0.65s ease,
-                  transform 0.9s cubic-bezier(0.16, 1, 0.3, 1),
-                  filter 0.65s ease;
+      /* 0.65s settle curve — the Stay Connected crossfade duration. The old
+         0.9s was the site's height-morph duration, slower than any other
+         crossfade here. Portrait, name and role live inside the slide, so they
+         crossfade with the quote for free. */
+      transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .tst-slide.active {
       opacity: 1;
       transform: none;
-      filter: blur(0);
       pointer-events: auto;
     }
-    /* Index — same treatment as the Services card numbers (Built Titling, muted).
-       Now sits alone above the quote (the decorative mark was removed) with
-       comfortable spacing below. */
-    .tst-index {
-      font-family: var(--display);
-      font-size: 15px;
-      font-weight: 600;
-      letter-spacing: 0.04em;
-      color: var(--fg3);
-      margin-bottom: clamp(20px, 3vh, 30px);
-    }
     /* Longer real quotes: sized + widened to sit at ~3-5 lines on desktop.
-       clamp min (1.05rem) also carries mobile, so there's no breakpoint jump. */
+       clamp min (1.05rem) also carries mobile, so there's no breakpoint jump.
+       min-height is set inline by JS (see sizeQuotes) — never author it here,
+       or the measurement pass has to fight a stylesheet value. */
     .tst-quote {
       margin: 0 0 clamp(22px, 3.4vh, 34px);
       max-width: 760px;
@@ -1749,6 +1746,28 @@
     }
     .tst-quote-mark-open { margin-left: -0.32em; margin-right: 0.03em; }
     .tst-quote-mark-close { margin-left: 0.03em; }
+    /* BYLINE — portrait + name + role + handle are one link to the client's
+       Instagram. The anchor lives inside <figcaption> rather than wrapping it,
+       because figcaption has to stay a direct child of <figure>. The handle is
+       a <span>, not a second <a>, so there is no nested link; the anchor's
+       aria-label carries the whole accessible name ("<Name> on Instagram") and
+       the portrait's alt is empty so it adds nothing to it. */
+    .tst-byline {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 10px 14px;
+      color: inherit;
+      text-decoration: none;
+      border-radius: 0;
+      transition: box-shadow 0.2s ease;
+    }
+    .tst-byline:focus-visible {
+      outline: none;
+      /* The site's focus ring (.lo-panel / .lo-chip :focus-visible), around the
+         whole byline block rather than any one line inside it. */
+      box-shadow: 0 0 0 2px rgba(255,102,102,0.35);
+    }
     /* Portrait — square, sharp corners, coral hairline, gently desaturated.
        Placeholder = dark square with initials; swapping in a real photo is a
        one-line change per slide (add the .tst-portrait-img line — see markup). */
@@ -1764,6 +1783,7 @@
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
+      transition: box-shadow 0.2s ease;
     }
     .tst-portrait-initials {
       font-family: var(--display);
@@ -1781,7 +1801,10 @@
       object-fit: cover;
       filter: saturate(0.85);
     }
+    /* name / role / handle are <span>s inside the byline anchor, so they need
+       display: block to keep stacking the way the old <div>s did. */
     .tst-name {
+      display: block;
       font-family: var(--display);
       font-size: clamp(18px, 2vw, 24px);
       font-weight: 600;
@@ -1791,6 +1814,7 @@
       margin-bottom: 7px;
     }
     .tst-role {
+      display: block;
       font-family: var(--sans);
       font-size: 10px;
       font-weight: 500;
@@ -1798,62 +1822,117 @@
       text-transform: uppercase;
       color: var(--fg3);
     }
-    /* Manual nav dots — active filled coral, inactive dimmed outline */
-    .tst-dots {
+    /* Client handle — the .tst-role treatment at the same size, tracking and
+       muted colour, but text-transform: none so it renders as the real
+       lowercase handle rather than shouting it. */
+    .tst-handle {
+      display: block;
+      margin-top: 6px;
+      font-family: var(--sans);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: none;
+      color: var(--fg3);
+      transition: color 0.2s ease;
+    }
+    /* Hover / focus on the byline lights the handle coral and glows the
+       portrait's coral keyline. Plain ease at the site's 0.2s hover duration. */
+    .tst-byline:hover .tst-handle,
+    .tst-byline:focus-visible .tst-handle { color: var(--pink); }
+    .tst-byline:hover .tst-portrait,
+    .tst-byline:focus-visible .tst-portrait {
+      box-shadow: 0 0 14px rgba(255,102,102,0.45);
+    }
+
+    /* PROGRESS ROW — three short coral rules plus the slide counter, one row.
+       Each rule is the .section-eyebrow-line: 32x1, var(--pink) at 0.5 alpha.
+       The track IS that rule; the fill is the same rule at full coral, scaled
+       from the left by a single rAF clock (see the JS) so the indicator and the
+       slide change share one source of truth and cannot drift. Replaces the old
+       per-dot SVG ring, which animated on the CSS clock and desynchronised from
+       the setTimeout advance by however long the pointer rested here. */
+    .tst-progress {
       display: flex;
-      justify-content: center;
       align-items: center;
-      gap: 16px;
+      justify-content: center;
+      gap: clamp(16px, 2vw, 24px);
       margin-top: clamp(28px, 4.5vh, 44px);
     }
-    .tst-dot {
-      position: relative;
-      width: 9px;
-      height: 9px;
+    .tst-rules {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    /* The button is a transparent 22px-tall hit box so the focus ring has
+       something to draw around and the tap target is not 1px; the visible rule
+       is the 1px child, vertically centred. */
+    .tst-rule {
+      display: flex;
+      align-items: center;
+      width: 32px;
+      height: 22px;
       padding: 0;
-      border-radius: 50%;
       background: transparent;
-      border: 1px solid rgba(255,102,102,0.45);
+      border: 0;
+      border-radius: 0;
       cursor: pointer;
-      overflow: visible;
-      transition: background 0.25s ease, border-color 0.25s ease;
+      -webkit-tap-highlight-color: transparent;
     }
-    .tst-dot:hover { border-color: var(--pink); }
-    .tst-dot.active { background: var(--pink); border-color: var(--pink); }
-    /* Progress ring — thin coral arc that draws around the active dot over the
-       6s auto-advance. Restarted by JS on every slide change (incl. manual),
-       paused on hover, hidden entirely under reduced motion. Quiet, not a spinner. */
-    .tst-ring {
+    /* The 0.5 alpha is in the COLOUR, not in `opacity`. .section-eyebrow-line
+       gets away with `opacity: 0.5` because nothing lives inside it; here an
+       element opacity would open a group that the fill sits inside, so the fill
+       would be dimmed to 0.5 as well and a filled rule would be pixel-identical
+       to an empty one. Same rendered colour as the kicker, composited per-layer. */
+    .tst-rule-track {
+      position: relative;
+      width: 100%;
+      height: 1px;
+      background: rgba(255,102,102,0.5);
+      overflow: hidden;
+      /* 0.2s ease — the site's hover duration (.svc-help-btn, .btn-o). */
+      transition: background-color 0.2s ease;
+    }
+    .tst-rule:hover .tst-rule-track,
+    .tst-rule:focus-visible .tst-rule-track { background: rgba(255,102,102,0.75); }
+    .tst-rule:focus-visible {
+      outline: none;
+      /* The site's focus ring (.lo-panel / .lo-chip :focus-visible). */
+      box-shadow: 0 0 0 2px rgba(255,102,102,0.35);
+    }
+    /* Fill grows left to right. transform only — no layout, no paint of the
+       1px track's box, and it is written straight from the rAF clock. */
+    .tst-rule-fill {
       position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 16px;
-      height: 16px;
-      transform: translate(-50%, -50%) rotate(-90deg);
-      opacity: 0;
-      pointer-events: none;
-      overflow: visible;
+      inset: 0;
+      background: var(--pink);
+      transform-origin: left center;
+      transform: scaleX(0);
     }
-    .tst-ring circle {
-      fill: none;
-      stroke: var(--pink);
-      stroke-width: 1.5;
-      stroke-dasharray: 50.27;   /* 2·pi·8 ≈ circumference of r=8 in the viewBox */
-      stroke-dashoffset: 50.27;
+    /* Slide counter — the old .tst-index treatment (Built Titling, muted),
+       moved out of the slides and onto this row as "01 / 03". */
+    .tst-count {
+      font-family: var(--display);
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: var(--fg3);
+      font-variant-numeric: tabular-nums;
     }
-    .tst-ring.tst-ring-run { opacity: 0.8; }
-    .tst-ring.tst-ring-run circle { animation: tst-ring-draw 6s linear forwards; }
-    @keyframes tst-ring-draw { to { stroke-dashoffset: 0; } }
-    .testimonials-section:hover .tst-ring.tst-ring-run circle { animation-play-state: paused; }
     @media (prefers-reduced-motion: reduce) {
-      /* Keep a gentle opacity crossfade; drop the scale/blur bloom + progress ring */
-      .tst-slide { transform: none; filter: none; transition: opacity 0.5s ease; }
-      .tst-ring { display: none; }
+      /* No crossfade at all: slides swap on their end states. Autoplay and the
+         rAF progress clock are both disabled in JS; the rules still render the
+         active slide statically and every manual control still works. */
+      .tst-slide { transition: none; transform: none; }
+      .tst-rule-track { transition: none; }
+      .tst-byline, .tst-handle, .tst-portrait { transition: none; }
     }
     @media (max-width: 768px) {
       .tst-portrait { width: 62px; height: 62px; }
+      /* Taller tap target on touch; the visible rule stays 32x1. */
+      .tst-rule { height: 40px; }
+      .tst-rules { gap: 12px; }
     }
-
     /* SERVICES — FIND THE RIGHT FIT (inline questionnaire) */
     .services-section {
       position: relative;
@@ -4233,138 +4312,324 @@
 </script>
 -->
 
-<!-- TESTIMONIALS — rotating quote stage (crossfade, auto-advance, dots, swipe) -->
-<section class="testimonials-section scene" id="testimonials" data-scene-label="Testimonials">
+<!-- TESTIMONIALS — rotating quote stage (crossfade, visibility-driven autoplay,
+     progress rules, swipe, arrow keys) -->
+<section class="testimonials-section scene" id="testimonials" data-scene-label="Testimonials"
+         role="region" aria-roledescription="carousel" aria-label="Client testimonials">
   <div class="section-eyebrow">
     <div class="section-eyebrow-line"></div>
     <span class="section-eyebrow-text">Testimonials</span>
   </div>
 
   <div class="tst-stage" id="tstStage">
-    <figure class="tst-slide active" data-index="0">
-      <span class="tst-index">01</span>
+    <figure class="tst-slide active" data-index="0" role="group" aria-roledescription="slide" aria-label="1 of 3" aria-hidden="false">
       <blockquote class="tst-quote"><span class="tst-quote-mark tst-quote-mark-open">&ldquo;</span>Lost Objects grew my Instagram from 400 to over 50,000 followers in less than a year, completely organically. Their personalized strategy and attention to detail have been the foundation for building my brand online.<span class="tst-quote-mark tst-quote-mark-close">&rdquo;</span></blockquote>
-      <div class="tst-portrait">
-        <img class="tst-portrait-img" src="images/riel_400.jpg" alt="Brendan Riel" decoding="async">
-      </div>
       <figcaption>
-        <div class="tst-name">Brendan Riel</div>
-        <div class="tst-role">Local 80 Key Grip &amp; Owner, Legacy Grip</div>
+        <a class="tst-byline" href="https://www.instagram.com/legacy_grip/" target="_blank" rel="noopener noreferrer" aria-label="Brendan Riel on Instagram">
+          <span class="tst-portrait">
+            <img class="tst-portrait-img" src="images/riel_400.jpg" alt="" width="400" height="400" loading="lazy" decoding="async">
+          </span>
+          <span class="tst-name">Brendan Riel</span>
+          <span class="tst-role">Local 80 Key Grip &amp; Owner, Legacy Grip</span>
+          <span class="tst-handle">@legacy_grip</span>
+        </a>
       </figcaption>
     </figure>
 
-    <figure class="tst-slide" data-index="1">
-      <span class="tst-index">02</span>
+    <figure class="tst-slide" data-index="1" role="group" aria-roledescription="slide" aria-label="2 of 3" aria-hidden="true" inert>
       <blockquote class="tst-quote"><span class="tst-quote-mark tst-quote-mark-open">&ldquo;</span>Kyra and Brendan helped me launch a cohesive brand across Instagram and my website, with a clear roadmap tailored to the film industry. Their creative input and strategic approach have been invaluable.<span class="tst-quote-mark tst-quote-mark-close">&rdquo;</span></blockquote>
-      <div class="tst-portrait">
-        <img class="tst-portrait-img" src="images/bruce_400.jpg" alt="Bruce Eisenberg" decoding="async">
-      </div>
       <figcaption>
-        <div class="tst-name">Bruce Eisenberg</div>
-        <div class="tst-role">Cinematographer &amp; Photographer</div>
+        <a class="tst-byline" href="https://www.instagram.com/bruceeisenbergdp/" target="_blank" rel="noopener noreferrer" aria-label="Bruce Eisenberg on Instagram">
+          <span class="tst-portrait">
+            <img class="tst-portrait-img" src="images/bruce_400.jpg" alt="" width="400" height="400" loading="lazy" decoding="async">
+          </span>
+          <span class="tst-name">Bruce Eisenberg</span>
+          <span class="tst-role">Cinematographer &amp; Photographer</span>
+          <span class="tst-handle">@bruceeisenbergdp</span>
+        </a>
       </figcaption>
     </figure>
 
-    <figure class="tst-slide" data-index="2">
-      <span class="tst-index">03</span>
+    <figure class="tst-slide" data-index="2" role="group" aria-roledescription="slide" aria-label="3 of 3" aria-hidden="true" inert>
       <blockquote class="tst-quote"><span class="tst-quote-mark tst-quote-mark-open">&ldquo;</span>Lost Objects gave me clear, actionable advice that elevated my Instagram and made my profile stand out. Their feedback was thoughtful, easy to implement, and made an immediate difference in how I present my work online.<span class="tst-quote-mark tst-quote-mark-close">&rdquo;</span></blockquote>
-      <div class="tst-portrait">
-        <img class="tst-portrait-img" src="images/will_400.jpg" alt="Hugo Will" decoding="async">
-      </div>
       <figcaption>
-        <div class="tst-name">Hugo Will</div>
-        <div class="tst-role">Cinematographer</div>
+        <a class="tst-byline" href="https://www.instagram.com/hugo_willl/" target="_blank" rel="noopener noreferrer" aria-label="Hugo Will on Instagram">
+          <span class="tst-portrait">
+            <img class="tst-portrait-img" src="images/will_400.jpg" alt="" width="400" height="400" loading="lazy" decoding="async">
+          </span>
+          <span class="tst-name">Hugo Will</span>
+          <span class="tst-role">Cinematographer</span>
+          <span class="tst-handle">@hugo_willl</span>
+        </a>
       </figcaption>
     </figure>
   </div>
 
-  <div class="tst-dots" aria-label="Choose a testimonial">
-    <button type="button" class="tst-dot active" aria-label="Show testimonial 1" aria-current="true"><svg class="tst-ring" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8"/></svg></button>
-    <button type="button" class="tst-dot" aria-label="Show testimonial 2"><svg class="tst-ring" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8"/></svg></button>
-    <button type="button" class="tst-dot" aria-label="Show testimonial 3"><svg class="tst-ring" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8"/></svg></button>
+  <!-- Progress row: three kicker-weight coral rules + the slide counter. The
+       fills are written every frame from the same rAF clock that advances the
+       slide, so they cannot drift apart. The counter duplicates each slide's
+       "n of 3" label, so it is aria-hidden to keep it from double-announcing. -->
+  <div class="tst-progress">
+    <div class="tst-rules" role="group" aria-label="Choose a testimonial">
+      <button type="button" class="tst-rule" data-index="0" aria-current="true" aria-label="Show testimonial 1 of 3, Brendan Riel"><span class="tst-rule-track"><span class="tst-rule-fill"></span></span></button>
+      <button type="button" class="tst-rule" data-index="1" aria-label="Show testimonial 2 of 3, Bruce Eisenberg"><span class="tst-rule-track"><span class="tst-rule-fill"></span></span></button>
+      <button type="button" class="tst-rule" data-index="2" aria-label="Show testimonial 3 of 3, Hugo Will"><span class="tst-rule-track"><span class="tst-rule-fill"></span></span></button>
+    </div>
+    <span class="tst-count" id="tstCount" aria-hidden="true">01 / 03</span>
   </div>
 </section>
 
 <script>
-/* Testimonials rotation — auto-advance (6s) with a hover pause, a 15s pause
-   after any manual interaction, clickable dots, and touch swipe. Self-contained
-   IIFE so it can't touch any other section. */
+/* Testimonials rotation.
+
+   ONE CLOCK. A single requestAnimationFrame loop accumulates elapsed ms for the
+   current slide; that same accumulator both paints the progress fills and fires
+   the advance at SLIDE_MS. The previous build ran a 6s CSS keyframe on the rings
+   alongside a 6s setTimeout, which desynchronised permanently the first time the
+   pointer rested here (CSS animation-play-state froze the ring while the timeout
+   kept firing on wall-clock boundaries) — measured up to a full cycle apart.
+
+   VISIBILITY DRIVEN. Autoplay exists only while the section is at least half in
+   view: entering resets to slide 1 and starts, leaving stops and clears. It also
+   pauses on hover, on keyboard focus within, and while the tab is hidden. Under
+   prefers-reduced-motion there is no autoplay and no progress animation — the
+   rules just mark the active slide and every manual control still works.
+
+   STABLE HEIGHT. Slides stack in one grid cell, so the stage height is constant,
+   but each slide is a flex column: a shorter quote used to pull the portrait,
+   name and role up by a whole line (24-31px at 1024/640/480/390/360). sizeQuotes
+   pins every quote to the tallest of the three at the current width instead.
+
+   Self-contained IIFE so it can't touch any other section. */
 (function () {
   'use strict';
   var section = document.getElementById('testimonials');
   var stage   = document.getElementById('tstStage');
   if (!section || !stage) return;
 
-  var slides = Array.prototype.slice.call(section.querySelectorAll('.tst-slide'));
-  var dots   = Array.prototype.slice.call(section.querySelectorAll('.tst-dot'));
-  var rings  = Array.prototype.slice.call(section.querySelectorAll('.tst-ring'));
+  var slides  = Array.prototype.slice.call(section.querySelectorAll('.tst-slide'));
+  var rules   = Array.prototype.slice.call(section.querySelectorAll('.tst-rule'));
+  var fills   = Array.prototype.slice.call(section.querySelectorAll('.tst-rule-fill'));
+  var counter = document.getElementById('tstCount');
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   var N = slides.length;
-  if (!N) return;
+  if (!N || rules.length !== N || fills.length !== N) return;
 
-  var INTERVAL = 6000;       /* auto-advance cadence */
-  var MANUAL_PAUSE = 15000;  /* pause after a manual interaction */
-  var idx = 0, hovering = false, paused = false, timer = null, pauseTimer = null;
+  var quotes = [];
+  for (var qi = 0; qi < N; qi++) quotes.push(slides[qi].querySelector('.tst-quote'));
+
+  var SLIDE_MS = 6000;      /* auto-advance cadence, unchanged */
+
+  var idx = 0;
+  var elapsed = 0;          /* ms accrued on the current slide — the only clock */
+  var lastTs  = 0;
+  var rafId   = null;
+  var running = false;
+  var onScreen = false, hovering = false, focusWithin = false;
+
+  function pad(n) { return (n < 10 ? '0' : '') + n; }
+
+  /* ── Stable quote height ──────────────────────────────────────────────
+     Clear, measure all three, pin all three to the tallest. Runs at init, on
+     resize/orientationchange (rAF-coalesced) and once fonts have settled, since
+     the swap from fallback to Fraunces changes the line count. */
+  /* getBoundingClientRect reports the VISUAL box, and .scene sits at
+     transform: scale(0.98) until the section is scroll-focused — measuring
+     through that scale under-reported every quote by 2% and left the tallest
+     one overflowing the shared min-height by 1.7px. Divide the scale back out
+     (uniform, so width gives it away) to recover the layout height exactly. */
+  function layoutHeight(el) {
+    var r = el.getBoundingClientRect();
+    var w = el.offsetWidth;
+    var scale = (w && r.width) ? (r.width / w) : 1;
+    return scale > 0 ? r.height / scale : r.height;
+  }
+  function sizeQuotes() {
+    var i, h = 0;
+    for (i = 0; i < N; i++) if (quotes[i]) quotes[i].style.minHeight = '';
+    for (i = 0; i < N; i++) if (quotes[i]) h = Math.max(h, layoutHeight(quotes[i]));
+    h = Math.ceil(h);
+    if (!h) return;
+    for (i = 0; i < N; i++) if (quotes[i]) quotes[i].style.minHeight = h + 'px';
+  }
+  var sizeRaf = null;
+  function queueSize() {
+    if (sizeRaf !== null) return;
+    sizeRaf = requestAnimationFrame(function () { sizeRaf = null; sizeQuotes(); });
+  }
+
+  /* ── Paint ────────────────────────────────────────────────────────────
+     Completed rules stay filled, the active one is at p, upcoming are empty. */
+  function paint(p) {
+    for (var i = 0; i < N; i++) {
+      var v = i < idx ? 1 : (i > idx ? 0 : p);
+      fills[i].style.transform = 'scaleX(' + v + ')';
+    }
+  }
 
   function render() {
     for (var i = 0; i < N; i++) {
-      slides[i].classList.toggle('active', i === idx);
       var on = i === idx;
-      dots[i].classList.toggle('active', on);
-      if (on) dots[i].setAttribute('aria-current', 'true');
-      else dots[i].removeAttribute('aria-current');
+      slides[i].classList.toggle('active', on);
+      slides[i].setAttribute('aria-hidden', on ? 'false' : 'true');
+      /* inert keeps the off-slide handle link out of the tab order and the
+         off-slide quotes out of the accessibility tree — without it a screen
+         reader read all three testimonials as one run of text. tabindex is the
+         belt-and-braces fallback where inert is unsupported. */
+      if (on) slides[i].removeAttribute('inert');
+      else slides[i].setAttribute('inert', '');
+      var link = slides[i].querySelector('.tst-byline');
+      if (link) { if (on) link.removeAttribute('tabindex'); else link.setAttribute('tabindex', '-1'); }
+      if (on) rules[i].setAttribute('aria-current', 'true');
+      else rules[i].removeAttribute('aria-current');
     }
-    /* Restart the progress ring on the active dot only (skipped under reduced
-       motion). Removing then re-adding the class with a reflow between forces
-       the 6s draw animation to restart from zero on every slide change. */
-    if (rings.length && !reduceMotion.matches) {
-      for (var r = 0; r < rings.length; r++) rings[r].classList.remove('tst-ring-run');
-      var active = rings[idx];
-      if (active) { void active.getBoundingClientRect(); active.classList.add('tst-ring-run'); }
-    }
+    /* No aria-live here: the counter is aria-hidden and the slides carry their
+       own "n of 3" labels, so autoplay never announces anything. */
+    if (counter) counter.textContent = pad(idx + 1) + ' / ' + pad(N);
   }
 
-  /* Re-armed on every change; while hovering or in a manual pause it simply
-     re-checks one interval later instead of advancing. */
-  function schedule() {
-    clearTimeout(timer);
-    timer = setTimeout(function () {
-      if (hovering || paused) { schedule(); return; }
-      go(idx + 1);
-    }, INTERVAL);
+  /* ── The clock ────────────────────────────────────────────────────────── */
+  function canRun() {
+    return !reduceMotion.matches && onScreen && !document.hidden && !hovering && !focusWithin;
+  }
+  function frame(ts) {
+    if (!running) return;
+    if (!lastTs) lastTs = ts;
+    elapsed += ts - lastTs;
+    lastTs = ts;
+    if (elapsed >= SLIDE_MS) { goTo(idx + 1); return; }
+    paint(elapsed / SLIDE_MS);
+    rafId = requestAnimationFrame(frame);
+  }
+  function play() {
+    if (running || !canRun()) return;
+    running = true;
+    lastTs = 0;                      /* first frame contributes no elapsed time */
+    rafId = requestAnimationFrame(frame);
+  }
+  function pause() {                 /* freeze progress where it stands */
+    running = false;
+    lastTs = 0;
+    if (rafId !== null) { cancelAnimationFrame(rafId); rafId = null; }
+  }
+  function stop() { pause(); elapsed = 0; }
+
+  /* Every slide change goes through here, autoplay and manual alike, so the
+     clock always restarts on the new slide. pause() first: when frame() calls
+     this at the end of a cycle, running is still true and play() would no-op. */
+  function goTo(i) {
+    pause();
+    elapsed = 0;
+    idx = ((i % N) + N) % N;
+    render();
+    paint(reduceMotion.matches ? 1 : 0);
+    play();
   }
 
-  function go(i) { idx = ((i % N) + N) % N; render(); schedule(); }
-
-  function manualGo(i) {
-    paused = true;
-    clearTimeout(pauseTimer);
-    pauseTimer = setTimeout(function () { paused = false; }, MANUAL_PAUSE);
-    go(i);
+  /* ── Visibility ───────────────────────────────────────────────────────── */
+  function setOnScreen(on) {
+    if (on === onScreen) return;
+    onScreen = on;
+    if (on) {
+      queueSize();                   /* re-measure now that fonts and layout have settled */
+      goTo(0);                       /* reset to slide 1, then start */
+    } else stop();
   }
 
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      for (var i = 0; i < entries.length; i++) {
+        var e = entries[i];
+        var vh = window.innerHeight || document.documentElement.clientHeight || 1;
+        var r  = e.boundingClientRect;
+        /* A section taller than the viewport can never reach ratio 0.5, so
+           "fills at least half the viewport" counts as visible too. */
+        var covered = Math.max(0, Math.min(r.bottom, vh) - Math.max(r.top, 0)) / vh;
+        setOnScreen(!!e.isIntersecting && (e.intersectionRatio >= 0.5 || covered >= 0.5));
+      }
+    }, { threshold: [0, 0.25, 0.5, 0.75, 1] });
+    io.observe(section);
+  } else {
+    setOnScreen(true);               /* no IO: rotate rather than never start */
+  }
+
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) pause(); else play();
+  });
+
+  /* ── Pointer and focus pauses ─────────────────────────────────────────── */
+  section.addEventListener('mouseenter', function () { hovering = true; pause(); });
+  section.addEventListener('mouseleave', function () { hovering = false; play(); });
+
+  /* Keyboard focus only. Gating on :focus-visible means clicking a rule with the
+     mouse doesn't leave the carousel permanently paused after the pointer
+     leaves — the hover pause already covers the pointer being here. */
+  section.addEventListener('focusin', function (e) {
+    var vis = true;
+    try { vis = !!(e.target && e.target.matches && e.target.matches(':focus-visible')); } catch (err) { vis = true; }
+    if (!vis) return;
+    focusWithin = true;
+    pause();
+  });
+  section.addEventListener('focusout', function (e) {
+    if (e.relatedTarget && section.contains(e.relatedTarget)) return;
+    focusWithin = false;
+    play();
+  });
+
+  /* ── Manual controls ──────────────────────────────────────────────────── */
   for (var d = 0; d < N; d++) {
-    (function (i) { dots[i].addEventListener('click', function () { manualGo(i); }); })(d);
+    (function (i) { rules[i].addEventListener('click', function () { goTo(i); }); })(d);
   }
 
-  section.addEventListener('mouseenter', function () { hovering = true; });
-  section.addEventListener('mouseleave', function () { hovering = false; });
+  section.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight') { goTo(idx + 1); e.preventDefault(); }
+    else if (e.key === 'ArrowLeft') { goTo(idx - 1); e.preventDefault(); }
+  });
 
-  /* Touch swipe left/right on the stage */
-  var sx = 0, sy = 0, tracking = false;
+  /* Touch swipe left/right on the stage. The byline is a link covering most of
+     the slide, so a swipe that starts on it would otherwise both step the
+     carousel AND open Instagram on the click the browser synthesises at the end
+     of the gesture. `swiped` is armed by a real swipe and consumed by the
+     capture-phase click below, which cancels that navigation. It is cleared on
+     every touchstart, so a plain tap is never suppressed. */
+  var sx = 0, sy = 0, tracking = false, swiped = false;
   stage.addEventListener('touchstart', function (e) {
-    var t = e.changedTouches[0]; sx = t.clientX; sy = t.clientY; tracking = true;
+    var t = e.changedTouches[0]; sx = t.clientX; sy = t.clientY; tracking = true; swiped = false;
   }, { passive: true });
   stage.addEventListener('touchend', function (e) {
     if (!tracking) return; tracking = false;
     var t = e.changedTouches[0], dx = t.clientX - sx, dy = t.clientY - sy;
     if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) {
-      manualGo(dx < 0 ? idx + 1 : idx - 1);
+      swiped = true;
+      goTo(dx < 0 ? idx + 1 : idx - 1);
     }
   }, { passive: true });
+  stage.addEventListener('click', function (e) {
+    if (!swiped) return;
+    swiped = false;
+    e.preventDefault();
+    e.stopPropagation();
+  }, true);
 
+  /* ── Reduced motion, live ─────────────────────────────────────────────── */
+  function onReduceChange() {
+    if (reduceMotion.matches) { stop(); paint(1); }
+    else { paint(0); play(); }
+  }
+  if (reduceMotion.addEventListener) reduceMotion.addEventListener('change', onReduceChange);
+  else if (reduceMotion.addListener) reduceMotion.addListener(onReduceChange);
+
+  window.addEventListener('resize', queueSize, { passive: true });
+  window.addEventListener('orientationchange', queueSize);
+  window.addEventListener('load', queueSize);
+  if (document.fonts && document.fonts.ready && document.fonts.ready.then) {
+    document.fonts.ready.then(queueSize, function () {});
+  }
+
+  sizeQuotes();
   render();
-  schedule();
+  paint(reduceMotion.matches ? 1 : 0);
 })();
 </script>
 
